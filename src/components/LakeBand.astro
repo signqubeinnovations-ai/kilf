@@ -1,10 +1,10 @@
 ---
 import Illustration from './Illustration.astro';
-import LakeWaves from './motion/LakeWaves';
+import WaterCanvas from './motion/WaterCanvas';
 import { asset } from '@/lib/images';
 /**
  * Full-width lake band. Uses kilf-assets/illustrations/lake-band.jpg when it
- * exists; until then, layered water drifting slowly (Motion).
+ * exists; until then, a strip of live water.
  */
 interface Props { src?: string; alt?: string; class?: string; height?: string }
 const {
@@ -15,6 +15,6 @@ const {
 } = Astro.props;
 const real = !asset(src).placeholder;
 ---
-<div class:list={['relative w-full overflow-hidden', real && 'fade-top', height, cls]} aria-hidden={alt ? undefined : 'true'}>
-  {real ? <Illustration src={src} alt={alt} class="h-full w-full object-cover object-bottom" /> : <LakeWaves client:visible />}
+<div class:list={['fade-top relative w-full overflow-hidden', height, cls]} style={real ? undefined : 'background:linear-gradient(180deg,#5673F4,#1B37E6 55%,#0E1A6E)'} aria-hidden={alt ? undefined : 'true'}>
+  {real ? <Illustration src={src} alt={alt} class="h-full w-full object-cover object-bottom" /> : <WaterCanvas client:visible palette="day" interactive={false} />}
 </div>

@@ -3,9 +3,6 @@ import { LazyMotion, domAnimation, useInView, useReducedMotion } from 'motion/re
 
 /** Calm, decelerating curve used across the site (matches --ease-calm). */
 export const calm = [0.22, 1, 0.36, 1] as const;
-/** Slow in-and-out for looping water movement. */
-export const tide = [0.45, 0, 0.55, 1] as const;
-
 export const MOTION_EVENT = 'kilf:motion';
 
 /** True while the page-level "Pause motion" toggle is on. */
@@ -40,23 +37,6 @@ export function MotionRoot({ children }: { children: ReactNode }) {
       {children}
     </LazyMotion>
   );
-}
-
-/** Converts a pointer position into SVG user units. */
-export function toSvgPoint(svg: SVGSVGElement, clientX: number, clientY: number) {
-  const ctm = svg.getScreenCTM();
-  if (!ctm) return null;
-  const p = new DOMPoint(clientX, clientY).matrixTransform(ctm.inverse());
-  return { x: p.x, y: p.y };
-}
-
-/** Small deterministic random so server and client render the same scene. */
-export function seeded(seed: number) {
-  let s = seed;
-  return () => {
-    s = (s * 16807) % 2147483647;
-    return (s - 1) / 2147483646;
-  };
 }
 
 export function useStableId() {

@@ -6,18 +6,19 @@ import Field from '../Field.astro';
 import LimeButton from '../LimeButton.astro';
 import { env } from '@/lib/site';
 import { useTranslations, type Lang } from '@/i18n/ui';
-interface Props { lang?: Lang; chapter: number; id?: string }
-const { lang = 'en', chapter, id = 'newsletter' } = Astro.props;
+interface Props { lang?: Lang; chapter: number; id?: string; tone?: 'light' | 'dark' }
+const { lang = 'en', chapter, id = 'newsletter', tone = 'dark' } = Astro.props;
 const t = useTranslations(lang);
+const dark = tone === 'dark';
 ---
-<div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
+<div class="grid items-center gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
   <div>
-    <ChapterLabel n={chapter} label={t('home.signup.chapter')} tone="dark" />
-    <Headline text={t('home.signup.h')} accent={t('home.signup.accent')} tone="dark" class="mt-5" id={`${id}-h`} />
-    <p class="mt-6 max-w-md text-lg text-cream/90">{t('home.signup.lead')}</p>
-    {env.whatsappUrl && <LimeButton href={env.whatsappUrl} label={t('home.signup.whatsapp')} variant="white" class="mt-6" external />}
+    <ChapterLabel n={chapter} label={t('home.signup.chapter')} tone={dark ? 'dark' : 'light'} />
+    <Headline text={t('home.signup.h')} accent={t('home.signup.accent')} tone={dark ? 'dark' : 'light'} accentColor={dark ? undefined : 'blue'} class="mt-6" id={`${id}-h`} />
+    <p class:list={['mt-6 max-w-md text-lg', dark ? 'text-cream/90' : 'text-muted']}>{t('home.signup.lead')}</p>
+    {env.whatsappUrl && <LimeButton href={env.whatsappUrl} label={t('home.signup.whatsapp')} variant={dark ? 'white' : 'ghost'} class="mt-6" external />}
   </div>
-  <Form id={id} name="newsletter" lang={lang} endpoint={env.formEndpointNewsletter || env.formEndpoint} submitLabel={t('form.subscribe')} class="rounded-[1.5rem] bg-white p-5 text-navy shadow-[0_30px_60px_-35px_rgb(0_0_0/0.6)] sm:p-8">
+  <Form id={id} name="newsletter" lang={lang} endpoint={env.formEndpointNewsletter || env.formEndpoint} submitLabel={t('form.subscribe')} class="on-light rounded-[1.5rem] bg-white p-5 text-navy shadow-[0_30px_60px_-40px_rgb(15_28_116/0.45)] sm:p-8">
     <Field formId={id} name="name" label={t('form.name')} autocomplete="name" required full />
     <Field formId={id} name="contact" label={t('form.phoneOrEmail')} autocomplete="email" required full />
   </Form>

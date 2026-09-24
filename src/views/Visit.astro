@@ -26,6 +26,9 @@ const getting = [
   ['plane', 'By air', 'Trivandrum International Airport is the nearest airport, roughly a 1.5-hour drive south of Kollam.'],
   ['bus', 'By road', 'Kollam sits on NH 66. KSRTC and private buses connect it with every major town in Kerala.'],
 ];
+import LakeWindow from '@/components/LakeWindow.astro';
+import { asset } from '@/lib/images';
+const realMap = !asset('illustrations/p8_map_clean.jpg').placeholder;
 ---
 <PageHero chapter={1} label="Plan your visit" text="Three venues." accent="One shore." lead="All three venues are in Kollam city, close to Ashtamudi Lake." />
 
@@ -62,7 +65,7 @@ const getting = [
 <section class="relative overflow-hidden bg-white" aria-labelledby="map-h">
   <div class="grid lg:grid-cols-2">
     <div class="relative min-h-80 lg:min-h-[36rem]">
-      <Illustration src="illustrations/p8_map_clean.jpg" alt="" widths={[480, 768, 1024, 1440]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+      {realMap ? <Illustration src="illustrations/p8_map_clean.jpg" alt="" widths={[480, 768, 1024, 1440]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" /> : <div class="absolute inset-0"><LakeWindow palette="day" rounded={false} class="size-full" /></div>}
     </div>
     <div class="container-kilf py-16 sm:py-24 lg:mr-auto lg:max-w-[38rem] lg:pl-12">
       <ChapterLabel n={2} label="Getting here" />

@@ -36,7 +36,10 @@ for (const w of widths) {
     await page.evaluate(async () => {
       document.querySelectorAll('[data-reveal]').forEach((e) => e.classList.add('is-in'));
       document.querySelectorAll('img[loading=lazy]').forEach((i) => (i.loading = 'eager'));
-      for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 40)); }
+      // Scroll at reading pace so scroll-triggered reveals have time to play.
+      const slow = document.documentElement.classList.contains('js');
+      for (let y = 0; y < document.body.scrollHeight; y += slow ? 260 : 600) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, slow ? 110 : 40)); }
+      if (slow) await new Promise((r) => setTimeout(r, 1400));
       window.scrollTo(0, 0);
       await Promise.all([...document.images].map((i) => i.complete || new Promise((r) => { i.onload = i.onerror = r; })));
     });

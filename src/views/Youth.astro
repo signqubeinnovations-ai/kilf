@@ -29,8 +29,8 @@ const activities = [
     <Headline as="h1" size="xl" id="youth-h" text="Youth." accent="This stage is yours." tone="blue" class="mt-6 max-w-4xl" />
     <p class="mt-6 max-w-xl text-xl text-white/90">Slams, open mics, reels, rap and your favourite authors up close. Loud, young and entirely yours.</p>
     <ul class="mt-8 flex flex-wrap gap-2.5" aria-label="Activities">
-      {activities.map(([, a], i) => (
-        <li class:list={['rounded-full px-4 py-2.5 text-sm font-bold sm:text-base', i % 2 ? 'bg-coral text-navy' : 'bg-lime text-navy']}>{a}</li>
+      {activities.map(([, a]) => (
+        <li class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold ring-1 ring-inset ring-white/25 sm:text-base"><span class="size-1.5 rounded-full bg-lime"></span>{a}</li>
       ))}
     </ul>
     <LimeButton href="#college" label="Register your college" class="mt-10" />
@@ -47,8 +47,8 @@ const activities = [
     {activities.map(([icon, title, line], i) => (
       <li data-reveal style={`transition-delay:${(i % 3) * 60}ms`} class="card lift p-6">
         <div class="flex items-center justify-between">
-          <IconCircle name={icon} tone={i % 2 ? 'coral' : 'lime'} />
-          <span class="text-4xl font-light text-blue">{String(i + 1).padStart(2, '0')}</span>
+          <IconCircle name={icon} tone="sky" />
+          <span class="numeral text-4xl text-navy/30">{String(i + 1).padStart(2, '0')}</span>
         </div>
         <h3 class="mt-5 font-display text-xl font-extrabold tracking-tight">{title}</h3>
         <p class="mt-1.5 text-muted">{line}</p>
@@ -58,10 +58,10 @@ const activities = [
   <p class="mt-6 text-sm font-semibold text-muted">All youth activities are proposed and subject to confirmation.</p>
 </Section>
 
-<Section tone="lime" id="college" labelledby="college-h">
+<Section tone="sky" id="college" labelledby="college-h">
   <div class="grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
     <div>
-      <ChapterLabel n={3} label="Colleges" tone="lime" />
+      <ChapterLabel n={3} label="Colleges" />
       <Headline id="college-h" text="Register your" accent="college." class="mt-5" />
       <p class="mt-5 max-w-md text-lg text-navy/85">Tell us about your campus. We’ll share ambassador details, group passes for students and early access to the youth stage.</p>
     </div>

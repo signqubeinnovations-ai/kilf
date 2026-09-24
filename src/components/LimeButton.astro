@@ -3,20 +3,23 @@ import Icon from './Icon.astro';
 /**
  * Pill button with a ↗ arrow. On hover a ring spreads out from it, like a
  * drop on water. Renders <a> when href is set.
+ * `primary` (the default) is navy on light surfaces and lime inside
+ * `.on-dark` sections, so one component reads well everywhere.
  */
 interface Props {
   href?: string;
   label: string;
   type?: 'button' | 'submit';
-  variant?: 'lime' | 'navy' | 'ghost' | 'white' | 'outline-light' | 'coral';
+  variant?: 'primary' | 'lime' | 'navy' | 'ghost' | 'white' | 'outline-light' | 'coral';
   size?: 'md' | 'sm' | 'lg';
   arrow?: boolean;
   class?: string;
   external?: boolean;
   [key: string]: unknown;
 }
-const { href, label, type = 'button', variant = 'lime', size = 'md', arrow = true, class: cls = '', external = false, ...rest } = Astro.props;
+const { href, label, type = 'button', variant = 'primary', size = 'md', arrow = true, class: cls = '', external = false, ...rest } = Astro.props;
 const variants = {
+  primary: 'btn-primary',
   lime: 'bg-lime text-navy hover:bg-lime-deep [--ring:var(--color-lime)]',
   navy: 'bg-navy text-cream hover:bg-navy-deep [--ring:var(--color-navy)]',
   white: 'bg-white text-navy hover:bg-sky [--ring:#fff]',

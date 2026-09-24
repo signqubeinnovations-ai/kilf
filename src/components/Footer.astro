@@ -3,10 +3,9 @@ import QRCode from 'qrcode';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import Placeholder from './Placeholder.astro';
-import LakeBand from './LakeBand.astro';
+import LakeWindow from './LakeWindow.astro';
 import LimeButton from './LimeButton.astro';
 import MotionToggle from './MotionToggle.astro';
-import RippleField from './motion/RippleField';
 import { site, isPlaceholder } from '@/lib/site';
 import { useTranslations, localizePath, type Lang } from '@/i18n/ui';
 
@@ -47,24 +46,26 @@ const cols = [
 ];
 ---
 <footer class="relative">
-  <!-- Closing call, then the lake -->
-  <section class="relative overflow-hidden bg-cream pt-20 text-center sm:pt-28" aria-labelledby="closing-h">
-    <RippleField client:visible tone="light" x={50} y={96} size={760} squash={0.3} />
-    <div class="container-kilf relative">
-      <p class="eyebrow text-coral-ink" data-reveal>{t('footer.closing.kicker')}</p>
-      <h2 id="closing-h" class="display mx-auto mt-5 max-w-4xl text-[3rem] text-navy sm:text-7xl lg:text-[6.4rem]" data-reveal>
-        {t('footer.closing.h')} <em class="serif-accent text-blue">{t('footer.closing.accent')}</em>
-      </h2>
-      <div class="mt-9 flex flex-wrap items-center justify-center gap-3" data-reveal>
-        <LimeButton href={lp('/get-involved#register')} label={t('cta.register')} size="lg" />
-        <LimeButton href={lp('/programme')} label={t('cta.explore')} variant="ghost" size="lg" />
-      </div>
+  <!-- Closing call, over live water -->
+  <section class="bg-cream pb-14 pt-6 sm:pb-20" aria-labelledby="closing-h">
+    <div class="container-kilf">
+      <LakeWindow palette="dusk" class="on-dark min-h-[26rem] text-white sm:min-h-[30rem]">
+        <div class="pointer-events-none relative z-10 flex min-h-[26rem] flex-col justify-end p-7 sm:min-h-[30rem] sm:p-12 lg:p-16">
+          <p class="eyebrow text-white/85" data-reveal>{t('footer.closing.kicker')}</p>
+          <h2 id="closing-h" class="display mt-4 max-w-3xl text-[3rem] sm:text-7xl lg:text-[6.2rem]" data-reveal>
+            {t('footer.closing.h')} <em class="serif-accent text-lime">{t('footer.closing.accent')}</em>
+          </h2>
+          <div class="pointer-events-auto mt-8 flex flex-wrap items-center gap-3" data-reveal>
+            <LimeButton href={lp('/get-involved#register')} label={t('cta.register')} size="lg" />
+            <LimeButton href={lp('/programme')} label={t('cta.explore')} variant="outline-light" size="lg" />
+          </div>
+        </div>
+      </LakeWindow>
     </div>
-    <LakeBand height="h-36 sm:h-52 lg:h-64" class="mt-14 sm:mt-16" />
   </section>
 
   <div class="on-dark bg-navy text-cream">
-    <div class="container-kilf grid gap-12 pb-14 pt-8 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr] lg:gap-10">
+    <div class="container-kilf grid gap-12 pb-14 pt-16 sm:pt-20 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] lg:gap-12">
       <div>
         <a href={lp('/')} class="inline-flex min-h-11 items-center text-cream">
           <Logo tone="dark" class="h-12" decorative /><span class="sr-only">KILF 2027 — {t('nav.home')}</span>

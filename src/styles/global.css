@@ -48,7 +48,7 @@
   --font-ml: 'Anek Malayalam Variable', 'Anek Malayalam', 'Noto Sans Malayalam', sans-serif;
 
   --radius-card: 1.25rem;
-  --tracking-display: -0.035em;
+  --tracking-display: -0.04em;
   --leading-display: 0.95;
 
   --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
@@ -138,7 +138,7 @@
 
   .display {
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: var(--tracking-display);
     line-height: var(--leading-display);
     text-wrap: balance;
@@ -240,6 +240,64 @@
   .ripple-ring:hover::after,
   .group:hover .ripple-ring::after {
     animation: ring 1.4s var(--ease-calm) 1;
+  }
+
+  /* Primary button: navy on light surfaces, lime on dark ones */
+  .btn-primary {
+    background: var(--color-navy);
+    color: #fff;
+    --ring: var(--color-navy);
+  }
+  .btn-primary:hover {
+    background: var(--color-blue);
+    --ring: var(--color-blue);
+  }
+  .on-dark .btn-primary {
+    background: var(--color-lime);
+    color: var(--color-navy);
+    --ring: var(--color-lime);
+  }
+  .on-dark .btn-primary:hover {
+    background: var(--color-lime-deep);
+  }
+  .on-dark .on-light .btn-primary {
+    background: var(--color-navy);
+    color: #fff;
+    --ring: var(--color-navy);
+  }
+  .on-dark .on-light .btn-primary:hover {
+    background: var(--color-blue);
+  }
+
+  /* Film grain for water and dark panels */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.16;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.1 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Glass chip over water */
+  .glass {
+    background: rgb(10 20 84 / 0.42);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    backdrop-filter: blur(12px) saturate(1.4);
+    border: 1px solid rgb(255 255 255 / 0.18);
+    color: #fff;
+  }
+
+  /* Rounded content panel, the building block of the page rhythm */
+  .panel {
+    border-radius: 2rem;
+    overflow: hidden;
+    position: relative;
+    isolation: isolate;
+  }
+  @media (min-width: 1024px) {
+    .panel { border-radius: 2.5rem; }
   }
 
   /* Buttons send out a ring on hover */

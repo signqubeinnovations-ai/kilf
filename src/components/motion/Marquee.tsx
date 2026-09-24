@@ -17,13 +17,7 @@ interface Props {
 }
 
 function Drop() {
-  return (
-    <svg viewBox="0 0 24 24" className="mx-6 size-5 shrink-0 sm:mx-9 sm:size-6" aria-hidden="true">
-      <circle cx="12" cy="12" r="3" fill="currentColor" />
-      <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.4" opacity=".55" />
-      <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" strokeWidth="1" opacity=".25" />
-    </svg>
-  );
+  return <span className="mx-6 inline-block size-2 shrink-0 rounded-full bg-coral sm:mx-9" aria-hidden="true" />;
 }
 
 function Ribbon({ items, pauseLabel, playLabel, listLabel, lang, speed = 42 }: Props) {
@@ -72,7 +66,7 @@ function Ribbon({ items, pauseLabel, playLabel, listLabel, lang, speed = 42 }: P
         ))}
       </ul>
       <div className="flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_6%,#000_94%,transparent)]" aria-hidden="true">
-        <m.div ref={row} style={{ x }} className="flex w-max items-center whitespace-nowrap font-display text-[1.75rem] font-semibold tracking-tight sm:text-[2.4rem]" lang={lang}>
+        <m.div ref={row} style={{ x }} className="flex w-max items-center whitespace-nowrap font-display text-[1.6rem] font-medium tracking-tight sm:text-[2.2rem]" lang={lang}>
           {copy('a')}
           {copy('b')}
         </m.div>
@@ -81,13 +75,13 @@ function Ribbon({ items, pauseLabel, playLabel, listLabel, lang, speed = 42 }: P
         type="button"
         onClick={() => setStopped((s) => !s)}
         aria-pressed={stopped}
-        className="relative z-10 mr-4 inline-grid size-11 shrink-0 place-items-center rounded-full bg-navy text-coral transition-colors hover:bg-navy-deep sm:mr-8"
+        className="relative z-10 mr-1 inline-grid size-11 shrink-0 place-items-center rounded-full text-navy ring-1 ring-inset ring-navy/20 transition-colors hover:bg-navy/5"
       >
         <span className="sr-only">{stopped ? playLabel : pauseLabel}</span>
         {stopped ? (
-          <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5Z" fill="currentColor" /></svg>
+          <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5Z" fill="currentColor" /></svg>
         ) : (
-          <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor" /></svg>
+          <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor" /></svg>
         )}
       </button>
     </div>

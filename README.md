@@ -171,8 +171,8 @@ The partnership proposal PDF: put it at `public/downloads/kilf-2027-partnership-
 src/
   components/     Header, Footer, ChapterLabel, Headline, LimeButton, IconCircle,
                   SpeakerCard, LakeBand, Section, Form/Field, MotionToggle, Icon …
-  components/motion/  Animated React islands (Motion): LakeScene, RippleField,
-                  Marquee, NightLake, LakeWaves, Countdown
+  components/motion/  Animated React islands: WaterCanvas (+ water.ts engine),
+                  RippleField, Marquee, Countdown (Motion)
   components/blocks/  Larger reusable sections (strands grid, notify banner, schedule…)
   views/          Page bodies, shared by the English and /ml/ routes
   pages/          Routes (thin wrappers around views) + robots.txt
@@ -193,16 +193,22 @@ All animation is calm and water-like, and all of it can be stopped:
 
 | Where | What moves | Component |
 |---|---|---|
-| Home hero | Ashtamudi at first light: drifting glints, the sun's shimmering reflection, rings spreading round a floating book; touching the water sends out a ripple | `src/components/motion/LakeScene.tsx` |
-| Page heroes, dark sections, statement band | Rings widening slowly across still water; a faint ripple trails the mouse | `RippleField.tsx` |
-| Strand ribbon (home) | The nine strands drift past, ease to a stop on hover, own pause button | `Marquee.tsx` |
-| New Year's Eve | Stars, a lime moon, lanterns afloat; the countdown digits roll | `NightLake.tsx`, `Countdown.tsx` |
-| Above the footer | Layered water drifting at different speeds, a small boat | `LakeWaves.tsx` |
-| Everywhere | Sections rise into place as you scroll; numbers count up; buttons send out a ring on hover | `src/scripts/reveal.ts`, `global.css` |
+| Home hero, New Year's Eve, About and Visit panels, the closing panel above the footer | Live water: a small wave simulation on canvas. Drops fall now and then, the cursor leaves a gentle wake, a tap sends out a ring, sun or moon light glitters on the crests | `src/components/LakeWindow.astro`, `motion/WaterCanvas.tsx`, `motion/water.ts` |
+| Page heroes, statement band, youth and notify panels | Rings widening slowly across still water; a faint ripple trails the mouse | `motion/RippleField.tsx` (Motion) |
+| Strand ribbon (home) | The nine strands drift past, ease to a stop on hover, own pause button | `motion/Marquee.tsx` (Motion) |
+| New Year's Eve | Countdown digits roll as they change | `motion/Countdown.tsx` (Motion) |
+| Everywhere | Sections rise into place as you scroll, numbers count up, buttons send out a ring on hover | `src/scripts/reveal.ts` (Motion), `global.css` |
 
-- **Pause motion** buttons (hero and footer) stop every loop on the site and remember the choice (WCAG 2.2.2). The operating system's *reduce motion* setting shows still frames instead.
-- Animations pause automatically when they scroll off screen.
-- Real artwork still wins: when `cover.jpg`, `nye.jpg` or `lake-band.jpg` appear in `kilf-assets/illustrations/`, they replace the animated scenes (the hero keeps a ripple overlay).
+- **Pause motion** buttons (hero and footer) stop every loop and remember the choice (WCAG 2.2.2). The operating system's *reduce motion* setting shows still water instead.
+- Animations stop automatically when they scroll off screen.
+- Real artwork still wins: `cover.jpg`, `nye.jpg` and `p8_map_clean.jpg` in `kilf-assets/illustrations/` replace the live water in the hero, New Year's Eve and map panels.
+
+### Layout and colour
+
+- The page is light first: cream and white surfaces, navy text, cobalt as the accent. Coral and lime are used in small doses (accent words, dots, the lime button on dark panels).
+- Dark and bright moments sit in rounded **panels** inside the page (`.panel`) rather than full-width bands.
+- Primary buttons are navy on light surfaces and turn lime inside dark panels automatically (`LimeButton` with the default `primary` variant).
+- Speaker portraits are large 4:5 rounded rectangles (`Portrait.astro`); until a photo arrives, a soft blue tint with the speaker's initials stands in.
 
 ### Brand notes
 

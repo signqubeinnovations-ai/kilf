@@ -27,7 +27,7 @@ The maps and "Get directions" links already work from the venue names. Coordinat
 The site currently shows on-brand **stand-ins** because the assets were not in the repository.
 
 - [ ] `logos/kilf-logo.svg` and `logos/kilf-logo-white.svg`
-- [ ] `illustrations/cover.jpg`, `lake-band.jpg`, `nye.jpg`, `p4_stage.jpg`, `p8_map_clean.jpg` (until then the home hero, New Year's Eve and footer show animated lake scenes; decide whether to keep those even after the artwork arrives)
+- [ ] `illustrations/cover.jpg`, `lake-band.jpg`, `nye.jpg`, `p4_stage.jpg`, `p8_map_clean.jpg` (until then live water stands in for the hero, New Year's Eve and map panels; the stage and other stand-ins are abstract placeholders)
 - [ ] `speakers/*.jpg`: all 17 duotone photos (file names are listed in the README and in each speaker's `.md` file)
 - [ ] Re-check the home hero once the real `cover.jpg` is in. The crop is set with `object-[60%_100%]` in `src/views/Home.astro`.
 - [ ] Compare the built site side by side with `reference-brochure.pdf` and adjust spacing and type sizes.
