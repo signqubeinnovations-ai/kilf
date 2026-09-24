@@ -3,8 +3,9 @@ import { animate, m, useAnimationFrame, useMotionValue } from 'motion/react';
 import { MotionRoot, useCalmMotion } from './shared';
 
 /**
- * A slow ribbon of strand names. It eases to a stop on hover or focus, has
- * its own pause button (WCAG 2.2.2), and stays still for reduced motion.
+ * A slow ribbon of strand names on the coral band, set in capitals with a
+ * small star between them. It eases to a stop on hover or focus, has its own
+ * pause button (WCAG 2.2.2), and stays still for reduced motion.
  */
 interface Props {
   items: string[];
@@ -16,8 +17,12 @@ interface Props {
   speed?: number;
 }
 
-function Drop() {
-  return <span className="mx-6 inline-block size-2 shrink-0 rounded-full bg-coral sm:mx-9" aria-hidden="true" />;
+function Star() {
+  return (
+    <svg viewBox="0 0 12 12" className="mx-8 size-2.5 shrink-0 opacity-70 sm:mx-14" aria-hidden="true">
+      <path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4" stroke="currentColor" strokeWidth="1.3" />
+    </svg>
+  );
 }
 
 function Ribbon({ items, pauseLabel, playLabel, listLabel, lang, speed = 42 }: Props) {
@@ -46,8 +51,8 @@ function Ribbon({ items, pauseLabel, playLabel, listLabel, lang, speed = 42 }: P
   const copy = (key: string) =>
     [...items, ...items].map((item, i) => (
       <span key={`${key}-${i}`} className="flex shrink-0 items-center">
-        <span className={i % 2 ? 'serif-accent text-[1.12em]' : ''}>{item}</span>
-        <Drop />
+        <span>{item}</span>
+        <Star />
       </span>
     ));
 
@@ -65,8 +70,8 @@ function Ribbon({ items, pauseLabel, playLabel, listLabel, lang, speed = 42 }: P
           <li key={item}>{item}</li>
         ))}
       </ul>
-      <div className="flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_6%,#000_94%,transparent)]" aria-hidden="true">
-        <m.div ref={row} style={{ x }} className="flex w-max items-center whitespace-nowrap font-display text-[1.6rem] font-medium tracking-tight sm:text-[2.2rem]" lang={lang}>
+      <div className="flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_3%,#000_97%,transparent)]" aria-hidden="true">
+        <m.div ref={row} style={{ x }} className="flex w-max items-center whitespace-nowrap text-[1.05rem] font-semibold uppercase tracking-[0.06em] sm:text-[1.3rem]" lang={lang}>
           {copy('a')}
           {copy('b')}
         </m.div>
@@ -75,7 +80,7 @@ function Ribbon({ items, pauseLabel, playLabel, listLabel, lang, speed = 42 }: P
         type="button"
         onClick={() => setStopped((s) => !s)}
         aria-pressed={stopped}
-        className="relative z-10 mr-1 inline-grid size-11 shrink-0 place-items-center rounded-full text-navy ring-1 ring-inset ring-navy/20 transition-colors hover:bg-navy/5"
+        className="relative z-10 ml-4 inline-grid size-11 shrink-0 place-items-center text-navy ring-1 ring-inset ring-navy/30 transition-colors hover:bg-navy/10"
       >
         <span className="sr-only">{stopped ? playLabel : pauseLabel}</span>
         {stopped ? (

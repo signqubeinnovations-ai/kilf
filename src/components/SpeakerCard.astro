@@ -1,7 +1,6 @@
 ---
 import Portrait from './Portrait.astro';
-import Icon from './Icon.astro';
-/** Speaker in a large rounded portrait, name and role beneath. */
+/** Speaker in a rounded portrait, name and role beneath. */
 interface Props {
   name: string;
   role: string;
@@ -10,20 +9,20 @@ interface Props {
   categories?: string[];
   size?: 'md' | 'sm';
   lang?: string;
+  tone?: 'light' | 'dark';
 }
-const { name, role, photo, href, categories = [], lang } = Astro.props;
+const { name, role, photo, href, categories = [], lang, tone = 'light' } = Astro.props;
 const Tag = href ? 'a' : 'div';
+const dark = tone === 'dark';
 ---
 <li class="list-none" data-categories={categories.join(' ')}>
-  <Tag href={href} class="group block rounded-[1.5rem]">
-    <Portrait name={name} photo={photo}>
+  <Tag href={href} class="group block rounded-[1.25rem]">
+    <Portrait name={name} photo={photo} tone={tone}>
       {href && (
-        <span class="glass absolute right-3 top-3 inline-grid size-10 place-items-center rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true">
-          <Icon name="arrow" size={18} />
-        </span>
+        <span class="absolute right-3 top-3 inline-grid size-10 place-items-center bg-cream text-navy opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true">↗</span>
       )}
     </Portrait>
-    <span class="mt-4 block font-display text-[1.15rem] font-semibold leading-tight tracking-tight text-navy sm:text-[1.25rem]">{name}</span>
-    <span class="mt-1 block text-[0.9rem] leading-snug text-muted" lang={lang}>{role}</span>
+    <span class:list={['mt-4 block font-display text-[1.12rem] font-semibold leading-tight tracking-[-0.02em] sm:text-[1.2rem]', dark ? 'text-white' : 'text-navy', href && 'group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4']}>{name}</span>
+    <span class:list={['mt-1 block text-[0.9rem] leading-snug', dark ? 'text-mist' : 'text-muted']} lang={lang}>{role}</span>
   </Tag>
 </li>

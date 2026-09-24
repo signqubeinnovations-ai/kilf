@@ -1,5 +1,5 @@
 ---
-/** Chapter label: "Chapter 01 —— VOICES", the number set in the serif italic. */
+/** Section label in the print style: "01 / THE CITY OPENS ITS PAGES". */
 interface Props {
   n: number;
   label: string;
@@ -8,15 +8,6 @@ interface Props {
 }
 const { n, label, tone = 'light', class: cls = '' } = Astro.props;
 const num = String(n).padStart(2, '0');
-const colors = {
-  light: ['text-coral-ink', 'text-muted', 'bg-navy/25'],
-  dark: ['text-coral', 'text-mist', 'bg-white/35'],
-  lime: ['text-coral-deep', 'text-navy/80', 'bg-navy/30'],
-  coral: ['text-navy', 'text-navy/85', 'bg-navy/35'],
-}[tone];
+const color = { light: 'text-navy', dark: 'text-white/85', lime: 'text-navy', coral: 'text-navy' }[tone];
 ---
-<p class:list={['flex items-center gap-3', cls]}>
-  <span class:list={['font-[family-name:var(--font-serif)] text-[1.15rem] italic leading-none', colors[0]]} lang="en">Chapter {num}</span>
-  <span aria-hidden="true" class:list={['h-px w-8 sm:w-12', colors[2]]}></span>
-  <span class:list={['eyebrow', colors[1]]}>{label}</span>
-</p>
+<p class:list={['eyebrow', color, cls]}><span lang="en">{num}</span> <span aria-hidden="true">/</span> {label}</p>

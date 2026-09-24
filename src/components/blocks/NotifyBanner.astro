@@ -4,34 +4,36 @@ import Form from '../Form.astro';
 import Field from '../Field.astro';
 import RippleField from '../motion/RippleField';
 import type { Lang } from '@/i18n/ui';
-/** Navy banner with a compact "Notify me" signup. */
+/** A lime band (blue on request) with a compact "Notify me" form in a cream box. */
 interface Props {
   id: string;
   formName: string;
   text: string;
   accent: string;
   lead?: string;
+  kicker?: string;
   submitLabel?: string;
   lang?: Lang;
   extraField?: { name: string; label: string; options: string[] };
+  extraFields?: { name: string; label: string; options: string[] }[];
+  tone?: 'lime' | 'blue';
 }
-const { id, formName, text, accent, lead, submitLabel = 'Notify me', lang = 'en', extraField } = Astro.props;
+const { id, formName, text, accent, lead, kicker, submitLabel = 'Notify me', lang = 'en', extraField, extraFields = [], tone = 'lime' } = Astro.props;
+const blue = tone === 'blue';
+const selects = [...(extraField ? [extraField] : []), ...extraFields];
 ---
-<section id={id} class="bg-cream py-12 sm:py-16" aria-labelledby={`${id}-h`}>
-  <div class="container-kilf">
-    <div class="panel on-dark grain bg-navy px-6 py-12 text-cream sm:px-12 sm:py-14 lg:px-16">
-      <RippleField client:visible tone="dark" x={10} y={85} size={460} />
-      <div class="relative grid items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-        <div>
-          <Headline id={`${id}-h`} text={text} accent={accent} tone="dark" size="md" />
-          {lead && <p class="mt-4 max-w-md text-lg text-cream/90">{lead}</p>}
-        </div>
-        <Form id={`${id}-form`} name={formName} lang={lang} submitLabel={submitLabel} class="on-light rounded-[1.5rem] bg-white p-5 text-navy sm:p-8" successText="We’ll let you know the moment it opens.">
-          <Field formId={`${id}-form`} name="name" label="Name" autocomplete="name" required />
-          <Field formId={`${id}-form`} name="contact" label="Email or WhatsApp number" autocomplete="email" required />
-          {extraField && <Field formId={`${id}-form`} type="select" name={extraField.name} label={extraField.label} options={extraField.options} full />}
-        </Form>
-      </div>
+<section id={id} class:list={['relative overflow-hidden py-20 sm:py-24 lg:py-28', blue ? 'on-dark waves-light bg-blue text-white' : 'bg-lime text-ink']} aria-labelledby={`${id}-h`}>
+  <RippleField client:visible tone={blue ? 'dark' : 'coral'} x={8} y={88} size={520} />
+  <div class="container-kilf relative grid items-center gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+    <div>
+      {kicker && <p class:list={['eyebrow', blue && 'text-white/80']}>{kicker}</p>}
+      <Headline id={`${id}-h`} text={text} accent={accent} tone={blue ? 'blue' : 'lime'} size="lg" class:list={[kicker && 'mt-5']} />
+      {lead && <p class:list={['mt-6 max-w-md text-lg leading-relaxed', blue ? 'text-white/85' : 'text-ink/80']}>{lead}</p>}
     </div>
+    <Form id={`${id}-form`} name={formName} lang={lang} submitLabel={submitLabel} class="on-light border border-ink/10 bg-cream p-6 text-navy sm:p-9" successText="We’ll let you know the moment it opens.">
+      <Field formId={`${id}-form`} name="name" label="Name" autocomplete="name" required />
+      <Field formId={`${id}-form`} name="contact" label="Email or WhatsApp number" autocomplete="email" required />
+      {selects.map((f) => <Field formId={`${id}-form`} type="select" name={f.name} label={f.label} options={f.options} full={selects.length === 1} />)}
+    </Form>
   </div>
 </section>

@@ -1,14 +1,13 @@
 ---
-import Icon from './Icon.astro';
-/** Text link with an underline that draws itself in on hover. */
-interface Props { href: string; label: string; tone?: 'light' | 'dark' | 'navy'; class?: string }
-const { href, label, tone = 'light', class: cls = '' } = Astro.props;
+/** Text link with an underline rule and a ↗, as in the print style. */
+interface Props { href: string; label: string; tone?: 'light' | 'dark' | 'navy'; class?: string; arrow?: '↗' | '→' }
+const { href, label, tone = 'light', class: cls = '', arrow = '↗' } = Astro.props;
 const tones = {
-  light: 'text-blue [--line:var(--color-blue)]',
-  dark: 'text-cream [--line:var(--color-coral)] hover:text-lime',
-  navy: 'text-navy [--line:var(--color-navy)]',
+  light: 'text-navy hover:text-blue',
+  dark: 'text-white hover:text-lime',
+  navy: 'text-navy hover:text-ink',
 };
 ---
-<a href={href} class:list={['text-link group inline-flex min-h-11 items-center gap-1.5 font-bold', tones[tone], cls]}>
-  <span class="relative">{label}</span><Icon name="arrow-right" size={18} class="transition-transform duration-500 ease-[var(--ease-calm)] group-hover:translate-x-1" />
+<a href={href} class:list={['text-link group inline-flex min-h-11 items-end gap-2 font-semibold', tones[tone], cls]}>
+  <span>{label}</span><span aria-hidden="true" class="text-[0.85em] transition-transform duration-500 ease-[var(--ease-calm)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5">{arrow}</span>
 </a>

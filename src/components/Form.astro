@@ -60,20 +60,20 @@ const dark = tone === 'dark';
     <div class="mt-6 flex flex-wrap items-center gap-4">
       <LimeButton type="submit" label={submitLabel ?? t('form.submit')} data-submit />
       <p class:list={['text-sm', dark ? 'text-mist' : 'text-muted']}>
-        {lang === 'ml' ? 'നിങ്ങളുടെ വിവരങ്ങൾ KILF-നു മാത്രം.' : 'We only use your details for KILF.'}
-        <a href={lang === 'ml' ? '/ml/privacy' : '/privacy'} class="underline underline-offset-4">{lang === 'ml' ? 'സ്വകാര്യത' : 'Privacy'}</a>
+        {lang === 'ml' ? 'നിങ്ങളുടെ വിവരങ്ങൾ KILF-നു മാത്രം.' : 'We only use your details for KILF.'}{' '}
+        <a href={lang === 'ml' ? '/ml/privacy' : '/privacy'} class="underline decoration-1 underline-offset-4">{lang === 'ml' ? 'സ്വകാര്യത' : 'Privacy'}</a>
       </p>
     </div>
-    <p data-form-error role="alert" class:list={['mt-4 hidden rounded-xl px-4 py-3 text-sm font-semibold', dark ? 'bg-white/10 text-cream' : 'bg-coral/10 text-coral-ink']}>
+    <p data-form-error role="alert" class:list={['mt-4 hidden border-l-2 px-4 py-3 text-sm font-semibold', dark ? 'border-coral bg-white/10 text-cream' : 'border-coral-ink bg-coral-soft text-coral-deep']}>
       {t('form.error')} <a href={`mailto:${site.email}`} class="underline">{site.email}</a>.
     </p>
   </div>
 
-  <div data-success class:list={['hidden rounded-2xl p-6 sm:p-8', dark ? 'bg-white/10' : 'bg-sky']} tabindex="-1" role="status">
+  <div data-success class:list={['hidden p-6 sm:p-8', dark ? 'bg-white/10' : 'bg-sky']} tabindex="-1" role="status">
     <div class="flex items-start gap-4">
-      <span class="inline-grid size-12 shrink-0 place-items-center rounded-full bg-lime text-navy"><Icon name="check" size={26} /></span>
+      <span class="inline-grid size-12 shrink-0 place-items-center bg-lime text-ink"><Icon name="check" size={26} /></span>
       <div>
-        <p class="font-display text-2xl font-extrabold tracking-tight">{successTitle}</p>
+        <p class="font-display text-2xl font-semibold tracking-[-0.03em]">{successTitle}</p>
         <p class:list={['mt-1', dark ? 'text-cream/90' : 'text-muted']}>{successText ?? t('form.success')}</p>
       </div>
     </div>

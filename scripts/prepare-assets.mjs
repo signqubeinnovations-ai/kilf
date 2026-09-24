@@ -70,22 +70,27 @@ for (const file of await fs.readdir(speakersDir)) {
   await sharp(Buffer.from(svg)).jpeg({ quality: 85 }).toFile(target);
 }
 
-// 3. Open Graph image (1200×630)
-const cover = (await findReal('illustrations', 'cover')) ?? path.join(out, 'illustrations/cover.jpg');
-const overlay = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
-  <defs><linearGradient id="f" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FCFAF3" stop-opacity=".97"/><stop offset=".55" stop-color="#FCFAF3" stop-opacity=".85"/><stop offset="1" stop-color="#FCFAF3" stop-opacity="0"/></linearGradient></defs>
-  <rect width="1200" height="630" fill="url(#f)"/>
-  <text x="64" y="120" font-family="sans-serif" font-weight="700" font-size="24" letter-spacing="4" fill="#B8432A">THE FIRST CHAPTER · 2027</text>
-  <text font-family="sans-serif" font-weight="800" font-size="76" fill="#0F1C74" letter-spacing="-2">
-    <tspan x="60" y="230">Kollam</tspan><tspan x="60" y="310">International</tspan><tspan x="60" y="390">Literature <tspan fill="#D4553A">Festival</tspan></tspan>
+// 3. Open Graph image (1200×630): the hero in miniature, a blue panel with
+//    the title beside the lake illustration (or the real cover, if supplied).
+const cover = (await findReal('illustrations', 'cover')) ?? path.join(root, 'src/assets/art/lake-book.jpg');
+const art = await sharp(cover).resize(640, 630, { fit: 'cover', position: 'right' }).toBuffer();
+const panel = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="560" height="630">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF9A82"/><stop offset=".45" stop-color="#FFC3A0"/><stop offset="1" stop-color="#E7EF92"/></linearGradient></defs>
+  <rect width="560" height="630" fill="#2447ED"/>
+  <text font-family="sans-serif" font-weight="700" font-size="16" letter-spacing="3" fill="#FFFFFF"><tspan x="56" y="92">KOLLAM INTERNATIONAL</tspan><tspan x="56" y="116">LITERATURE FESTIVAL</tspan></text>
+  <text x="56" y="178" font-family="sans-serif" font-weight="600" font-size="22" fill="#FFFFFF" fill-opacity=".85">The first chapter · 2027</text>
+  <text font-family="sans-serif" font-weight="700" font-size="62" letter-spacing="-2" fill="#FFFFFF">
+    <tspan x="52" y="262">Where words</tspan><tspan x="52" y="330">meet the</tspan><tspan x="52" y="398" fill="url(#g)">world.</tspan>
   </text>
-  <text x="64" y="470" font-family="sans-serif" font-weight="600" font-size="30" fill="#0F1C74">31 Dec 2026 – 4 Jan 2027 · Kollam, Kerala</text>
-  <rect x="64" y="510" width="430" height="56" rx="28" fill="#E7EF93"/>
-  <text x="279" y="547" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="24" fill="#0F1C74">Where words meet the world</text>
+  <line x1="56" y1="458" x2="504" y2="458" stroke="#FFFFFF" stroke-opacity=".25"/>
+  <text x="56" y="500" font-family="sans-serif" font-weight="700" font-size="17" letter-spacing="2.4" fill="#FFFFFF">31 DEC 2026 – 4 JAN 2027</text>
+  <text x="56" y="534" font-family="sans-serif" font-weight="500" font-size="21" fill="#FFFFFF" fill-opacity=".85">Ashtamudi Lake · Kollam, Kerala</text>
 </svg>`);
-await sharp(cover)
-  .resize(1200, 630, { fit: 'cover', position: 'right' })
-  .composite([{ input: overlay }])
+await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#2447ED' } })
+  .composite([
+    { input: art, left: 560, top: 0 },
+    { input: panel, left: 0, top: 0 },
+  ])
   .jpeg({ quality: 86, mozjpeg: true })
   .toFile(path.join(root, 'public/og-image.jpg'));
 

@@ -2,54 +2,30 @@
 import { getCollection } from 'astro:content';
 import Icon from '../Icon.astro';
 import type { Lang } from '@/i18n/ui';
-/**
- * The nine strands as a bento grid: Literature, the heart of the festival,
- * as one large navy tile, the other eight as quiet white cards.
- * 4 columns: the big tile spans 2×2 and the eight fill the rest exactly.
- */
+/** The nine strands in a clean grid of hairline boxes. */
 interface Props { lang?: Lang }
 const { lang = 'en' } = Astro.props;
 const strands = (await getCollection('strands')).sort((a, b) => a.data.order - b.data.order);
 const ml = lang === 'ml';
-const [lead, ...rest] = strands;
 ---
-<ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4" data-reveal-group>
-  <li class="panel on-dark grain flex min-h-[20rem] flex-col justify-between bg-navy p-7 text-cream sm:col-span-2 sm:min-h-[22rem] lg:row-span-2 lg:p-10">
-    <svg class="pointer-events-none absolute -bottom-40 -right-40 size-[34rem] text-white/[0.09]" viewBox="0 0 400 400" fill="none" stroke="currentColor" aria-hidden="true">
-      {[40, 80, 120, 160, 196].map((r) => <circle cx="200" cy="200" r={r} stroke-width="1.4" />)}
-    </svg>
-    <div class="relative flex items-start justify-between gap-4">
-      <span class="font-[family-name:var(--font-serif)] text-2xl italic text-lime">01</span>
-      <span class="inline-grid size-14 place-items-center rounded-full bg-lime text-navy"><Icon name={lead.data.icon} size={28} /></span>
-    </div>
-    <div class="relative">
-      <h3 class="display text-[2.8rem] sm:text-[3.6rem] lg:text-[4.2rem]">{ml ? lead.data.name_ml : lead.data.name}</h3>
-      <p class="mt-4 max-w-sm text-lg leading-snug text-cream/85">{ml ? lead.data.blurb_ml : lead.data.blurb}</p>
-    </div>
-  </li>
-  {rest.map((s, i) => (
-    <li class="strand card group flex min-h-[12.5rem] flex-col justify-between p-6">
+<ul class="grid border-l border-t border-line sm:grid-cols-2 lg:grid-cols-3" data-reveal-group>
+  {strands.map((s, i) => (
+    <li class="strand group relative flex min-h-[15rem] flex-col border-b border-r border-line p-7 sm:p-8">
       <div class="flex items-start justify-between gap-4">
-        <span class="inline-grid size-12 place-items-center rounded-full bg-sky text-blue transition-colors duration-500 group-hover:bg-blue group-hover:text-white">
-          <Icon name={s.data.icon} size={24} />
-        </span>
-        <span class="text-sm font-semibold tabular-nums text-muted">{String(i + 2).padStart(2, '0')}</span>
+        <span class="eyebrow text-navy" lang="en">{String(i + 1).padStart(2, '0')}</span>
+        <Icon name={s.data.icon} size={30} class="text-blue-bright transition-transform duration-700 ease-[var(--ease-calm)] group-hover:-translate-y-0.5" />
       </div>
-      <div>
-        <h3 class="font-display text-[1.5rem] font-semibold leading-tight tracking-tight">{ml ? s.data.name_ml : s.data.name}</h3>
-        <p class="mt-1.5 text-[0.95rem] leading-snug text-muted">{ml ? s.data.blurb_ml : s.data.blurb}</p>
-      </div>
+      <h3 class="mt-auto pt-10 font-display text-[1.55rem] font-semibold leading-tight tracking-[-0.03em] text-navy">{ml ? s.data.name_ml : s.data.name}</h3>
+      <p class="mt-2 text-[0.98rem] leading-relaxed text-muted">{ml ? s.data.blurb_ml : s.data.blurb}</p>
     </li>
   ))}
 </ul>
 
 <style>
   .strand {
-    transition: transform 0.6s var(--ease-calm), box-shadow 0.6s var(--ease-calm), border-color 0.4s ease;
+    transition: background-color 0.5s var(--ease-calm);
   }
   .strand:hover {
-    transform: translateY(-4px);
-    border-color: color-mix(in oklab, var(--color-blue) 35%, transparent);
-    box-shadow: 0 24px 44px -30px rgb(15 28 116 / 0.45);
+    background: color-mix(in oklab, var(--color-sky) 70%, transparent);
   }
 </style>

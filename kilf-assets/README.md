@@ -5,11 +5,8 @@ Drop the brochure artwork here. Any file below replaces its generated stand-in o
 ```
 logos/kilf-logo.svg              header logo (cobalt)
 logos/kilf-logo-white.svg        footer logo (for dark backgrounds)
-illustrations/cover.jpg          home hero + social share image
-illustrations/lake-band.jpg      wide lake scene above the footer
-illustrations/nye.jpg            New Year's Eve night scene
 illustrations/p4_stage.jpg       Khasakkinte Ithihasam stage
-illustrations/p8_map_clean.jpg   illustrated map
+illustrations/cover.jpg          optional: art for the social share image
 speakers/<slug>.jpg              duotone speaker photos (square works best)
 reference-brochure.pdf           design reference, not published
 ```

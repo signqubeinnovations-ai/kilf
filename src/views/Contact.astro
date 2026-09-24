@@ -1,7 +1,7 @@
 ---
 import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
-import IconCircle from '@/components/IconCircle.astro';
+import Icon from '@/components/Icon.astro';
 import Placeholder from '@/components/Placeholder.astro';
 import Form from '@/components/Form.astro';
 import Field from '@/components/Field.astro';
@@ -15,32 +15,32 @@ const { lang } = Astro.props;
 <Section tone="cream" class="!pt-0" labelledby="contact-h">
   <h2 id="contact-h" class="sr-only">Contact details and form</h2>
   <div class="grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
-    <ul class="space-y-3">
-      <li class="card flex items-center gap-4 p-5">
-        <IconCircle name="mail" />
-        <div class="min-w-0"><p class="text-sm font-bold uppercase tracking-[0.14em] text-muted">Email</p><a href={`mailto:${site.email}`} class="break-all font-display text-lg font-extrabold text-blue hover:underline">{site.email}</a></div>
+    <ul class="self-start border-t border-line">
+      <li class="flex items-start gap-5 border-b border-line py-6">
+        <Icon name="mail" size={26} class="mt-1 shrink-0 text-blue-bright" />
+        <div class="min-w-0"><p class="eyebrow text-muted">Email</p><a href={`mailto:${site.email}`} class="mt-1 block break-all font-display text-xl font-semibold tracking-[-0.02em] text-navy hover:text-blue-bright">{site.email}</a></div>
       </li>
-      <li class="card flex items-center gap-4 p-5">
-        <IconCircle name="at" />
-        <div><p class="text-sm font-bold uppercase tracking-[0.14em] text-muted">Social</p>
-          {site.socialUrl && !isPlaceholder(site.socialHandle) ? <a href={site.socialUrl} class="font-display text-lg font-extrabold text-blue hover:underline" target="_blank" rel="noopener">{site.socialHandle}</a> : <p class="font-display text-lg font-extrabold"><Placeholder value={site.socialHandle} /></p>}
+      <li class="flex items-start gap-5 border-b border-line py-6">
+        <Icon name="at" size={26} class="mt-1 shrink-0 text-blue-bright" />
+        <div><p class="eyebrow text-muted">Social</p>
+          {site.socialUrl && !isPlaceholder(site.socialHandle) ? <a href={site.socialUrl} class="mt-1 block font-display text-xl font-semibold tracking-[-0.02em] text-navy hover:text-blue-bright" target="_blank" rel="noopener">{site.socialHandle}</a> : <p class="mt-1 font-display text-xl font-semibold"><Placeholder value={site.socialHandle} /></p>}
         </div>
       </li>
-      <li class="card flex items-center gap-4 p-5">
-        <IconCircle name="star" tone="lime" />
-        <div><p class="text-sm font-bold uppercase tracking-[0.14em] text-muted">Organiser</p><p class="font-display text-lg font-extrabold">{site.organiser}</p></div>
+      <li class="flex items-start gap-5 border-b border-line py-6">
+        <Icon name="star" size={26} class="mt-1 shrink-0 text-blue-bright" />
+        <div><p class="eyebrow text-muted">Organiser</p><p class="mt-1 font-display text-xl font-semibold tracking-[-0.02em]">{site.organiser}</p></div>
       </li>
-      <li class="card flex items-center gap-4 p-5">
-        <IconCircle name="pin" />
-        <div><p class="text-sm font-bold uppercase tracking-[0.14em] text-muted">Where</p><p class="font-display text-lg font-extrabold">{site.city}</p></div>
+      <li class="flex items-start gap-5 border-b border-line py-6">
+        <Icon name="pin" size={26} class="mt-1 shrink-0 text-blue-bright" />
+        <div><p class="eyebrow text-muted">Where</p><p class="mt-1 font-display text-xl font-semibold tracking-[-0.02em]">{site.city}</p></div>
       </li>
     </ul>
-    <Form id="contact-form" name="contact" lang={lang} class="card p-5 sm:p-7" successText="Thanks for writing. We’ll reply as soon as we can.">
+    <Form id="contact-form" name="contact" lang={lang} class="card p-6 sm:p-9" successText="Thanks for writing. We’ll reply as soon as we can.">
       <Field formId="contact-form" name="name" label="Name" autocomplete="name" required />
       <Field formId="contact-form" name="email" type="email" label="Email" autocomplete="email" required />
       <Field formId="contact-form" name="phone" type="tel" label="Phone" autocomplete="tel" inputmode="tel" />
       <Field formId="contact-form" name="organisation" label="Organisation" autocomplete="organization" />
-      <Field formId="contact-form" name="topic" type="select" label="Topic" options={['General question', 'Media & press', 'Speaker / programme', 'Partnership', 'Volunteering', 'Accessibility', 'Other']} full />
+      <Field formId="contact-form" name="topic" type="select" label="Topic" options={['General question', 'Media & press', 'Speaker / programme', 'Tickets & passes', 'Partnership', 'Volunteering', 'Accessibility', 'Other']} full />
       <Field formId="contact-form" name="message" type="textarea" label="Message" full rows={5} required />
     </Form>
   </div>

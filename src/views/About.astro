@@ -3,9 +3,10 @@ import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
 import ChapterLabel from '@/components/ChapterLabel.astro';
 import Headline from '@/components/Headline.astro';
-import IconCircle from '@/components/IconCircle.astro';
-import Illustration from '@/components/Illustration.astro';
+import Icon from '@/components/Icon.astro';
+import LakeArt from '@/components/LakeArt.astro';
 import LimeButton from '@/components/LimeButton.astro';
+import MotionToggle from '@/components/MotionToggle.astro';
 import StatCard from '@/components/StatCard.astro';
 import { aboutQA } from '@/i18n/about-qa';
 import { site } from '@/lib/site';
@@ -21,14 +22,11 @@ const matters = [
   ['scroll', 'about.m3'],
   ['leaf', 'about.m4'],
 ] as const;
-import LakeWindow from '@/components/LakeWindow.astro';
-import { asset } from '@/lib/images';
-const realMap = !asset('illustrations/p8_map_clean.jpg').placeholder;
 ---
 <PageHero chapter={1} label={t('about.chapter')} text={t('about.h')} accent={t('about.accent')}>
-  <div class="mt-8 grid gap-6 text-lg leading-relaxed text-navy/90 md:grid-cols-2 md:gap-10">
-    <p>{t('about.p1')}</p>
-    <p>{t('about.p2')}</p>
+  <div class="mt-12 grid gap-6 border-t border-line pt-10 text-lg leading-relaxed md:grid-cols-2 md:gap-12">
+    <p class="text-navy/90">{t('about.p1')}</p>
+    <p class="text-muted">{t('about.p2')}</p>
   </div>
   <ul class="mt-14 grid gap-6 sm:grid-cols-3 sm:gap-8">
     <li><StatCard value="100+" label={t('home.stats.speakers')} /></li>
@@ -37,49 +35,48 @@ const realMap = !asset('illustrations/p8_map_clean.jpg').placeholder;
   </ul>
 </PageHero>
 
-<section class="bg-cream pb-6 pt-2 sm:pb-10" aria-labelledby="why-h">
-  <div class="container-kilf">
-    <div class="panel on-dark grain grid bg-navy text-cream lg:grid-cols-2">
-      <div class="relative px-7 py-14 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
-        <ChapterLabel n={2} label={t('about.why.chapter')} tone="dark" />
-        <Headline id="why-h" text={t('about.why.h')} accent={t('about.why.accent')} tone="dark" class="mt-6" />
-        <p class="mt-6 max-w-lg font-display text-2xl font-medium leading-snug tracking-tight text-cream/95 sm:text-3xl">{t('about.why.p')}</p>
-      </div>
-      <div class="relative min-h-80 bg-sky lg:min-h-full">
-        {
-          realMap ? (
-            <Illustration src="illustrations/p8_map_clean.jpg" alt="Illustrated map of Ashtamudi Lake, its eight arms reaching inland from the sea, with the festival venues pinned." sizes="(min-width: 1024px) 50vw, 100vw" widths={[480, 768, 1024, 1440]} class="absolute inset-0 h-full w-full object-cover" />
-          ) : (
-            <div class="absolute inset-0"><LakeWindow palette="day" rounded={false} class="size-full" /></div>
-          )
-        }
-      </div>
+<Section tone="cream" labelledby="why-h" class="border-t border-line">
+  <div class="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
+    <div class="lg:col-span-6">
+      <ChapterLabel n={2} label={t('about.why.chapter')} />
+      <Headline id="why-h" text={t('about.why.h')} accent={t('about.why.accent')} class="mt-6" />
     </div>
+    <p class="max-w-xl text-lg leading-relaxed text-muted lg:col-span-6 lg:pb-2">{t('about.why.p')}</p>
   </div>
-</section>
+  <figure class="relative mt-12">
+    <LakeArt art="jetty" sizes="(min-width: 1280px) 1120px, 100vw" focus={[0.62, 0.5]} class="aspect-[4/3] w-full sm:aspect-[2/1] lg:aspect-[2.4/1]" />
+    <figcaption class="absolute inset-x-3 bottom-3 z-10 flex items-center justify-between gap-3 bg-cream py-2 pl-4 pr-2 text-navy sm:inset-x-auto sm:bottom-6 sm:right-6 sm:gap-6 sm:pl-5">
+      <span class="eyebrow text-[0.68rem]">{t('home.hero.caption')}</span>
+      <MotionToggle lang={lang} tone="light" />
+    </figcaption>
+  </figure>
+</Section>
 
-<Section tone="cream" waves labelledby="matters-h">
+<Section tone="cream" rule labelledby="matters-h">
   <ChapterLabel n={3} label="Kollam" />
-  <Headline id="matters-h" text={t('about.matters.h')} accent={t('about.matters.accent')} class="mt-5" />
-  <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+  <Headline id="matters-h" text={t('about.matters.h')} accent={t('about.matters.accent')} class="mt-6" />
+  <ul class="mt-12 grid border-l border-t border-line sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
     {matters.map(([icon, key], i) => (
-      <li data-reveal style={`transition-delay:${i * 70}ms`} class="card lift flex flex-col p-6">
-        <IconCircle name={icon} tone={i % 2 ? 'lime' : 'sky'} />
-        <h3 class="mt-5 font-display text-xl font-extrabold tracking-tight">{t(`${key}.t` as UIKey)}</h3>
+      <li class="flex min-h-[15rem] flex-col border-b border-r border-line p-7">
+        <div class="flex items-start justify-between gap-4">
+          <span class="eyebrow text-navy" lang="en">{String(i + 1).padStart(2, '0')}</span>
+          <Icon name={icon} size={28} class="text-blue-bright" />
+        </div>
+        <h3 class="mt-auto pt-10 font-display text-[1.4rem] font-semibold leading-tight tracking-[-0.03em] text-navy">{t(`${key}.t` as UIKey)}</h3>
         <p class="mt-2 text-muted">{t(`${key}.d` as UIKey)}</p>
       </li>
     ))}
   </ul>
 </Section>
 
-<Section tone="sky" waves labelledby="qa-h">
+<Section tone="sky" labelledby="qa-h">
   <ChapterLabel n={4} label={t('about.qa.chapter')} />
-  <h2 id="qa-h" class="display mt-5 text-[2.15rem] text-navy sm:text-5xl">
-    KILF, <span class="text-coral-dark" lang="ml">ചുരുക്കത്തിൽ.</span>
+  <h2 id="qa-h" class="display mt-6 text-[2.15rem] text-navy sm:text-[2.9rem] lg:text-[3.4rem]">
+    KILF, <span class="text-grad" lang="ml">ചുരുക്കത്തിൽ.</span>
   </h2>
-  <dl class="mt-10 grid gap-3 md:grid-cols-2 lg:gap-4" lang="ml">
+  <dl class="mt-12 grid border-l border-t border-navy/15 md:grid-cols-2" lang="ml">
     {aboutQA.map((item, i) => (
-      <div class:list={['card p-6', i === 0 && 'md:col-span-2']}>
+      <div class:list={['border-b border-r border-navy/15 bg-cream p-7', i === 0 && 'md:col-span-2']}>
         <dt class="text-xl font-bold text-blue">{item.q}</dt>
         <dd class="mt-2 text-lg leading-relaxed text-navy">{item.a}</dd>
       </div>
@@ -87,15 +84,14 @@ const realMap = !asset('illustrations/p8_map_clean.jpg').placeholder;
   </dl>
 </Section>
 
-<Section tone="cream" class="!py-14">
-  <div class="flex flex-col items-start justify-between gap-6 rounded-2xl border border-line bg-white p-6 sm:flex-row sm:items-center sm:p-8">
-    <div class="flex items-center gap-4">
-      <IconCircle name="star" tone="lime" />
+<section class="bg-cream py-16 sm:py-20">
+  <div class="container-kilf">
+    <div class="flex flex-col items-start justify-between gap-6 border-y border-line py-8 sm:flex-row sm:items-center">
       <p class="text-lg">
         <span class="text-muted">{t('about.organised')}</span>
-        <strong class="font-display text-2xl font-extrabold tracking-tight"> {site.organiser}.</strong>
+        <strong class="font-display text-2xl font-semibold tracking-[-0.03em]"> {site.organiser}.</strong>
       </p>
+      <LimeButton href={lp('/contact')} label={t('nav.contact')} />
     </div>
-    <LimeButton href={lp('/contact')} label={t('nav.contact')} />
   </div>
-</Section>
+</section>
