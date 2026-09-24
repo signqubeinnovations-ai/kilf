@@ -1,0 +1,72 @@
+---
+import { Picture } from 'astro:assets';
+import LakeRipples from './motion/LakeRipples';
+import lakeBook from '@/assets/art/lake-book.jpg';
+import lakeJetty from '@/assets/art/lake-jetty.jpg';
+/**
+ * The festival's lake illustrations, with live water: the still artwork is
+ * a normal responsive <picture>, and LakeRipples redraws only its water as
+ * a moving surface once the page is ready. `mask` traces the water in each
+ * picture (0–1 of its width and height), so the jetty and the book stay dry.
+ */
+interface Props {
+  art: 'book' | 'jetty';
+  class?: string;
+  sizes?: string;
+  priority?: boolean;
+  /** When the water wakes: `idle` for the hero, `visible` further down. */
+  hydrate?: 'idle' | 'visible';
+  /** object-position, 0–1 on each axis. */
+  focus?: [number, number];
+  alt?: string;
+  interactive?: boolean;
+}
+const arts = {
+  book: {
+    img: lakeBook,
+    widths: [480, 768, 1024, 1408],
+    alt: 'An open book on a wooden jetty by a calm lake, palms on the far shore and a coral sun low in the sky.',
+    squash: 2.4,
+    mask: [
+      [0, 0.255], [1, 0.255], [1, 0.412], [0.909, 0.448], [0.824, 0.486], [0.739, 0.523], [0.668, 0.546], [0.611, 0.535],
+      [0.54, 0.524], [0.469, 0.531], [0.369, 0.563], [0.27, 0.614], [0.199, 0.653], [0.156, 0.684], [0.057, 0.716], [0, 0.731],
+    ],
+  },
+  jetty: {
+    img: lakeJetty,
+    widths: [640, 960, 1280, 1920, 2400],
+    alt: 'A wide, still lake at dusk with palm islands on the horizon, a wooden jetty with an open book, and leaves in the foreground.',
+    squash: 2.6,
+    mask: [
+      [0, 0.182], [1, 0.182], [1, 0.686], [0.967, 0.698], [0.927, 0.686], [0.878, 0.698], [0.819, 0.724], [0.819, 0.612],
+      [0.783, 0.612], [0.783, 0.739], [0.584, 0.788], [0.584, 0.674], [0.54, 0.674], [0.54, 1], [0.278, 1], [0.278, 0.959],
+      [0.242, 0.898], [0.21, 0.878], [0.173, 0.816], [0.149, 0.724], [0.121, 0.674], [0.101, 0.612], [0.048, 0.592], [0, 0.535],
+    ],
+  },
+} as const;
+const { art, class: cls = '', sizes = '100vw', priority = false, hydrate = 'visible', focus = [0.5, 0.5], alt, interactive = true } = Astro.props;
+const a = arts[art];
+const mask = a.mask.map(([x, y]) => [x, y] as [number, number]);
+---
+<div class:list={['relative isolate overflow-hidden bg-sky', cls]} data-lake>
+  <Picture
+    src={a.img}
+    alt={alt ?? a.alt}
+    formats={['avif', 'webp']}
+    widths={[...a.widths]}
+    sizes={sizes}
+    class="absolute inset-0 size-full object-cover"
+    style={`object-position:${focus[0] * 100}% ${focus[1] * 100}%`}
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
+    decoding={priority ? 'sync' : 'async'}
+  />
+  {
+    hydrate === 'idle' ? (
+      <LakeRipples client:idle mask={mask} squash={a.squash} focus={focus} interactive={interactive} />
+    ) : (
+      <LakeRipples client:visible mask={mask} squash={a.squash} focus={focus} interactive={interactive} />
+    )
+  }
+  <slot />
+</div>

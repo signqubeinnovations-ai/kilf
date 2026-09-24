@@ -27,9 +27,9 @@ The maps and "Get directions" links already work from the venue names. Coordinat
 The site currently shows on-brand **stand-ins** because the assets were not in the repository.
 
 - [ ] `logos/kilf-logo.svg` and `logos/kilf-logo-white.svg`
-- [ ] `illustrations/cover.jpg`, `lake-band.jpg`, `nye.jpg`, `p4_stage.jpg`, `p8_map_clean.jpg` (until then live water stands in for the hero, New Year's Eve and map panels; the stage and other stand-ins are abstract placeholders)
+- [ ] `illustrations/p4_stage.jpg` for Khasakkinte Ithihasam (an abstract stage stands in until then).
+- [ ] Higher-resolution originals of the two lake illustrations in `src/assets/art/` (the current files are upscaled from 1241 px). Keep the same crop, or update the water outlines in `src/components/LakeArt.astro`.
 - [ ] `speakers/*.jpg`: all 17 duotone photos (file names are listed in the README and in each speaker's `.md` file)
-- [ ] Re-check the home hero once the real `cover.jpg` is in. The crop is set with `object-[60%_100%]` in `src/views/Home.astro`.
 - [ ] Compare the built site side by side with `reference-brochure.pdf` and adjust spacing and type sizes.
 
 ## 3. Copy to check against the brochure or proposal
@@ -47,7 +47,7 @@ This copy was written to fit the brief, but the source documents were not availa
 
 ## 4. Malayalam
 
-- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json` (including the new home-page lines: `home.hero.*`, `home.intro.*`, `home.statement.*`, `footer.closing.*`).
+- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json` (including the new home-page lines: `home.hero.*`, `home.live.*`, `home.ways.*`, `home.nye.*`, `home.dates.*`, `home.statement.*`, `footer.closing.*`, `nav.theatre` and `cta.volunteer`).
 - [ ] Translate the remaining pages: Speakers, Programme, Khasak, Youth, Get involved, Passes, Visit, Partners, FAQ, Contact, Privacy and the 404 page. See README "Translate another page into Malayalam". Until then these `/ml/` pages show English with a notice (`TODO(i18n)` comments in `src/pages/ml/*.astro`).
 - [ ] Optional: Malayalam speaker names (`name_ml` field in the speaker files).
 
@@ -68,5 +68,6 @@ When a speaker confirms, set `status: confirmed` in their file. When everything 
 
 - [ ] Full schedule → `src/content/schedule.json` (README §3).
 - [ ] Ticket prices and links → `src/content/passes.json`.
+- [ ] **Khasakkinte Ithihasam tickets**: the ticket card on `/khasak` is a preview only and sells nothing. When booking opens, add the date, venue and prices, and point the button at the ticketing page (`src/components/motion/TicketCard.tsx`). Confirm that Festival Passes do not include the play, as the Passes page, FAQ and ticket card now say.
 - [ ] Confirmed sponsor logos → `src/content/sponsors.json` + `kilf-assets/logos/`. Sponsor logos are not rendered yet; add a logo strip to Partners and Footer when the first partner signs.
 - [ ] Speaker bios. Adding a bio creates `/speakers/<slug>` automatically.

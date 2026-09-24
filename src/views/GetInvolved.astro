@@ -3,7 +3,6 @@ import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
 import ChapterLabel from '@/components/ChapterLabel.astro';
 import Headline from '@/components/Headline.astro';
-import IconCircle from '@/components/IconCircle.astro';
 import Icon from '@/components/Icon.astro';
 import Form from '@/components/Form.astro';
 import Field from '@/components/Field.astro';
@@ -20,16 +19,19 @@ const tabs = [
   ['attend', 'ticket', 'Attend', lp('/passes')],
 ];
 ---
-<PageHero chapter={1} label="Join in" text="Be part of" accent="KILF." lead="Five ways into the first chapter. Pick yours: every form takes about a minute." >
-  <nav aria-label="Ways to get involved" class="mt-10">
-    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-      {tabs.map(([key, icon, label, href]) => (
-        <li class:list={[key === 'register' && 'col-span-2 sm:col-span-1']}>
-          <a href={href} class="card lift group flex min-h-24 items-center gap-3 p-4 sm:flex-col sm:items-start sm:p-5">
-            <IconCircle name={icon} tone={key === 'register' ? 'lime' : 'sky'} size="sm" />
-            <span class="flex flex-1 items-center justify-between gap-2 self-stretch font-display text-lg font-extrabold tracking-tight">
+<PageHero chapter={1} label="Join in" text="Be part of" accent="KILF." lead="Five ways into the first chapter. Pick yours: every form takes about a minute.">
+  <nav aria-label="Ways to get involved" class="mt-12">
+    <ul class="grid grid-cols-2 border-l border-t border-line sm:grid-cols-3 lg:grid-cols-5">
+      {tabs.map(([key, icon, label, href], i) => (
+        <li class:list={['border-b border-r border-line', key === 'register' && 'col-span-2 sm:col-span-1']}>
+          <a href={href} class:list={['group flex min-h-32 flex-col justify-between gap-6 p-5 transition-colors duration-300 sm:p-6', key === 'volunteer' ? 'bg-blue text-white hover:bg-[#1230a8]' : 'hover:bg-sky']}>
+            <span class="flex items-start justify-between gap-3">
+              <span class:list={['eyebrow', key === 'volunteer' ? 'text-white/80' : 'text-navy']}>{String(i + 1).padStart(2, '0')}</span>
+              <Icon name={icon} size={24} class={key === 'volunteer' ? 'text-lime' : 'text-blue-bright'} />
+            </span>
+            <span class="flex items-end justify-between gap-2 font-display text-[1.35rem] font-semibold tracking-[-0.03em]">
               {label}
-              <Icon name={href.startsWith('#') ? 'chevron' : 'arrow'} size={20} class="text-blue" />
+              <span aria-hidden="true" class="text-base transition-transform duration-500 ease-[var(--ease-calm)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5">{href.startsWith('#') ? '↓' : '↗'}</span>
             </span>
           </a>
         </li>
@@ -38,14 +40,14 @@ const tabs = [
   </nav>
 </PageHero>
 
-<Section tone="white" id="register" labelledby="register-h" class="border-t border-line">
+<Section tone="cream" id="register" labelledby="register-h" class="border-t border-line">
   <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
     <div>
       <ChapterLabel n={2} label="Register" />
-      <Headline id="register-h" text="Register your" accent="interest." class="mt-5" />
-      <p class="mt-5 max-w-md text-lg text-muted">Be a delegate at the first edition. We’ll send you early access to passes, speaker news and the programme as it is unveiled.</p>
+      <Headline id="register-h" text="Register your" accent="interest." class="mt-6" />
+      <p class="mt-6 max-w-md text-lg leading-relaxed text-muted">Be a delegate at the first edition. We’ll send you early access to passes, speaker news and the programme as it is unveiled.</p>
     </div>
-    <Form id="register-form" name="register" lang={lang} class="card p-5 sm:p-7">
+    <Form id="register-form" name="register" lang={lang} class="card p-6 sm:p-9">
       <Field formId="register-form" name="name" label="Name" autocomplete="name" required />
       <Field formId="register-form" name="email" type="email" label="Email" autocomplete="email" required />
       <Field formId="register-form" name="phone" type="tel" label="Phone" autocomplete="tel" inputmode="tel" required />
@@ -57,14 +59,14 @@ const tabs = [
   </div>
 </Section>
 
-<Section tone="cream" waves id="volunteer" labelledby="volunteer-h">
+<Section tone="sky" id="volunteer" labelledby="volunteer-h">
   <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
     <div>
       <ChapterLabel n={3} label="Volunteer" />
-      <Headline id="volunteer-h" text="Help us write the" accent="first chapter." class="mt-5" />
-      <p class="mt-5 max-w-md text-lg text-muted">Hospitality, stage and guest care. Meet the speakers, learn how a festival runs, and be part of the story from the inside.</p>
+      <Headline id="volunteer-h" text="Help us write the" accent="first chapter." class="mt-6" />
+      <p class="mt-6 max-w-md text-lg leading-relaxed text-navy/80">Hospitality, stage and guest care. Meet the speakers, learn how a festival runs, and be part of the story from the inside.</p>
     </div>
-    <Form id="volunteer-form" name="volunteer" lang={lang} class="card p-5 sm:p-7">
+    <Form id="volunteer-form" name="volunteer" lang={lang} submitLabel="Sign up to volunteer" class="border border-navy/10 bg-cream p-6 sm:p-9">
       <Field formId="volunteer-form" name="name" label="Name" autocomplete="name" required />
       <Field formId="volunteer-form" name="email" type="email" label="Email" autocomplete="email" required />
       <Field formId="volunteer-form" name="phone" type="tel" label="Phone" autocomplete="tel" inputmode="tel" required />
@@ -77,14 +79,14 @@ const tabs = [
   </div>
 </Section>
 
-<Section tone="white" id="exhibit" labelledby="exhibit-h" class="border-y border-line">
+<Section tone="cream" id="exhibit" labelledby="exhibit-h">
   <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
     <div>
       <ChapterLabel n={4} label="Exhibit" />
-      <Headline id="exhibit-h" text="Set up on the" accent="shore." class="mt-5" />
-      <p class="mt-5 max-w-md text-lg text-muted">Publishers at the book fair, artists in the exhibition spaces and food stalls for the lakeside evenings. Tell us what you’d bring.</p>
+      <Headline id="exhibit-h" text="Set up on the" accent="shore." class="mt-6" />
+      <p class="mt-6 max-w-md text-lg leading-relaxed text-muted">Publishers at the book fair, artists in the exhibition spaces and food stalls for the lakeside evenings. Tell us what you’d bring.</p>
     </div>
-    <Form id="exhibit-form" name="exhibit" lang={lang} class="card p-5 sm:p-7">
+    <Form id="exhibit-form" name="exhibit" lang={lang} class="card p-6 sm:p-9">
       <Field formId="exhibit-form" name="name" label="Contact name" autocomplete="name" required />
       <Field formId="exhibit-form" name="email" type="email" label="Email" autocomplete="email" required />
       <Field formId="exhibit-form" name="phone" type="tel" label="Phone" autocomplete="tel" inputmode="tel" required />
@@ -96,20 +98,20 @@ const tabs = [
   </div>
 </Section>
 
-<Section tone="cream" labelledby="more-h">
+<Section tone="cream" rule labelledby="more-h">
   <h2 id="more-h" class="sr-only">Partner or attend</h2>
-  <div class="grid gap-3 md:grid-cols-2 md:gap-4">
-    <div id="partner" class="panel on-dark grain bg-navy p-7 text-cream sm:p-10">
+  <div class="grid border-l border-t border-line md:grid-cols-2">
+    <div id="partner" class="on-dark border-b border-r border-line bg-blue p-8 text-white sm:p-12">
       <ChapterLabel n={5} label="Partner" tone="dark" />
-      <Headline text="Your brand. Our story." accent="One lake." tone="dark" size="md" class="mt-4" />
-      <p class="mt-4 text-cream/90">Founding partnerships for the first edition.</p>
-      <LimeButton href={lp('/partners')} label="See partnership options" class="mt-7" />
+      <Headline text="Your brand. Our story." accent="One lake." tone="blue" size="md" class="mt-6" />
+      <p class="mt-5 text-white/85">Founding partnerships for the first edition.</p>
+      <LimeButton href={lp('/partners')} label="See partnership options" class="mt-8" />
     </div>
-    <div id="attend" class="panel bg-sky p-7 text-navy sm:p-10">
-      <ChapterLabel n={6} label="Attend" />
-      <Headline text="Get your" accent="pass." size="md" class="mt-4" />
-      <p class="mt-4 text-navy/85">Day, Festival and Young Reader passes. Ticketing opens soon.</p>
-      <LimeButton href={lp('/passes')} label="See passes" class="mt-7" />
+    <div id="attend" class="border-b border-r border-line bg-lime p-8 text-ink sm:p-12">
+      <ChapterLabel n={6} label="Attend" tone="lime" />
+      <Headline text="Get your" accent="pass." tone="lime" size="md" class="mt-6" />
+      <p class="mt-5 text-ink/80">Day, Festival and Young Reader passes, and theatre tickets for Khasakkinte Ithihasam. Ticketing opens soon.</p>
+      <LimeButton href={lp('/passes')} label="See passes" class="mt-8" />
     </div>
   </div>
 </Section>

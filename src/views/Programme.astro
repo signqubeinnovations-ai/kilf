@@ -18,9 +18,9 @@ const hasSchedule = days.length > 0;
 <PageHero
   chapter={1}
   label="Programme"
-  text="Some stories you read."
-  accent="Others, you live."
-  lead={hasSchedule ? 'Five days on the shore of Ashtamudi. Here is the full programme.' : 'We won’t tell you everything yet. Here is a glimpse.'}
+  text="Follow a thought."
+  accent="Find a festival."
+  lead={hasSchedule ? 'Five days on the shore of Ashtamudi. Here is the full programme.' : 'We won’t tell you everything yet. Here is a glimpse of what the five days hold.'}
 />
 
 {
@@ -31,24 +31,37 @@ const hasSchedule = days.length > 0;
     </Section>
   ) : (
     <Section tone="cream" class="!pt-0" labelledby="teasers-h">
-      <h2 id="teasers-h" class="sr-only">A glimpse of the programme</h2>
-      <ol class="grid gap-3 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
-        {teasers.map((item, i) => (
-          <li data-reveal style={`transition-delay:${(i % 3) * 70}ms`} class:list={['lift flex flex-col rounded-2xl p-6 sm:p-8', i === 0 ? 'on-dark bg-navy text-cream' : 'card']}>
-            <span class:list={['text-5xl font-light leading-none sm:text-6xl', i === 0 ? 'text-lime' : 'text-blue']}>{String(i + 1).padStart(2, '0')}</span>
-            <h3 class:list={['mt-4 font-display sm:mt-6 text-2xl font-extrabold leading-tight tracking-tight', i === 0 ? 'text-cream' : 'text-navy']}>{item.data.title}</h3>
-            <p class:list={['mt-2 text-lg leading-snug', i === 0 ? 'text-cream/90' : 'text-muted']}>{item.data.line}</p>
-          </li>
-        ))}
-      </ol>
+      <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-4">
+          <ChapterLabel n={2} label="A glimpse" />
+          <h2 id="teasers-h" class="display mt-6 text-[2.15rem] text-navy sm:text-[2.9rem]">Six moments <span class="text-blue-bright">to look for.</span></h2>
+          <p class="mt-6 max-w-sm text-lg leading-relaxed text-muted">The full programme, with dates, times and venues, will be unveiled soon.</p>
+        </div>
+        <ol class="border-t border-line lg:col-span-8" data-reveal-group>
+          {teasers.map((item, i) => (
+            <li class="grid grid-cols-[3rem_1fr] gap-x-4 border-b border-line py-7 sm:grid-cols-[4.5rem_1fr] sm:py-9">
+              <span class="pt-2 text-sm font-medium tabular-nums text-navy">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="font-display text-[1.7rem] font-semibold leading-tight tracking-[-0.03em] text-navy sm:text-[2rem]">{item.data.title}</h3>
+                <p class="mt-2 text-[1.05rem] leading-relaxed text-muted">{item.data.line}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
     </Section>
   )
 }
 
-<Section tone="sky" waves labelledby="strands-h">
-  <ChapterLabel n={2} label="Strands" />
-  <Headline id="strands-h" text="Nine strands." accent="One shore." class="mt-5" />
-  <div class="mt-10"><StrandGrid lang={lang} /></div>
+<Section tone="cream" rule id="strands" labelledby="strands-h">
+  <div class="flex flex-wrap items-end justify-between gap-6">
+    <div>
+      <ChapterLabel n={3} label="Strands" />
+      <Headline id="strands-h" text="Nine strands." accent="One shore." class="mt-6" />
+    </div>
+    <p class="max-w-md text-lg leading-relaxed text-muted">Follow the one you love, or wander into one you never expected.</p>
+  </div>
+  <div class="mt-12"><StrandGrid lang={lang} /></div>
 </Section>
 
 {
@@ -56,8 +69,9 @@ const hasSchedule = days.length > 0;
     <NotifyBanner
       id="notify"
       formName="programme-notify"
-      text="The full programme will be unveiled"
-      accent="soon."
+      kicker="Coming soon"
+      text="The full programme,"
+      accent="first to you."
       lead="Dates, times and venues for every session. Leave your details and we’ll send it to you first."
     />
   )

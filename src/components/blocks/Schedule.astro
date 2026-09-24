@@ -19,14 +19,14 @@ const sorted = [...days].sort((a, b) => a.data.date.localeCompare(b.data.date));
     <section aria-labelledby={`day-${day.id}`}>
       <h3 id={`day-${day.id}`} class="flex flex-wrap items-baseline gap-3 border-b border-line pb-3">
         <span class="display text-3xl text-navy">{day.data.label}</span>
-        <time datetime={day.data.date} class="text-sm font-bold uppercase tracking-[0.14em] text-coral-ink">{fmt(day.data.date)}</time>
+        <time datetime={day.data.date} class="eyebrow text-coral-ink">{fmt(day.data.date)}</time>
       </h3>
       <ol class="mt-4 divide-y divide-line">
         {[...day.data.sessions].sort((a, b) => a.start.localeCompare(b.start)).map((s) => (
           <li class="grid gap-2 py-5 sm:grid-cols-[7rem_1fr] sm:gap-6">
-            <p class="font-light text-2xl tabular-nums text-blue">{s.start}{s.end && <span class="text-base text-muted">–{s.end}</span>}</p>
+            <p class="numeral text-2xl text-blue-bright">{s.start}{s.end && <span class="text-base text-muted">–{s.end}</span>}</p>
             <div>
-              <h4 class="font-display text-xl font-extrabold tracking-tight">{s.title}</h4>
+              <h4 class="font-display text-xl font-semibold tracking-[-0.02em]">{s.title}</h4>
               {s.description && <p class="mt-1 text-muted">{s.description}</p>}
               <p class="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted">
                 <span class="inline-flex items-center gap-1.5"><Icon name="pin" size={16} />{venueName(s.venue)}</span>

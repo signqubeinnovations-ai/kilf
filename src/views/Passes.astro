@@ -2,69 +2,92 @@
 import { getCollection } from 'astro:content';
 import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
-import Badge from '@/components/Badge.astro';
-import Icon from '@/components/Icon.astro';
-import IconCircle from '@/components/IconCircle.astro';
+import ChapterLabel from '@/components/ChapterLabel.astro';
+import Headline from '@/components/Headline.astro';
 import LimeButton from '@/components/LimeButton.astro';
+import TextLink from '@/components/TextLink.astro';
 import NotifyBanner from '@/components/blocks/NotifyBanner.astro';
-import type { Lang } from '@/i18n/ui';
+import { localizePath, type Lang } from '@/i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const lp = (p: string) => localizePath(p, lang);
 const passes = (await getCollection('passes')).sort((a, b) => a.data.order - b.data.order);
-const icons: Record<string, string> = { day: 'sun', festival: 'star', 'young-reader': 'graduation' };
 ---
-<PageHero chapter={1} label="Passes" text="Your seat by the" accent="lake.">
-  <p class="mt-6 inline-flex flex-wrap items-center gap-3 rounded-full bg-sky px-5 py-3 text-base font-bold text-navy">
-    <Icon name="clock" size={20} class="text-blue" /> Ticketing opens soon — register early.
-  </p>
-</PageHero>
+<PageHero chapter={1} label="Passes" text="Your seat by the" accent="lake." lead="Ticketing opens soon. Register early and we’ll tell you the moment passes go on sale." />
 
 <Section tone="cream" class="!pt-0" labelledby="passes-h">
   <h2 id="passes-h" class="sr-only">Pass types</h2>
-  <ul class="grid items-stretch gap-4 lg:grid-cols-3">
-    {passes.map((p) => (
-      <li
-        data-reveal
-        class:list={[
-          'relative flex flex-col rounded-2xl p-7 sm:p-8',
-          p.data.highlighted ? 'on-dark bg-navy text-cream shadow-[0_24px_50px_-28px_rgb(15_28_116/0.7)] lg:-my-4 lg:py-12' : 'card',
-        ]}
-      >
-        {p.data.highlighted && <Badge tone="lime" class="absolute right-6 top-6">Most complete</Badge>}
-        <IconCircle name={icons[p.id] ?? 'ticket'} tone={p.data.highlighted ? 'lime' : 'sky'} />
-        <h3 class:list={['mt-6 font-display text-3xl font-extrabold tracking-tight', p.data.highlighted ? 'text-cream' : 'text-navy']}>{p.data.name}</h3>
-        <p class:list={['mt-1 font-semibold', p.data.highlighted ? 'text-coral' : 'text-coral-ink']}>{p.data.audience}</p>
-        <p class:list={['mt-4', p.data.highlighted ? 'text-cream/90' : 'text-muted']}>{p.data.description}</p>
-        <ul class="mt-6 flex-1 space-y-2.5">
-          {p.data.includes.map((inc) => (
-            <li class="flex items-start gap-2.5">
-              <Icon name="check" size={20} class:list={['mt-0.5 shrink-0', p.data.highlighted ? 'text-lime' : 'text-blue']} />
-              <span>{inc}</span>
-            </li>
-          ))}
-        </ul>
-        <div class:list={['mt-8 border-t pt-6', p.data.highlighted ? 'border-white/15' : 'border-line']}>
-          {p.data.price && p.data.buyUrl ? (
-            <LimeButton href={p.data.buyUrl} label={`Buy · ${p.data.price}`} class="w-full" external />
-          ) : (
-            <>
-              <p class:list={['mb-4 text-sm font-bold uppercase tracking-[0.14em]', p.data.highlighted ? 'text-mist' : 'text-muted']}>On sale soon</p>
-              <LimeButton href="#notify" label="Notify me" variant={p.data.highlighted ? 'lime' : 'navy'} class="w-full" />
-            </>
-          )}
-        </div>
-      </li>
-    ))}
+  <ul class="grid border-l border-t border-line lg:grid-cols-3" data-reveal-group>
+    {passes.map((p, i) => {
+      const hi = p.data.highlighted;
+      return (
+        <li class:list={['flex flex-col border-b border-r border-line p-8 sm:p-10', hi ? 'on-dark bg-blue text-white' : 'bg-cream text-navy']}>
+          <div class="flex items-start justify-between gap-4">
+            <p class="eyebrow"><span lang="en">{String(i + 1).padStart(2, '0')}</span> / {p.data.audience}</p>
+            {hi && <span class="bg-lime px-2.5 py-1 text-[0.66rem] font-bold uppercase tracking-[0.14em] text-ink">Most complete</span>}
+          </div>
+          <h3 class="display mt-10 text-[2.2rem] sm:text-[2.5rem]">{p.data.name}</h3>
+          <p class:list={['mt-4 text-[1.02rem] leading-relaxed', hi ? 'text-white/85' : 'text-muted']}>{p.data.description}</p>
+          <ul class:list={['mt-7 flex-1 border-t', hi ? 'border-white/20' : 'border-line']}>
+            {p.data.includes.map((inc) => (
+              <li class:list={['flex items-start gap-3 border-b py-3 text-[0.98rem]', hi ? 'border-white/20' : 'border-line']}>
+                <span aria-hidden="true" class:list={['mt-2.5 size-1.5 shrink-0', hi ? 'bg-lime' : 'bg-blue']}></span>
+                <span>{inc}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="mt-9">
+            {p.data.price && p.data.buyUrl ? (
+              <LimeButton href={p.data.buyUrl} label={`Buy · ${p.data.price}`} class="w-full" external />
+            ) : (
+              <>
+                <p class:list={['eyebrow mb-4', hi ? 'text-white/80' : 'text-muted']}>On sale soon</p>
+                <LimeButton href="#notify" label="Notify me" variant={hi ? 'lime' : 'primary'} class="w-full justify-between" />
+              </>
+            )}
+          </div>
+        </li>
+      );
+    })}
   </ul>
-  <p class="mt-10 max-w-2xl text-sm text-muted">Inclusions are indicative and will be confirmed when ticketing opens. Some sessions may have limited seating.</p>
+  <p class="mt-8 max-w-2xl text-sm text-muted">Inclusions are indicative and will be confirmed when ticketing opens. Some sessions may have limited seating.</p>
 </Section>
+
+<!-- The play is ticketed separately -->
+<section class="relative overflow-hidden bg-coral text-ink" aria-labelledby="theatre-h">
+  <div class="container-kilf grid items-center gap-10 py-20 sm:py-24 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+    <div>
+      <ChapterLabel n={2} label="Signature theatre" tone="coral" />
+      <Headline id="theatre-h" text="The play is" accent="ticketed separately." tone="coral" accentStyle="gradient" class="mt-6" />
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink/85">
+        Khasakkinte Ithihasam needs its own ticket. Choose a theatre ticket on its own, or the theatre + Festival Pass bundle
+        for the play and all five days of the festival.
+      </p>
+      <div class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <LimeButton href={lp('/khasak#tickets')} label="Theatre tickets" size="lg" class="min-w-[13rem] justify-between !gap-10" />
+        <TextLink href={lp('/khasak')} label="About the play" tone="navy" />
+      </div>
+    </div>
+    <ul class="grid gap-3" data-reveal-group>
+      <li class="bg-cream p-6 text-navy">
+        <p class="eyebrow">Theatre ticket</p>
+        <p class="mt-2 font-display text-xl font-semibold tracking-[-0.02em]">Khasakkinte Ithihasam only</p>
+      </li>
+      <li class="on-dark bg-blue p-6 text-white">
+        <p class="eyebrow text-white/80">Theatre + Festival Pass</p>
+        <p class="mt-2 font-display text-xl font-semibold tracking-[-0.02em]">The play, plus all five days</p>
+      </li>
+    </ul>
+  </div>
+</section>
 
 <NotifyBanner
   id="notify"
   formName="passes-notify"
-  text="Ticketing opens"
-  accent="soon."
+  kicker="Ticketing opens soon"
+  text="Be first in line"
+  accent="for passes."
   lead="Register early and we’ll tell you the moment passes go on sale."
   lang={lang}
-  extraField={{ name: 'pass', label: 'Pass you’re interested in', options: ['Day Pass', 'Festival Pass', 'Young Reader Pass', 'Not sure yet'] }}
+  extraField={{ name: 'pass', label: 'Pass you’re interested in', options: ['Day Pass', 'Festival Pass', 'Young Reader Pass', 'Theatre ticket', 'Theatre + Festival Pass', 'Not sure yet'] }}
 />

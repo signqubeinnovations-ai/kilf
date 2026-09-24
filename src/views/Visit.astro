@@ -3,9 +3,8 @@ import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
 import ChapterLabel from '@/components/ChapterLabel.astro';
 import Headline from '@/components/Headline.astro';
-import IconCircle from '@/components/IconCircle.astro';
 import Icon from '@/components/Icon.astro';
-import Illustration from '@/components/Illustration.astro';
+import LakeArt from '@/components/LakeArt.astro';
 import Placeholder from '@/components/Placeholder.astro';
 import { site, isPlaceholder } from '@/lib/site';
 import { localizePath, type Lang } from '@/i18n/ui';
@@ -26,35 +25,38 @@ const getting = [
   ['plane', 'By air', 'Trivandrum International Airport is the nearest airport, roughly a 1.5-hour drive south of Kollam.'],
   ['bus', 'By road', 'Kollam sits on NH 66. KSRTC and private buses connect it with every major town in Kerala.'],
 ];
-import LakeWindow from '@/components/LakeWindow.astro';
-import { asset } from '@/lib/images';
-const realMap = !asset('illustrations/p8_map_clean.jpg').placeholder;
+const tips = [
+  ['sun', 'Weather', 'Late December in Kollam is warm and mostly dry. Light cotton, a hat and water help.'],
+  ['bed', 'Stay', 'New Year is a busy week on the Kerala coast. Book your stay early.'],
+  ['accessibility', 'Access', 'Tell us about any access needs and we’ll help plan your visit.'],
+  ['leaf', 'Respect the lake', 'Ashtamudi is a protected Ramsar wetland. Carry a bottle; leave no trace.'],
+];
 ---
 <PageHero chapter={1} label="Plan your visit" text="Three venues." accent="One shore." lead="All three venues are in Kollam city, close to Ashtamudi Lake." />
 
 <Section tone="cream" class="!pt-0" labelledby="venues-h">
   <h2 id="venues-h" class="sr-only">Venues</h2>
-  <ul class="grid gap-4 lg:grid-cols-3">
+  <ul class="grid border-l border-t border-line lg:grid-cols-3">
     {venues.map((v, i) => (
-      <li class="card flex flex-col overflow-hidden">
+      <li class="flex flex-col border-b border-r border-line">
         <div class="waves relative aspect-[4/3] bg-sky" data-map={v.embed} data-map-title={`Map showing ${v.name}`}>
           <button type="button" class="absolute inset-0 flex w-full flex-col items-center justify-center gap-3 text-navy transition-colors hover:bg-white/40" data-map-load>
-            <span class="inline-grid size-14 place-items-center rounded-full bg-white text-coral-ink shadow-sm"><Icon name="pin" size={28} /></span>
-            <span class="font-bold underline decoration-2 underline-offset-4">Show map</span>
+            <span class="inline-grid size-14 place-items-center bg-cream text-blue-bright"><Icon name="pin" size={28} /></span>
+            <span class="font-semibold underline decoration-1 underline-offset-4">Show map</span>
             <span class="text-xs text-muted">Loads Google Maps</span>
           </button>
         </div>
-        <div class="flex flex-1 flex-col p-6">
-          <p class="text-sm font-bold text-coral-ink">Venue {String(i + 1).padStart(2, '0')}</p>
-          <h3 class="mt-1 font-display text-2xl font-extrabold leading-tight tracking-tight">{v.name}</h3>
-          <p class="mt-1 flex items-center gap-1.5 text-muted"><Icon name="pin" size={18} />{v.area}</p>
+        <div class="flex flex-1 flex-col p-7">
+          <p class="eyebrow text-navy">Venue {String(i + 1).padStart(2, '0')}</p>
+          <h3 class="mt-3 font-display text-[1.6rem] font-semibold leading-tight tracking-[-0.03em]">{v.name}</h3>
+          <p class="mt-1 text-muted">{v.area}</p>
           {!v.hasCoords && (
             <p class="mt-2 text-xs text-muted">
               Coordinates: <Placeholder value={`${v.lat},${v.lng}`} />
             </p>
           )}
-          <a href={v.directions} target="_blank" rel="noopener" class="group mt-5 inline-flex min-h-11 items-center gap-1.5 self-start font-bold text-blue underline decoration-2 underline-offset-[6px] decoration-blue/30 hover:decoration-blue">
-            Get directions <Icon name="arrow" size={18} /><span class="sr-only">to {v.name} (opens Google Maps in a new tab)</span>
+          <a href={v.directions} target="_blank" rel="noopener" class="text-link group mt-6 inline-flex min-h-11 items-end gap-2 self-start font-semibold text-navy hover:text-blue">
+            Get directions <span aria-hidden="true" class="text-[0.85em]">↗</span><span class="sr-only">to {v.name} (opens Google Maps in a new tab)</span>
           </a>
         </div>
       </li>
@@ -62,21 +64,19 @@ const realMap = !asset('illustrations/p8_map_clean.jpg').placeholder;
   </ul>
 </Section>
 
-<section class="relative overflow-hidden bg-white" aria-labelledby="map-h">
+<section class="relative overflow-hidden bg-cream" aria-labelledby="map-h">
   <div class="grid lg:grid-cols-2">
-    <div class="relative min-h-80 lg:min-h-[36rem]">
-      {realMap ? <Illustration src="illustrations/p8_map_clean.jpg" alt="" widths={[480, 768, 1024, 1440]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" /> : <div class="absolute inset-0"><LakeWindow palette="day" rounded={false} class="size-full" /></div>}
-    </div>
-    <div class="container-kilf py-16 sm:py-24 lg:mr-auto lg:max-w-[38rem] lg:pl-12">
+    <LakeArt art="jetty" sizes="(min-width: 1024px) 50vw, 100vw" focus={[0.74, 0.5]} class="min-h-80 lg:min-h-[38rem]" />
+    <div class="container-kilf py-16 sm:py-24 lg:mr-auto lg:max-w-[38rem] lg:pl-14">
       <ChapterLabel n={2} label="Getting here" />
-      <Headline id="map-h" text="Find your way to" accent="Kollam." class="mt-5" />
-      <ul class="mt-8 space-y-5">
+      <Headline id="map-h" text="Find your way to" accent="Kollam." class="mt-6" />
+      <ul class="mt-10 border-t border-line">
         {getting.map(([icon, t, d]) => (
-          <li class="flex gap-4">
-            <IconCircle name={icon} />
+          <li class="flex gap-5 border-b border-line py-6">
+            <Icon name={icon} size={28} class="mt-1 shrink-0 text-blue-bright" />
             <div>
-              <h3 class="font-display text-lg font-extrabold tracking-tight">{t}</h3>
-              <p class="mt-0.5 text-muted">{d}</p>
+              <h3 class="font-display text-xl font-semibold tracking-[-0.02em]">{t}</h3>
+              <p class="mt-1 text-muted">{d}</p>
             </div>
           </li>
         ))}
@@ -85,14 +85,20 @@ const realMap = !asset('illustrations/p8_map_clean.jpg').placeholder;
   </div>
 </section>
 
-<Section tone="sky" waves labelledby="tips-h">
+<Section tone="sky" labelledby="tips-h">
   <ChapterLabel n={3} label="Good to know" />
-  <Headline id="tips-h" text="Before you" accent="come." class="mt-5" />
-  <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-    <li class="card p-6"><IconCircle name="sun" /><h3 class="mt-4 font-display text-lg font-extrabold">Weather</h3><p class="mt-1 text-muted">Late December in Kollam is warm and mostly dry. Light cotton, a hat and water help.</p></li>
-    <li class="card p-6"><IconCircle name="bed" /><h3 class="mt-4 font-display text-lg font-extrabold">Stay</h3><p class="mt-1 text-muted">New Year is a busy week on the Kerala coast. Book your stay early.</p></li>
-    <li class="card p-6"><IconCircle name="accessibility" /><h3 class="mt-4 font-display text-lg font-extrabold">Access</h3><p class="mt-1 text-muted">Tell us about any access needs and we’ll help plan your visit. <a class="font-bold text-blue underline" href={localizePath('/contact', lang)}>Contact us</a>.</p></li>
-    <li class="card p-6"><IconCircle name="leaf" /><h3 class="mt-4 font-display text-lg font-extrabold">Respect the lake</h3><p class="mt-1 text-muted">Ashtamudi is a protected Ramsar wetland. Carry a bottle; leave no trace.</p></li>
+  <Headline id="tips-h" text="Before you" accent="come." class="mt-6" />
+  <ul class="mt-12 grid border-l border-t border-navy/15 sm:grid-cols-2 lg:grid-cols-4">
+    {tips.map(([icon, title, text]) => (
+      <li class="flex min-h-[14rem] flex-col border-b border-r border-navy/15 bg-cream p-7">
+        <Icon name={icon} size={28} class="text-blue-bright" />
+        <h3 class="mt-auto pt-8 font-display text-xl font-semibold tracking-[-0.02em]">{title}</h3>
+        <p class="mt-1.5 text-muted">
+          {text}
+          {title === 'Access' && <> <a class="font-semibold text-navy underline decoration-1 underline-offset-4" href={localizePath('/contact', lang)}>Contact us</a>.</>}
+        </p>
+      </li>
+    ))}
   </ul>
 </Section>
 
