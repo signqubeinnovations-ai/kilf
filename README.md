@@ -44,7 +44,9 @@ kilf-assets/
 
 Until a file is present, the site uses an on-brand **stand-in**: flat SVG illustrations in `src/placeholders/`, and initials for speakers. A real file with the same name (any of `.jpg .png .webp .avif`) replaces its stand-in automatically on the next build. Images are resized and served as AVIF/WebP with `<picture>`.
 
-The lake illustrations (the open book on the jetty, and the wide jetty scene) live in `src/assets/art/` and are part of the design: the hero and the About, Visit and Partners pages draw them with live water (see Motion below). They were upscaled from 1241 px originals; drop in higher-resolution versions with the same crop and names for sharper retina screens. If you change their composition, update the water outlines (`mask`) in `src/components/LakeArt.astro`.
+The lake illustrations (`src/assets/art/lake-hero.jpg`, the open book on the jetty, and `lake-jetty.jpg`, the wide jetty scene) are part of the design: the home hero and the About, Visit and Partners pages draw them with live water (see Motion below). Both were upscaled 4× from 1241 px originals with Real-ESRGAN; higher-resolution originals of the same scenes can replace them. If you change their composition, update the water outlines (`mask`) in `src/components/LakeArt.astro`.
+
+The home hero is full-bleed on desktop (the illustration covers the whole section, with a soft "mist" behind the words) and stacked on phones and tablets (words on the cream sky, the lake below). Its crop at each screen size is set with `object-[…]` classes on the hero's `LakeArt` in `src/views/Home.astro`; the live water follows the same crop automatically.
 
 The 1200×630 social share image (`public/og-image.jpg`) is built on every build from the lake-and-book art (or `kilf-assets/illustrations/cover.jpg`, if present).
 
@@ -170,8 +172,8 @@ The partnership proposal PDF: put it at `public/downloads/kilf-2027-partnership-
 src/
   components/     Header, Footer, ChapterLabel, Headline, LimeButton, TextLink,
                   SpeakerCard, LakeArt, Section, Form/Field, MotionToggle, Icon …
-  components/motion/  Animated React islands: LakeRipples (+ water.ts engine),
-                  TicketCard, RippleField, Marquee, Countdown (Motion)
+  components/motion/  Animated React islands: TicketCard, RippleField, Marquee,
+                  Countdown (Motion), and water.ts, the lake's wave engine
   components/blocks/  Larger reusable sections (ways in, strands grid, notify banner,
                   schedule…)
   assets/art/     The lake illustrations used across the site
@@ -181,7 +183,8 @@ src/
   content/        Editable content collections
   i18n/           Translations
   lib/            Site facts, image lookup
-  scripts/        Scroll reveals and count-ups (Motion's vanilla API)
+  scripts/        Scroll reveals and count-ups (Motion's vanilla API), and
+                  lake-water.ts, the live water on the lake illustrations
   styles/         Brand tokens (colours, type) in global.css
   placeholders/   Stand-in SVG illustrations
 scripts/          Asset preparation and screenshots
@@ -194,7 +197,7 @@ All animation is calm and water-like, and all of it can be stopped:
 
 | Where | What moves | Component |
 |---|---|---|
-| Home hero; About, Visit and Partners illustrations | The drawn lake comes alive: a small wave simulation bends the illustration's water through WebGL. Drops fall now and then, the cursor leaves a gentle wake, a tap sends out a ring; the jetty, the book and the shore stay still | `src/components/LakeArt.astro`, `motion/LakeRipples.tsx`, `motion/water.ts` |
+| Home hero; About, Visit and Partners illustrations | The drawn lake comes alive: a small wave simulation bends the illustration's water through WebGL. Drops fall now and then, the cursor leaves a gentle wake, a tap sends out a ring; the jetty, the book and the shore stay still | `src/components/LakeArt.astro`, `src/scripts/lake-water.ts` (plain script, no framework: it is on the first screen), `motion/water.ts` |
 | Page heroes, statement band, New Year's Eve, theatre and notify bands, footer | Rings widening slowly across still water; a faint ripple trails the mouse | `motion/RippleField.tsx` (Motion) |
 | Home "ways in" blocks | A ring spreads across the block on hover; the music waveform breathes | `blocks/WaysIn.astro` |
 | Khasakkinte Ithihasam tickets | Ticket type and preview transitions | `motion/TicketCard.tsx` (Motion) |

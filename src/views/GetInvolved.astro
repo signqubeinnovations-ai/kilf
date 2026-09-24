@@ -18,6 +18,17 @@ const tabs = [
   ['partner', 'handshake', 'Partner', lp('/partners')],
   ['attend', 'ticket', 'Attend', lp('/passes')],
 ];
+const roles = [
+  ['Hospitality', 'Welcome visitors, guide them around the venues and help at the information desks.'],
+  ['Stage', 'Help sessions run on time: seating, microphones, speaker cues and the audience queue.'],
+  ['Guest care', 'Look after speakers and guests, from their arrival to the green room.'],
+];
+const next = [
+  ['Send the form', 'It takes about a minute. Tell us what you’d like to do.'],
+  ['We write back', 'By email or WhatsApp, with the options that fit you.'],
+  ['Before the festival', 'You’ll get a short briefing on your role, your days and who to ask.'],
+  ['The five days', 'Be part of the first chapter, from the inside.'],
+];
 ---
 <PageHero chapter={1} label="Join in" text="Be part of" accent="KILF." lead="Five ways into the first chapter. Pick yours: every form takes about a minute.">
   <nav aria-label="Ways to get involved" class="mt-12">
@@ -65,6 +76,14 @@ const tabs = [
       <ChapterLabel n={3} label="Volunteer" />
       <Headline id="volunteer-h" text="Help us write the" accent="first chapter." class="mt-6" />
       <p class="mt-6 max-w-md text-lg leading-relaxed text-navy/80">Hospitality, stage and guest care. Meet the speakers, learn how a festival runs, and be part of the story from the inside.</p>
+      <dl class="mt-10 max-w-md border-t border-navy/15">
+        {roles.map(([role, line]) => (
+          <div class="border-b border-navy/15 py-5">
+            <dt class="font-display text-lg font-semibold tracking-[-0.02em]">{role}</dt>
+            <dd class="mt-1 text-navy/75">{line}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
     <Form id="volunteer-form" name="volunteer" lang={lang} submitLabel="Sign up to volunteer" class="border border-navy/10 bg-cream p-6 sm:p-9">
       <Field formId="volunteer-form" name="name" label="Name" autocomplete="name" required />
@@ -98,17 +117,34 @@ const tabs = [
   </div>
 </Section>
 
-<Section tone="cream" rule labelledby="more-h">
+<!-- What happens next -->
+<section class="bg-lime text-ink" aria-labelledby="next-h">
+  <div class="container-kilf py-20 sm:py-24">
+    <ChapterLabel n={5} label="What happens next" tone="lime" />
+    <Headline id="next-h" text="From the form" accent="to the festival." tone="lime" class="mt-6" />
+    <ol class="mt-12 grid border-t border-ink/15 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+      {next.map(([title, line], i) => (
+        <li class:list={['border-b border-ink/15 py-7 sm:px-6', i % 2 === 1 && 'sm:border-l', i > 0 && 'lg:border-l', 'lg:first:pl-0']}>
+          <span class="numeral text-[2.6rem] text-blue">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-6 font-display text-[1.35rem] font-semibold leading-tight tracking-[-0.03em]">{title}</h3>
+          <p class="mt-2 text-[0.98rem] leading-relaxed text-ink/80">{line}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<Section tone="cream" labelledby="more-h">
   <h2 id="more-h" class="sr-only">Partner or attend</h2>
   <div class="grid border-l border-t border-line md:grid-cols-2">
     <div id="partner" class="on-dark border-b border-r border-line bg-blue p-8 text-white sm:p-12">
-      <ChapterLabel n={5} label="Partner" tone="dark" />
+      <ChapterLabel n={6} label="Partner" tone="dark" />
       <Headline text="Your brand. Our story." accent="One lake." tone="blue" size="md" class="mt-6" />
       <p class="mt-5 text-white/85">Founding partnerships for the first edition.</p>
       <LimeButton href={lp('/partners')} label="See partnership options" class="mt-8" />
     </div>
     <div id="attend" class="border-b border-r border-line bg-lime p-8 text-ink sm:p-12">
-      <ChapterLabel n={6} label="Attend" tone="lime" />
+      <ChapterLabel n={7} label="Attend" tone="lime" />
       <Headline text="Get your" accent="pass." tone="lime" size="md" class="mt-6" />
       <p class="mt-5 text-ink/80">Day, Festival and Young Reader passes, and theatre tickets for Khasakkinte Ithihasam. Ticketing opens soon.</p>
       <LimeButton href={lp('/passes')} label="See passes" class="mt-8" />

@@ -27,6 +27,13 @@ const plan = [
   ['Performance date & venue', 'To be announced'],
   ['Theatre admission', 'To be announced · No live booking yet'],
 ];
+const goodToKnow = [
+  ['Tickets', 'The play is ticketed separately from festival passes. Choose a theatre ticket, or the theatre + Festival Pass bundle.'],
+  ['Seating', 'Seating will be limited. Leave your details and we’ll write the moment booking opens.'],
+  ['Language', 'The performance is in Malayalam.'],
+  ['Age guidance', 'To be announced with the performance details.'],
+  ['Access', 'Tell us about any access needs when you book, and we’ll help plan your evening.'],
+];
 const options = [
   {
     name: 'Theatre ticket',
@@ -104,6 +111,30 @@ const options = [
   </div>
 </Section>
 
+<!-- The novel and the director -->
+<Section tone="cream" rule labelledby="story-h">
+  <h2 id="story-h" class="sr-only">The novel and the director</h2>
+  <div class="grid border-l border-t border-line md:grid-cols-2" data-reveal-group>
+    <article class="flex flex-col border-b border-r border-line p-8 sm:p-12">
+      <p class="eyebrow text-navy">The novel</p>
+      <h3 class="display mt-8 text-[2rem] text-navy sm:text-[2.4rem]">A village, a teacher,<br /><span class="text-blue-bright">a legend.</span></h3>
+      <p class="mt-6 text-[1.05rem] leading-relaxed text-muted">
+        Ravi, a restless young man, arrives in Khasak, a remote village in Palakkad, to start a single-teacher school. Around
+        him the village’s legends, faiths, quarrels and dreams slowly unfold. First published in 1969, O. V. Vijayan’s novel
+        changed Malayalam fiction for good; his own English version, The Legends of Khasak, followed in 1994.
+      </p>
+    </article>
+    <article class="on-dark flex flex-col border-b border-r border-line bg-footer p-8 text-white sm:p-12">
+      <p class="eyebrow text-white/80">The director</p>
+      <h3 class="display mt-8 text-[2rem] sm:text-[2.4rem]">Deepan<br /><span class="text-lime">Sivaraman.</span></h3>
+      <p class="mt-6 text-[1.05rem] leading-relaxed text-white/85">
+        A theatre director and scenographer known for large, immersive productions in which the space itself becomes part of
+        the story. His staging of Khasakkinte Ithihasam builds the village around its audience.
+      </p>
+    </article>
+  </div>
+</Section>
+
 <!-- Plan your theatre evening -->
 <section class="on-dark waves-light relative overflow-hidden bg-blue text-white" aria-labelledby="plan-h">
   <RippleField client:visible tone="dark" x={42} y={55} size={620} squash={1} rings={3} />
@@ -152,6 +183,24 @@ const options = [
     <TicketCard client:visible notifyHref="#notify" />
   </div>
 </section>
+
+<!-- Good to know -->
+<Section tone="cream" labelledby="know-h">
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-4">
+      <ChapterLabel n={3} label="Good to know" />
+      <Headline id="know-h" text="Before you" accent="book." class="mt-6" />
+    </div>
+    <dl class="border-t border-line lg:col-span-8" data-reveal-group>
+      {goodToKnow.map(([label, value]) => (
+        <div class="grid gap-1 border-b border-line py-6 sm:grid-cols-[11rem_1fr] sm:gap-6">
+          <dt class="eyebrow pt-1 text-navy">{label}</dt>
+          <dd class="text-[1.05rem] leading-relaxed text-navy/85">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</Section>
 
 <NotifyBanner
   id="notify"

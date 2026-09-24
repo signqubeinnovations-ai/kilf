@@ -72,7 +72,7 @@ for (const file of await fs.readdir(speakersDir)) {
 
 // 3. Open Graph image (1200×630): the hero in miniature, a blue panel with
 //    the title beside the lake illustration (or the real cover, if supplied).
-const cover = (await findReal('illustrations', 'cover')) ?? path.join(root, 'src/assets/art/lake-book.jpg');
+const cover = (await findReal('illustrations', 'cover')) ?? path.join(root, 'src/assets/art/lake-hero.jpg');
 const art = await sharp(cover).resize(640, 630, { fit: 'cover', position: 'right' }).toBuffer();
 const panel = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="560" height="630">
   <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF9A82"/><stop offset=".45" stop-color="#FFC3A0"/><stop offset="1" stop-color="#E7EF92"/></linearGradient></defs>

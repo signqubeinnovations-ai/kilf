@@ -20,6 +20,17 @@ const activities = [
   ['book', 'Meet Your Favourite Authors', 'Up close, questions welcome.'],
   ['graduation', 'Campus Ambassadors', 'Bring KILF to your college.'],
 ];
+const steps = [
+  ['Register your college', 'One form, a minute long. Tell us who you are and what you’re into.'],
+  ['Pick your stage', 'Slam, open mic, reels, rap or a meet-the-author session.'],
+  ['Watch for the calls', 'Entry details for each activity will be shared with registered colleges first.'],
+  ['Take the stage', 'Five days by the lake, with your friends in the audience.'],
+];
+const ambassador = [
+  'Share the programme and the calls on your campus',
+  'Gather your friends and your college’s writers, poets and filmmakers',
+  'Be the first to hear about youth activities and group passes',
+];
 ---
 <section class="relative overflow-hidden bg-lime pb-16 pt-14 text-ink sm:pb-20 sm:pt-20 lg:pb-24 lg:pt-24" aria-labelledby="youth-h">
   <RippleField client:idle tone="coral" x={88} y={40} size={560} follow />
@@ -57,10 +68,48 @@ const activities = [
   <p class="mt-6 text-sm text-muted">All youth activities are proposed and subject to confirmation.</p>
 </Section>
 
+<!-- Campus ambassadors -->
+<section class="on-dark relative overflow-hidden bg-blue text-white" aria-labelledby="ambassadors-h">
+  <div class="container-kilf grid items-center gap-12 py-20 sm:py-24 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+    <div>
+      <ChapterLabel n={3} label="Campus ambassadors" tone="dark" />
+      <Headline id="ambassadors-h" text="Bring KILF" accent="to your campus." tone="blue" accentStyle="gradient" class="mt-6" />
+      <p class="mt-6 max-w-lg text-lg leading-relaxed text-white/85">
+        Every college needs someone who hears about things first. Be KILF’s voice on your campus, and bring your friends to
+        the shore.
+      </p>
+      <LimeButton href="#college" label="Register your college" class="mt-9" />
+    </div>
+    <ul class="border-t border-white/20" data-reveal-group>
+      {ambassador.map((line, i) => (
+        <li class="flex gap-5 border-b border-white/20 py-6">
+          <span class="numeral text-3xl text-lime">{String(i + 1).padStart(2, '0')}</span>
+          <span class="pt-1 text-lg leading-snug">{line}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<!-- How to take part -->
+<Section tone="cream" labelledby="steps-h">
+  <ChapterLabel n={4} label="How to take part" />
+  <Headline id="steps-h" text="Four steps" accent="to the stage." class="mt-6" />
+  <ol class="mt-12 grid border-l border-t border-line sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+    {steps.map(([title, line], i) => (
+      <li class="flex min-h-[14rem] flex-col border-b border-r border-line p-7">
+        <span class="numeral text-[2.6rem] text-blue-bright">{String(i + 1).padStart(2, '0')}</span>
+        <h3 class="mt-auto pt-8 font-display text-[1.3rem] font-semibold leading-tight tracking-[-0.03em]">{title}</h3>
+        <p class="mt-2 text-muted">{line}</p>
+      </li>
+    ))}
+  </ol>
+</Section>
+
 <Section tone="sky" id="college" labelledby="college-h">
   <div class="grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
     <div>
-      <ChapterLabel n={3} label="Colleges" />
+      <ChapterLabel n={5} label="Colleges" />
       <Headline id="college-h" text="Register your" accent="college." class="mt-6" />
       <p class="mt-6 max-w-md text-lg leading-relaxed text-navy/85">Tell us about your campus. We’ll share ambassador details, group passes for students and early access to the youth stage.</p>
     </div>

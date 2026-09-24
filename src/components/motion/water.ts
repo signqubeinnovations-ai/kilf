@@ -4,7 +4,7 @@
  * of slopes and light that a shader uses to bend and brighten the artwork
  * underneath, so the drawn lake moves like water.
  *
- * Cells can be wider than they are tall (`squash` in LakeRipples), which
+ * Cells can be wider than they are tall (`squash` in src/scripts/lake-water.ts), which
  * flattens the rings into ellipses, as water looks when seen from the shore.
  */
 

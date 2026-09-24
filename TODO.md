@@ -28,7 +28,7 @@ The site currently shows on-brand **stand-ins** because the assets were not in t
 
 - [ ] `logos/kilf-logo.svg` and `logos/kilf-logo-white.svg`
 - [ ] `illustrations/p4_stage.jpg` for Khasakkinte Ithihasam (an abstract stage stands in until then).
-- [ ] Higher-resolution originals of the two lake illustrations in `src/assets/art/` (the current files are upscaled from 1241 px). Keep the same crop, or update the water outlines in `src/components/LakeArt.astro`.
+- [ ] Higher-resolution originals of the two lake illustrations in `src/assets/art/` (the current files were AI-upscaled 4× from 1241 px). Keep the same composition, or update the water outlines in `src/components/LakeArt.astro`.
 - [ ] `speakers/*.jpg`: all 17 duotone photos (file names are listed in the README and in each speaker's `.md` file)
 - [ ] Compare the built site side by side with `reference-brochure.pdf` and adjust spacing and type sizes.
 
@@ -42,12 +42,13 @@ This copy was written to fit the brief, but the source documents were not availa
 - [ ] **Partners page**: "why partner" wording, the six audience groups, tier descriptions and the whole **benefits matrix** (`src/data/partnership.json`) are drafts to check against the sponsorship proposal. No prices are shown.
 - [ ] **Pass descriptions and inclusions** (`src/content/passes.json`) are indicative. Confirm them before ticketing.
 - [ ] Strand one-liners (`src/content/strands.json`), youth activity one-liners (`src/views/Youth.astro`) and the Khasak description (`src/views/Khasak.astro`).
-- [ ] "Getting here" and "Good to know" tips on Plan your visit (`src/views/Visit.astro`).
+- [ ] "Getting here", "While you’re here", "Around Kollam" and "Good to know" on Plan your visit (`src/views/Visit.astro`).
+- [ ] New sections written for this version, to confirm with the organisers: About ("Why KILF", "What to expect", "What we believe", `about.vision.*`, `about.e*`, `about.v*` in `src/i18n/ui.ts`); the home "A day at KILF" (`home.day.*`); Programme ("A day at the festival", "Formats"); Speakers ("The line-up", "Suggest a voice"); Khasak ("The novel", "The director", "Good to know"); Passes ("Which pass is for me?", "Ticketing, answered"); Get involved (volunteer roles, "What happens next"); Youth ("Campus ambassadors", "How to take part"); Partners ("How it works"); Contact ("Write to us about"); and the eight new FAQ answers in `src/content/faqs.json`.
 - [ ] Privacy page (`src/views/Privacy.astro`): have the organisers review it.
 
 ## 4. Malayalam
 
-- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json` (including the new home-page lines: `home.hero.*`, `home.live.*`, `home.ways.*`, `home.nye.*`, `home.dates.*`, `home.statement.*`, `footer.closing.*`, `nav.theatre` and `cta.volunteer`).
+- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json` (including the new lines: `home.title`, `home.titleAccent`, `home.hero.*`, `home.live.*`, `home.ways.*`, `home.day.*`, `home.nye.*`, `home.dates.*`, `home.statement.*`, `about.vision.*`, `about.expect.*`, `about.e*`, `about.values.*`, `about.v*`, `footer.closing.*`, `nav.theatre` and `cta.volunteer`).
 - [ ] Translate the remaining pages: Speakers, Programme, Khasak, Youth, Get involved, Passes, Visit, Partners, FAQ, Contact, Privacy and the 404 page. See README "Translate another page into Malayalam". Until then these `/ml/` pages show English with a notice (`TODO(i18n)` comments in `src/pages/ml/*.astro`).
 - [ ] Optional: Malayalam speaker names (`name_ml` field in the speaker files).
 
