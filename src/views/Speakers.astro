@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import SpeakerCard from '@/components/SpeakerCard.astro';
+import Badge from '@/components/Badge.astro';
+import Icon from '@/components/Icon.astro';
+import { hasBio } from '@/lib/speakers';
+import { localizePath, type Lang } from '@/i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const speakers = (await getCollection('speakers')).sort((a, b) => a.data.order - b.data.order);
+const filters = [
+  ['all', 'All'],
+  ['literature', 'Literature'],
+  ['cinema', 'Cinema'],
+  ['music', 'Music'],
+  ['history-ideas', 'History & Ideas'],
+];
+---
+<PageHero chapter={1} label="Voices" text="Voices without" accent="borders.">
+  <p class="mt-5 flex flex-wrap items-center gap-3 text-base font-semibold text-muted">
+    <Badge>Proposed line-up</Badge> Participation subject to confirmation.
+  </p>
+</PageHero>
+
+<Section tone="cream" class="!pt-0" labelledby="speakers-list-h">
+  <h2 id="speakers-list-h" class="sr-only">All speakers</h2>
+  <div class="-mx-5 overflow-x-auto px-5 pb-2 sm:mx-0 sm:px-0" data-filter-bar>
+    <ul class="flex gap-2" aria-label="Filter speakers by strand">
+      {filters.map(([value, label], i) => (
+        <li>
+          <button
+            type="button"
+            data-filter={value}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+            class="min-h-11 whitespace-nowrap rounded-full px-5 text-sm font-bold text-navy ring-1 ring-inset ring-navy/20 transition-colors hover:bg-navy/5 aria-pressed:bg-navy aria-pressed:text-cream aria-pressed:ring-navy"
+          >
+            {label}
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <p class="sr-only" aria-live="polite" data-filter-status></p>
+
+  <ul class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:gap-4" data-speaker-grid>
+    {speakers.map((s) => (
+      <SpeakerCard
+        name={s.data.name}
+        role={s.data.role}
+        photo={s.data.photo}
+        categories={s.data.categories}
+        href={hasBio(s.body) ? localizePath(`/speakers/${s.id}`, lang) : undefined}
+      />
+    ))}
+    <li class="list-none" data-categories="always">
+      <div class="flex h-full min-h-56 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue/30 bg-sky/60 p-5 text-center">
+        <span class="inline-grid size-16 place-items-center rounded-full bg-white text-blue"><Icon name="plus" size={30} /></span>
+        <span class="mt-4 font-display text-lg font-extrabold leading-tight tracking-tight">More voices to be announced</span>
+      </div>
+    </li>
+  </ul>
+  <p class="mt-10 max-w-2xl text-sm text-muted">
+    The line-up above is proposed. Names appear as invitations are extended; participation is subject to confirmation. Follow our updates to be first to know.
+  </p>
+</Section>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('[data-speaker-grid] > li');
+  const status = document.querySelector('[data-filter-status]');
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter!;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      let n = 0;
+      items.forEach((li) => {
+        const cats = li.dataset.categories || '';
+        const show = f === 'all' || cats === 'always' || cats.split(' ').includes(f);
+        li.hidden = !show;
+        if (show && cats !== 'always') n++;
+      });
+      if (status) status.textContent = `${n} speakers shown`;
+    })
+  );
+</script>

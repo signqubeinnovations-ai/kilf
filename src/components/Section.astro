@@ -1,0 +1,25 @@
+---
+/** Page section with brand background tones and the faint wave pattern. */
+interface Props {
+  tone?: 'cream' | 'white' | 'sky' | 'navy' | 'blue' | 'lime';
+  waves?: boolean;
+  id?: string;
+  class?: string;
+  inner?: string;
+  labelledby?: string;
+  as?: 'section' | 'div';
+}
+const { tone = 'cream', waves = false, id, class: cls = '', inner = '', labelledby, as: Tag = 'section' } = Astro.props;
+const tones = {
+  cream: 'bg-cream text-navy',
+  white: 'bg-white text-navy',
+  sky: 'bg-sky text-navy',
+  navy: 'bg-navy text-cream on-dark',
+  blue: 'bg-blue-bright text-white on-dark',
+  lime: 'bg-lime text-navy',
+};
+const dark = tone === 'navy' || tone === 'blue';
+---
+<Tag id={id} aria-labelledby={labelledby} class:list={['relative py-16 sm:py-24', tones[tone], waves && (dark ? 'waves-light' : 'waves'), cls]}>
+  <div class:list={['container-kilf relative', inner]}><slot /></div>
+</Tag>

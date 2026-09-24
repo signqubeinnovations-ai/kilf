@@ -1,0 +1,12 @@
+---
+/** Lime stat card with a big light number. */
+interface Props { value: string; label: string; note?: string; lang?: string }
+const { value, label, note, lang } = Astro.props;
+---
+<div class="flex h-full flex-col justify-between rounded-2xl bg-lime p-6 text-navy sm:p-7">
+  <span class="text-[3.25rem] font-light leading-none tracking-tight sm:text-7xl">{value}</span>
+  <span class="mt-6 flex items-baseline justify-between gap-2">
+    <span class="text-base font-bold uppercase tracking-[0.12em]" lang={lang}>{label}</span>
+    {note && <span class="text-sm text-navy/75" lang={lang}>{note}</span>}
+  </span>
+</div>

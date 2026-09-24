@@ -1,0 +1,150 @@
+---
+import '@/styles/global.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Analytics from '@/components/Analytics.astro';
+import { site } from '@/lib/site';
+import jakartaFont from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url';
+import manropeFont from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import manjari400 from '@fontsource/manjari/files/manjari-malayalam-400-normal.woff2?url';
+import manjari700 from '@fontsource/manjari/files/manjari-malayalam-700-normal.woff2?url';
+import { useTranslations, localizePath, parsePath, isTranslated, type Lang } from '@/i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Include the festival Event JSON-LD. */
+  event?: boolean;
+  image?: string;
+  noindex?: boolean;
+  /** Extra JSON-LD objects for this page. */
+  jsonLd?: Record<string, unknown>[];
+}
+const { title, description, event = false, image = '/og-image.jpg', noindex = false, jsonLd = [] } = Astro.props;
+const { lang, path } = parsePath(Astro.url.pathname);
+const t = useTranslations(lang as Lang);
+const translated = isTranslated(path);
+// Malayalam URLs whose content hasn't been translated yet point their
+// canonical at the English page, so search engines don't index duplicates.
+const fallback = lang === 'ml' && !translated;
+const canonicalPath = fallback ? localizePath(path, 'en') : localizePath(path, lang);
+const canonical = new URL(canonicalPath, Astro.site).href;
+const alternates = translated
+  ? [
+      { hreflang: 'en', href: new URL(localizePath(path, 'en'), Astro.site).href },
+      { hreflang: 'ml', href: new URL(localizePath(path, 'ml'), Astro.site).href },
+      { hreflang: 'x-default', href: new URL(localizePath(path, 'en'), Astro.site).href },
+    ]
+  : [];
+const fullTitle = path === '/' ? `${title}` : `${title} · KILF 2027`;
+const ogImage = new URL(image, Astro.site).href;
+
+const eventLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Festival',
+  name: `${site.name} (KILF) 2027`,
+  alternateName: 'KILF 2027',
+  description: `The first edition of the ${site.name}: 100+ speakers across literature, cinema, music, theatre, art and ideas on the shore of Ashtamudi Lake, Kollam, Kerala.`,
+  startDate: site.startISO,
+  endDate: site.endISO,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  inLanguage: ['ml', 'en'],
+  url: new URL('/', Astro.site).href,
+  image: [ogImage],
+  location: site.venues.map((v) => ({
+    '@type': 'Place',
+    name: v.name,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Kollam',
+      addressRegion: 'Kerala',
+      addressCountry: 'IN',
+    },
+  })),
+  organizer: {
+    '@type': 'Organization',
+    name: site.organiser,
+    email: site.email,
+    url: new URL('/', Astro.site).href,
+  },
+};
+const ld = [...(event ? [eventLd] : []), ...jsonLd];
+---
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    {(noindex || fallback) && <meta name="robots" content={fallback ? 'noindex, follow' : 'noindex'} />}
+    <meta name="theme-color" content="#FCFAF3" />
+    <link rel="preload" href={jakartaFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={manropeFont} as="font" type="font/woff2" crossorigin />
+    {lang === 'ml' && !fallback && <link rel="preload" href={manjari700} as="font" type="font/woff2" crossorigin />}
+    {lang === 'ml' && !fallback && <link rel="preload" href={manjari400} as="font" type="font/woff2" crossorigin />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="KILF 2027" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kollam International Literature Festival 2027 — a lake-and-book illustration" />
+    <meta property="og:locale" content={lang === 'ml' ? 'ml_IN' : 'en_IN'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {ld.map((obj) => <script type="application/ld+json" is:inline set:html={JSON.stringify(obj)} />)}
+
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js');
+    </script>
+    <Analytics />
+  </head>
+  <body class="min-h-dvh">
+    <a href="#main" class="sr-only z-[100] rounded-full bg-lime px-5 py-3 font-bold text-navy focus:not-sr-only focus:fixed focus:left-4 focus:top-4">{t('nav.skip')}</a>
+    <Header lang={lang as Lang} path={path} />
+    <main id="main" tabindex="-1" class="outline-none">
+      {fallback && (
+        <div class="border-b border-line bg-sky" lang="ml">
+          <p class="container-kilf py-3 text-sm text-navy">{t('fallback.notice')}</p>
+        </div>
+      )}
+      <div lang={fallback ? 'en' : undefined}>
+        <slot />
+      </div>
+    </main>
+    <Footer lang={lang as Lang} />
+
+    <script>
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if (document.documentElement.classList.contains('js') && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('is-in'));
+      }
+    </script>
+  </body>
+</html>

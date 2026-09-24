@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+/** Line icon perfectly centred in a soft circle. */
+interface Props { name: string; size?: 'sm' | 'md' | 'lg'; tone?: 'sky' | 'lime' | 'white' | 'navy' | 'coral'; class?: string }
+const { name, size = 'md', tone = 'sky', class: cls = '' } = Astro.props;
+const dims = { sm: ['size-10', 20], md: ['size-14', 26], lg: ['size-18', 32] } as const;
+const tones = {
+  sky: 'bg-sky text-blue',
+  lime: 'bg-lime text-navy',
+  white: 'bg-white text-blue',
+  navy: 'bg-navy text-lime',
+  coral: 'bg-coral/15 text-coral-ink',
+};
+const [box, px] = dims[size];
+---
+<span class:list={['inline-grid shrink-0 place-items-center rounded-full', box, tones[tone], cls]}>
+  <Icon name={name} size={px} />
+</span>

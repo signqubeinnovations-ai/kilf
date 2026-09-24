@@ -1,0 +1,28 @@
+---
+import IconCircle from '../IconCircle.astro';
+import Icon from '../Icon.astro';
+import { useTranslations, localizePath, type Lang, type UIKey } from '@/i18n/ui';
+interface Props { lang?: Lang }
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const lp = (p: string) => localizePath(p, lang);
+const cards = [
+  { key: 'register', icon: 'pen', href: '/get-involved#register' },
+  { key: 'volunteer', icon: 'heart', href: '/get-involved#volunteer' },
+  { key: 'exhibit', icon: 'store', href: '/get-involved#exhibit' },
+  { key: 'partner', icon: 'handshake', href: '/partners' },
+  { key: 'attend', icon: 'ticket', href: '/passes' },
+] as const;
+---
+<ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
+  {cards.map((c, i) => (
+    <li data-reveal style={`transition-delay:${i * 60}ms`}>
+      <a href={lp(c.href)} class="card lift group flex h-full flex-col p-5 sm:p-6">
+        <IconCircle name={c.icon} tone={c.key === 'register' ? 'lime' : 'sky'} />
+        <h3 class="mt-5 font-display text-xl font-extrabold tracking-tight">{t(`home.involved.${c.key}` as UIKey)}</h3>
+        <p class="mt-1.5 flex-1 text-[0.95rem] leading-snug text-muted">{t(`home.involved.${c.key}.d` as UIKey)}</p>
+        <Icon name="arrow" size={22} class="mt-4 text-blue transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+      </a>
+    </li>
+  ))}
+</ul>

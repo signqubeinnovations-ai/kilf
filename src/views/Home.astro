@@ -1,0 +1,187 @@
+---
+import { getCollection } from 'astro:content';
+import Illustration from '@/components/Illustration.astro';
+import ChapterLabel from '@/components/ChapterLabel.astro';
+import Headline from '@/components/Headline.astro';
+import LimeButton from '@/components/LimeButton.astro';
+import TextLink from '@/components/TextLink.astro';
+import Icon from '@/components/Icon.astro';
+import IconCircle from '@/components/IconCircle.astro';
+import WordStack from '@/components/WordStack.astro';
+import Countdown from '@/components/Countdown.astro';
+import StatCard from '@/components/StatCard.astro';
+import SpeakerCard from '@/components/SpeakerCard.astro';
+import Section from '@/components/Section.astro';
+import Badge from '@/components/Badge.astro';
+import StrandGrid from '@/components/blocks/StrandGrid.astro';
+import InvolvedCards from '@/components/blocks/InvolvedCards.astro';
+import SignupBlock from '@/components/blocks/SignupBlock.astro';
+import { useTranslations, localizePath, type Lang } from '@/i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const lp = (p: string) => localizePath(p, lang);
+
+const speakers = (await getCollection('speakers'))
+  .filter((s) => s.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 12);
+
+const youthChips = ['Poetry Slam', 'Open Mic Nights', 'Reels & Short-Film Challenge', 'Indie & Rap Night', 'Meet Your Favourite Authors', 'Campus Ambassadors'];
+---
+
+<!-- 1 · Hero -->
+<section class="relative overflow-hidden bg-cream" aria-labelledby="hero-h">
+  <div class="container-kilf relative z-10 pt-8 sm:pt-14 lg:pt-16">
+    <div class="flex items-start justify-between gap-4">
+      <p class="text-xs font-bold uppercase tracking-[0.2em] text-coral-ink sm:text-sm">{t('home.kicker')}</p>
+      <WordStack />
+    </div>
+    <h1 id="hero-h" class="display mt-5 max-w-5xl text-[2.7rem] text-navy sm:mt-4 sm:text-7xl lg:text-[6rem]">
+      {lang === 'ml' ? (
+        <>കൊല്ലം അന്താരാഷ്ട്ര <span class="text-coral-dark">സാഹിത്യോത്സവം</span></>
+      ) : (
+        <>Kollam International Literature <span class="text-coral-dark">Festival</span></>
+      )}
+    </h1>
+    <p class="mt-6 flex items-center gap-3 text-base font-bold text-navy sm:text-lg">
+      <IconCircle name="calendar" size="sm" />
+      <span><time datetime="2026-12-31">{lang === 'ml' ? '2026 ഡിസംബർ 31' : '31 December 2026'}</time> – <time datetime="2027-01-04">{lang === 'ml' ? '2027 ജനുവരി 4' : '4 January 2027'}</time></span>
+    </p>
+    <p class="display mt-6 text-3xl text-blue sm:text-4xl">
+      {t('home.tagline')} <span class="text-coral-dark">{t('home.taglineAccent')}</span>
+    </p>
+    <p class="mt-3 text-lg italic text-muted">{t('home.water')}</p>
+    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+      <LimeButton href={lp('/get-involved#register')} label={t('cta.register')} />
+      <TextLink href={lp('/programme')} label={t('cta.explore')} />
+    </div>
+  </div>
+  <div class="relative -mt-6 sm:-mt-12 lg:-mt-4">
+    <div class="fade-top relative">
+      <Illustration
+        src="illustrations/cover.jpg"
+        alt="An open book resting on Ashtamudi Lake at sunset: palm trees, a sailing boat and a Chinese fishing net on the shore."
+        priority
+        class="h-[17rem] w-full object-cover object-[60%_100%] sm:h-[26rem] lg:h-[34rem]"
+      />
+      <!-- gentle ripple over the water -->
+      <svg class="pointer-events-none absolute inset-x-0 bottom-[18%] h-10 w-[110%] animate-ripple text-white/30" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 20c50-16 100-16 150 0s100 16 150 0 100-16 150 0 100 16 150 0 100-16 150 0 100 16 150 0 100-16 150 0 100 16 150 0" fill="none" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · Countdown -->
+<section class="on-dark waves-light bg-navy py-12 text-cream sm:py-16" aria-label={t('countdown.title')}>
+  <div class="container-kilf">
+    <Countdown lang={lang} />
+  </div>
+</section>
+
+<!-- 3 · Stats -->
+<Section tone="cream" waves class="!py-12 sm:!py-16" labelledby="stats-h">
+  <h2 id="stats-h" class="sr-only">{t('home.stats.label')}</h2>
+  <ul class="grid gap-3 sm:grid-cols-3 sm:gap-4">
+    <li data-reveal><StatCard value="100+" label={t('home.stats.speakers')} /></li>
+    <li data-reveal style="transition-delay:80ms"><StatCard value="10,000+" label={t('home.stats.audience')} /></li>
+    <li data-reveal style="transition-delay:160ms"><StatCard value="1" label={t('home.stats.shore')} note={t('home.stats.shoreNote')} /></li>
+  </ul>
+</Section>
+
+<!-- 4 · New Year's Eve -->
+<section class="on-dark relative overflow-hidden bg-navy-deep text-cream" aria-labelledby="nye-h">
+  <div class="grid lg:grid-cols-2">
+    <div class="container-kilf py-16 sm:py-24 lg:ml-auto lg:max-w-[38rem] lg:pr-12">
+      <ChapterLabel n={1} label={t('home.nye.chapter')} tone="dark" />
+      <Headline id="nye-h" text={t('home.nye.h')} accent={t('home.nye.accent')} tone="dark" class="mt-5" />
+      <p class="mt-5 max-w-md text-xl leading-snug text-cream/90">{t('home.nye.lead')}</p>
+      <ul class="mt-8 space-y-4">
+        {[['moon', t('home.nye.1')], ['music', t('home.nye.2')], ['sparkle', t('home.nye.3')]].map(([icon, label]) => (
+          <li class="flex items-center gap-4 text-lg font-semibold">
+            <span class="inline-grid size-12 place-items-center rounded-full bg-white/10 text-lime ring-1 ring-inset ring-white/15"><Icon name={icon} size={24} /></span>
+            {label}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="relative min-h-72 lg:min-h-full">
+      <Illustration src="illustrations/nye.jpg" alt="" sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+    </div>
+  </div>
+</section>
+
+<!-- 5 · Voices -->
+<Section tone="cream" waves labelledby="voices-h">
+  <div class="flex flex-wrap items-end justify-between gap-6">
+    <div>
+      <ChapterLabel n={2} label={t('home.voices.chapter')} />
+      <Headline id="voices-h" text={t('home.voices.h')} accent={t('home.voices.accent')} class="mt-5" />
+      <p class="mt-4 text-sm font-semibold text-muted">{t('home.voices.note')}</p>
+    </div>
+    <TextLink href={lp('/speakers')} label={t('cta.seeSpeakers')} />
+  </div>
+  <ul class="mt-10 grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+    {speakers.map((s) => <SpeakerCard name={s.data.name} role={s.data.role} photo={s.data.photo} size="sm" lang="en" />)}
+  </ul>
+</Section>
+
+<!-- 6 · Strands -->
+<Section tone="sky" waves labelledby="strands-h">
+  <ChapterLabel n={3} label={t('home.strands.chapter')} />
+  <Headline id="strands-h" text={t('home.strands.h')} accent={t('home.strands.accent')} class="mt-5" />
+  <p class="mt-4 max-w-2xl text-lg text-muted">{t('home.strands.lead')}</p>
+  <div class="mt-10"><StrandGrid lang={lang} /></div>
+</Section>
+
+<!-- 7 · Khasakkinte Ithihasam -->
+<section class="on-dark relative overflow-hidden bg-navy text-cream" aria-labelledby="khasak-h">
+  <div class="grid lg:grid-cols-[1.1fr_1fr]">
+    <div class="relative min-h-72 sm:min-h-96 lg:order-2 lg:min-h-full">
+      <Illustration src="illustrations/p4_stage.jpg" alt="A theatre stage lit by a single spotlight: two figures beside a house and a great tree." sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+    </div>
+    <div class="container-kilf py-16 sm:py-24 lg:ml-auto lg:max-w-[40rem] lg:pr-12">
+      <div class="flex flex-wrap items-center gap-3">
+        <ChapterLabel n={4} label={t('home.khasak.chapter')} tone="dark" />
+        <Badge tone="dark">{t('home.khasak.proposed')}</Badge>
+      </div>
+      <Headline id="khasak-h" text={t('home.khasak.h')} accent={t('home.khasak.accent')} tone="dark" class="mt-5" />
+      <p class="mt-5 max-w-lg text-lg text-cream/90">{t('home.khasak.lead')}</p>
+      <blockquote class="mt-6 border-l-2 border-coral pl-5 font-display text-2xl font-extrabold leading-tight tracking-tight">
+        {t('home.khasak.quote')}
+      </blockquote>
+      <LimeButton href={lp('/khasak')} label={t('cta.learnMore')} class="mt-8" />
+    </div>
+  </div>
+</section>
+
+<!-- 8 · Youth -->
+<Section tone="blue" waves labelledby="youth-h">
+  <div class="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
+    <div>
+      <ChapterLabel n={5} label={t('home.youth.chapter')} tone="dark" />
+      <Headline id="youth-h" text={t('home.youth.h')} accent={t('home.youth.accent')} tone="blue" size="xl" class="mt-5" />
+      <p class="mt-5 max-w-lg text-lg text-white/90">{t('home.youth.lead')}</p>
+      <LimeButton href={lp('/youth')} label={t('home.youth.cta')} class="mt-8" />
+    </div>
+    <ul class="flex flex-wrap gap-2.5" lang="en" aria-label="Youth activities (proposed)">
+      {youthChips.map((c, i) => (
+        <li class:list={['rounded-full px-4 py-2.5 text-sm font-bold sm:text-base', i % 2 ? 'bg-coral text-navy' : 'bg-lime text-navy']}>{c}</li>
+      ))}
+    </ul>
+  </div>
+</Section>
+
+<!-- 9 · Be part of KILF -->
+<Section tone="cream" waves labelledby="involved-h">
+  <ChapterLabel n={6} label={t('home.involved.chapter')} />
+  <Headline id="involved-h" text={t('home.involved.h')} accent={t('home.involved.accent')} class="mt-5" />
+  <div class="mt-10"><InvolvedCards lang={lang} /></div>
+</Section>
+
+<!-- 10 · Newsletter / WhatsApp -->
+<Section tone="navy" waves labelledby="newsletter-h">
+  <SignupBlock lang={lang} chapter={7} />
+</Section>

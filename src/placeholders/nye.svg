@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs><linearGradient id="n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A1454"/><stop offset="1" stop-color="#1B37E6"/></linearGradient></defs>
+  <rect width="1600" height="900" fill="url(#n)"/>
+  <g fill="#FCFAF3"><circle cx="160" cy="120" r="2.5"/><circle cx="420" cy="80" r="2"/><circle cx="700" cy="160" r="2.5"/><circle cx="980" cy="70" r="2"/><circle cx="1260" cy="140" r="3"/><circle cx="1480" cy="90" r="2"/><circle cx="560" cy="260" r="1.8"/><circle cx="1100" cy="240" r="1.8"/><circle cx="260" cy="300" r="1.6"/></g>
+  <circle cx="1200" cy="260" r="80" fill="#E7EF93"/>
+  <circle cx="1230" cy="240" r="72" fill="#0F1C74" opacity=".0"/>
+  <g stroke="#F47A5E" stroke-width="4" stroke-linecap="round">
+    <path d="M420 250 v-50 M420 250 l35-35 M420 250 h50 M420 250 l35 35 M420 250 l-35-35 M420 250 h-50 M420 250 l-35 35 M420 250 v50"/>
+  </g>
+  <g stroke="#E7EF93" stroke-width="3" stroke-linecap="round">
+    <path d="M760 180 v-36 M760 180 l26-26 M760 180 h36 M760 180 l26 26 M760 180 l-26-26 M760 180 h-36 M760 180 l-26 26 M760 180 v36"/>
+  </g>
+  <path d="M0 560 C220 500 420 530 640 540 S1000 490 1240 520 1500 520 1600 500 V620 H0Z" fill="#0F1C74"/>
+  <path d="M0 610 C300 600 520 620 800 610 S1300 600 1600 610 V900 H0Z" fill="#0A1454"/>
+  <g fill="#E7EF93" opacity=".8"><rect x="1150" y="640" width="100" height="6" rx="3"/><rect x="1170" y="664" width="60" height="5" rx="2.5"/><rect x="1185" y="686" width="30" height="4" rx="2"/></g>
+  <g fill="#F47A5E"><circle cx="300" cy="700" r="7"/><circle cx="360" cy="690" r="7"/><circle cx="420" cy="705" r="7"/><circle cx="800" cy="720" r="7"/><circle cx="860" cy="712" r="7"/></g>
+  <g fill="none" stroke="#FFFFFF" stroke-opacity=".2" stroke-width="3" stroke-linecap="round"><path d="M520 780c30-12 60-12 90 0s60 12 90 0"/><path d="M1000 830c30-12 60-12 90 0s60 12 90 0"/><path d="M120 820c30-12 60-12 90 0"/></g>
+</svg>

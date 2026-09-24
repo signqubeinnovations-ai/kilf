@@ -1,0 +1,90 @@
+---
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import ChapterLabel from '@/components/ChapterLabel.astro';
+import Headline from '@/components/Headline.astro';
+import IconCircle from '@/components/IconCircle.astro';
+import Illustration from '@/components/Illustration.astro';
+import LimeButton from '@/components/LimeButton.astro';
+import StatCard from '@/components/StatCard.astro';
+import { aboutQA } from '@/i18n/about-qa';
+import { site } from '@/lib/site';
+import { useTranslations, localizePath, type Lang, type UIKey } from '@/i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const lp = (p: string) => localizePath(p, lang);
+const matters = [
+  ['anchor', 'about.m1'],
+  ['calendar', 'about.m2'],
+  ['scroll', 'about.m3'],
+  ['leaf', 'about.m4'],
+] as const;
+---
+<PageHero chapter={1} label={t('about.chapter')} text={t('about.h')} accent={t('about.accent')}>
+  <div class="mt-8 grid gap-6 text-lg leading-relaxed text-navy/90 md:grid-cols-2 md:gap-10">
+    <p>{t('about.p1')}</p>
+    <p>{t('about.p2')}</p>
+  </div>
+  <ul class="mt-12 grid gap-3 sm:grid-cols-3">
+    <li><StatCard value="100+" label={t('home.stats.speakers')} /></li>
+    <li><StatCard value="10,000+" label={t('home.stats.audience')} /></li>
+    <li><StatCard value="1" label={t('home.stats.shore')} note={t('home.stats.shoreNote')} /></li>
+  </ul>
+</PageHero>
+
+<section class="on-dark relative overflow-hidden bg-navy text-cream" aria-labelledby="why-h">
+  <div class="grid lg:grid-cols-2">
+    <div class="container-kilf py-16 sm:py-24 lg:ml-auto lg:max-w-[38rem] lg:pr-12">
+      <ChapterLabel n={2} label={t('about.why.chapter')} tone="dark" />
+      <Headline id="why-h" text={t('about.why.h')} accent={t('about.why.accent')} tone="dark" class="mt-5" />
+      <p class="mt-6 max-w-lg font-display text-2xl font-extrabold leading-snug tracking-tight text-cream/95 sm:text-3xl">{t('about.why.p')}</p>
+    </div>
+    <div class="relative min-h-80 bg-cream lg:min-h-full">
+      <Illustration src="illustrations/p8_map_clean.jpg" alt="Illustrated map of Ashtamudi Lake, its eight arms reaching inland from the sea, with the festival venues pinned." sizes="(min-width: 1024px) 50vw, 100vw" widths={[480, 768, 1024, 1440]} class="absolute inset-0 h-full w-full object-cover" />
+    </div>
+  </div>
+</section>
+
+<Section tone="cream" waves labelledby="matters-h">
+  <ChapterLabel n={3} label="Kollam" />
+  <Headline id="matters-h" text={t('about.matters.h')} accent={t('about.matters.accent')} class="mt-5" />
+  <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+    {matters.map(([icon, key], i) => (
+      <li data-reveal style={`transition-delay:${i * 70}ms`} class="card lift flex flex-col p-6">
+        <IconCircle name={icon} tone={i % 2 ? 'lime' : 'sky'} />
+        <h3 class="mt-5 font-display text-xl font-extrabold tracking-tight">{t(`${key}.t` as UIKey)}</h3>
+        <p class="mt-2 text-muted">{t(`${key}.d` as UIKey)}</p>
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<Section tone="sky" waves labelledby="qa-h">
+  <ChapterLabel n={4} label={t('about.qa.chapter')} />
+  <h2 id="qa-h" class="display mt-5 text-[2.15rem] text-navy sm:text-5xl">
+    KILF, <span class="text-coral-dark" lang="ml">ചുരുക്കത്തിൽ.</span>
+  </h2>
+  <dl class="mt-10 grid gap-3 md:grid-cols-2 lg:gap-4" lang="ml">
+    {aboutQA.map((item, i) => (
+      <div class:list={['card p-6', i === 0 && 'md:col-span-2']}>
+        <dt class="text-xl font-bold text-blue">{item.q}</dt>
+        <dd class="mt-2 text-lg leading-relaxed text-navy">{item.a}</dd>
+      </div>
+    ))}
+  </dl>
+</Section>
+
+<Section tone="cream" class="!py-14">
+  <div class="flex flex-col items-start justify-between gap-6 rounded-2xl border border-line bg-white p-6 sm:flex-row sm:items-center sm:p-8">
+    <div class="flex items-center gap-4">
+      <IconCircle name="star" tone="lime" />
+      <p class="text-lg">
+        <span class="text-muted">{t('about.organised')}</span>
+        <strong class="font-display text-2xl font-extrabold tracking-tight"> {site.organiser}.</strong>
+      </p>
+    </div>
+    <LimeButton href={lp('/contact')} label={t('nav.contact')} />
+  </div>
+</Section>

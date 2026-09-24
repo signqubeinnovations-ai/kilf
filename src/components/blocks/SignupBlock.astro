@@ -1,0 +1,24 @@
+---
+import ChapterLabel from '../ChapterLabel.astro';
+import Headline from '../Headline.astro';
+import Form from '../Form.astro';
+import Field from '../Field.astro';
+import LimeButton from '../LimeButton.astro';
+import { env } from '@/lib/site';
+import { useTranslations, type Lang } from '@/i18n/ui';
+interface Props { lang?: Lang; chapter: number; id?: string }
+const { lang = 'en', chapter, id = 'newsletter' } = Astro.props;
+const t = useTranslations(lang);
+---
+<div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
+  <div>
+    <ChapterLabel n={chapter} label={t('home.signup.chapter')} tone="dark" />
+    <Headline text={t('home.signup.h')} accent={t('home.signup.accent')} tone="dark" class="mt-5" id={`${id}-h`} />
+    <p class="mt-5 max-w-md text-lg text-cream/90">{t('home.signup.lead')}</p>
+    {env.whatsappUrl && <LimeButton href={env.whatsappUrl} label={t('home.signup.whatsapp')} variant="white" class="mt-6" external />}
+  </div>
+  <Form id={id} name="newsletter" lang={lang} endpoint={env.formEndpointNewsletter || env.formEndpoint} submitLabel={t('form.subscribe')} class="rounded-2xl bg-white p-5 text-navy sm:p-7">
+    <Field formId={id} name="name" label={t('form.name')} autocomplete="name" required full />
+    <Field formId={id} name="contact" label={t('form.phoneOrEmail')} autocomplete="email" required full />
+  </Form>
+</div>

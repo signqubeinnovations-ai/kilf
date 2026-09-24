@@ -1,0 +1,111 @@
+---
+import QRCode from 'qrcode';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import Placeholder from './Placeholder.astro';
+import LakeBand from './LakeBand.astro';
+import { site, isPlaceholder } from '@/lib/site';
+import { useTranslations, localizePath, type Lang } from '@/i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const lp = (p: string) => localizePath(p, lang);
+const siteUrl = new URL(lp('/'), Astro.site).href;
+const qr = await QRCode.toString(siteUrl, {
+  type: 'svg',
+  margin: 1,
+  color: { dark: '#0F1C74', light: '#FFFFFF' },
+  errorCorrectionLevel: 'M',
+});
+
+const cols = [
+  {
+    title: t('footer.festival'),
+    links: [
+      ['/about', t('nav.about')],
+      ['/speakers', t('nav.speakers')],
+      ['/programme', t('nav.programme')],
+      ['/khasak', t('nav.khasak')],
+      ['/youth', t('nav.youth')],
+    ],
+  },
+  {
+    title: t('footer.quick'),
+    links: [
+      ['/get-involved', t('nav.involved')],
+      ['/passes', t('nav.passes')],
+      ['/visit', t('nav.visit')],
+      ['/partners', t('nav.partners')],
+      ['/faq', t('nav.faq')],
+      ['/contact', t('nav.contact')],
+    ],
+  },
+];
+---
+<footer class="relative bg-cream">
+  <LakeBand height="h-28 sm:h-40 lg:h-52" />
+  <div class="on-dark waves-light bg-navy text-cream">
+    <div class="container-kilf grid gap-12 py-14 lg:grid-cols-[1.3fr_1fr_1fr_1.1fr] lg:gap-10">
+      <div>
+        <a href={lp('/')} class="inline-flex min-h-11 items-center">
+          <Logo tone="dark" class="h-12" decorative /><span class="sr-only">KILF 2027 — {t('nav.home')}</span>
+        </a>
+        <p class="mt-5 max-w-xs font-display text-2xl font-extrabold leading-tight tracking-tight">
+          {lang === 'ml' ? 'വാക്കുകൾ ലോകത്തെ ' : 'Where words meet the '}<span class="text-coral">{lang === 'ml' ? 'കണ്ടുമുട്ടുന്നിടം.' : 'world.'}</span>
+        </p>
+        <ul class="mt-6 space-y-2.5 text-[0.95rem] text-mist">
+          <li class="flex items-start gap-2.5"><Icon name="calendar" size={20} class="mt-0.5 shrink-0 text-lime" /><span>{t('site.dates')}</span></li>
+          <li class="flex items-start gap-2.5"><Icon name="pin" size={20} class="mt-0.5 shrink-0 text-lime" /><span>{t('site.city')}</span></li>
+          <li class="flex items-start gap-2.5"><Icon name="star" size={20} class="mt-0.5 shrink-0 text-lime" /><span>{t('site.organisedBy')} {site.organiser}</span></li>
+        </ul>
+      </div>
+
+      {cols.map((col) => (
+        <nav aria-label={col.title}>
+          <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-coral">{col.title}</h2>
+          <ul class="mt-4 space-y-1">
+            {col.links.map(([href, label]) => (
+              <li><a href={lp(href)} class="inline-flex min-h-11 items-center text-[0.95rem] text-cream/90 hover:text-lime">{label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+
+      <div>
+        <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-coral">{t('footer.contact')}</h2>
+        <ul class="mt-4 space-y-1 text-[0.95rem]">
+          <li>
+            <a href={`mailto:${site.email}`} class="inline-flex min-h-11 items-center gap-2.5 break-all text-cream hover:text-lime">
+              <Icon name="mail" size={20} class="shrink-0 text-lime" />{site.email}
+            </a>
+          </li>
+          <li>
+            {site.socialUrl && !isPlaceholder(site.socialHandle) ? (
+              <a href={site.socialUrl} class="inline-flex min-h-11 items-center gap-2.5 text-cream hover:text-lime" rel="noopener" target="_blank">
+                <Icon name="at" size={20} class="shrink-0 text-lime" />{site.socialHandle}
+              </a>
+            ) : (
+              <span class="inline-flex min-h-11 items-center gap-2.5 text-cream">
+                <Icon name="at" size={20} class="shrink-0 text-lime" /><Placeholder value={site.socialHandle} />
+              </span>
+            )}
+          </li>
+        </ul>
+        <figure class="mt-5 flex items-center gap-4">
+          <div class="size-24 shrink-0 overflow-hidden rounded-xl bg-white p-1.5 [&_svg]:size-full" set:html={qr} role="img" aria-label={`QR code linking to ${siteUrl}`} />
+          <figcaption class="text-sm text-mist">{t('footer.scan')}</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="border-t border-white/10">
+      <div class="container-kilf flex flex-col gap-2 py-6 text-sm text-mist sm:flex-row sm:items-center sm:justify-between">
+        <p>© 2027 {site.name}. {t('footer.rights')}</p>
+        <p class="flex gap-4">
+          <a href={lp('/privacy')} class="inline-flex min-h-11 items-center hover:text-lime">{t('nav.privacy')}</a>
+          <a href={lp('/contact')} class="inline-flex min-h-11 items-center hover:text-lime">{t('nav.contact')}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,205 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import Section from '@/components/Section.astro';
+import ChapterLabel from '@/components/ChapterLabel.astro';
+import Headline from '@/components/Headline.astro';
+import IconCircle from '@/components/IconCircle.astro';
+import Icon from '@/components/Icon.astro';
+import WordStack from '@/components/WordStack.astro';
+import LimeButton from '@/components/LimeButton.astro';
+import Logo from '@/components/Logo.astro';
+import Form from '@/components/Form.astro';
+import Field from '@/components/Field.astro';
+import Placeholder from '@/components/Placeholder.astro';
+import Illustration from '@/components/Illustration.astro';
+import data from '@/data/partnership.json';
+import { site, env } from '@/lib/site';
+import type { Lang } from '@/i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+const proposalFile = 'downloads/kilf-2027-partnership-proposal.pdf';
+const hasProposal = fs.existsSync(path.join(process.cwd(), 'public', proposalFile));
+const callUrl = env.partnerCallUrl || `mailto:${site.email}?subject=${encodeURIComponent('KILF 2027 partnership call')}`;
+---
+<!-- Hook -->
+<section class="on-dark waves-light relative overflow-hidden bg-navy text-cream" aria-labelledby="partners-h">
+  <div class="container-kilf relative z-10 pb-12 pt-10 sm:pb-16 sm:pt-16">
+    <div class="flex items-start justify-between gap-6">
+      <ChapterLabel n={1} label="Partner with KILF" tone="dark" />
+      <WordStack tone="dark" class="hidden sm:block" />
+    </div>
+    <h1 id="partners-h" class="display mt-6 max-w-4xl text-[2.6rem] sm:text-6xl lg:text-[5.25rem]">
+      Your brand. Our story. <span class="text-coral">One lake.</span>
+    </h1>
+    <p class="mt-6 max-w-2xl text-xl text-cream/90">
+      Five days, 100+ speakers and 10,000+ visitors on the shore of Ashtamudi. Become a founding partner of the first
+      Kollam International Literature Festival.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <LimeButton href="#enquire" label="Enquire now" />
+      <LimeButton href={callUrl} label="Book a partnership call" variant="white" external={!!env.partnerCallUrl} />
+    </div>
+  </div>
+  <div class="fade-top h-32 sm:h-48" aria-hidden="true">
+    <Illustration src="illustrations/lake-band.jpg" alt="" class="h-full w-full object-cover object-bottom" />
+  </div>
+</section>
+
+<!-- Why partner -->
+<Section tone="cream" waves labelledby="why-h">
+  <ChapterLabel n={2} label="Why partner" />
+  <Headline id="why-h" text="Four reasons to be" accent="on the shore." class="mt-5" />
+  <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+    {data.why.map((w, i) => (
+      <li data-reveal style={`transition-delay:${i * 60}ms`} class="card lift p-6">
+        <IconCircle name={w.icon} tone={i === 2 ? 'lime' : 'sky'} />
+        <h3 class="mt-5 font-display text-xl font-extrabold tracking-tight">{w.title}</h3>
+        <p class="mt-2 text-muted">{w.text}</p>
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<!-- Audience -->
+<Section tone="sky" waves labelledby="audience-h">
+  <ChapterLabel n={3} label="Audience" />
+  <Headline id="audience-h" text="Who you’ll" accent="meet." class="mt-5" />
+  <ul class="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 lg:gap-4">
+    {data.audience.map((a) => (
+      <li class="card flex flex-col items-start gap-4 p-5 sm:flex-row sm:items-center sm:p-6">
+        <IconCircle name={a.icon} tone="white" class="ring-1 ring-line" />
+        <span class="font-display text-lg font-extrabold leading-tight tracking-tight">{a.title}</span>
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<!-- Picture your brand here -->
+<Section tone="cream" waves labelledby="picture-h">
+  <ChapterLabel n={4} label="Visibility" />
+  <Headline id="picture-h" text="Picture your brand" accent="here." class="mt-5" />
+  <p class="mt-4 max-w-2xl text-lg text-muted">Illustrative mock-ups. Final placements depend on the partnership tier.</p>
+  <div class="mt-10 grid gap-4 lg:grid-cols-[1.6fr_1fr_1fr]">
+    <!-- stage banner -->
+    <figure class="card overflow-hidden">
+      <div class="on-dark relative aspect-[16/9] bg-navy p-5 text-cream sm:p-7">
+        <div class="flex h-full flex-col justify-between">
+          <div class="flex items-center justify-between"><Logo tone="dark" class="h-8 sm:h-10" /><span class="rounded-md border-2 border-dashed border-lime/70 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-lime sm:text-sm">Your logo</span></div>
+          <p class="display text-2xl sm:text-4xl">Where words meet the <span class="text-coral">world.</span></p>
+          <p class="text-xs text-mist sm:text-sm">Main stage · Ashramam Maidan</p>
+        </div>
+      </div>
+      <figcaption class="p-4 text-sm font-bold">Main stage backdrop</figcaption>
+    </figure>
+    <!-- pass -->
+    <figure class="card overflow-hidden">
+      <div class="grid aspect-[16/9] place-items-center bg-sky p-5 lg:aspect-auto lg:h-[calc(100%-3.25rem)]">
+        <div class="w-40 rotate-[-4deg] rounded-2xl bg-white p-4 shadow-[0_18px_40px_-20px_rgb(15_28_116/0.5)] ring-1 ring-line">
+          <Logo class="h-7" />
+          <p class="mt-3 font-display text-lg font-extrabold leading-none">Festival<br /><span class="text-coral-ink">Pass</span></p>
+          <p class="mt-2 text-[0.65rem] text-muted">31 Dec – 4 Jan</p>
+          <div class="mt-3 rounded-md border-2 border-dashed border-blue/40 py-2 text-center text-[0.65rem] font-bold uppercase tracking-widest text-blue">Your logo</div>
+        </div>
+      </div>
+      <figcaption class="p-4 text-sm font-bold">Festival pass</figcaption>
+    </figure>
+    <!-- social post -->
+    <figure class="card overflow-hidden">
+      <div class="grid aspect-[16/9] place-items-center bg-lime p-5 lg:aspect-auto lg:h-[calc(100%-3.25rem)]">
+        <div class="w-44 rounded-xl bg-white p-3 shadow-[0_18px_40px_-20px_rgb(15_28_116/0.5)]">
+          <div class="flex items-center gap-2"><span class="size-6 rounded-full bg-navy"></span><span class="text-[0.7rem] font-bold">kilf2027</span></div>
+          <div class="on-dark mt-2 grid aspect-square place-items-center rounded-lg bg-blue-bright p-3 text-center text-white">
+            <p class="display text-base">Turn the <span class="text-lime">page.</span></p>
+            <span class="mt-1 rounded border border-dashed border-white/70 px-2 py-1 text-[0.55rem] font-bold uppercase tracking-widest">with your logo</span>
+          </div>
+          <div class="mt-2 flex gap-2 text-navy"><Icon name="heart" size={16} /><Icon name="chat" size={16} /></div>
+        </div>
+      </div>
+      <figcaption class="p-4 text-sm font-bold">Social media post</figcaption>
+    </figure>
+  </div>
+</Section>
+
+<!-- Tiers -->
+<Section tone="white" labelledby="tiers-h" class="border-y border-line">
+  <ChapterLabel n={5} label="Partnership tiers" />
+  <Headline id="tiers-h" text="Choose your" accent="chapter." class="mt-5" />
+  <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
+    {data.tiers.map((tier) => (
+      <li class:list={['flex flex-col rounded-2xl p-6', tier.highlight ? 'on-dark bg-navy text-cream' : 'card']}>
+        <span class:list={['text-5xl font-light leading-none', tier.highlight ? 'text-lime' : 'text-blue']}>{tier.count.length <= 2 ? tier.count : ''}</span>
+        {tier.count.length > 2 && <span class:list={['text-sm font-bold uppercase tracking-[0.14em]', tier.highlight ? 'text-lime' : 'text-blue']}>{tier.count}</span>}
+        <h3 class="mt-4 font-display text-xl font-extrabold leading-tight tracking-tight">{tier.name}</h3>
+        <p class:list={['mt-2 flex-1 text-[0.95rem]', tier.highlight ? 'text-cream/90' : 'text-muted']}>{tier.text}</p>
+        <p class:list={['mt-5 border-t pt-4 text-sm font-bold', tier.highlight ? 'border-white/15 text-coral' : 'border-line text-coral-ink']}>Pricing on request</p>
+      </li>
+    ))}
+  </ul>
+
+  <!-- Benefits matrix -->
+  <h3 class="display mt-16 text-3xl text-navy sm:text-4xl">Benefits at a <span class="text-coral-dark">glance.</span></h3>
+  <div class="mt-6 overflow-x-auto rounded-2xl border border-line" tabindex="0" role="region" aria-label="Benefits by tier (scrolls horizontally)">
+    <table class="w-full min-w-[42rem] border-collapse text-left text-sm sm:text-base">
+      <caption class="sr-only">Partnership benefits by tier</caption>
+      <thead class="bg-navy text-cream">
+        <tr>
+          <th scope="col" class="p-4 font-bold">Benefit</th>
+          {data.matrixColumns.map((c) => <th scope="col" class="p-4 text-center font-bold">{c}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {data.matrix.map((row, i) => (
+          <tr class:list={[i % 2 ? 'bg-cream' : 'bg-white']}>
+            <th scope="row" class="p-4 font-semibold">{row.benefit}</th>
+            {row.tiers.map((on) => (
+              <td class="p-4 text-center">
+                {on ? (
+                  <span class="inline-grid size-8 place-items-center rounded-full bg-lime text-navy"><Icon name="check" size={18} label="Included" /></span>
+                ) : (
+                  <span class="text-line" aria-label="Not included">—</span>
+                )}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-4 text-sm text-muted">Benefits are indicative and tailored with each partner.</p>
+</Section>
+
+<!-- Enquiry -->
+<Section tone="cream" waves id="enquire" labelledby="enquire-h">
+  <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+    <div>
+      <ChapterLabel n={6} label="Enquire" />
+      <Headline id="enquire-h" text="Let’s write this" accent="together." class="mt-5" />
+      <p class="mt-5 max-w-md text-lg text-muted">Tell us a little about your brand and we’ll share the full proposal and tailored options.</p>
+      <div class="mt-8 flex flex-col items-start gap-4">
+        <LimeButton href={callUrl} label="Book a partnership call" variant="navy" external={!!env.partnerCallUrl} />
+        {
+          hasProposal ? (
+            <a href={`/${proposalFile}`} download class="inline-flex min-h-11 items-center gap-2 font-bold text-blue underline decoration-2 underline-offset-[6px] decoration-blue/30 hover:decoration-blue">
+              <Icon name="download" size={20} /> Download the partnership proposal (PDF)
+            </a>
+          ) : (
+            <p class="inline-flex items-center gap-2 text-sm text-muted">
+              <Icon name="download" size={20} /> Proposal PDF: <Placeholder value="[PROPOSAL PDF]" />
+            </p>
+          )
+        }
+        <a href={`mailto:${site.email}`} class="inline-flex min-h-11 items-center gap-2 font-bold text-navy hover:text-blue"><Icon name="mail" size={20} class="text-blue" />{site.email}</a>
+      </div>
+    </div>
+    <Form id="partner-form" name="partner" lang={lang} endpoint={env.formEndpointPartner || env.formEndpoint} class="card p-5 sm:p-7" successText="Thank you. Our partnerships team will be in touch shortly.">
+      <Field formId="partner-form" name="name" label="Name" autocomplete="name" required />
+      <Field formId="partner-form" name="email" type="email" label="Work email" autocomplete="email" required />
+      <Field formId="partner-form" name="phone" type="tel" label="Phone" autocomplete="tel" inputmode="tel" required />
+      <Field formId="partner-form" name="organisation" label="Company / brand" autocomplete="organization" required />
+      <Field formId="partner-form" name="tier" type="select" label="Interested in" options={[...data.tiers.map((t) => t.name), 'Not sure yet']} full />
+      <Field formId="partner-form" name="message" type="textarea" label="Message" full rows={4} />
+    </Form>
+  </div>
+</Section>

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FCFAF3"/><stop offset="1" stop-color="#E4ECF9"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2448ED"/><stop offset="1" stop-color="#0F1C74"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <circle cx="1170" cy="360" r="170" fill="#F47A5E" opacity=".18"/>
+  <circle cx="1170" cy="360" r="112" fill="#F47A5E"/>
+  <g fill="none" stroke="#0F1C74" stroke-opacity=".12" stroke-width="3">
+    <path d="M140 210c30-14 60-14 90 0M200 250c24-11 48-11 72 0M1330 160c30-14 60-14 90 0"/>
+  </g>
+  <path d="M0 560 C160 470 300 500 430 520 S700 440 860 480 1120 520 1260 470 1500 430 1600 470 V640 H0Z" fill="#C9D6F4"/>
+  <path d="M0 610 C200 540 360 580 520 590 S820 540 980 570 1260 600 1400 560 1600 560 1600 560 V660 H0Z" fill="#8FA5EE"/>
+  <!-- palms right bank -->
+  <g fill="#0F1C74">
+    <path d="M1340 620 q6-110 34-190 l6 2 q-24 80 -30 188z"/>
+    <path d="M1376 430 q-60-30-110 6 q54-16 108 0z M1376 430 q40-50 104-40 q-56 6-100 44z M1376 430 q-20-60-80-70 q52 26 76 72z M1376 430 q70-10 110 40 q-54-30-108-36z M1376 430 q10-60 60-86 q-34 40-56 88z"/>
+    <path d="M1470 630 q2-80 22-140 l6 2 q-16 60 -20 138z"/>
+    <path d="M1494 492 q-44-24-84 4 q40-12 82 0z M1494 492 q30-38 78-30 q-42 4-76 32z M1494 492 q-14-44-60-52 q40 20 58 54z M1494 492 q52-8 82 30 q-40-22-80-28z"/>
+  </g>
+  <!-- chinese fishing net, left -->
+  <g stroke="#0F1C74" stroke-width="6" stroke-linecap="round" fill="none">
+    <path d="M170 650 L330 420 M330 420 L470 520 M330 420 L220 560"/>
+    <path d="M400 470 L520 600" stroke-width="4"/>
+  </g>
+  <path d="M400 470 L560 470 L520 600 Z" fill="none" stroke="#0F1C74" stroke-width="3"/>
+  <g stroke="#0F1C74" stroke-width="1.5" opacity=".7">
+    <path d="M420 490 L548 490 M440 520 L540 520 M460 550 L532 550 M480 580 L525 580 M430 470 L505 600 M470 470 L512 600 M510 470 L518 600"/>
+  </g>
+  <!-- lake -->
+  <path d="M0 640 C300 625 500 650 800 640 S1300 625 1600 640 V1000 H0Z" fill="url(#water)"/>
+  <g fill="#F47A5E" opacity=".85">
+    <rect x="1080" y="668" width="180" height="7" rx="3.5"/>
+    <rect x="1110" y="694" width="120" height="6" rx="3"/>
+    <rect x="1130" y="718" width="80" height="5" rx="2.5"/>
+    <rect x="1148" y="740" width="44" height="4" rx="2"/>
+  </g>
+  <g fill="none" stroke="#FFFFFF" stroke-opacity=".28" stroke-width="3" stroke-linecap="round">
+    <path d="M80 700c30-12 60-12 90 0s60 12 90 0"/>
+    <path d="M520 740c30-12 60-12 90 0s60 12 90 0"/>
+    <path d="M1320 760c30-12 60-12 90 0s60 12 90 0"/>
+    <path d="M220 820c30-12 60-12 90 0"/>
+    <path d="M1400 880c30-12 60-12 90 0"/>
+  </g>
+  <!-- boat -->
+  <g transform="translate(860 690)">
+    <path d="M0 30 h130 l-18 22 h-94z" fill="#0F1C74"/>
+    <path d="M62 30 V-60 L118 26z" fill="#F47A5E"/>
+    <path d="M58 30 V-40 L14 26z" fill="#FCFAF3"/>
+  </g>
+  <!-- open book -->
+  <g transform="translate(800 930)">
+    <path d="M-330 0 C-240 -70 -90 -80 0 -30 C90 -80 240 -70 330 0 L330 40 C240 -20 90 -20 0 20 C-90 -20 -240 -20 -330 40Z" fill="#FCFAF3"/>
+    <path d="M-330 0 C-240 -70 -90 -80 0 -30 C90 -80 240 -70 330 0" fill="none" stroke="#0F1C74" stroke-width="5"/>
+    <path d="M0 -30 V20" stroke="#0F1C74" stroke-width="5"/>
+    <g fill="none" stroke="#1B37E6" stroke-width="3" stroke-linecap="round" opacity=".6">
+      <path d="M-280 -8 C-210 -48 -110 -54 -40 -24"/>
+      <path d="M-270 12 C-200 -26 -110 -32 -40 -4"/>
+      <path d="M280 -8 C210 -48 110 -54 40 -24"/>
+      <path d="M270 12 C200 -26 110 -32 40 -4"/>
+    </g>
+  </g>
+</svg>

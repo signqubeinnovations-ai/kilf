@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import ChapterLabel from '@/components/ChapterLabel.astro';
+import Headline from '@/components/Headline.astro';
+import StrandGrid from '@/components/blocks/StrandGrid.astro';
+import NotifyBanner from '@/components/blocks/NotifyBanner.astro';
+import Schedule from '@/components/blocks/Schedule.astro';
+import type { Lang } from '@/i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const teasers = (await getCollection('teasers')).sort((a, b) => a.data.order - b.data.order);
+const days = await getCollection('schedule');
+const hasSchedule = days.length > 0;
+---
+<PageHero
+  chapter={1}
+  label="Programme"
+  text="Some stories you read."
+  accent="Others, you live."
+  lead={hasSchedule ? 'Five days on the shore of Ashtamudi. Here is the full programme.' : 'We won’t tell you everything yet. Here is a glimpse.'}
+/>
+
+{
+  hasSchedule ? (
+    <Section tone="cream" class="!pt-0" labelledby="schedule-h">
+      <h2 id="schedule-h" class="sr-only">Schedule</h2>
+      <Schedule days={days} />
+    </Section>
+  ) : (
+    <Section tone="cream" class="!pt-0" labelledby="teasers-h">
+      <h2 id="teasers-h" class="sr-only">A glimpse of the programme</h2>
+      <ol class="grid gap-3 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
+        {teasers.map((item, i) => (
+          <li data-reveal style={`transition-delay:${(i % 3) * 70}ms`} class:list={['lift flex flex-col rounded-2xl p-6 sm:p-8', i === 0 ? 'on-dark bg-navy text-cream' : 'card']}>
+            <span class:list={['text-5xl font-light leading-none sm:text-6xl', i === 0 ? 'text-lime' : 'text-blue']}>{String(i + 1).padStart(2, '0')}</span>
+            <h3 class:list={['mt-4 font-display sm:mt-6 text-2xl font-extrabold leading-tight tracking-tight', i === 0 ? 'text-cream' : 'text-navy']}>{item.data.title}</h3>
+            <p class:list={['mt-2 text-lg leading-snug', i === 0 ? 'text-cream/90' : 'text-muted']}>{item.data.line}</p>
+          </li>
+        ))}
+      </ol>
+    </Section>
+  )
+}
+
+<Section tone="sky" waves labelledby="strands-h">
+  <ChapterLabel n={2} label="Strands" />
+  <Headline id="strands-h" text="Nine strands." accent="One shore." class="mt-5" />
+  <div class="mt-10"><StrandGrid lang={lang} /></div>
+</Section>
+
+{
+  !hasSchedule && (
+    <NotifyBanner
+      id="notify"
+      formName="programme-notify"
+      text="The full programme will be unveiled"
+      accent="soon."
+      lead="Dates, times and venues for every session. Leave your details and we’ll send it to you first."
+    />
+  )
+}

@@ -1,0 +1,115 @@
+---
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import ChapterLabel from '@/components/ChapterLabel.astro';
+import Headline from '@/components/Headline.astro';
+import IconCircle from '@/components/IconCircle.astro';
+import Icon from '@/components/Icon.astro';
+import Form from '@/components/Form.astro';
+import Field from '@/components/Field.astro';
+import LimeButton from '@/components/LimeButton.astro';
+import { localizePath, type Lang } from '@/i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const lp = (p: string) => localizePath(p, lang);
+const tabs = [
+  ['register', 'pen', 'Register', '#register'],
+  ['volunteer', 'heart', 'Volunteer', '#volunteer'],
+  ['exhibit', 'store', 'Exhibit', '#exhibit'],
+  ['partner', 'handshake', 'Partner', lp('/partners')],
+  ['attend', 'ticket', 'Attend', lp('/passes')],
+];
+---
+<PageHero chapter={1} label="Join in" text="Be part of" accent="KILF." lead="Five ways into the first chapter. Pick yours: every form takes about a minute." >
+  <nav aria-label="Ways to get involved" class="mt-10">
+    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      {tabs.map(([key, icon, label, href]) => (
+        <li class:list={[key === 'register' && 'col-span-2 sm:col-span-1']}>
+          <a href={href} class="card lift group flex min-h-24 items-center gap-3 p-4 sm:flex-col sm:items-start sm:p-5">
+            <IconCircle name={icon} tone={key === 'register' ? 'lime' : 'sky'} size="sm" />
+            <span class="flex flex-1 items-center justify-between gap-2 self-stretch font-display text-lg font-extrabold tracking-tight">
+              {label}
+              <Icon name={href.startsWith('#') ? 'chevron' : 'arrow'} size={20} class="text-blue" />
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</PageHero>
+
+<Section tone="white" id="register" labelledby="register-h" class="border-t border-line">
+  <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+    <div>
+      <ChapterLabel n={2} label="Register" />
+      <Headline id="register-h" text="Register your" accent="interest." class="mt-5" />
+      <p class="mt-5 max-w-md text-lg text-muted">Be a delegate at the first edition. We’ll send you early access to passes, speaker news and the programme as it is unveiled.</p>
+    </div>
+    <Form id="register-form" name="register" lang={lang} class="card p-5 sm:p-7">
+      <Field formId="register-form" name="name" label="Name" autocomplete="name" required />
+      <Field formId="register-form" name="email" type="email" label="Email" autocomplete="email" required />
+      <Field formId="register-form" name="phone" type="tel" label="Phone" autocomplete="tel" inputmode="tel" required />
+      <Field formId="register-form" name="organisation" label="Organisation / college" autocomplete="organization" />
+      <Field formId="register-form" name="attendAs" type="select" label="I’d attend as" options={['Reader / visitor', 'Student', 'Writer', 'Publisher', 'Media', 'Other']} />
+      <Field formId="register-form" name="days" type="select" label="Days I’m likely to come" options={['All five days', '31 Dec (New Year’s Eve)', 'One or two days', 'Not sure yet']} />
+      <Field formId="register-form" name="message" type="textarea" label="Message" full rows={3} />
+    </Form>
+  </div>
+</Section>
+
+<Section tone="cream" waves id="volunteer" labelledby="volunteer-h">
+  <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+    <div>
+      <ChapterLabel n={3} label="Volunteer" />
+      <Headline id="volunteer-h" text="Help us write the" accent="first chapter." class="mt-5" />
+      <p class="mt-5 max-w-md text-lg text-muted">Hospitality, stage and guest care. Meet the speakers, learn how a festival runs, and be part of the story from the inside.</p>
+    </div>
+    <Form id="volunteer-form" name="volunteer" lang={lang} class="card p-5 sm:p-7">
+      <Field formId="volunteer-form" name="name" label="Name" autocomplete="name" required />
+      <Field formId="volunteer-form" name="email" type="email" label="Email" autocomplete="email" required />
+      <Field formId="volunteer-form" name="phone" type="tel" label="Phone" autocomplete="tel" inputmode="tel" required />
+      <Field formId="volunteer-form" name="organisation" label="College / organisation" autocomplete="organization" />
+      <Field formId="volunteer-form" name="team" type="select" label="I’d like to help with" options={['Hospitality', 'Stage', 'Guest care', 'Anywhere I’m needed']} required />
+      <Field formId="volunteer-form" name="availability" type="select" label="Availability" options={['All five days', 'Some days', 'Before the festival only']} />
+      <Field formId="volunteer-form" name="languages" label="Languages you speak" hint="e.g. Malayalam, English, Tamil" />
+      <Field formId="volunteer-form" name="message" type="textarea" label="Anything else?" full rows={3} />
+    </Form>
+  </div>
+</Section>
+
+<Section tone="white" id="exhibit" labelledby="exhibit-h" class="border-y border-line">
+  <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+    <div>
+      <ChapterLabel n={4} label="Exhibit" />
+      <Headline id="exhibit-h" text="Set up on the" accent="shore." class="mt-5" />
+      <p class="mt-5 max-w-md text-lg text-muted">Publishers at the book fair, artists in the exhibition spaces and food stalls for the lakeside evenings. Tell us what you’d bring.</p>
+    </div>
+    <Form id="exhibit-form" name="exhibit" lang={lang} class="card p-5 sm:p-7">
+      <Field formId="exhibit-form" name="name" label="Contact name" autocomplete="name" required />
+      <Field formId="exhibit-form" name="email" type="email" label="Email" autocomplete="email" required />
+      <Field formId="exhibit-form" name="phone" type="tel" label="Phone" autocomplete="tel" inputmode="tel" required />
+      <Field formId="exhibit-form" name="organisation" label="Publisher / studio / business" autocomplete="organization" required />
+      <Field formId="exhibit-form" name="exhibitType" type="select" label="Type" options={['Publisher / book stall', 'Artist / exhibition', 'Food stall', 'Other']} required />
+      <Field formId="exhibit-form" name="website" type="url" label="Website or social link" inputmode="url" />
+      <Field formId="exhibit-form" name="message" type="textarea" label="What would you exhibit or sell?" full rows={3} />
+    </Form>
+  </div>
+</Section>
+
+<Section tone="cream" labelledby="more-h">
+  <h2 id="more-h" class="sr-only">Partner or attend</h2>
+  <div class="grid gap-3 md:grid-cols-2 md:gap-4">
+    <div id="partner" class="on-dark rounded-2xl bg-navy p-7 text-cream sm:p-10">
+      <ChapterLabel n={5} label="Partner" tone="dark" />
+      <Headline text="Your brand. Our story." accent="One lake." tone="dark" size="md" class="mt-4" />
+      <p class="mt-4 text-cream/90">Founding partnerships for the first edition.</p>
+      <LimeButton href={lp('/partners')} label="See partnership options" class="mt-7" />
+    </div>
+    <div id="attend" class="rounded-2xl bg-lime p-7 text-navy sm:p-10">
+      <ChapterLabel n={6} label="Attend" tone="lime" />
+      <Headline text="Get your" accent="pass." size="md" class="mt-4" />
+      <p class="mt-4 text-navy/85">Day, Festival and Young Reader passes. Ticketing opens soon.</p>
+      <LimeButton href={lp('/passes')} label="See passes" variant="navy" class="mt-7" />
+    </div>
+  </div>
+</Section>

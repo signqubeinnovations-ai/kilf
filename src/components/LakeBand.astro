@@ -1,0 +1,14 @@
+---
+import Illustration from './Illustration.astro';
+/** Full-width lake scene that fades into the cream page at its top edge. */
+interface Props { src?: string; alt?: string; class?: string; height?: string }
+const {
+  src = 'illustrations/lake-band.jpg',
+  alt = '',
+  class: cls = '',
+  height = 'h-40 sm:h-56 lg:h-72',
+} = Astro.props;
+---
+<div class:list={['fade-top relative w-full overflow-hidden', height, cls]} aria-hidden={alt ? undefined : 'true'}>
+  <Illustration src={src} alt={alt} class="h-full w-full object-cover object-bottom" />
+</div>

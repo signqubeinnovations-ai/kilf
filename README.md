@@ -1,0 +1,191 @@
+# KILF 2027 website
+
+Official website for the **Kollam International Literature Festival (KILF) 2027**: 31 December 2026 – 4 January 2027, Kollam, Kerala.
+
+Built with [Astro](https://astro.build) and Tailwind CSS. It is a fully static site: fast, SEO-friendly and hostable anywhere. The only JavaScript is a few small scripts: the mobile menu, countdown, speaker filters, map loader, scroll fade-ins and forms.
+
+- **English** at `/` (default), **Malayalam** at `/ml/`. Home and About are translated; other `/ml/` pages show the English content with a notice.
+- Content (speakers, FAQs, passes, strands, programme, sponsors) lives in `src/content/` and can be edited without touching code.
+
+---
+
+## 1. Run it locally
+
+Requires **Node 22.12+**.
+
+```bash
+npm install
+cp .env.example .env     # optional: fill in the form endpoint etc.
+npm run dev              # http://localhost:4321
+```
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Local dev server with hot reload. `[PLACEHOLDERS]` are highlighted in yellow. |
+| `npm run build` | Production build into `dist/` (plain static files). |
+| `npm run preview` | Serve the built `dist/` locally. |
+| `npm run check` | Type-check content and components. |
+| `npm run assets` | Regenerate stand-in images and the share image (also runs before `dev`/`build`). |
+| `npm run screenshots` | After a build: screenshots of key pages at mobile + desktop into `screenshots/`. |
+
+## 2. Artwork and photos: `kilf-assets/`
+
+Put the brochure artwork here, using these names:
+
+```
+kilf-assets/
+  logos/kilf-logo.svg            # main logo (cobalt), used in the header
+  logos/kilf-logo-white.svg      # logo for dark backgrounds (footer)
+  illustrations/cover.jpg        # hero lake-and-book illustration (also builds the share image)
+  illustrations/lake-band.jpg    # wide lake scene used above the footer
+  illustrations/nye.jpg          # New Year's Eve night scene (home page)
+  illustrations/p4_stage.jpg     # Khasakkinte Ithihasam stage
+  illustrations/p8_map_clean.jpg # illustrated map (About, Visit)
+  speakers/<file>.jpg            # duotone speaker photos, e.g. m-mukundan.jpg
+  reference-brochure.pdf         # design reference (not published)
+```
+
+Until a file is present, the site uses an on-brand **stand-in**: flat SVG illustrations in `src/placeholders/`, and initials for speakers. A real file with the same name (any of `.jpg .png .webp .avif`) replaces its stand-in automatically on the next build. Images are resized and served as AVIF/WebP with `<picture>`.
+
+The 1200×630 social share image (`public/og-image.jpg`) is built from `cover.jpg` on every build.
+
+## 3. Editing content
+
+All content is validated at build time, so a typo in a field name fails the build with a clear message.
+
+| What | Where |
+|---|---|
+| Festival facts (dates, venues, email, social handle, organiser) | `src/lib/site.ts` |
+| Speakers | `src/content/speakers/*.md` |
+| FAQs | `src/content/faqs.json` |
+| Passes | `src/content/passes.json` |
+| The nine strands (EN + ML) | `src/content/strands.json` |
+| Programme teasers | `src/content/teasers.json` |
+| Full schedule (later) | `src/content/schedule.json` |
+| Sponsors / partner logos | `src/content/sponsors.json` |
+| Partnership page (why, audience, tiers, benefits) | `src/data/partnership.json` |
+| UI text + Malayalam translations | `src/i18n/ui.ts`, `src/i18n/about-qa.ts` |
+
+### Add a speaker
+
+1. Put the duotone photo in `kilf-assets/speakers/`, e.g. `kilf-assets/speakers/k-r-meera.jpg`.
+2. Create `src/content/speakers/k-r-meera.md`:
+
+   ```md
+   ---
+   name: "K. R. Meera"
+   role: "Novelist · Malayalam literature"
+   photo: k-r-meera.jpg
+   categories: [literature]          # any of: literature, cinema, music, history-ideas
+   order: 175                        # lower = earlier in the grid
+   featured: false                   # true = eligible for the 12 on the home page
+   status: proposed                  # change to "confirmed" once confirmed
+   ---
+
+   Optional bio in Markdown. If you write one, the speaker gets a page at /speakers/k-r-meera.
+   ```
+
+3. Commit. The speakers page, filters and home preview update automatically.
+
+To remove a speaker, delete their `.md` file.
+
+### Add the full schedule later
+
+The Programme page shows the six teasers while `src/content/schedule.json` is empty (`[]`). Add days and it switches to a day-by-day schedule; the teasers and "Notify me" banner disappear. No design changes are needed.
+
+```json
+[
+  {
+    "id": "day-1",
+    "date": "2026-12-31",
+    "label": "Day 1 · New Year's Eve",
+    "sessions": [
+      {
+        "start": "18:30",
+        "end": "19:30",
+        "title": "Masters, unscripted",
+        "description": "Optional one-liner.",
+        "venue": "sngcc",
+        "strand": "literature",
+        "speakers": ["m-mukundan", "sara-joseph"],
+        "language": "Malayalam"
+      }
+    ]
+  }
+]
+```
+
+- `venue` is one of `sngcc` (Sreenarayana Guru Cultural Centre), `8point` (8 Point Art Cafe) or `ashramam` (Ashramam Maidan). Venues are defined in `src/lib/site.ts`.
+- `speakers` are speaker file names without `.md`.
+- `language` is one of `Malayalam`, `English`, `Tamil` or `Bilingual`.
+
+(The build prints a harmless "No items found" warning while `schedule.json` and `sponsors.json` are empty.)
+
+### Open ticketing
+
+In `src/content/passes.json`, add `"price"` and `"buyUrl"` to each pass. The "Notify me" button becomes a "Buy" button. Until then no price is shown.
+
+### Translate another page into Malayalam
+
+1. Move the page's English strings into `src/i18n/ui.ts` (the `en` block) and add the Malayalam strings to the `ml` block, as Home and About do. Use `t('key')` in the view in `src/views/`.
+2. Add the path (e.g. `'/programme'`) to `translatedPaths` in `src/i18n/ui.ts`.
+3. Add the path to the sitemap filter in `astro.config.mjs`.
+
+Untranslated `/ml/` pages show a notice, are `noindex`, and point their canonical URL at the English page.
+
+## 4. Forms
+
+Every form (Register, Volunteer, Exhibit, College, Partner enquiry, Contact, newsletter and the "Notify me" banners) sends a JSON POST to **`PUBLIC_FORM_ENDPOINT`**. Each submission carries a `form` field naming the form (`register`, `volunteer`, `exhibit`, `partner`, `contact`, `newsletter`, `programme-notify`, `passes-notify`, `khasak-seats`, `college`) and the `page` it came from.
+
+- **Formspree** (simplest): create a form, then set `PUBLIC_FORM_ENDPOINT=https://formspree.io/f/xxxxxxx`.
+- **Google Sheets**: deploy an Apps Script web app whose `doPost(e)` appends `JSON.parse(e.postData.contents)` to a sheet, then set the endpoint to its `https://script.google.com/macros/s/…/exec` URL. The site sends a CORS-safe request for Apps Script automatically.
+- Optional overrides: `PUBLIC_FORM_ENDPOINT_PARTNER` and `PUBLIC_FORM_ENDPOINT_NEWSLETTER`.
+
+Spam protection: a hidden honeypot field (`_gotcha`) and a minimum fill time. Bots see a fake success and nothing is sent. In `npm run dev` with no endpoint set, forms simulate success. In production with no endpoint, forms show an error with the festival email.
+
+## 5. Environment variables
+
+See `.env.example`. Set them in Vercel/Netlify under *Settings → Environment variables*.
+
+| Variable | Purpose |
+|---|---|
+| `SITE_URL` | Public URL, used for canonical links, sitemap, Open Graph and the footer QR code. **Set this once the domain is known.** |
+| `PUBLIC_FORM_ENDPOINT` | Form backend (see above). |
+| `PUBLIC_GA4_ID` *or* `PUBLIC_PLAUSIBLE_DOMAIN` | Analytics. Nothing loads if both are empty. The privacy page adapts automatically. |
+| `PUBLIC_PARTNER_CALL_URL` | Link for "Book a partnership call" (Calendly, Cal.com…). Falls back to an email link. |
+| `PUBLIC_WHATSAPP_URL` | WhatsApp channel/community link; shows a "Join on WhatsApp" button in the signup block. |
+
+## 6. Deploy
+
+**Vercel**: import the repo. `vercel.json` sets the build (`npm run build`, output `dist`). Add the env variables and deploy.
+
+**Netlify**: import the repo. `netlify.toml` is included.
+
+**Any static host**: run `npm run build` and upload `dist/`.
+
+The partnership proposal PDF: put it at `public/downloads/kilf-2027-partnership-proposal.pdf` and the Partners page shows a download link.
+
+## 7. What's where
+
+```
+src/
+  components/     Header, Footer, ChapterLabel, Headline, LimeButton, IconCircle,
+                  SpeakerCard, LakeBand, Section, Form/Field, Countdown, Icon …
+  components/blocks/  Larger reusable sections (strands grid, notify banner, schedule…)
+  views/          Page bodies, shared by the English and /ml/ routes
+  pages/          Routes (thin wrappers around views) + robots.txt
+  layouts/        BaseLayout: SEO, Open Graph, JSON-LD, fonts, analytics
+  content/        Editable content collections
+  i18n/           Translations
+  lib/            Site facts, image lookup
+  styles/         Brand tokens (colours, type) in global.css
+  placeholders/   Stand-in SVG illustrations
+scripts/          Asset preparation and screenshots
+kilf-assets/      Real artwork (see section 2)
+```
+
+### Brand notes
+
+- Colours are Tailwind tokens (`bg-navy`, `text-coral`, `bg-lime`, …) defined in `src/styles/global.css`.
+- For WCAG AA, bright coral (`coral`) is only used on navy. On cream, headline accents use `coral-dark`, small coral text uses `coral-ink`, and small coral text on lime uses `coral-deep`.
+- Fonts are self-hosted: Plus Jakarta Sans (800) for headlines, Manrope for body text and Manjari for Malayalam.

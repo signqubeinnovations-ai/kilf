@@ -1,0 +1,29 @@
+[
+  {
+    "id": "day",
+    "order": 1,
+    "name": "Day Pass",
+    "audience": "For one day of the festival",
+    "description": "Pick your day and dive in: sessions, the book fair and the lakeside evening.",
+    "includes": ["Entry to all sessions on the day", "Book fair and exhibitions", "Evening music by the lake"],
+    "highlighted": false
+  },
+  {
+    "id": "festival",
+    "order": 2,
+    "name": "Festival Pass",
+    "audience": "All five days, 31 Dec – 4 Jan",
+    "description": "The whole story, from the midnight chapter to the final page.",
+    "includes": ["Entry to all sessions, all five days", "New Year's Eve by the lake", "Book fair and exhibitions", "Priority entry where seating is limited"],
+    "highlighted": true
+  },
+  {
+    "id": "young-reader",
+    "order": 3,
+    "name": "Young Reader Pass",
+    "audience": "For youth & students",
+    "description": "Made for students and young readers. Bring your college ID.",
+    "includes": ["Entry to sessions", "Youth stage: slams, open mics and more", "Book fair and exhibitions"],
+    "highlighted": false
+  }
+]

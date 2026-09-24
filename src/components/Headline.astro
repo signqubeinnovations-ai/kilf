@@ -1,0 +1,28 @@
+---
+/**
+ * Display headline. The final word/phrase (`accent`) is set in coral, as in
+ * the brochure: "Voices without <accent>borders.</accent>"
+ */
+interface Props {
+  text?: string;
+  accent?: string;
+  as?: 'h1' | 'h2' | 'h3';
+  size?: 'xl' | 'lg' | 'md' | 'sm';
+  tone?: 'light' | 'dark' | 'blue';
+  class?: string;
+  id?: string;
+  lang?: string;
+}
+const { text = '', accent = '', as: Tag = 'h2', size = 'lg', tone = 'light', class: cls = '', id, lang } = Astro.props;
+const sizes = {
+  xl: 'text-[2.6rem] sm:text-6xl lg:text-[5.25rem]',
+  lg: 'text-[2.15rem] sm:text-5xl lg:text-[3.75rem]',
+  md: 'text-[1.75rem] sm:text-4xl lg:text-[2.6rem]',
+  sm: 'text-2xl sm:text-3xl',
+};
+const accentColor = { light: 'text-coral-dark', dark: 'text-coral', blue: 'text-lime' }[tone];
+const base = { light: 'text-navy', dark: 'text-cream', blue: 'text-white' }[tone];
+---
+<Tag id={id} lang={lang} class:list={['display', sizes[size], base, cls]}>
+  {text}{text && accent ? ' ' : ''}{accent && <span class={accentColor}>{accent}</span>}
+</Tag>

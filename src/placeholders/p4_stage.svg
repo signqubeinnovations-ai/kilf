@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <rect width="1600" height="1000" fill="#0F1C74"/>
+  <path d="M0 0 H1600 V120 C1400 170 1200 130 1000 150 S600 170 400 140 100 160 0 130Z" fill="#F47A5E"/>
+  <path d="M0 0 H230 C210 300 250 600 180 1000 H0Z" fill="#D4553A"/>
+  <path d="M1600 0 H1370 C1390 300 1350 600 1420 1000 H1600Z" fill="#D4553A"/>
+  <path d="M600 120 L380 820 H1220 L1000 120Z" fill="#E7EF93" opacity=".18"/>
+  <ellipse cx="800" cy="820" rx="420" ry="60" fill="#E7EF93" opacity=".25"/>
+  <rect x="200" y="820" width="1200" height="180" fill="#0A1454"/>
+  <path d="M200 820 H1400" stroke="#E7EF93" stroke-width="4"/>
+  <!-- a tree and village (Khasak) -->
+  <g fill="#1B37E6"><path d="M1040 820 V560 h16 V820z"/><circle cx="1048" cy="520" r="90"/><circle cx="990" cy="570" r="60"/><circle cx="1110" cy="570" r="60"/></g>
+  <g fill="#0A1454"><path d="M560 820 v-140 l70-60 l70 60 v140z"/></g>
+  <!-- figures -->
+  <g fill="#FCFAF3">
+    <circle cx="760" cy="610" r="26"/><path d="M730 820 l8-150 q22-24 44 0 l8 150z"/>
+    <circle cx="880" cy="640" r="22"/><path d="M856 820 l6-128 q18-20 36 0 l6 128z"/>
+  </g>
+  <g fill="#E7EF93"><circle cx="330" cy="930" r="18"/><circle cx="420" cy="940" r="18"/><circle cx="510" cy="928" r="18"/><circle cx="600" cy="942" r="18"/><circle cx="1000" cy="930" r="18"/><circle cx="1090" cy="940" r="18"/><circle cx="1180" cy="928" r="18"/><circle cx="1270" cy="940" r="18"/></g>
+</svg>

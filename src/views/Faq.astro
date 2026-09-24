@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import Icon from '@/components/Icon.astro';
+import LimeButton from '@/components/LimeButton.astro';
+import { site } from '@/lib/site';
+import { localizePath, type Lang } from '@/i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const faqs = (await getCollection('faqs')).sort((a, b) => a.data.order - b.data.order);
+---
+<PageHero chapter={1} label="FAQ" text="Questions," accent="answered." lead="Everything you need to know before the first chapter. Can’t find it? Write to us." />
+
+<Section tone="cream" class="!pt-0" labelledby="faq-list-h">
+  <h2 id="faq-list-h" class="sr-only">Frequently asked questions</h2>
+  <div class="max-w-3xl space-y-3">
+    {faqs.map((f, i) => (
+      <details class="card group overflow-hidden" open={i === 0} name="faq">
+        <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-display text-lg font-extrabold tracking-tight text-navy sm:px-6 sm:text-xl [&::-webkit-details-marker]:hidden">
+          {f.data.question}
+          <span class="inline-grid size-10 shrink-0 place-items-center rounded-full bg-sky text-blue transition-transform duration-200 group-open:rotate-180">
+            <Icon name="chevron" size={22} />
+          </span>
+        </summary>
+        <div class="px-5 pb-6 text-lg leading-relaxed text-muted sm:px-6">{f.data.answer}</div>
+      </details>
+    ))}
+  </div>
+  <div class="mt-12 flex max-w-3xl flex-col items-start gap-4 rounded-2xl bg-sky p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+    <p class="text-lg font-semibold">Still wondering? <a href={`mailto:${site.email}`} class="text-blue underline">{site.email}</a></p>
+    <LimeButton href={localizePath('/contact', lang)} label="Contact us" />
+  </div>
+</Section>
+<script type="application/ld+json" is:inline set:html={JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.data.question, acceptedAnswer: { '@type': 'Answer', text: f.data.answer } })),
+})} />

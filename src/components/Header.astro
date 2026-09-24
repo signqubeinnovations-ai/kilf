@@ -1,0 +1,126 @@
+---
+import Logo from './Logo.astro';
+import LimeButton from './LimeButton.astro';
+import Icon from './Icon.astro';
+import { useTranslations, localizePath, languages, type Lang } from '@/i18n/ui';
+
+interface Props { lang: Lang; path: string }
+const { lang, path } = Astro.props;
+const t = useTranslations(lang);
+const lp = (p: string) => localizePath(p, lang);
+
+const nav = [
+  { href: '/about', label: t('nav.about') },
+  { href: '/speakers', label: t('nav.speakers') },
+  { href: '/programme', label: t('nav.programme') },
+  { href: '/get-involved', label: t('nav.involved') },
+  { href: '/passes', label: t('nav.passes') },
+  { href: '/visit', label: t('nav.visit') },
+];
+const more = [
+  { href: '/khasak', label: t('nav.khasak') },
+  { href: '/youth', label: t('nav.youth') },
+  { href: '/partners', label: t('nav.partners') },
+  { href: '/faq', label: t('nav.faq') },
+  { href: '/contact', label: t('nav.contact') },
+];
+const other: Lang = lang === 'en' ? 'ml' : 'en';
+const toggleHref = localizePath(path, other);
+// Malayalam labels are longer, so the full nav needs more room.
+const wide = lang === 'ml';
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href + '/'));
+---
+<header class="sticky top-0 z-50 border-b border-line/80 bg-cream/90 backdrop-blur-md supports-[backdrop-filter]:bg-cream/80">
+  <div class="container-kilf flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
+    <a href={lp('/')} class="-ml-1 flex min-h-11 items-center rounded-md px-1">
+      <Logo decorative /><span class="sr-only">KILF 2027 — {t('nav.home')}</span>
+    </a>
+
+    <nav aria-label={t('nav.primary')} class:list={['hidden', wide ? 'xl:block' : 'lg:block']}>
+      <ul class="flex items-center gap-1 xl:gap-2">
+        {nav.map((item) => (
+          <li>
+            <a
+              href={lp(item.href)}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+              class="relative inline-flex min-h-11 items-center rounded-full px-3 text-[0.92rem] font-semibold text-navy/85 transition-colors hover:text-blue aria-[current=page]:text-blue aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3 aria-[current=page]:after:bottom-1.5 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-coral"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={toggleHref}
+        hreflang={other}
+        lang={other}
+        class="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-bold text-blue ring-1 ring-inset ring-blue/25 transition-colors hover:bg-blue/5"
+      >
+        {languages[other]}
+      </a>
+      <span class="hidden sm:contents"><LimeButton href={lp('/get-involved#register')} label={t('cta.register')} size="sm" /></span>
+      <button
+        type="button"
+        class:list={['inline-grid size-11 place-items-center rounded-full text-navy ring-1 ring-inset ring-navy/15', wide ? 'xl:hidden' : 'lg:hidden']}
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        data-menu-toggle
+      >
+        <span class="sr-only" data-open-label>{t('nav.menu')}</span>
+        <span class="sr-only hidden" data-close-label>{t('nav.close')}</span>
+        <Icon name="menu" size={22} class="menu-icon" />
+        <Icon name="close" size={22} class="close-icon hidden" />
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class:list={['hidden border-t border-line bg-cream', wide ? 'xl:hidden' : 'lg:hidden']} data-menu data-wide={wide ? '' : undefined}>
+    <nav aria-label={t('nav.primary')} class="container-kilf max-h-[calc(100dvh-4rem)] overflow-y-auto py-4">
+      <ul class="divide-y divide-line/70">
+        {[...nav, ...more].map((item) => (
+          <li>
+            <a
+              href={lp(item.href)}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+              class="flex min-h-13 items-center justify-between py-3 font-display text-xl font-extrabold tracking-tight text-navy aria-[current=page]:text-blue"
+            >
+              {item.label}
+              <Icon name="arrow-right" size={20} class="text-coral-ink" />
+            </a>
+          </li>
+        ))}
+      </ul>
+      <LimeButton href={lp('/get-involved#register')} label={t('cta.register')} class="mt-5 w-full" />
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  if (btn && menu) {
+    const set = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('hidden', !open);
+      btn.querySelector('.menu-icon')?.classList.toggle('hidden', open);
+      btn.querySelector('.close-icon')?.classList.toggle('hidden', !open);
+      btn.querySelector('[data-open-label]')?.classList.toggle('hidden', open);
+      btn.querySelector('[data-close-label]')?.classList.toggle('hidden', !open);
+      document.documentElement.classList.toggle('overflow-hidden', open);
+    };
+    btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+        set(false);
+        btn.focus();
+      }
+    });
+    menu.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) set(false);
+    });
+    matchMedia(menu.hasAttribute('data-wide') ? '(min-width: 1280px)' : '(min-width: 1024px)').addEventListener('change', (e) => e.matches && set(false));
+  }
+</script>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <rect width="1200" height="1200" fill="#FCFAF3"/>
+  <g fill="none" stroke="#0F1C74" stroke-opacity=".07" stroke-width="2"><path d="M0 200 H1200 M0 400 H1200 M0 600 H1200 M0 800 H1200 M0 1000 H1200 M200 0 V1200 M400 0 V1200 M600 0 V1200 M800 0 V1200 M1000 0 V1200"/></g>
+  <!-- sea -->
+  <path d="M0 0 H260 C230 300 300 520 220 760 S180 1100 240 1200 H0Z" fill="#1B37E6"/>
+  <!-- Ashtamudi: a lake of eight arms -->
+  <g fill="none" stroke="#2448ED" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M250 720 C380 700 470 690 560 680" stroke-width="70"/>
+    <path d="M560 680 C600 640 620 560 590 470 C570 410 580 360 610 320" stroke-width="34"/>
+    <path d="M600 660 C680 600 760 520 820 470 C860 440 900 420 940 380" stroke-width="30"/>
+    <path d="M620 680 C720 660 820 640 920 620 C980 610 1030 600 1080 570" stroke-width="28"/>
+    <path d="M610 700 C700 730 800 780 880 830 C930 860 980 880 1030 900" stroke-width="30"/>
+    <path d="M590 710 C640 790 690 860 720 950 C735 990 740 1030 760 1070" stroke-width="26"/>
+    <path d="M560 710 C550 790 530 860 500 930 C480 980 470 1010 450 1050" stroke-width="24"/>
+    <path d="M520 690 C480 620 440 560 400 500 C380 470 360 440 330 410" stroke-width="26"/>
+    <path d="M470 715 C420 780 370 840 320 890 C300 910 280 930 260 950" stroke-width="22"/>
+  </g>
+  <ellipse cx="580" cy="690" rx="90" ry="60" fill="#2448ED"/>
+  <g fill="none" stroke="#FFFFFF" stroke-opacity=".35" stroke-width="3" stroke-linecap="round">
+    <path d="M540 690c14-6 28-6 42 0s28 6 42 0"/>
+  </g>
+  <g fill="#8FA5EE" opacity=".45"><circle cx="760" cy="600" r="14"/><circle cx="700" cy="770" r="10"/><circle cx="470" cy="620" r="9"/></g>
+  <!-- pins -->
+  <g>
+    <g transform="translate(430 560)"><path d="M0 0 c-30-40-30-80 0-80 s30 40 0 80z" fill="#F47A5E"/><circle cx="0" cy="-52" r="10" fill="#FCFAF3"/></g>
+    <g transform="translate(740 500)"><path d="M0 0 c-30-40-30-80 0-80 s30 40 0 80z" fill="#F47A5E"/><circle cx="0" cy="-52" r="10" fill="#FCFAF3"/></g>
+    <g transform="translate(620 860)"><path d="M0 0 c-30-40-30-80 0-80 s30 40 0 80z" fill="#F47A5E"/><circle cx="0" cy="-52" r="10" fill="#FCFAF3"/></g>
+  </g>
+  <!-- compass -->
+  <g transform="translate(1040 180)" fill="none" stroke="#0F1C74" stroke-width="4"><circle r="60"/><path d="M0 -80 L14 0 L0 80 L-14 0Z" fill="#0F1C74"/></g>
+</svg>

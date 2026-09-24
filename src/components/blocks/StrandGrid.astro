@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import IconCircle from '../IconCircle.astro';
+import type { Lang } from '@/i18n/ui';
+interface Props { lang?: Lang }
+const { lang = 'en' } = Astro.props;
+const strands = (await getCollection('strands')).sort((a, b) => a.data.order - b.data.order);
+const ml = lang === 'ml';
+---
+<ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
+  {strands.map((s, i) => (
+    <li data-reveal class="card lift flex items-start gap-4 p-5 sm:p-6" style={`transition-delay:${(i % 3) * 60}ms`}>
+      <IconCircle name={s.data.icon} tone={i % 3 === 1 ? 'lime' : 'sky'} />
+      <div>
+        <h3 class="font-display text-lg font-extrabold tracking-tight text-navy">
+          <span class="mr-1.5 text-sm font-bold text-coral-ink">{String(i + 1).padStart(2, '0')}</span>
+          {ml ? s.data.name_ml : s.data.name}
+        </h3>
+        <p class="mt-1 text-[0.95rem] leading-snug text-muted">{ml ? s.data.blurb_ml : s.data.blurb}</p>
+      </div>
+    </li>
+  ))}
+</ul>

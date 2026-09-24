@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import Badge from '@/components/Badge.astro';
+import Icon from '@/components/Icon.astro';
+import IconCircle from '@/components/IconCircle.astro';
+import LimeButton from '@/components/LimeButton.astro';
+import NotifyBanner from '@/components/blocks/NotifyBanner.astro';
+import type { Lang } from '@/i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const passes = (await getCollection('passes')).sort((a, b) => a.data.order - b.data.order);
+const icons: Record<string, string> = { day: 'sun', festival: 'star', 'young-reader': 'graduation' };
+---
+<PageHero chapter={1} label="Passes" text="Your seat by the" accent="lake.">
+  <p class="mt-6 inline-flex flex-wrap items-center gap-3 rounded-full bg-sky px-5 py-3 text-base font-bold text-navy">
+    <Icon name="clock" size={20} class="text-blue" /> Ticketing opens soon — register early.
+  </p>
+</PageHero>
+
+<Section tone="cream" class="!pt-0" labelledby="passes-h">
+  <h2 id="passes-h" class="sr-only">Pass types</h2>
+  <ul class="grid items-stretch gap-4 lg:grid-cols-3">
+    {passes.map((p) => (
+      <li
+        data-reveal
+        class:list={[
+          'relative flex flex-col rounded-2xl p-7 sm:p-8',
+          p.data.highlighted ? 'on-dark bg-navy text-cream shadow-[0_24px_50px_-28px_rgb(15_28_116/0.7)] lg:-my-4 lg:py-12' : 'card',
+        ]}
+      >
+        {p.data.highlighted && <Badge tone="lime" class="absolute right-6 top-6">Most complete</Badge>}
+        <IconCircle name={icons[p.id] ?? 'ticket'} tone={p.data.highlighted ? 'lime' : 'sky'} />
+        <h3 class:list={['mt-6 font-display text-3xl font-extrabold tracking-tight', p.data.highlighted ? 'text-cream' : 'text-navy']}>{p.data.name}</h3>
+        <p class:list={['mt-1 font-semibold', p.data.highlighted ? 'text-coral' : 'text-coral-ink']}>{p.data.audience}</p>
+        <p class:list={['mt-4', p.data.highlighted ? 'text-cream/90' : 'text-muted']}>{p.data.description}</p>
+        <ul class="mt-6 flex-1 space-y-2.5">
+          {p.data.includes.map((inc) => (
+            <li class="flex items-start gap-2.5">
+              <Icon name="check" size={20} class:list={['mt-0.5 shrink-0', p.data.highlighted ? 'text-lime' : 'text-blue']} />
+              <span>{inc}</span>
+            </li>
+          ))}
+        </ul>
+        <div class:list={['mt-8 border-t pt-6', p.data.highlighted ? 'border-white/15' : 'border-line']}>
+          {p.data.price && p.data.buyUrl ? (
+            <LimeButton href={p.data.buyUrl} label={`Buy · ${p.data.price}`} class="w-full" external />
+          ) : (
+            <>
+              <p class:list={['mb-4 text-sm font-bold uppercase tracking-[0.14em]', p.data.highlighted ? 'text-mist' : 'text-muted']}>On sale soon</p>
+              <LimeButton href="#notify" label="Notify me" variant={p.data.highlighted ? 'lime' : 'navy'} class="w-full" />
+            </>
+          )}
+        </div>
+      </li>
+    ))}
+  </ul>
+  <p class="mt-10 max-w-2xl text-sm text-muted">Inclusions are indicative and will be confirmed when ticketing opens. Some sessions may have limited seating.</p>
+</Section>
+
+<NotifyBanner
+  id="notify"
+  formName="passes-notify"
+  text="Ticketing opens"
+  accent="soon."
+  lead="Register early and we’ll tell you the moment passes go on sale."
+  lang={lang}
+  extraField={{ name: 'pass', label: 'Pass you’re interested in', options: ['Day Pass', 'Festival Pass', 'Young Reader Pass', 'Not sure yet'] }}
+/>
