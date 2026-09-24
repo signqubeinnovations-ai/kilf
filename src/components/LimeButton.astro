@@ -1,12 +1,15 @@
 ---
 import Icon from './Icon.astro';
-/** Lime pill with navy text and a ↗ arrow. Renders <a> when href is set. */
+/**
+ * Pill button with a ↗ arrow. On hover a ring spreads out from it, like a
+ * drop on water. Renders <a> when href is set.
+ */
 interface Props {
   href?: string;
   label: string;
   type?: 'button' | 'submit';
-  variant?: 'lime' | 'navy' | 'ghost' | 'white';
-  size?: 'md' | 'sm';
+  variant?: 'lime' | 'navy' | 'ghost' | 'white' | 'outline-light' | 'coral';
+  size?: 'md' | 'sm' | 'lg';
   arrow?: boolean;
   class?: string;
   external?: boolean;
@@ -14,14 +17,16 @@ interface Props {
 }
 const { href, label, type = 'button', variant = 'lime', size = 'md', arrow = true, class: cls = '', external = false, ...rest } = Astro.props;
 const variants = {
-  lime: 'bg-lime text-navy hover:bg-lime-deep',
-  navy: 'bg-navy text-cream hover:bg-navy-deep',
-  white: 'bg-white text-navy hover:bg-sky',
-  ghost: 'bg-transparent text-navy ring-1 ring-inset ring-navy/25 hover:bg-navy/5',
+  lime: 'bg-lime text-navy hover:bg-lime-deep [--ring:var(--color-lime)]',
+  navy: 'bg-navy text-cream hover:bg-navy-deep [--ring:var(--color-navy)]',
+  white: 'bg-white text-navy hover:bg-sky [--ring:#fff]',
+  coral: 'bg-coral text-navy hover:bg-[#f0694b] [--ring:var(--color-coral)]',
+  ghost: 'bg-transparent text-navy ring-1 ring-inset ring-navy/25 hover:bg-navy/5 [--ring:var(--color-navy)]',
+  'outline-light': 'bg-transparent text-white ring-1 ring-inset ring-white/45 hover:bg-white/10 [--ring:#fff]',
 };
-const sizes = { md: 'min-h-12 px-6 text-[0.95rem]', sm: 'min-h-11 px-5 text-sm' };
+const sizes = { lg: 'min-h-14 px-7 text-base', md: 'min-h-12 px-6 text-[0.95rem]', sm: 'min-h-11 px-5 text-sm' };
 const classes = [
-  'group inline-flex items-center justify-center gap-2 rounded-full font-bold tracking-tight transition-colors duration-200 whitespace-nowrap',
+  'btn group inline-flex items-center justify-center gap-2 rounded-full font-bold tracking-tight transition-colors duration-300 whitespace-nowrap',
   variants[variant],
   sizes[size],
   cls,
@@ -32,7 +37,7 @@ const ext = external ? { target: '_blank', rel: 'noopener' } : {};
   href ? (
     <a href={href} class:list={classes} {...ext} {...rest}>
       <span>{label}</span>
-      {arrow && <Icon name="arrow" size={18} class="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />}
+      {arrow && <Icon name="arrow" size={18} class="transition-transform duration-500 ease-[var(--ease-calm)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />}
       {external && <span class="sr-only">(opens in a new tab)</span>}
     </a>
   ) : (

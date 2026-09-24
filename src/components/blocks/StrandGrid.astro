@@ -1,23 +1,70 @@
 ---
 import { getCollection } from 'astro:content';
-import IconCircle from '../IconCircle.astro';
+import Icon from '../Icon.astro';
 import type { Lang } from '@/i18n/ui';
+/**
+ * The nine strands as colour blocks. Colours cycle blue → coral → lime →
+ * navy, so no two neighbours match in 1, 2 or 3 columns.
+ */
 interface Props { lang?: Lang }
 const { lang = 'en' } = Astro.props;
 const strands = (await getCollection('strands')).sort((a, b) => a.data.order - b.data.order);
 const ml = lang === 'ml';
+const tones = [
+  { card: 'bg-blue-bright text-white', num: 'text-lime', icon: 'bg-white/15 text-lime', text: 'text-white/90' },
+  { card: 'bg-coral text-navy', num: 'text-navy', icon: 'bg-navy text-coral', text: 'text-navy/85' },
+  { card: 'bg-lime text-navy', num: 'text-blue', icon: 'bg-navy text-lime', text: 'text-navy/85' },
+  { card: 'bg-navy text-cream', num: 'text-coral', icon: 'bg-white/10 text-coral', text: 'text-cream/85' },
+];
 ---
-<ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
-  {strands.map((s, i) => (
-    <li data-reveal class="card lift flex items-start gap-4 p-5 sm:p-6" style={`transition-delay:${(i % 3) * 60}ms`}>
-      <IconCircle name={s.data.icon} tone={i % 3 === 1 ? 'lime' : 'sky'} />
-      <div>
-        <h3 class="font-display text-lg font-extrabold tracking-tight text-navy">
-          <span class="mr-1.5 text-sm font-bold text-coral-ink">{String(i + 1).padStart(2, '0')}</span>
-          {ml ? s.data.name_ml : s.data.name}
-        </h3>
-        <p class="mt-1 text-[0.95rem] leading-snug text-muted">{ml ? s.data.blurb_ml : s.data.blurb}</p>
-      </div>
-    </li>
-  ))}
+<ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4" data-reveal-group>
+  {strands.map((s, i) => {
+    const tone = tones[i % tones.length];
+    return (
+      <li class:list={['strand group relative isolate flex min-h-[15.5rem] flex-col justify-between overflow-hidden rounded-[1.5rem] p-6 sm:min-h-[17rem] sm:p-7', tone.card]}>
+        <div class="flex items-start justify-between gap-4">
+          <span class:list={['numeral text-[3.4rem]', tone.num]}>{String(i + 1).padStart(2, '0')}</span>
+          <span class:list={['inline-grid size-12 place-items-center rounded-full transition-transform duration-700 ease-[var(--ease-calm)] group-hover:rotate-[-8deg] group-hover:scale-110', tone.icon]}>
+            <Icon name={s.data.icon} size={24} />
+          </span>
+        </div>
+        <div class="relative">
+          <h3 class="font-display text-[1.85rem] font-semibold leading-none tracking-tight sm:text-[2.1rem]">{ml ? s.data.name_ml : s.data.name}</h3>
+          <p class:list={['mt-3 max-w-[22rem] text-[1rem] leading-snug', tone.text]}>{ml ? s.data.blurb_ml : s.data.blurb}</p>
+        </div>
+        <span class="rings" aria-hidden="true"><i></i><i></i><i></i></span>
+      </li>
+    );
+  })}
 </ul>
+
+<style>
+  .strand {
+    transition: transform 0.7s var(--ease-calm), box-shadow 0.7s var(--ease-calm);
+  }
+  .strand:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 28px 50px -30px rgb(10 20 84 / 0.55);
+  }
+  .rings {
+    position: absolute;
+    right: -5.5rem;
+    bottom: -5.5rem;
+    z-index: -1;
+    width: 16rem;
+    height: 16rem;
+  }
+  .rings i {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 1.5px solid currentColor;
+    opacity: 0.14;
+    transition: transform 1.4s var(--ease-calm), opacity 1.4s var(--ease-calm);
+  }
+  .rings i:nth-child(2) { inset: 2.5rem; opacity: 0.2; }
+  .rings i:nth-child(3) { inset: 5rem; opacity: 0.26; }
+  .strand:hover .rings i { transform: scale(1.25); opacity: 0.08; }
+  .strand:hover .rings i:nth-child(2) { transform: scale(1.4); }
+  .strand:hover .rings i:nth-child(3) { transform: scale(1.7); }
+</style>

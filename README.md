@@ -2,7 +2,7 @@
 
 Official website for the **Kollam International Literature Festival (KILF) 2027**: 31 December 2026 – 4 January 2027, Kollam, Kerala.
 
-Built with [Astro](https://astro.build) and Tailwind CSS. It is a fully static site: fast, SEO-friendly and hostable anywhere. The only JavaScript is a few small scripts: the mobile menu, countdown, speaker filters, map loader, scroll fade-ins and forms.
+Built with [Astro](https://astro.build) and Tailwind CSS. It is a fully static site: fast, SEO-friendly and hostable anywhere. The calm lake animations run on [Motion](https://motion.dev) (formerly Framer Motion) inside small React islands; everything else is plain HTML with a few tiny scripts (menu, speaker filters, map loader, forms).
 
 - **English** at `/` (default), **Malayalam** at `/ml/`. Home and About are translated; other `/ml/` pages show the English content with a notice.
 - Content (speakers, FAQs, passes, strands, programme, sponsors) lives in `src/content/` and can be edited without touching code.
@@ -170,7 +170,9 @@ The partnership proposal PDF: put it at `public/downloads/kilf-2027-partnership-
 ```
 src/
   components/     Header, Footer, ChapterLabel, Headline, LimeButton, IconCircle,
-                  SpeakerCard, LakeBand, Section, Form/Field, Countdown, Icon …
+                  SpeakerCard, LakeBand, Section, Form/Field, MotionToggle, Icon …
+  components/motion/  Animated React islands (Motion): LakeScene, RippleField,
+                  Marquee, NightLake, LakeWaves, Countdown
   components/blocks/  Larger reusable sections (strands grid, notify banner, schedule…)
   views/          Page bodies, shared by the English and /ml/ routes
   pages/          Routes (thin wrappers around views) + robots.txt
@@ -178,14 +180,33 @@ src/
   content/        Editable content collections
   i18n/           Translations
   lib/            Site facts, image lookup
+  scripts/        Scroll reveals and count-ups (Motion's vanilla API)
   styles/         Brand tokens (colours, type) in global.css
   placeholders/   Stand-in SVG illustrations
 scripts/          Asset preparation and screenshots
 kilf-assets/      Real artwork (see section 2)
 ```
 
+### Motion
+
+All animation is calm and water-like, and all of it can be stopped:
+
+| Where | What moves | Component |
+|---|---|---|
+| Home hero | Ashtamudi at first light: drifting glints, the sun's shimmering reflection, rings spreading round a floating book; touching the water sends out a ripple | `src/components/motion/LakeScene.tsx` |
+| Page heroes, dark sections, statement band | Rings widening slowly across still water; a faint ripple trails the mouse | `RippleField.tsx` |
+| Strand ribbon (home) | The nine strands drift past, ease to a stop on hover, own pause button | `Marquee.tsx` |
+| New Year's Eve | Stars, a lime moon, lanterns afloat; the countdown digits roll | `NightLake.tsx`, `Countdown.tsx` |
+| Above the footer | Layered water drifting at different speeds, a small boat | `LakeWaves.tsx` |
+| Everywhere | Sections rise into place as you scroll; numbers count up; buttons send out a ring on hover | `src/scripts/reveal.ts`, `global.css` |
+
+- **Pause motion** buttons (hero and footer) stop every loop on the site and remember the choice (WCAG 2.2.2). The operating system's *reduce motion* setting shows still frames instead.
+- Animations pause automatically when they scroll off screen.
+- Real artwork still wins: when `cover.jpg`, `nye.jpg` or `lake-band.jpg` appear in `kilf-assets/illustrations/`, they replace the animated scenes (the hero keeps a ripple overlay).
+
 ### Brand notes
 
+- **Type:** Bricolage Grotesque (headlines, optical sizes), Figtree (text), Instrument Serif italic for the accent word in each headline ("Voices without *borders.*"), Anek Malayalam for Malayalam. All self-hosted.
 - Colours are Tailwind tokens (`bg-navy`, `text-coral`, `bg-lime`, …) defined in `src/styles/global.css`.
 - For WCAG AA, bright coral (`coral`) is only used on navy. On cream, headline accents use `coral-dark`, small coral text uses `coral-ink`, and small coral text on lime uses `coral-deep`.
-- Fonts are self-hosted: Plus Jakarta Sans (800) for headlines, Manrope for body text and Manjari for Malayalam.
+- On bright blue, accents are lime (coral fails contrast there); on coral, all text is navy.

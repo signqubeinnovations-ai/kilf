@@ -2,7 +2,8 @@
 import ChapterLabel from './ChapterLabel.astro';
 import Headline from './Headline.astro';
 import WordStack from './WordStack.astro';
-/** Standard header for inner pages. */
+import RippleField from './motion/RippleField';
+/** Standard header for inner pages: a big headline over slowly spreading rings. */
 interface Props {
   chapter: number;
   label: string;
@@ -13,16 +14,17 @@ interface Props {
 }
 const { chapter, label, text, accent, lead, tone = 'cream' } = Astro.props;
 const dark = tone !== 'cream';
-const bg = { cream: 'bg-cream waves', navy: 'bg-navy text-cream waves-light on-dark', blue: 'bg-blue-bright text-white waves-light on-dark' }[tone];
+const bg = { cream: 'bg-cream', navy: 'bg-navy text-cream on-dark', blue: 'bg-blue-bright text-white on-dark' }[tone];
 ---
-<section class:list={['relative overflow-hidden pb-14 pt-10 sm:pb-20 sm:pt-16', bg]}>
+<section class:list={['relative overflow-hidden pb-16 pt-12 sm:pb-24 sm:pt-20', bg]}>
+  <RippleField client:idle tone={dark ? 'dark' : 'light'} x={84} y={58} size={560} follow waves />
   <div class="container-kilf relative">
     <div class="flex items-start justify-between gap-6">
       <ChapterLabel n={chapter} label={label} tone={dark ? 'dark' : 'light'} />
       <WordStack tone={dark ? 'dark' : 'light'} class="hidden sm:block" />
     </div>
-    <Headline as="h1" size="xl" text={text} accent={accent} tone={tone === 'cream' ? 'light' : tone === 'navy' ? 'dark' : 'blue'} class="mt-6 max-w-4xl" />
-    {lead && <p class:list={['mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl', dark ? 'text-cream/90' : 'text-muted']}>{lead}</p>}
+    <Headline as="h1" size="xl" text={text} accent={accent} tone={tone === 'cream' ? 'light' : tone === 'navy' ? 'dark' : 'blue'} class="mt-7 max-w-5xl" />
+    {lead && <p class:list={['mt-7 max-w-2xl text-lg leading-relaxed sm:text-xl', dark ? 'text-cream/90' : 'text-muted']}>{lead}</p>}
     <slot />
   </div>
 </section>

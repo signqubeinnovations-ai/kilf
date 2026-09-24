@@ -8,7 +8,7 @@ import path from 'node:path';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
 const dist = path.join(root, 'dist');
-const outDir = path.join(root, 'screenshots');
+const outDir = process.env.OUT_DIR || path.join(root, 'screenshots');
 fs.mkdirSync(outDir, { recursive: true });
 
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.avif': 'image/avif', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain' };
@@ -29,7 +29,7 @@ const executablePath =
   ['/opt/pw-browsers/chromium-1194/chrome-linux/chrome', '/opt/pw-browsers/chromium'].find((p) => fs.existsSync(p) && fs.statSync(p).isFile());
 const browser = await chromium.launch({ executablePath });
 for (const w of widths) {
-  const ctx = await browser.newContext({ viewport: { width: w, height: w < 768 ? 844 : 900 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+  const ctx = await browser.newContext({ viewport: { width: w, height: w < 768 ? 844 : 900 }, deviceScaleFactor: 1, reducedMotion: process.env.MOTION ? 'no-preference' : 'reduce' });
   const page = await ctx.newPage();
   for (const p of pages) {
     await page.goto(`http://localhost:4399${p}`, { waitUntil: 'networkidle' });

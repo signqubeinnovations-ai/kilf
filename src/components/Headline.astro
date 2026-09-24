@@ -1,28 +1,47 @@
 ---
+import { parsePath, isTranslated } from '@/i18n/ui';
 /**
- * Display headline. The final word/phrase (`accent`) is set in coral, as in
- * the brochure: "Voices without <accent>borders.</accent>"
+ * Display headline in Bricolage Grotesque. The final word or phrase
+ * (`accent`) is set in Instrument Serif italic, in the brand accent colour:
+ * "Voices without <em>borders.</em>"
  */
 interface Props {
   text?: string;
   accent?: string;
   as?: 'h1' | 'h2' | 'h3';
   size?: 'xl' | 'lg' | 'md' | 'sm';
-  tone?: 'light' | 'dark' | 'blue';
+  tone?: 'light' | 'dark' | 'blue' | 'coral' | 'lime';
+  /** Override the accent colour. */
+  accentColor?: 'coral' | 'blue' | 'lime' | 'navy';
+  /** Put the accent on its own line. */
+  stack?: boolean;
   class?: string;
   id?: string;
   lang?: string;
+  [key: `data-${string}`]: unknown;
 }
-const { text = '', accent = '', as: Tag = 'h2', size = 'lg', tone = 'light', class: cls = '', id, lang } = Astro.props;
+const { text = '', accent = '', as: Tag = 'h2', size = 'lg', tone = 'light', accentColor, stack = false, class: cls = '', id, lang, ...rest } = Astro.props;
 const sizes = {
-  xl: 'text-[2.6rem] sm:text-6xl lg:text-[5.25rem]',
-  lg: 'text-[2.15rem] sm:text-5xl lg:text-[3.75rem]',
-  md: 'text-[1.75rem] sm:text-4xl lg:text-[2.6rem]',
+  xl: 'text-[2.85rem] sm:text-7xl lg:text-[6.1rem]',
+  lg: 'text-[2.35rem] sm:text-[3.4rem] lg:text-[4.3rem]',
+  md: 'text-[1.9rem] sm:text-4xl lg:text-[2.9rem]',
   sm: 'text-2xl sm:text-3xl',
 };
-const accentColor = { light: 'text-coral-dark', dark: 'text-coral', blue: 'text-lime' }[tone];
-const base = { light: 'text-navy', dark: 'text-cream', blue: 'text-white' }[tone];
+// Malayalam words run long: set translated Malayalam headlines a step smaller.
+const page = parsePath(Astro.url.pathname);
+const mlText = page.lang === 'ml' && isTranslated(page.path);
+const mlSizes = {
+  xl: 'text-[2.3rem] sm:text-[3.4rem] lg:text-[4.4rem]',
+  lg: 'text-[1.9rem] sm:text-[2.7rem] lg:text-[3.3rem]',
+  md: 'text-[1.6rem] sm:text-3xl lg:text-[2.3rem]',
+  sm: 'text-xl sm:text-2xl',
+};
+const accents = { coral: { light: 'text-coral-dark', dark: 'text-coral' }, blue: { light: 'text-blue', dark: 'text-mist' }, lime: { light: 'text-lime', dark: 'text-lime' }, navy: { light: 'text-navy', dark: 'text-navy' } };
+const onDark = tone === 'dark' || tone === 'blue';
+const defaultAccent = { light: 'text-coral-dark', dark: 'text-coral', blue: 'text-lime', coral: 'text-navy', lime: 'text-blue' }[tone];
+const accentClass = accentColor ? accents[accentColor][onDark ? 'dark' : 'light'] : defaultAccent;
+const base = { light: 'text-navy', dark: 'text-cream', blue: 'text-white', coral: 'text-navy', lime: 'text-navy' }[tone];
 ---
-<Tag id={id} lang={lang} class:list={['display', sizes[size], base, cls]}>
-  {text}{text && accent ? ' ' : ''}{accent && <span class={accentColor}>{accent}</span>}
+<Tag id={id} lang={lang} class:list={['display', (mlText ? mlSizes : sizes)[size], base, cls]} {...rest}>
+  {text}{text && accent ? (stack ? <br /> : ' ') : ''}{accent && <em class:list={['serif-accent', accentClass]}>{accent}</em>}
 </Tag>

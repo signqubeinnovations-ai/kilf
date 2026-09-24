@@ -27,7 +27,7 @@ The maps and "Get directions" links already work from the venue names. Coordinat
 The site currently shows on-brand **stand-ins** because the assets were not in the repository.
 
 - [ ] `logos/kilf-logo.svg` and `logos/kilf-logo-white.svg`
-- [ ] `illustrations/cover.jpg`, `lake-band.jpg`, `nye.jpg`, `p4_stage.jpg`, `p8_map_clean.jpg`
+- [ ] `illustrations/cover.jpg`, `lake-band.jpg`, `nye.jpg`, `p4_stage.jpg`, `p8_map_clean.jpg` (until then the home hero, New Year's Eve and footer show animated lake scenes; decide whether to keep those even after the artwork arrives)
 - [ ] `speakers/*.jpg`: all 17 duotone photos (file names are listed in the README and in each speaker's `.md` file)
 - [ ] Re-check the home hero once the real `cover.jpg` is in. The crop is set with `object-[60%_100%]` in `src/views/Home.astro`.
 - [ ] Compare the built site side by side with `reference-brochure.pdf` and adjust spacing and type sizes.
@@ -47,7 +47,7 @@ This copy was written to fit the brief, but the source documents were not availa
 
 ## 4. Malayalam
 
-- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json`.
+- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json` (including the new home-page lines: `home.hero.*`, `home.intro.*`, `home.statement.*`, `footer.closing.*`).
 - [ ] Translate the remaining pages: Speakers, Programme, Khasak, Youth, Get involved, Passes, Visit, Partners, FAQ, Contact, Privacy and the 404 page. See README "Translate another page into Malayalam". Until then these `/ml/` pages show English with a notice (`TODO(i18n)` comments in `src/pages/ml/*.astro`).
 - [ ] Optional: Malayalam speaker names (`name_ml` field in the speaker files).
 

@@ -18,22 +18,24 @@ const Tag = href ? 'a' : 'div';
   <Tag
     href={href}
     class:list={[
-      'group flex h-full flex-col items-center rounded-2xl px-3 pb-5 pt-5 text-center',
+      'group flex h-full flex-col items-center rounded-[1.25rem] px-3 pb-5 pt-5 text-center',
       href && 'lift card hover:border-blue/40',
     ]}
   >
-    <span class:list={['relative block overflow-hidden rounded-full bg-sky ring-4 ring-white shadow-[0_0_0_1px_var(--color-line)]', size === 'sm' ? 'size-24 sm:size-28' : 'size-28 sm:size-36']}>
+    <span class:list={['ripple-ring block rounded-full text-blue', size === 'sm' ? 'size-24 sm:size-28' : 'size-28 sm:size-36']}>
+    <span class="relative block size-full overflow-hidden rounded-full bg-sky ring-4 ring-white shadow-[0_0_0_1px_var(--color-line)]">
       <Image
         src={src}
         alt={`Portrait of ${name}`}
         widths={[160, 288]}
         sizes={size === 'sm' ? '112px' : '(min-width: 640px) 144px, 112px'}
-        class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+        class="size-full object-cover transition-transform duration-700 ease-[var(--ease-calm)] group-hover:scale-105"
         loading="lazy"
         decoding="async"
       />
     </span>
-    <span class="mt-4 font-display text-[1.05rem] font-extrabold leading-tight tracking-tight text-navy">{name}</span>
+    </span>
+    <span class="mt-4 font-display text-[1.1rem] font-semibold leading-tight tracking-tight text-navy">{name}</span>
     <span class="mt-1 text-[0.8rem] leading-snug text-muted" lang={lang}>{role}</span>
   </Tag>
 </li>

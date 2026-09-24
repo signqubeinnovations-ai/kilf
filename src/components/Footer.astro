@@ -4,6 +4,9 @@ import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import Placeholder from './Placeholder.astro';
 import LakeBand from './LakeBand.astro';
+import LimeButton from './LimeButton.astro';
+import MotionToggle from './MotionToggle.astro';
+import RippleField from './motion/RippleField';
 import { site, isPlaceholder } from '@/lib/site';
 import { useTranslations, localizePath, type Lang } from '@/i18n/ui';
 
@@ -43,16 +46,31 @@ const cols = [
   },
 ];
 ---
-<footer class="relative bg-cream">
-  <LakeBand height="h-28 sm:h-40 lg:h-52" />
-  <div class="on-dark waves-light bg-navy text-cream">
-    <div class="container-kilf grid gap-12 py-14 lg:grid-cols-[1.3fr_1fr_1fr_1.1fr] lg:gap-10">
+<footer class="relative">
+  <!-- Closing call, then the lake -->
+  <section class="relative overflow-hidden bg-cream pt-20 text-center sm:pt-28" aria-labelledby="closing-h">
+    <RippleField client:visible tone="light" x={50} y={96} size={760} squash={0.3} />
+    <div class="container-kilf relative">
+      <p class="eyebrow text-coral-ink" data-reveal>{t('footer.closing.kicker')}</p>
+      <h2 id="closing-h" class="display mx-auto mt-5 max-w-4xl text-[3rem] text-navy sm:text-7xl lg:text-[6.4rem]" data-reveal>
+        {t('footer.closing.h')} <em class="serif-accent text-blue">{t('footer.closing.accent')}</em>
+      </h2>
+      <div class="mt-9 flex flex-wrap items-center justify-center gap-3" data-reveal>
+        <LimeButton href={lp('/get-involved#register')} label={t('cta.register')} size="lg" />
+        <LimeButton href={lp('/programme')} label={t('cta.explore')} variant="ghost" size="lg" />
+      </div>
+    </div>
+    <LakeBand height="h-36 sm:h-52 lg:h-64" class="mt-14 sm:mt-16" />
+  </section>
+
+  <div class="on-dark bg-navy text-cream">
+    <div class="container-kilf grid gap-12 pb-14 pt-8 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr] lg:gap-10">
       <div>
-        <a href={lp('/')} class="inline-flex min-h-11 items-center">
+        <a href={lp('/')} class="inline-flex min-h-11 items-center text-cream">
           <Logo tone="dark" class="h-12" decorative /><span class="sr-only">KILF 2027 — {t('nav.home')}</span>
         </a>
-        <p class="mt-5 max-w-xs font-display text-2xl font-extrabold leading-tight tracking-tight">
-          {lang === 'ml' ? 'വാക്കുകൾ ലോകത്തെ ' : 'Where words meet the '}<span class="text-coral">{lang === 'ml' ? 'കണ്ടുമുട്ടുന്നിടം.' : 'world.'}</span>
+        <p class="mt-5 max-w-xs font-display text-[1.7rem] font-semibold leading-tight tracking-tight">
+          {lang === 'ml' ? 'വാക്കുകൾ ലോകത്തെ ' : 'Where words meet the '}<em class="serif-accent text-coral">{lang === 'ml' ? 'കണ്ടുമുട്ടുന്നിടം.' : 'world.'}</em>
         </p>
         <ul class="mt-6 space-y-2.5 text-[0.95rem] text-mist">
           <li class="flex items-start gap-2.5"><Icon name="calendar" size={20} class="mt-0.5 shrink-0 text-lime" /><span>{t('site.dates')}</span></li>
@@ -63,17 +81,17 @@ const cols = [
 
       {cols.map((col) => (
         <nav aria-label={col.title}>
-          <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-coral">{col.title}</h2>
-          <ul class="mt-4 space-y-1">
+          <h2 class="eyebrow text-coral">{col.title}</h2>
+          <ul class="mt-4 space-y-0.5">
             {col.links.map(([href, label]) => (
-              <li><a href={lp(href)} class="inline-flex min-h-11 items-center text-[0.95rem] text-cream/90 hover:text-lime">{label}</a></li>
+              <li><a href={lp(href)} class="inline-flex min-h-11 items-center text-[0.98rem] text-cream/90 transition-colors hover:text-lime">{label}</a></li>
             ))}
           </ul>
         </nav>
       ))}
 
       <div>
-        <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-coral">{t('footer.contact')}</h2>
+        <h2 class="eyebrow text-coral">{t('footer.contact')}</h2>
         <ul class="mt-4 space-y-1 text-[0.95rem]">
           <li>
             <a href={`mailto:${site.email}`} class="inline-flex min-h-11 items-center gap-2.5 break-all text-cream hover:text-lime">
@@ -99,12 +117,13 @@ const cols = [
       </div>
     </div>
     <div class="border-t border-white/10">
-      <div class="container-kilf flex flex-col gap-2 py-6 text-sm text-mist sm:flex-row sm:items-center sm:justify-between">
+      <div class="container-kilf flex flex-col gap-3 py-6 text-sm text-mist md:flex-row md:items-center md:justify-between">
         <p>© 2027 {site.name}. {t('footer.rights')}</p>
-        <p class="flex gap-4">
+        <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
           <a href={lp('/privacy')} class="inline-flex min-h-11 items-center hover:text-lime">{t('nav.privacy')}</a>
           <a href={lp('/contact')} class="inline-flex min-h-11 items-center hover:text-lime">{t('nav.contact')}</a>
-        </p>
+          <MotionToggle lang={lang} />
+        </div>
       </div>
     </div>
   </div>

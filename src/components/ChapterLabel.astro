@@ -1,19 +1,22 @@
 ---
-/** Small uppercase chapter label: "CHAPTER 03 · VOICES" with a short rule. */
+/** Chapter label: "Chapter 01 —— VOICES", the number set in the serif italic. */
 interface Props {
   n: number;
   label: string;
-  tone?: 'light' | 'dark' | 'lime';
+  tone?: 'light' | 'dark' | 'lime' | 'coral';
   class?: string;
 }
 const { n, label, tone = 'light', class: cls = '' } = Astro.props;
 const num = String(n).padStart(2, '0');
-const dark = tone === 'dark';
+const colors = {
+  light: ['text-coral-ink', 'text-muted', 'bg-navy/25'],
+  dark: ['text-coral', 'text-mist', 'bg-white/35'],
+  lime: ['text-coral-deep', 'text-navy/80', 'bg-navy/30'],
+  coral: ['text-navy', 'text-navy/85', 'bg-navy/35'],
+}[tone];
 ---
-<p class:list={['flex items-center gap-3 text-[0.75rem] font-bold uppercase tracking-[0.18em]', cls]}>
-  <span class:list={[dark ? 'text-mist' : 'text-muted']}>
-    Chapter <span class:list={[dark ? 'text-coral' : tone === 'lime' ? 'text-coral-deep' : 'text-coral-ink']}>{num}</span>
-    <span aria-hidden="true"> · </span>{label}
-  </span>
-  <span aria-hidden="true" class:list={['h-px w-10', dark ? 'bg-mist/60' : 'bg-line']}></span>
+<p class:list={['flex items-center gap-3', cls]}>
+  <span class:list={['font-[family-name:var(--font-serif)] text-[1.15rem] italic leading-none', colors[0]]} lang="en">Chapter {num}</span>
+  <span aria-hidden="true" class:list={['h-px w-8 sm:w-12', colors[2]]}></span>
+  <span class:list={['eyebrow', colors[1]]}>{label}</span>
 </p>

@@ -2,6 +2,7 @@
 import Headline from '../Headline.astro';
 import Form from '../Form.astro';
 import Field from '../Field.astro';
+import RippleField from '../motion/RippleField';
 import type { Lang } from '@/i18n/ui';
 /** Navy banner with a compact "Notify me" signup. */
 interface Props {
@@ -16,13 +17,14 @@ interface Props {
 }
 const { id, formName, text, accent, lead, submitLabel = 'Notify me', lang = 'en', extraField } = Astro.props;
 ---
-<section id={id} class="on-dark waves-light relative overflow-hidden bg-navy py-16 text-cream sm:py-20" aria-labelledby={`${id}-h`}>
-  <div class="container-kilf grid items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+<section id={id} class="on-dark relative overflow-hidden bg-navy py-20 text-cream sm:py-24" aria-labelledby={`${id}-h`}>
+  <RippleField client:visible tone="dark" x={12} y={80} size={460} />
+  <div class="container-kilf relative grid items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
     <div>
       <Headline id={`${id}-h`} text={text} accent={accent} tone="dark" size="md" />
       {lead && <p class="mt-4 max-w-md text-lg text-cream/90">{lead}</p>}
     </div>
-    <Form id={`${id}-form`} name={formName} lang={lang} submitLabel={submitLabel} class="rounded-2xl bg-white p-5 text-navy sm:p-7" successText="We’ll let you know the moment it opens.">
+    <Form id={`${id}-form`} name={formName} lang={lang} submitLabel={submitLabel} class="rounded-[1.5rem] bg-white p-5 text-navy sm:p-8" successText="We’ll let you know the moment it opens.">
       <Field formId={`${id}-form`} name="name" label="Name" autocomplete="name" required />
       <Field formId={`${id}-form`} name="contact" label="Email or WhatsApp number" autocomplete="email" required />
       {extraField && <Field formId={`${id}-form`} type="select" name={extraField.name} label={extraField.label} options={extraField.options} full />}
