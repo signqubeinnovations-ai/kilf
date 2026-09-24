@@ -17,7 +17,7 @@ import RippleField from '@/components/motion/RippleField';
 import Marquee from '@/components/motion/Marquee';
 import Countdown from '@/components/motion/Countdown';
 import { site } from '@/lib/site';
-import { useTranslations, localizePath, type Lang } from '@/i18n/ui';
+import { useTranslations, localizePath, type Lang, type UIKey } from '@/i18n/ui';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -50,37 +50,43 @@ const nyeDetails = [
 ];
 ---
 
-<!-- Hero: blue, with the lake illustration come to life -->
-<section class="on-dark relative overflow-hidden bg-blue-bright text-white" aria-labelledby="hero-h">
-  <div class="waves-light pointer-events-none absolute inset-0" aria-hidden="true"></div>
-  <div class="container-kilf relative grid items-center gap-12 pb-10 pt-[calc(var(--hh)+2.5rem)] lg:grid-cols-[1.08fr_1fr] lg:gap-14 lg:pt-[calc(var(--hh)+3.5rem)]">
-    <div>
-      <p class="eyebrow hero-in text-white">{t('home.h1')}</p>
-      <p class="hero-in mt-8 text-[0.95rem] font-semibold tracking-[0.03em] text-white/85" style="--d:0.06s">{t('home.kicker')}</p>
-      <h1 id="hero-h" class:list={['display hero-in mt-3 font-bold tracking-[-0.045em]', ml ? 'text-[2.4rem] sm:text-[3.3rem] lg:text-[3.1rem] xl:text-[3.6rem]' : 'text-[3.15rem] leading-[1] sm:text-[4.4rem] lg:text-[3.9rem] xl:text-[4.6rem]']} style="--d:0.12s">
-        <span class="sr-only">{t('home.h1')}: </span>{t('home.tagline')} <span class="text-grad-warm">{t('home.taglineAccent')}</span>
-      </h1>
-      <p class="hero-in mt-7 max-w-md text-lg leading-relaxed text-white/90 sm:text-xl" style="--d:0.2s">{t('home.water')}</p>
-      <div class="hero-in mt-10 flex flex-wrap items-center gap-x-8 gap-y-5" style="--d:0.28s">
-        <LimeButton href={lp('/programme')} label={t('cta.explore')} variant="lime" size="lg" class="min-w-[15.5rem] justify-between !gap-10" />
-        <TextLink href={lp('/passes')} label={t('home.hero.passLink')} tone="dark" />
-      </div>
-      <div class="hero-in mt-12 border-t border-white/20 pt-6" style="--d:0.36s">
-        <p class="eyebrow text-white">{t('site.dates')}</p>
-        <p class="mt-1.5 text-white/85">{t('site.city')}</p>
-      </div>
-    </div>
-
-    <figure class="hero-in relative" style="--d:0.16s">
-      <LakeArt art="book" priority hydrate="idle" sizes="(min-width: 1024px) 52vw, 100vw" class="aspect-[1.1] w-full" />
-      <figcaption class="absolute inset-x-3 bottom-3 z-10 flex items-center justify-between gap-3 bg-cream py-2 pl-4 pr-2 text-navy sm:inset-x-6 sm:bottom-6 sm:py-2.5 sm:pl-5">
-        <span class="eyebrow text-[0.68rem]">{t('home.hero.caption')}</span>
-        <MotionToggle lang={lang} tone="light" />
-      </figcaption>
-    </figure>
+<!-- Hero: the lake illustration covers the whole section, and its water is live -->
+<section class="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-cream text-navy lg:min-h-[min(100svh,66rem)]" data-hero aria-labelledby="hero-h">
+  <div class="hero-art relative order-2 h-[24rem] sm:h-[32rem] lg:absolute lg:inset-0 lg:-z-10 lg:h-auto" data-hero-art>
+    <LakeArt
+      art="hero"
+      priority
+      sizes="(max-width: 639px) 194vw, (max-width: 1023px) 160vw, (max-aspect-ratio: 97/50) 194vh, 100vw"
+      imgClass="object-[74%_100%] sm:object-[82%_100%] lg:object-[100%_100%]"
+      class="art-settle size-full"
+    />
+    <div class="hero-mist pointer-events-none absolute inset-0" aria-hidden="true"></div>
   </div>
-  <div class="container-kilf relative pb-7">
-    <a href="#festival" class="eyebrow inline-flex min-h-11 items-center gap-2 text-white/90 hover:text-lime">{t('home.hero.turn')} <span aria-hidden="true" class="turn">↓</span></a>
+
+  <div class="container-kilf pointer-events-none relative order-1 flex flex-col justify-center pb-6 pt-[calc(var(--hh)+2rem)] lg:flex-1 lg:pb-24 lg:pt-[calc(var(--hh)+2.5rem)]" data-hero-copy>
+    <div class="max-w-[52rem] [&_a]:pointer-events-auto">
+      <p class="eyebrow hero-in">{t('home.kicker')}</p>
+      <h1 id="hero-h" class:list={['display hero-in mt-5 font-bold tracking-[-0.045em]', ml ? 'text-[clamp(2.1rem,10vw,2.6rem)] sm:text-[3.2rem] lg:text-[3.7rem] xl:text-[4.2rem]' : 'text-[clamp(2.3rem,11.4vw,3.2rem)] leading-[1.02] sm:text-[3.6rem] lg:text-[4.2rem] xl:text-[4.9rem]']} style="--d:0.08s">
+        {t('home.title')}<br /> <span class="text-grad">{t('home.titleAccent')}</span>
+      </h1>
+      <p class="hero-in mt-6 font-display text-[1.4rem] font-semibold leading-snug tracking-[-0.025em] text-navy sm:text-[1.7rem]" style="--d:0.16s">{t('home.tagline')} {t('home.taglineAccent')}</p>
+      <p class="hero-in mt-2 max-w-md text-lg leading-relaxed text-navy/75" style="--d:0.22s">{t('home.water')}</p>
+      <div class="hero-in mt-9 flex flex-wrap items-center gap-x-8 gap-y-5" style="--d:0.28s">
+        <LimeButton href={lp('/programme')} label={t('cta.explore')} size="lg" class="min-w-[15.5rem] justify-between !gap-10" />
+        <TextLink href={lp('/passes')} label={t('home.hero.passLink')} />
+      </div>
+      <p class="hero-in mt-10 flex flex-wrap items-baseline gap-x-3 gap-y-1" style="--d:0.36s">
+        <span class="eyebrow">{t('site.dates')}</span><span class="text-navy/75">{t('site.city')}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="container-kilf pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 pb-4 sm:pb-7">
+    <a href="#festival" class="eyebrow pointer-events-auto inline-flex min-h-11 items-center gap-2 bg-cream/85 px-3 backdrop-blur-sm hover:text-blue-bright sm:bg-transparent sm:px-0 sm:backdrop-blur-none">{t('home.hero.turn')} <span aria-hidden="true" class="turn">↓</span></a>
+    <div class="pointer-events-auto flex items-center gap-3 bg-cream/90 py-1.5 pl-4 pr-1.5 backdrop-blur-sm">
+      <span class="eyebrow hidden text-[0.66rem] sm:inline">{t('home.hero.caption')}</span>
+      <MotionToggle lang={lang} tone="light" />
+    </div>
   </div>
 </section>
 
@@ -168,12 +174,35 @@ const nyeDetails = [
   </div>
 </section>
 
-<!-- 04 · New Year's Eve -->
+<!-- 04 · A day at KILF -->
+<Section tone="cream" labelledby="day-h">
+  <div class="flex flex-wrap items-end justify-between gap-6">
+    <div>
+      <ChapterLabel n={4} label={t('home.day.chapter')} />
+      <Headline id="day-h" text={t('home.day.h')} accent={t('home.day.accent')} class="mt-6" />
+    </div>
+    <div class="max-w-sm">
+      <p class="text-[0.98rem] leading-relaxed text-muted">{t('home.day.note')}</p>
+      <TextLink href={lp('/programme')} label={t('home.day.link')} class="mt-4" />
+    </div>
+  </div>
+  <ol class="mt-12 grid border-t border-line sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+    {([1, 2, 3, 4] as const).map((n, i) => (
+      <li class:list={['relative border-b border-line py-8 sm:px-6', i % 2 === 1 && 'sm:border-l', i > 0 && 'lg:border-l', 'lg:first:pl-0']}>
+        <p class="eyebrow text-blue-bright"><span lang="en">{String(n).padStart(2, '0')}</span> / {t(`home.day.${n}.t` as UIKey)}</p>
+        <h3 class="mt-10 font-display text-[1.45rem] font-semibold leading-tight tracking-[-0.03em] text-navy">{t(`home.day.${n}.h` as UIKey)}</h3>
+        <p class="mt-2 text-[0.98rem] leading-relaxed text-muted">{t(`home.day.${n}.d` as UIKey)}</p>
+      </li>
+    ))}
+  </ol>
+</Section>
+
+<!-- 05 · New Year's Eve -->
 <section class="on-dark waves-light relative overflow-hidden bg-blue text-white" aria-labelledby="nye-h">
   <RippleField client:visible tone="dark" x={34} y={50} size={900} squash={1} rings={3} />
   <div class="container-kilf relative grid gap-14 py-20 sm:py-28 lg:grid-cols-[1.3fr_1fr] lg:gap-16 lg:py-32">
     <div>
-      <ChapterLabel n={4} label={t('home.nye.chapter')} tone="dark" />
+      <ChapterLabel n={5} label={t('home.nye.chapter')} tone="dark" />
       <Headline id="nye-h" text={t('home.nye.h')} accent={t('home.nye.accent')} tone="blue" size="xl" accentStyle="gradient" class="mt-6" inline />
       <p class="mt-6 max-w-md text-xl leading-snug text-white/85">{t('home.nye.lead')}</p>
       <div class="mt-12">
@@ -196,7 +225,7 @@ const nyeDetails = [
   </div>
 </section>
 
-<!-- 05 · Khasakkinte Ithihasam -->
+<!-- 06 · Khasakkinte Ithihasam -->
 <Section tone="cream" labelledby="khasak-h">
   <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="relative aspect-[4/3] overflow-hidden bg-navy lg:col-span-6 lg:aspect-square">
@@ -204,7 +233,7 @@ const nyeDetails = [
     </div>
     <div class="lg:col-span-6">
       <div class="flex flex-wrap items-center gap-3">
-        <ChapterLabel n={5} label={t('home.khasak.chapter')} />
+        <ChapterLabel n={6} label={t('home.khasak.chapter')} />
         <Badge>{t('home.khasak.proposed')}</Badge>
       </div>
       <Headline id="khasak-h" text={t('home.khasak.h')} accent={t('home.khasak.accent')} accentStyle="gradient" class="mt-6" />
@@ -220,11 +249,11 @@ const nyeDetails = [
   </div>
 </Section>
 
-<!-- 06 · Youth -->
+<!-- 07 · Youth -->
 <Section tone="cream" rule labelledby="youth-h">
   <div class="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
     <div>
-      <ChapterLabel n={6} label={t('home.youth.chapter')} />
+      <ChapterLabel n={7} label={t('home.youth.chapter')} />
       <Headline id="youth-h" text={t('home.youth.h')} accent={t('home.youth.accent')} class="mt-6" />
       <p class="mt-6 max-w-md text-lg leading-relaxed text-muted">{t('home.youth.lead')}</p>
     </div>
@@ -245,11 +274,11 @@ const nyeDetails = [
   </div>
 </Section>
 
-<!-- 07 · Join in -->
+<!-- 08 · Join in -->
 <Section tone="cream" rule labelledby="involved-h">
   <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="lg:col-span-5">
-      <ChapterLabel n={7} label={t('home.involved.chapter')} />
+      <ChapterLabel n={8} label={t('home.involved.chapter')} />
       <Headline id="involved-h" text={t('home.involved.h')} accent={t('home.involved.accent')} size="xl" class="mt-6" />
       <p class="mt-6 max-w-sm text-lg leading-relaxed text-muted">{t('home.involved.lead')}</p>
       <div class="mt-9 flex flex-wrap items-center gap-3">
@@ -271,12 +300,12 @@ const nyeDetails = [
     </div>
     <div class="mt-10 grid grid-cols-[1fr_auto_1fr] items-end gap-4 sm:gap-8" aria-hidden="true">
       <div>
-        <p class="numeral text-grad-ink text-[3.4rem] sm:text-[6.5rem] lg:text-[8.4rem]">31.12</p>
+        <p class="numeral text-grad-ink text-[clamp(2.5rem,13vw,3.4rem)] sm:text-[6.5rem] lg:text-[8.4rem]">31.12</p>
         <p class="mt-3 text-sm font-semibold tracking-[0.24em] sm:text-lg">2026</p>
       </div>
       <span class="arrow pb-9 text-3xl sm:pb-14 sm:text-5xl">→</span>
       <div class="text-right">
-        <p class="numeral text-grad-ink text-[3.4rem] sm:text-[6.5rem] lg:text-[8.4rem]">04.01</p>
+        <p class="numeral text-grad-ink text-[clamp(2.5rem,13vw,3.4rem)] sm:text-[6.5rem] lg:text-[8.4rem]">04.01</p>
         <p class="mt-3 text-sm font-semibold tracking-[0.24em] sm:text-lg">2027</p>
       </div>
     </div>
@@ -289,12 +318,51 @@ const nyeDetails = [
   </div>
 </section>
 
-<!-- 08 · Stay close -->
+<!-- 09 · Stay close -->
 <Section tone="cream" labelledby="newsletter-h">
-  <SignupBlock lang={lang} chapter={8} tone="light" />
+  <SignupBlock lang={lang} chapter={9} tone="light" />
 </Section>
 
+<script>
+  // The picture drifts slower than the page, and the words lift away, as you scroll past.
+  import { animate, scroll } from 'motion';
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  const art = hero?.querySelector<HTMLElement>('[data-hero-art]');
+  const copy = hero?.querySelector<HTMLElement>('[data-hero-copy]');
+  if (hero && art && copy && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const range = { target: hero, offset: ['start start', 'end start'] as ['start start', 'end start'] };
+    scroll(animate(art, { transform: ['translateY(0px)', 'translateY(18vh)'] }, { ease: 'linear' }), range);
+    scroll(animate(copy, { transform: ['translateY(0px)', 'translateY(-8vh)'], opacity: [1, 0.2] }, { ease: 'linear' }), range);
+  }
+</script>
+
 <style>
+  /* Phones and tablets: the picture sits under the words, its cream sky
+     fading into the page. Desktop: it covers the whole hero. */
+  .hero-art {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 24%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 24%);
+  }
+  @media (min-width: 1024px) {
+    .hero-art {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    /* Morning mist over the lake: keeps the words legible, lets the water show */
+    .hero-mist {
+      background:
+        linear-gradient(180deg, rgb(255 253 244 / 0.85) 0%, rgb(255 253 244 / 0) 22%),
+        radial-gradient(ellipse 60% 76% at 16% 54%, rgb(255 253 244 / 0.92) 0%, rgb(255 253 244 / 0.72) 44%, rgb(255 253 244 / 0) 78%);
+    }
+  }
+  /* The picture settles, like a camera coming to rest */
+  .art-settle {
+    animation: settle 2.6s var(--ease-calm) both;
+  }
+  @keyframes settle {
+    from { transform: scale(1.06); }
+    to { transform: none; }
+  }
   .turn {
     display: inline-block;
     animation: bob 2.6s ease-in-out infinite;

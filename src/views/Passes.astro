@@ -12,6 +12,19 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const lp = (p: string) => localizePath(p, lang);
 const passes = (await getCollection('passes')).sort((a, b) => a.data.order - b.data.order);
+const guide = [
+  ['Coming for one day?', 'Day Pass', 'Pick your day: sessions, the book fair and the lakeside evening.', '#notify'],
+  ['Staying for the whole story?', 'Festival Pass', 'All five days, from the midnight chapter on New Year’s Eve to the final page.', '#notify'],
+  ['A student or young reader?', 'Young Reader Pass', 'Made for students and young readers. Bring your college ID.', '#notify'],
+  ['Here for the play?', 'Theatre ticket', 'A seat at Khasakkinte Ithihasam, on its own.', '/khasak#tickets'],
+  ['The play and all five days?', 'Theatre + Festival Pass', 'A seat at the play and a Festival Pass, together.', '/khasak#tickets'],
+];
+const questions = [
+  ['When do passes go on sale?', 'Ticketing opens soon. Leave your details below and we’ll tell you the moment passes and theatre tickets go on sale.'],
+  ['Is the play included in the Festival Pass?', 'No. Khasakkinte Ithihasam is ticketed separately. Choose a theatre ticket on its own, or the theatre + Festival Pass bundle.'],
+  ['Are there passes for college groups?', 'Colleges can register on the Youth page. We’ll share details of group passes for students with every registered college.'],
+  ['How much do passes cost?', 'Prices will be published here when ticketing opens. Until then, nothing is on sale and no payment is taken.'],
+];
 ---
 <PageHero chapter={1} label="Passes" text="Your seat by the" accent="lake." lead="Ticketing opens soon. Register early and we’ll tell you the moment passes go on sale." />
 
@@ -53,11 +66,36 @@ const passes = (await getCollection('passes')).sort((a, b) => a.data.order - b.d
   <p class="mt-8 max-w-2xl text-sm text-muted">Inclusions are indicative and will be confirmed when ticketing opens. Some sessions may have limited seating.</p>
 </Section>
 
+<!-- Which pass is for me? -->
+<Section tone="cream" rule labelledby="guide-h">
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-4">
+      <ChapterLabel n={2} label="Choosing" />
+      <Headline id="guide-h" text="Which pass" accent="is for me?" class="mt-6" />
+      <p class="mt-6 max-w-sm text-lg leading-relaxed text-muted">Five ways to come to KILF 2027. Find the line that sounds like you.</p>
+    </div>
+    <ol class="border-t border-line lg:col-span-8" data-reveal-group>
+      {guide.map(([q, name, line, href]) => (
+        <li class="border-b border-line">
+          <a href={href.startsWith('#') ? href : lp(href)} class="group grid gap-x-6 gap-y-1 py-6 sm:grid-cols-[1fr_1.1fr_auto] sm:items-baseline">
+            <span class="text-[1.02rem] text-muted">{q}</span>
+            <span>
+              <span class="block font-display text-[1.45rem] font-semibold leading-tight tracking-[-0.03em] text-navy transition-colors group-hover:text-blue-bright">{name}</span>
+              <span class="mt-1 block text-[0.98rem] leading-relaxed text-muted">{line}</span>
+            </span>
+            <span aria-hidden="true" class="hidden text-xl text-blue-bright transition-transform duration-500 ease-[var(--ease-calm)] group-hover:-translate-y-1 group-hover:translate-x-1 sm:block">↗</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</Section>
+
 <!-- The play is ticketed separately -->
 <section class="relative overflow-hidden bg-coral text-ink" aria-labelledby="theatre-h">
   <div class="container-kilf grid items-center gap-10 py-20 sm:py-24 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
     <div>
-      <ChapterLabel n={2} label="Signature theatre" tone="coral" />
+      <ChapterLabel n={3} label="Signature theatre" tone="coral" />
       <Headline id="theatre-h" text="The play is" accent="ticketed separately." tone="coral" accentStyle="gradient" class="mt-6" />
       <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink/85">
         Khasakkinte Ithihasam needs its own ticket. Choose a theatre ticket on its own, or the theatre + Festival Pass bundle
@@ -80,6 +118,25 @@ const passes = (await getCollection('passes')).sort((a, b) => a.data.order - b.d
     </ul>
   </div>
 </section>
+
+<!-- Ticketing questions -->
+<Section tone="cream" labelledby="questions-h">
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-4">
+      <ChapterLabel n={4} label="Questions" />
+      <Headline id="questions-h" text="Ticketing," accent="answered." class="mt-6" />
+      <TextLink href={lp('/faq')} label="All questions" class="mt-8" />
+    </div>
+    <dl class="border-t border-line lg:col-span-8">
+      {questions.map(([q, a]) => (
+        <div class="border-b border-line py-7">
+          <dt class="font-display text-[1.25rem] font-semibold tracking-[-0.02em] text-navy">{q}</dt>
+          <dd class="mt-2 max-w-2xl text-[1.02rem] leading-relaxed text-muted">{a}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</Section>
 
 <NotifyBanner
   id="notify"

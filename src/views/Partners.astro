@@ -21,6 +21,12 @@ const { lang } = Astro.props;
 const proposalFile = 'downloads/kilf-2027-partnership-proposal.pdf';
 const hasProposal = fs.existsSync(path.join(process.cwd(), 'public', proposalFile));
 const callUrl = env.partnerCallUrl || `mailto:${site.email}?subject=${encodeURIComponent('KILF 2027 partnership call')}`;
+const steps = [
+  ['Enquire', 'Send the form below, or book a call. Tell us about your brand and what you’d like KILF to do for it.'],
+  ['Talk it through', 'We share the full proposal and shape the options around your goals and budget.'],
+  ['Agree the chapter', 'Choose your tier and benefits. We confirm everything in writing.'],
+  ['On the shore', 'Your brand goes live across the festival, online and by the lake.'],
+];
 ---
 <!-- Hook -->
 <section class="on-dark relative overflow-hidden bg-blue-bright text-white" aria-labelledby="partners-h">
@@ -175,11 +181,28 @@ const callUrl = env.partnerCallUrl || `mailto:${site.email}?subject=${encodeURIC
   <p class="mt-4 text-sm text-muted">Benefits are indicative and tailored with each partner.</p>
 </Section>
 
+<!-- How partnering works -->
+<section class="bg-lime text-ink" aria-labelledby="process-h">
+  <div class="container-kilf py-20 sm:py-24">
+    <ChapterLabel n={6} label="How it works" tone="lime" />
+    <Headline id="process-h" text="From first call" accent="to the festival." tone="lime" class="mt-6" />
+    <ol class="mt-12 grid border-t border-ink/15 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+      {steps.map(([title, line], i) => (
+        <li class:list={['border-b border-ink/15 py-7 sm:px-6', i % 2 === 1 && 'sm:border-l', i > 0 && 'lg:border-l', 'lg:first:pl-0']}>
+          <span class="numeral text-[2.6rem] text-blue">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-6 font-display text-[1.35rem] font-semibold leading-tight tracking-[-0.03em]">{title}</h3>
+          <p class="mt-2 text-[0.98rem] leading-relaxed text-ink/80">{line}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
 <!-- Enquiry -->
 <Section tone="sky" id="enquire" labelledby="enquire-h">
   <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
     <div>
-      <ChapterLabel n={6} label="Enquire" />
+      <ChapterLabel n={7} label="Enquire" />
       <Headline id="enquire-h" text="Let’s write this" accent="together." class="mt-6" />
       <p class="mt-6 max-w-md text-lg leading-relaxed text-navy/80">Tell us a little about your brand and we’ll share the full proposal and tailored options.</p>
       <div class="mt-9 flex flex-col items-start gap-4">

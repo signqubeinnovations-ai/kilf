@@ -29,6 +29,7 @@ const faqs = defineCollection({
     question: z.string(),
     answer: z.string(),
     order: z.number(),
+    group: z.enum(['festival', 'tickets', 'visiting', 'taking-part']).default('festival'),
   }),
 });
 

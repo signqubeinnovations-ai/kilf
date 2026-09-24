@@ -8,7 +8,7 @@ import { useTranslations, localizePath, languages, type Lang } from '@/i18n/ui';
 interface Props {
   lang: Lang;
   path: string;
-  /** Float over a dark hero, turning solid once the page scrolls. */
+  /** Float over the illustrated hero, turning solid once the page scrolls. */
   overlay?: boolean;
 }
 const { lang, path, overlay = false } = Astro.props;
@@ -122,7 +122,11 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     position: fixed;
     inset-inline: 0;
   }
-  :global(.has-js) .site-header[data-overlay]:not([data-solid]),
+  /* Over the hero illustration: no bar, the sky shows through */
+  :global(.has-js) .site-header[data-overlay]:not([data-solid]) {
+    --bg: transparent;
+    --edge: transparent;
+  }
   .site-header[data-menu-open] {
     --fg: #fff;
     --bg: transparent;
@@ -174,12 +178,6 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   .lang,
   .menu-btn {
     --tw-ring-color: color-mix(in oklab, currentColor 35%, transparent);
-  }
-  /* Over the blue hero the Register button turns white, as in the print style */
-  :global(.has-js) .site-header[data-overlay]:not([data-solid]):not([data-menu-open]) :global(.hdr-cta) {
-    background: var(--color-cream);
-    color: var(--color-navy);
-    --ring: #fff;
   }
   /* Volunteer: an outline button in the header's own colour */
   .hdr-ghost {

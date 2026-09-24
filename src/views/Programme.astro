@@ -7,6 +7,7 @@ import Headline from '@/components/Headline.astro';
 import StrandGrid from '@/components/blocks/StrandGrid.astro';
 import NotifyBanner from '@/components/blocks/NotifyBanner.astro';
 import Schedule from '@/components/blocks/Schedule.astro';
+import Icon from '@/components/Icon.astro';
 import type { Lang } from '@/i18n/ui';
 
 interface Props { lang: Lang }
@@ -14,6 +15,21 @@ const { lang } = Astro.props;
 const teasers = (await getCollection('teasers')).sort((a, b) => a.data.order - b.data.order);
 const days = await getCollection('schedule');
 const hasSchedule = days.length > 0;
+
+const day = [
+  ['Morning', 'Conversations and readings', 'Writers and thinkers on the main stages, with time for your questions.'],
+  ['Afternoon', 'Book fair and workshops', 'New releases, signed copies, and hands-on sessions for young and old.'],
+  ['Evening', 'Stage and screen', 'Theatre, films that began as books, and the youth stage at full volume.'],
+  ['Night', 'Music and food by the lake', 'Kollam’s kitchens and live music by the water. On 31 December, the countdown to 2027.'],
+];
+const formats = [
+  ['chat', 'Conversations', 'Two or three voices, one stage, and room for the audience to join in.'],
+  ['book', 'Readings', 'Authors read from new and loved work, in Malayalam and English.'],
+  ['users', 'Panels', 'Questions Kerala keeps asking: history, faith, media and society.'],
+  ['pen', 'Workshops', 'Small, hands-on sessions on writing, illustration and storytelling.'],
+  ['mask', 'Performances', 'Theatre, music and spoken word, on stage and by the lake.'],
+  ['film', 'Screenings', 'Films that began as books, followed by talks with their makers.'],
+];
 ---
 <PageHero
   chapter={1}
@@ -53,10 +69,32 @@ const hasSchedule = days.length > 0;
   )
 }
 
-<Section tone="cream" rule id="strands" labelledby="strands-h">
+<!-- A day at the festival -->
+<section class="bg-lime text-ink" aria-labelledby="day-h">
+  <div class="container-kilf py-20 sm:py-24">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <ChapterLabel n={3} label="A day at the festival" tone="lime" />
+        <Headline id="day-h" text="From first light" accent="to the last song." tone="lime" class="mt-6" />
+      </div>
+      <p class="max-w-sm text-[0.98rem] leading-relaxed text-ink/80">An indicative day. The full programme will set the times for every session.</p>
+    </div>
+    <ol class="mt-12 grid border-t border-ink/15 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+      {day.map(([when, what, line], i) => (
+        <li class:list={['border-b border-ink/15 py-7 sm:px-6', i % 2 === 1 && 'sm:border-l', i > 0 && 'lg:border-l', 'lg:first:pl-0']}>
+          <p class="eyebrow">{String(i + 1).padStart(2, '0')} / {when}</p>
+          <h3 class="mt-8 font-display text-[1.45rem] font-semibold leading-tight tracking-[-0.03em]">{what}</h3>
+          <p class="mt-2 text-[0.98rem] leading-relaxed text-ink/80">{line}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<Section tone="cream" id="strands" labelledby="strands-h">
   <div class="flex flex-wrap items-end justify-between gap-6">
     <div>
-      <ChapterLabel n={3} label="Strands" />
+      <ChapterLabel n={4} label="Strands" />
       <Headline id="strands-h" text="Nine strands." accent="One shore." class="mt-6" />
     </div>
     <p class="max-w-md text-lg leading-relaxed text-muted">Follow the one you love, or wander into one you never expected.</p>
@@ -64,10 +102,36 @@ const hasSchedule = days.length > 0;
   <div class="mt-12"><StrandGrid lang={lang} /></div>
 </Section>
 
+<!-- Formats -->
+<Section tone="cream" rule labelledby="formats-h">
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-4">
+      <ChapterLabel n={5} label="Formats" />
+      <Headline id="formats-h" text="Six ways" accent="to spend an hour." class="mt-6" />
+      <p class="mt-6 max-w-sm text-lg leading-relaxed text-muted">
+        Most sessions will be in Malayalam, with several in English and some bilingual. The full programme will list the
+        language of every session.
+      </p>
+    </div>
+    <ul class="grid border-l border-t border-line sm:grid-cols-2 lg:col-span-8" data-reveal-group>
+      {formats.map(([icon, title, line]) => (
+        <li class="flex gap-5 border-b border-r border-line p-6 sm:p-7">
+          <Icon name={icon} size={28} class="mt-1 shrink-0 text-blue-bright" />
+          <div>
+            <h3 class="font-display text-xl font-semibold tracking-[-0.02em]">{title}</h3>
+            <p class="mt-1.5 text-muted">{line}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Section>
+
 {
   !hasSchedule && (
     <NotifyBanner
       id="notify"
+      tone="sky"
       formName="programme-notify"
       kicker="Coming soon"
       text="The full programme,"
