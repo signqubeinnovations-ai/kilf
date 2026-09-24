@@ -16,7 +16,7 @@ The maps and "Get directions" links already work from the venue names. Coordinat
 
 ### Configuration (environment variables, see README §5)
 
-- [ ] `SITE_URL`: the real domain. Canonical URLs, sitemap, Open Graph and the footer QR code use it. It currently defaults to `https://kilf2027.vercel.app`.
+- [ ] `SITE_URL`: the real domain. Canonical URLs, sitemap, Open Graph and the footer QR code use it. It currently defaults to `https://kilf.vercel.app`.
 - [ ] `PUBLIC_FORM_ENDPOINT`: **required**, otherwise forms show an error in production.
 - [ ] `PUBLIC_GA4_ID` or `PUBLIC_PLAUSIBLE_DOMAIN`: optional analytics.
 - [ ] `PUBLIC_PARTNER_CALL_URL`: optional booking link for "Book a partnership call" (it falls back to email).

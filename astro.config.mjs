@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // Set SITE_URL in your hosting provider (e.g. https://kilf.in). Used for
 // canonical URLs, Open Graph tags, the sitemap and the footer QR code.
-const site = process.env.SITE_URL || 'https://kilf2027.vercel.app';
+const site = process.env.SITE_URL || 'https://kilf.vercel.app';
 
 export default defineConfig({
   site,
