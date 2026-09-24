@@ -99,17 +99,17 @@ const tabs = [
 <Section tone="cream" labelledby="more-h">
   <h2 id="more-h" class="sr-only">Partner or attend</h2>
   <div class="grid gap-3 md:grid-cols-2 md:gap-4">
-    <div id="partner" class="on-dark rounded-2xl bg-navy p-7 text-cream sm:p-10">
+    <div id="partner" class="panel on-dark grain bg-navy p-7 text-cream sm:p-10">
       <ChapterLabel n={5} label="Partner" tone="dark" />
       <Headline text="Your brand. Our story." accent="One lake." tone="dark" size="md" class="mt-4" />
       <p class="mt-4 text-cream/90">Founding partnerships for the first edition.</p>
       <LimeButton href={lp('/partners')} label="See partnership options" class="mt-7" />
     </div>
-    <div id="attend" class="rounded-2xl bg-lime p-7 text-navy sm:p-10">
-      <ChapterLabel n={6} label="Attend" tone="lime" />
+    <div id="attend" class="panel bg-sky p-7 text-navy sm:p-10">
+      <ChapterLabel n={6} label="Attend" />
       <Headline text="Get your" accent="pass." size="md" class="mt-4" />
       <p class="mt-4 text-navy/85">Day, Festival and Young Reader passes. Ticketing opens soon.</p>
-      <LimeButton href={lp('/passes')} label="See passes" variant="navy" class="mt-7" />
+      <LimeButton href={lp('/passes')} label="See passes" class="mt-7" />
     </div>
   </div>
 </Section>

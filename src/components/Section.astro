@@ -1,7 +1,7 @@
 ---
 /** Page section with brand background tones and the faint wave pattern. */
 interface Props {
-  tone?: 'cream' | 'white' | 'sky' | 'navy' | 'blue' | 'lime';
+  tone?: 'cream' | 'white' | 'sky' | 'navy' | 'blue' | 'lime' | 'coral';
   waves?: boolean;
   id?: string;
   class?: string;
@@ -17,9 +17,11 @@ const tones = {
   navy: 'bg-navy text-cream on-dark',
   blue: 'bg-blue-bright text-white on-dark',
   lime: 'bg-lime text-navy',
+  coral: 'bg-coral text-navy',
 };
 const dark = tone === 'navy' || tone === 'blue';
 ---
-<Tag id={id} aria-labelledby={labelledby} class:list={['relative py-16 sm:py-24', tones[tone], waves && (dark ? 'waves-light' : 'waves'), cls]}>
+<Tag id={id} aria-labelledby={labelledby} class:list={['relative overflow-hidden py-20 sm:py-28', tones[tone], waves && (dark ? 'waves-light' : 'waves'), cls]}>
+  <slot name="backdrop" />
   <div class:list={['container-kilf relative', inner]}><slot /></div>
 </Tag>

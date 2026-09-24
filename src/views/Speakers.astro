@@ -35,7 +35,7 @@ const filters = [
             type="button"
             data-filter={value}
             aria-pressed={i === 0 ? 'true' : 'false'}
-            class="min-h-11 whitespace-nowrap rounded-full px-5 text-sm font-bold text-navy ring-1 ring-inset ring-navy/20 transition-colors hover:bg-navy/5 aria-pressed:bg-navy aria-pressed:text-cream aria-pressed:ring-navy"
+            class="min-h-11 whitespace-nowrap rounded-full px-5 text-sm font-semibold text-navy ring-1 ring-inset ring-navy/15 transition-colors hover:bg-navy/5 aria-pressed:bg-navy aria-pressed:text-cream aria-pressed:ring-navy"
           >
             {label}
           </button>
@@ -45,7 +45,7 @@ const filters = [
   </div>
   <p class="sr-only" aria-live="polite" data-filter-status></p>
 
-  <ul class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:gap-4" data-speaker-grid>
+  <ul class="mt-10 grid grid-cols-2 gap-x-4 gap-y-9 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12" data-speaker-grid>
     {speakers.map((s) => (
       <SpeakerCard
         name={s.data.name}
@@ -56,9 +56,9 @@ const filters = [
       />
     ))}
     <li class="list-none" data-categories="always">
-      <div class="flex h-full min-h-56 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue/30 bg-sky/60 p-5 text-center">
-        <span class="inline-grid size-16 place-items-center rounded-full bg-white text-blue"><Icon name="plus" size={30} /></span>
-        <span class="mt-4 font-display text-lg font-extrabold leading-tight tracking-tight">More voices to be announced</span>
+      <div class="flex aspect-[4/5] flex-col items-center justify-center rounded-[1.5rem] border border-dashed border-navy/25 bg-white/60 p-5 text-center">
+        <span class="inline-grid size-14 place-items-center rounded-full bg-sky text-blue"><Icon name="plus" size={26} /></span>
+        <span class="mt-4 max-w-[10rem] font-display text-lg font-semibold leading-tight tracking-tight">More voices to be announced</span>
       </div>
     </li>
   </ul>

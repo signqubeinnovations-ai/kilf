@@ -1,6 +1,11 @@
 ---
 import Illustration from './Illustration.astro';
-/** Full-width lake scene that fades into the cream page at its top edge. */
+import WaterCanvas from './motion/WaterCanvas';
+import { asset } from '@/lib/images';
+/**
+ * Full-width lake band. Uses kilf-assets/illustrations/lake-band.jpg when it
+ * exists; until then, a strip of live water.
+ */
 interface Props { src?: string; alt?: string; class?: string; height?: string }
 const {
   src = 'illustrations/lake-band.jpg',
@@ -8,7 +13,8 @@ const {
   class: cls = '',
   height = 'h-40 sm:h-56 lg:h-72',
 } = Astro.props;
+const real = !asset(src).placeholder;
 ---
-<div class:list={['fade-top relative w-full overflow-hidden', height, cls]} aria-hidden={alt ? undefined : 'true'}>
-  <Illustration src={src} alt={alt} class="h-full w-full object-cover object-bottom" />
+<div class:list={['fade-top relative w-full overflow-hidden', height, cls]} style={real ? undefined : 'background:linear-gradient(180deg,#5673F4,#1B37E6 55%,#0E1A6E)'} aria-hidden={alt ? undefined : 'true'}>
+  {real ? <Illustration src={src} alt={alt} class="h-full w-full object-cover object-bottom" /> : <WaterCanvas client:visible palette="day" interactive={false} />}
 </div>

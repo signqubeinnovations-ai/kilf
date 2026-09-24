@@ -6,182 +6,297 @@ import Headline from '@/components/Headline.astro';
 import LimeButton from '@/components/LimeButton.astro';
 import TextLink from '@/components/TextLink.astro';
 import Icon from '@/components/Icon.astro';
-import IconCircle from '@/components/IconCircle.astro';
-import WordStack from '@/components/WordStack.astro';
-import Countdown from '@/components/Countdown.astro';
-import StatCard from '@/components/StatCard.astro';
 import SpeakerCard from '@/components/SpeakerCard.astro';
 import Section from '@/components/Section.astro';
 import Badge from '@/components/Badge.astro';
+import MotionToggle from '@/components/MotionToggle.astro';
+import LakeWindow from '@/components/LakeWindow.astro';
 import StrandGrid from '@/components/blocks/StrandGrid.astro';
 import InvolvedCards from '@/components/blocks/InvolvedCards.astro';
 import SignupBlock from '@/components/blocks/SignupBlock.astro';
+import RippleField from '@/components/motion/RippleField';
+import Marquee from '@/components/motion/Marquee';
+import Countdown from '@/components/motion/Countdown';
+import { asset } from '@/lib/images';
+import { site } from '@/lib/site';
 import { useTranslations, localizePath, type Lang } from '@/i18n/ui';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const lp = (p: string) => localizePath(p, lang);
+const ml = lang === 'ml';
 
 const speakers = (await getCollection('speakers'))
   .filter((s) => s.data.featured)
   .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 12);
+  .slice(0, 8);
+const strands = (await getCollection('strands')).sort((a, b) => a.data.order - b.data.order);
 
 const youthChips = ['Poetry Slam', 'Open Mic Nights', 'Reels & Short-Film Challenge', 'Indie & Rap Night', 'Meet Your Favourite Authors', 'Campus Ambassadors'];
+
+// Real artwork from kilf-assets/ wins; otherwise live water stands in.
+const realCover = !asset('illustrations/cover.jpg').placeholder;
+const realNye = !asset('illustrations/nye.jpg').placeholder;
+
+// Build-time countdown values (the client takes over after hydration).
+const left = Math.max(0, new Date(site.startISO).getTime() - Date.now());
+const initial: [number, number, number] = [Math.floor(left / 86400000), Math.floor((left % 86400000) / 3600000), Math.floor((left % 3600000) / 60000)];
+
+const facts = [
+  { value: 5, pad: 2, suffix: '', label: t('home.facts.days') },
+  { value: 100, pad: 0, suffix: '+', label: t('home.stats.speakers') },
+  { value: 10000, pad: 0, suffix: '+', label: t('home.stats.audience') },
+  { value: site.venues.length, pad: 2, suffix: '', label: t('home.facts.venues') },
+];
 ---
 
 <!-- 1 · Hero -->
 <section class="relative overflow-hidden bg-cream" aria-labelledby="hero-h">
-  <div class="container-kilf relative z-10 pt-8 sm:pt-14 lg:pt-16">
-    <div class="flex items-start justify-between gap-4">
-      <p class="text-xs font-bold uppercase tracking-[0.2em] text-coral-ink sm:text-sm">{t('home.kicker')}</p>
-      <WordStack />
+  <div class="pointer-events-none absolute -right-40 -top-40 size-[46rem] rounded-full bg-[radial-gradient(closest-side,rgb(228_236_249/0.9),transparent)]" aria-hidden="true"></div>
+  <div class="container-kilf relative grid items-center gap-12 pb-16 pt-10 sm:pb-20 sm:pt-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pb-24 lg:pt-16">
+    <div>
+      <p class="hero-in flex flex-wrap items-center gap-3" style="--d:0s">
+        <span class="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.8rem] font-semibold text-navy ring-1 ring-inset ring-line">
+          <span class="size-1.5 rounded-full bg-coral"></span>{t('home.kicker')}
+        </span>
+        <span class="eyebrow text-muted">{t('site.city')}</span>
+      </p>
+      <h1 id="hero-h" class:list={['display hero-in mt-7 text-navy', ml ? 'text-[2.5rem] sm:text-[3.6rem] lg:text-[4rem] xl:text-[4.6rem]' : 'text-[3.3rem] sm:text-[5rem] lg:text-[5.2rem] xl:text-[6.1rem]']} style="--d:0.1s">
+        <span class="sr-only">{t('home.h1')}: </span>{t('home.tagline')} <em class="serif-accent text-blue">{t('home.taglineAccent')}</em>
+      </h1>
+      <p class="hero-in mt-7 max-w-xl text-lg leading-relaxed text-navy/75 sm:text-xl" style="--d:0.2s">{t('home.hero.lead')}</p>
+      <div class="hero-in mt-9 flex flex-wrap items-center gap-3" style="--d:0.28s">
+        <LimeButton href={lp('/get-involved#register')} label={t('cta.register')} size="lg" />
+        <LimeButton href={lp('/programme')} label={t('cta.explore')} variant="ghost" size="lg" />
+      </div>
+      <dl class="hero-in mt-12 grid max-w-xl grid-cols-2 border-t border-navy/10 pt-6 sm:grid-cols-3" style="--d:0.36s">
+        <div class="pr-4">
+          <dt class="eyebrow text-muted">{t('home.hero.when')}</dt>
+          <dd class="mt-1.5 font-semibold leading-snug">{ml ? '2026 ഡിസം. 31 – 2027 ജനു. 4' : '31 Dec – 4 Jan'}</dd>
+        </div>
+        <div class="border-l border-navy/10 pl-4 sm:pr-4">
+          <dt class="eyebrow text-muted">{t('home.hero.where')}</dt>
+          <dd class="mt-1.5 font-semibold leading-snug">{t('home.hero.place')}</dd>
+        </div>
+        <div class="col-span-2 mt-5 border-navy/10 sm:col-span-1 sm:mt-0 sm:border-l sm:pl-4">
+          <dt class="eyebrow text-muted">{t('home.hero.edition')}</dt>
+          <dd class="mt-1.5 font-semibold leading-snug">{t('home.hero.editionValue')}</dd>
+        </div>
+      </dl>
     </div>
-    <h1 id="hero-h" class="display mt-5 max-w-5xl text-[2.7rem] text-navy sm:mt-4 sm:text-7xl lg:text-[6rem]">
-      {lang === 'ml' ? (
-        <>കൊല്ലം അന്താരാഷ്ട്ര <span class="text-coral-dark">സാഹിത്യോത്സവം</span></>
-      ) : (
-        <>Kollam International Literature <span class="text-coral-dark">Festival</span></>
-      )}
-    </h1>
-    <p class="mt-6 flex items-center gap-3 text-base font-bold text-navy sm:text-lg">
-      <IconCircle name="calendar" size="sm" />
-      <span><time datetime="2026-12-31">{lang === 'ml' ? '2026 ഡിസംബർ 31' : '31 December 2026'}</time> – <time datetime="2027-01-04">{lang === 'ml' ? '2027 ജനുവരി 4' : '4 January 2027'}</time></span>
-    </p>
-    <p class="display mt-6 text-3xl text-blue sm:text-4xl">
-      {t('home.tagline')} <span class="text-coral-dark">{t('home.taglineAccent')}</span>
-    </p>
-    <p class="mt-3 text-lg italic text-muted">{t('home.water')}</p>
-    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-      <LimeButton href={lp('/get-involved#register')} label={t('cta.register')} />
-      <TextLink href={lp('/programme')} label={t('cta.explore')} />
-    </div>
-  </div>
-  <div class="relative -mt-6 sm:-mt-12 lg:-mt-4">
-    <div class="fade-top relative">
-      <Illustration
-        src="illustrations/cover.jpg"
-        alt="An open book resting on Ashtamudi Lake at sunset: palm trees, a sailing boat and a Chinese fishing net on the shore."
-        priority
-        class="h-[17rem] w-full object-cover object-[60%_100%] sm:h-[26rem] lg:h-[34rem]"
-      />
-      <!-- gentle ripple over the water -->
-      <svg class="pointer-events-none absolute inset-x-0 bottom-[18%] h-10 w-[110%] animate-ripple text-white/30" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 20c50-16 100-16 150 0s100 16 150 0 100-16 150 0 100 16 150 0 100-16 150 0 100 16 150 0 100-16 150 0 100 16 150 0" fill="none" stroke="currentColor" stroke-width="2" />
-      </svg>
-    </div>
+
+    <figure class="hero-in relative" style="--d:0.15s">
+      {
+        realCover ? (
+          <div class="panel aspect-[4/3] bg-sky lg:aspect-[4/5]">
+            <Illustration src="illustrations/cover.jpg" alt="" priority sizes="(min-width: 1024px) 46vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[60%_100%]" />
+          </div>
+        ) : (
+          <LakeWindow palette="day" hydrate="load" class="aspect-[4/3] shadow-[0_50px_90px_-50px_rgb(15_28_116/0.75)] lg:aspect-[4/5]">
+            <p class="glass pointer-events-none absolute left-4 top-4 z-10 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold">
+              <span class="size-2 rounded-full bg-lime"></span><span data-days-left={site.startISO}>{initial[0]}</span> {t('home.hero.daysToGo')}
+            </p>
+            <p class="pointer-events-none absolute bottom-5 left-5 z-10 max-w-[14rem] font-[family-name:var(--font-serif)] text-2xl italic leading-tight text-white/95">{t('home.hero.touch')}</p>
+          </LakeWindow>
+        )
+      }
+      <figcaption class="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-muted">
+        <span>{t('home.hero.caption')}</span>
+        <MotionToggle lang={lang} tone="light" />
+      </figcaption>
+    </figure>
   </div>
 </section>
 
-<!-- 2 · Countdown -->
-<section class="on-dark waves-light bg-navy py-12 text-cream sm:py-16" aria-label={t('countdown.title')}>
+<!-- 2 · The nine strands, drifting past -->
+<div class="border-y border-navy/10 bg-cream py-5 text-navy sm:py-6">
   <div class="container-kilf">
-    <Countdown lang={lang} />
+    <Marquee
+      client:visible
+      items={strands.map((s) => (ml ? s.data.name_ml : s.data.name))}
+      listLabel={t('home.marquee.label')}
+      pauseLabel={t('home.marquee.pause')}
+      playLabel={t('home.marquee.play')}
+      lang={lang}
+    />
   </div>
-</section>
+</div>
 
-<!-- 3 · Stats -->
-<Section tone="cream" waves class="!py-12 sm:!py-16" labelledby="stats-h">
-  <h2 id="stats-h" class="sr-only">{t('home.stats.label')}</h2>
-  <ul class="grid gap-3 sm:grid-cols-3 sm:gap-4">
-    <li data-reveal><StatCard value="100+" label={t('home.stats.speakers')} /></li>
-    <li data-reveal style="transition-delay:80ms"><StatCard value="10,000+" label={t('home.stats.audience')} /></li>
-    <li data-reveal style="transition-delay:160ms"><StatCard value="1" label={t('home.stats.shore')} note={t('home.stats.shoreNote')} /></li>
-  </ul>
+<!-- 3 · The festival -->
+<Section tone="cream" labelledby="intro-h">
+  <div class="grid gap-10 lg:grid-cols-12 lg:gap-12">
+    <div class="lg:col-span-6">
+      <ChapterLabel n={1} label={t('home.intro.chapter')} />
+      <Headline id="intro-h" text={t('home.intro.h')} accent={t('home.intro.accent')} accentColor="blue" stack class="mt-6" data-reveal />
+    </div>
+    <div class="lg:col-span-5 lg:col-start-8 lg:pt-14">
+      <p class="text-lg leading-relaxed text-navy/85 sm:text-xl" data-reveal>{t('about.p1')}</p>
+      <p class="mt-4 text-lg leading-relaxed text-muted" data-reveal>{t('about.p2')}</p>
+      <TextLink href={lp('/about')} label={t('home.intro.link')} class="mt-5" />
+    </div>
+  </div>
+  <dl class="mt-16 grid grid-cols-2 border-t border-navy/10 lg:grid-cols-4" data-reveal-group>
+    {facts.map((f, i) => (
+      <div class:list={['flex flex-col-reverse gap-2 pb-2 pt-7', i % 2 === 1 && 'border-l border-navy/10 pl-5', i >= 2 && 'border-t border-navy/10 lg:border-t-0', i === 2 && 'lg:border-l lg:pl-5', i > 0 && 'lg:pl-6']}>
+        <dt class="eyebrow text-muted">{f.label}</dt>
+        <dd class="numeral text-[2.9rem] text-navy sm:text-[3.6rem] xl:text-[4.2rem]">
+          <span data-count={f.value} data-pad={f.pad || undefined}>{String(f.value.toLocaleString('en-IN')).padStart(f.pad, '0')}</span>{f.suffix && <span class="text-coral-dark">{f.suffix}</span>}
+        </dd>
+      </div>
+    ))}
+  </dl>
 </Section>
 
 <!-- 4 · New Year's Eve -->
-<section class="on-dark relative overflow-hidden bg-navy-deep text-cream" aria-labelledby="nye-h">
-  <div class="grid lg:grid-cols-2">
-    <div class="container-kilf py-16 sm:py-24 lg:ml-auto lg:max-w-[38rem] lg:pr-12">
-      <ChapterLabel n={1} label={t('home.nye.chapter')} tone="dark" />
-      <Headline id="nye-h" text={t('home.nye.h')} accent={t('home.nye.accent')} tone="dark" class="mt-5" />
-      <p class="mt-5 max-w-md text-xl leading-snug text-cream/90">{t('home.nye.lead')}</p>
-      <ul class="mt-8 space-y-4">
-        {[['moon', t('home.nye.1')], ['music', t('home.nye.2')], ['sparkle', t('home.nye.3')]].map(([icon, label]) => (
-          <li class="flex items-center gap-4 text-lg font-semibold">
-            <span class="inline-grid size-12 place-items-center rounded-full bg-white/10 text-lime ring-1 ring-inset ring-white/15"><Icon name={icon} size={24} /></span>
-            {label}
-          </li>
-        ))}
-      </ul>
-    </div>
-    <div class="relative min-h-72 lg:min-h-full">
-      <Illustration src="illustrations/nye.jpg" alt="" sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+<section class="bg-cream pb-6 sm:pb-10" aria-labelledby="nye-h">
+  <div class="container-kilf">
+    <div class="panel on-dark grain grid bg-navy-deep text-cream lg:grid-cols-2">
+      <div class="relative px-7 py-14 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
+        <ChapterLabel n={2} label={t('home.nye.chapter')} tone="dark" />
+        <Headline id="nye-h" text={t('home.nye.h')} accent={t('home.nye.accent')} tone="dark" accentColor="lime" size="xl" class="mt-6" />
+        <p class="mt-6 max-w-md text-xl leading-snug text-cream/85">{t('home.nye.lead')}</p>
+        <ul class="mt-8 flex flex-wrap gap-2">
+          {[['moon', t('home.nye.1')], ['music', t('home.nye.2')], ['sparkle', t('home.nye.3')]].map(([icon, label]) => (
+            <li class="inline-flex items-center gap-2 rounded-full py-2 pl-3 pr-4 text-[0.92rem] font-semibold ring-1 ring-inset ring-white/20">
+              <Icon name={icon} size={18} class="text-lime" />
+              {label}
+            </li>
+          ))}
+        </ul>
+        <div class="mt-12 border-t border-white/10 pt-8">
+          <Countdown
+            client:visible
+            target={site.startISO}
+            initial={initial}
+            labels={{ title: t('countdown.title'), days: t('countdown.days'), hours: t('countdown.hours'), minutes: t('countdown.minutes'), live: t('countdown.live') }}
+          />
+        </div>
+      </div>
+      <div class="relative min-h-[20rem] sm:min-h-[26rem] lg:min-h-full">
+        {
+          realNye ? (
+            <Illustration src="illustrations/nye.jpg" alt="" sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+          ) : (
+            <div class="absolute inset-0"><LakeWindow palette="night" rounded={false} class="size-full" rain={1.8} /></div>
+          )
+        }
+      </div>
     </div>
   </div>
 </section>
 
 <!-- 5 · Voices -->
-<Section tone="cream" waves labelledby="voices-h">
+<Section tone="cream" labelledby="voices-h">
   <div class="flex flex-wrap items-end justify-between gap-6">
     <div>
-      <ChapterLabel n={2} label={t('home.voices.chapter')} />
-      <Headline id="voices-h" text={t('home.voices.h')} accent={t('home.voices.accent')} class="mt-5" />
-      <p class="mt-4 text-sm font-semibold text-muted">{t('home.voices.note')}</p>
+      <ChapterLabel n={3} label={t('home.voices.chapter')} />
+      <Headline id="voices-h" text={t('home.voices.h')} accent={t('home.voices.accent')} class="mt-6" />
+      <p class="mt-4 text-sm font-medium text-muted">{t('home.voices.note')}</p>
     </div>
     <TextLink href={lp('/speakers')} label={t('cta.seeSpeakers')} />
   </div>
-  <ul class="mt-10 grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-    {speakers.map((s) => <SpeakerCard name={s.data.name} role={s.data.role} photo={s.data.photo} size="sm" lang="en" />)}
+  <ul class="mt-12 grid grid-cols-2 gap-x-4 gap-y-9 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12" data-reveal-group>
+    {speakers.map((s) => <SpeakerCard name={s.data.name} role={s.data.role} photo={s.data.photo} lang="en" />)}
   </ul>
 </Section>
 
 <!-- 6 · Strands -->
-<Section tone="sky" waves labelledby="strands-h">
-  <ChapterLabel n={3} label={t('home.strands.chapter')} />
-  <Headline id="strands-h" text={t('home.strands.h')} accent={t('home.strands.accent')} class="mt-5" />
-  <p class="mt-4 max-w-2xl text-lg text-muted">{t('home.strands.lead')}</p>
-  <div class="mt-10"><StrandGrid lang={lang} /></div>
+<Section tone="white" labelledby="strands-h" class="border-y border-navy/5">
+  <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+    <div class="lg:col-span-7">
+      <ChapterLabel n={4} label={t('home.strands.chapter')} />
+      <Headline id="strands-h" text={t('home.strands.h')} accent={t('home.strands.accent')} class="mt-6" />
+    </div>
+    <p class="max-w-md text-lg text-muted lg:col-span-5 lg:justify-self-end">{t('home.strands.lead')}</p>
+  </div>
+  <div class="mt-12"><StrandGrid lang={lang} /></div>
 </Section>
 
 <!-- 7 · Khasakkinte Ithihasam -->
-<section class="on-dark relative overflow-hidden bg-navy text-cream" aria-labelledby="khasak-h">
-  <div class="grid lg:grid-cols-[1.1fr_1fr]">
-    <div class="relative min-h-72 sm:min-h-96 lg:order-2 lg:min-h-full">
-      <Illustration src="illustrations/p4_stage.jpg" alt="A theatre stage lit by a single spotlight: two figures beside a house and a great tree." sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+<Section tone="cream" labelledby="khasak-h">
+  <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+    <div class="panel aspect-[4/3] bg-navy lg:col-span-6 lg:aspect-[5/6]">
+      <Illustration src="illustrations/p4_stage.jpg" alt="A theatre stage under a single spotlight." sizes="(min-width: 1024px) 45vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
     </div>
-    <div class="container-kilf py-16 sm:py-24 lg:ml-auto lg:max-w-[40rem] lg:pr-12">
+    <div class="lg:col-span-6">
       <div class="flex flex-wrap items-center gap-3">
-        <ChapterLabel n={4} label={t('home.khasak.chapter')} tone="dark" />
-        <Badge tone="dark">{t('home.khasak.proposed')}</Badge>
+        <ChapterLabel n={5} label={t('home.khasak.chapter')} />
+        <Badge>{t('home.khasak.proposed')}</Badge>
       </div>
-      <Headline id="khasak-h" text={t('home.khasak.h')} accent={t('home.khasak.accent')} tone="dark" class="mt-5" />
-      <p class="mt-5 max-w-lg text-lg text-cream/90">{t('home.khasak.lead')}</p>
-      <blockquote class="mt-6 border-l-2 border-coral pl-5 font-display text-2xl font-extrabold leading-tight tracking-tight">
+      <Headline id="khasak-h" text={t('home.khasak.h')} accent={t('home.khasak.accent')} class="mt-6" stack />
+      <p class="mt-6 max-w-lg text-lg text-navy/80">{t('home.khasak.lead')}</p>
+      <blockquote class="mt-8 max-w-lg border-l-2 border-coral pl-5 font-[family-name:var(--font-serif)] text-[1.9rem] italic leading-tight text-navy">
         {t('home.khasak.quote')}
       </blockquote>
-      <LimeButton href={lp('/khasak')} label={t('cta.learnMore')} class="mt-8" />
+      <LimeButton href={lp('/khasak')} label={t('cta.learnMore')} class="mt-9" />
+    </div>
+  </div>
+</Section>
+
+<!-- 8 · Youth -->
+<section class="bg-cream pb-6 sm:pb-10" aria-labelledby="youth-h">
+  <div class="container-kilf">
+    <div class="panel on-dark grain bg-blue-bright px-7 py-14 text-white sm:px-12 sm:py-16 lg:px-16 lg:py-20">
+      <RippleField client:visible tone="lime" x={90} y={24} size={520} />
+      <div class="relative grid items-center gap-12 lg:grid-cols-[1.15fr_1fr]">
+        <div>
+          <ChapterLabel n={6} label={t('home.youth.chapter')} tone="dark" />
+          <Headline id="youth-h" text={t('home.youth.h')} accent={t('home.youth.accent')} tone="blue" size="xl" class="mt-6" />
+          <p class="mt-6 max-w-lg text-lg text-white/90">{t('home.youth.lead')}</p>
+          <LimeButton href={lp('/youth')} label={t('home.youth.cta')} size="lg" class="mt-9" />
+        </div>
+        <ul class="flex flex-wrap gap-2.5" lang="en" aria-label="Youth activities (proposed)" data-reveal-group>
+          {youthChips.map((c) => (
+            <li class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-base font-semibold ring-1 ring-inset ring-white/25 sm:text-lg">
+              <span class="size-1.5 rounded-full bg-lime"></span>{c}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 8 · Youth -->
-<Section tone="blue" waves labelledby="youth-h">
-  <div class="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
-    <div>
-      <ChapterLabel n={5} label={t('home.youth.chapter')} tone="dark" />
-      <Headline id="youth-h" text={t('home.youth.h')} accent={t('home.youth.accent')} tone="blue" size="xl" class="mt-5" />
-      <p class="mt-5 max-w-lg text-lg text-white/90">{t('home.youth.lead')}</p>
-      <LimeButton href={lp('/youth')} label={t('home.youth.cta')} class="mt-8" />
+<!-- 9 · Statement -->
+<section class="relative overflow-hidden bg-cream py-24 text-navy sm:py-32" aria-labelledby="statement-h">
+  <RippleField client:visible tone="light" x={50} y={55} size={760} squash={0.34} follow />
+  <div class="container-kilf relative text-center">
+    <p class="eyebrow text-coral-ink" data-reveal>{t('home.statement.kicker')}</p>
+    <h2 id="statement-h" class:list={['display mx-auto mt-6 max-w-5xl', ml ? 'text-[2.2rem] sm:text-[3.4rem] lg:text-[4.4rem]' : 'text-[2.7rem] sm:text-[4.4rem] lg:text-[5.8rem]']} data-reveal>
+      {t('home.statement.h')} <em class="serif-accent text-coral-dark">{t('home.statement.accent')}</em>
+    </h2>
+    <p class="mx-auto mt-7 max-w-xl text-lg text-muted sm:text-xl" data-reveal>{t('home.statement.lead')}</p>
+    <TextLink href={lp('/about')} label={t('home.statement.link')} class="mt-5" />
+  </div>
+</section>
+
+<!-- 10 · Be part of KILF -->
+<Section tone="white" labelledby="involved-h" class="border-y border-navy/5">
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-4">
+      <ChapterLabel n={7} label={t('home.involved.chapter')} />
+      <Headline id="involved-h" text={t('home.involved.h')} accent={t('home.involved.accent')} class="mt-6" />
+      <p class="mt-6 max-w-sm text-lg text-muted">{t('home.involved.lead')}</p>
     </div>
-    <ul class="flex flex-wrap gap-2.5" lang="en" aria-label="Youth activities (proposed)">
-      {youthChips.map((c, i) => (
-        <li class:list={['rounded-full px-4 py-2.5 text-sm font-bold sm:text-base', i % 2 ? 'bg-coral text-navy' : 'bg-lime text-navy']}>{c}</li>
-      ))}
-    </ul>
+    <div class="lg:col-span-8"><InvolvedCards lang={lang} /></div>
   </div>
 </Section>
 
-<!-- 9 · Be part of KILF -->
-<Section tone="cream" waves labelledby="involved-h">
-  <ChapterLabel n={6} label={t('home.involved.chapter')} />
-  <Headline id="involved-h" text={t('home.involved.h')} accent={t('home.involved.accent')} class="mt-5" />
-  <div class="mt-10"><InvolvedCards lang={lang} /></div>
-</Section>
+<!-- 11 · Newsletter / WhatsApp -->
+<section class="bg-cream py-14 sm:py-20" aria-labelledby="newsletter-h">
+  <div class="container-kilf">
+    <div class="panel bg-sky px-6 py-12 sm:px-12 sm:py-14 lg:px-16 lg:py-16">
+      <RippleField client:visible tone="light" x={4} y={90} size={460} waves />
+      <div class="relative"><SignupBlock lang={lang} chapter={8} tone="light" /></div>
+    </div>
+  </div>
+</section>
 
-<!-- 10 · Newsletter / WhatsApp -->
-<Section tone="navy" waves labelledby="newsletter-h">
-  <SignupBlock lang={lang} chapter={7} />
-</Section>
+<script>
+  // Keep the "days to go" chip current (the build may be days old).
+  document.querySelectorAll<HTMLElement>('[data-days-left]').forEach((el) => {
+    const days = Math.max(0, Math.floor((new Date(el.dataset.daysLeft!).getTime() - Date.now()) / 86400000));
+    el.textContent = String(days);
+  });
+</script>

@@ -2,7 +2,7 @@
 
 Official website for the **Kollam International Literature Festival (KILF) 2027**: 31 December 2026 – 4 January 2027, Kollam, Kerala.
 
-Built with [Astro](https://astro.build) and Tailwind CSS. It is a fully static site: fast, SEO-friendly and hostable anywhere. The only JavaScript is a few small scripts: the mobile menu, countdown, speaker filters, map loader, scroll fade-ins and forms.
+Built with [Astro](https://astro.build) and Tailwind CSS. It is a fully static site: fast, SEO-friendly and hostable anywhere. The calm lake animations run on [Motion](https://motion.dev) (formerly Framer Motion) inside small React islands; everything else is plain HTML with a few tiny scripts (menu, speaker filters, map loader, forms).
 
 - **English** at `/` (default), **Malayalam** at `/ml/`. Home and About are translated; other `/ml/` pages show the English content with a notice.
 - Content (speakers, FAQs, passes, strands, programme, sponsors) lives in `src/content/` and can be edited without touching code.
@@ -170,7 +170,9 @@ The partnership proposal PDF: put it at `public/downloads/kilf-2027-partnership-
 ```
 src/
   components/     Header, Footer, ChapterLabel, Headline, LimeButton, IconCircle,
-                  SpeakerCard, LakeBand, Section, Form/Field, Countdown, Icon …
+                  SpeakerCard, LakeBand, Section, Form/Field, MotionToggle, Icon …
+  components/motion/  Animated React islands: WaterCanvas (+ water.ts engine),
+                  RippleField, Marquee, Countdown (Motion)
   components/blocks/  Larger reusable sections (strands grid, notify banner, schedule…)
   views/          Page bodies, shared by the English and /ml/ routes
   pages/          Routes (thin wrappers around views) + robots.txt
@@ -178,14 +180,39 @@ src/
   content/        Editable content collections
   i18n/           Translations
   lib/            Site facts, image lookup
+  scripts/        Scroll reveals and count-ups (Motion's vanilla API)
   styles/         Brand tokens (colours, type) in global.css
   placeholders/   Stand-in SVG illustrations
 scripts/          Asset preparation and screenshots
 kilf-assets/      Real artwork (see section 2)
 ```
 
+### Motion
+
+All animation is calm and water-like, and all of it can be stopped:
+
+| Where | What moves | Component |
+|---|---|---|
+| Home hero, New Year's Eve, About and Visit panels, the closing panel above the footer | Live water: a small wave simulation on canvas. Drops fall now and then, the cursor leaves a gentle wake, a tap sends out a ring, sun or moon light glitters on the crests | `src/components/LakeWindow.astro`, `motion/WaterCanvas.tsx`, `motion/water.ts` |
+| Page heroes, statement band, youth and notify panels | Rings widening slowly across still water; a faint ripple trails the mouse | `motion/RippleField.tsx` (Motion) |
+| Strand ribbon (home) | The nine strands drift past, ease to a stop on hover, own pause button | `motion/Marquee.tsx` (Motion) |
+| New Year's Eve | Countdown digits roll as they change | `motion/Countdown.tsx` (Motion) |
+| Everywhere | Sections rise into place as you scroll, numbers count up, buttons send out a ring on hover | `src/scripts/reveal.ts` (Motion), `global.css` |
+
+- **Pause motion** buttons (hero and footer) stop every loop and remember the choice (WCAG 2.2.2). The operating system's *reduce motion* setting shows still water instead.
+- Animations stop automatically when they scroll off screen.
+- Real artwork still wins: `cover.jpg`, `nye.jpg` and `p8_map_clean.jpg` in `kilf-assets/illustrations/` replace the live water in the hero, New Year's Eve and map panels.
+
+### Layout and colour
+
+- The page is light first: cream and white surfaces, navy text, cobalt as the accent. Coral and lime are used in small doses (accent words, dots, the lime button on dark panels).
+- Dark and bright moments sit in rounded **panels** inside the page (`.panel`) rather than full-width bands.
+- Primary buttons are navy on light surfaces and turn lime inside dark panels automatically (`LimeButton` with the default `primary` variant).
+- Speaker portraits are large 4:5 rounded rectangles (`Portrait.astro`); until a photo arrives, a soft blue tint with the speaker's initials stands in.
+
 ### Brand notes
 
+- **Type:** Bricolage Grotesque (headlines, optical sizes), Figtree (text), Instrument Serif italic for the accent word in each headline ("Voices without *borders.*"), Anek Malayalam for Malayalam. All self-hosted.
 - Colours are Tailwind tokens (`bg-navy`, `text-coral`, `bg-lime`, …) defined in `src/styles/global.css`.
 - For WCAG AA, bright coral (`coral`) is only used on navy. On cream, headline accents use `coral-dark`, small coral text uses `coral-ink`, and small coral text on lime uses `coral-deep`.
-- Fonts are self-hosted: Plus Jakarta Sans (800) for headlines, Manrope for body text and Manjari for Malayalam.
+- On bright blue, accents are lime (coral fails contrast there); on coral, all text is navy.

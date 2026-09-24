@@ -1,0 +1,54 @@
+---
+import WaterCanvas from './motion/WaterCanvas';
+/**
+ * A window onto the lake: the live water canvas in a rounded frame. The CSS
+ * gradient underneath is what shows before the script runs (and is close to
+ * the canvas's own colours), so there is never a blank box.
+ */
+interface Props {
+  palette?: 'day' | 'night' | 'dusk';
+  interactive?: boolean;
+  rain?: number;
+  /** When the canvas should wake: `load` for the hero, `visible` elsewhere. */
+  hydrate?: 'load' | 'visible';
+  class?: string;
+  rounded?: boolean;
+}
+const { palette = 'day', interactive = true, rain, hydrate = 'visible', class: cls = '', rounded = true } = Astro.props;
+const looks = {
+  day: {
+    bg: 'linear-gradient(180deg, #5673F4 0%, #2F52EE 38%, #1B37E6 62%, #0E1A6E 100%)',
+    glow: 'radial-gradient(42% 30% at 74% 20%, rgb(255 194 174 / 0.55), transparent 72%)',
+  },
+  night: {
+    bg: 'linear-gradient(180deg, #1B2B9E 0%, #111E7E 45%, #050B33 100%)',
+    glow: 'radial-gradient(36% 26% at 70% 16%, rgb(231 239 147 / 0.38), transparent 72%)',
+  },
+  dusk: {
+    bg: 'linear-gradient(160deg, #2F52EE 0%, #1B37E6 40%, #0A1454 100%)',
+    glow: 'radial-gradient(46% 42% at 84% 82%, rgb(247 154 131 / 0.5), transparent 72%)',
+  },
+}[palette];
+---
+<div class:list={['grain relative isolate overflow-hidden', rounded && 'panel', cls]} style={`background:${looks.bg}`}>
+  {
+    hydrate === 'load' ? (
+      <WaterCanvas client:load palette={palette} interactive={interactive} rain={rain} />
+    ) : (
+      <WaterCanvas client:visible palette={palette} interactive={interactive} rain={rain} />
+    )
+  }
+  <div class="lake-glow pointer-events-none absolute inset-0" style={`background:${looks.glow}`} aria-hidden="true"></div>
+  <slot />
+</div>
+
+<style>
+  .lake-glow {
+    mix-blend-mode: screen;
+    animation: breathe 12s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.06); }
+  }
+</style>

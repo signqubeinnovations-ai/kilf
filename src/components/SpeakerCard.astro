@@ -1,6 +1,7 @@
 ---
-import { Image } from 'astro:assets';
-import { asset } from '@/lib/images';
+import Portrait from './Portrait.astro';
+import Icon from './Icon.astro';
+/** Speaker in a large rounded portrait, name and role beneath. */
 interface Props {
   name: string;
   role: string;
@@ -10,30 +11,19 @@ interface Props {
   size?: 'md' | 'sm';
   lang?: string;
 }
-const { name, role, photo, href, categories = [], size = 'md', lang } = Astro.props;
-const { src } = asset(`speakers/${photo}`);
+const { name, role, photo, href, categories = [], lang } = Astro.props;
 const Tag = href ? 'a' : 'div';
 ---
 <li class="list-none" data-categories={categories.join(' ')}>
-  <Tag
-    href={href}
-    class:list={[
-      'group flex h-full flex-col items-center rounded-2xl px-3 pb-5 pt-5 text-center',
-      href && 'lift card hover:border-blue/40',
-    ]}
-  >
-    <span class:list={['relative block overflow-hidden rounded-full bg-sky ring-4 ring-white shadow-[0_0_0_1px_var(--color-line)]', size === 'sm' ? 'size-24 sm:size-28' : 'size-28 sm:size-36']}>
-      <Image
-        src={src}
-        alt={`Portrait of ${name}`}
-        widths={[160, 288]}
-        sizes={size === 'sm' ? '112px' : '(min-width: 640px) 144px, 112px'}
-        class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-        loading="lazy"
-        decoding="async"
-      />
-    </span>
-    <span class="mt-4 font-display text-[1.05rem] font-extrabold leading-tight tracking-tight text-navy">{name}</span>
-    <span class="mt-1 text-[0.8rem] leading-snug text-muted" lang={lang}>{role}</span>
+  <Tag href={href} class="group block rounded-[1.5rem]">
+    <Portrait name={name} photo={photo}>
+      {href && (
+        <span class="glass absolute right-3 top-3 inline-grid size-10 place-items-center rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true">
+          <Icon name="arrow" size={18} />
+        </span>
+      )}
+    </Portrait>
+    <span class="mt-4 block font-display text-[1.15rem] font-semibold leading-tight tracking-tight text-navy sm:text-[1.25rem]">{name}</span>
+    <span class="mt-1 block text-[0.9rem] leading-snug text-muted" lang={lang}>{role}</span>
   </Tag>
 </li>

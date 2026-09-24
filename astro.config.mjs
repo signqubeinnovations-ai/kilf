@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@astrojs/react';
 
 // Set SITE_URL in your hosting provider (e.g. https://kilf.in). Used for
 // canonical URLs, Open Graph tags, the sitemap and the footer QR code.
@@ -13,6 +14,8 @@ export default defineConfig({
   // Inline the (small) stylesheet so it never blocks first paint.
   build: { format: 'directory', inlineStylesheets: 'always' },
   integrations: [
+    // React only powers the animated islands (Motion); everything else is static.
+    react(),
     sitemap({
       // Malayalam pages that still fall back to English are noindexed, so keep
       // them out of the sitemap too (see translatedPaths in src/i18n/ui.ts).

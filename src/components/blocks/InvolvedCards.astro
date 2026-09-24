@@ -1,28 +1,58 @@
 ---
-import IconCircle from '../IconCircle.astro';
 import Icon from '../Icon.astro';
 import { useTranslations, localizePath, type Lang, type UIKey } from '@/i18n/ui';
-interface Props { lang?: Lang }
-const { lang = 'en' } = Astro.props;
+/** Five ways in, as a numbered list with hairline rules. */
+interface Props { lang?: Lang; tone?: 'light' | 'dark' }
+const { lang = 'en', tone = 'light' } = Astro.props;
 const t = useTranslations(lang);
 const lp = (p: string) => localizePath(p, lang);
-const cards = [
-  { key: 'register', icon: 'pen', href: '/get-involved#register' },
-  { key: 'volunteer', icon: 'heart', href: '/get-involved#volunteer' },
-  { key: 'exhibit', icon: 'store', href: '/get-involved#exhibit' },
-  { key: 'partner', icon: 'handshake', href: '/partners' },
-  { key: 'attend', icon: 'ticket', href: '/passes' },
+const rows = [
+  { key: 'register', href: '/get-involved#register' },
+  { key: 'volunteer', href: '/get-involved#volunteer' },
+  { key: 'exhibit', href: '/get-involved#exhibit' },
+  { key: 'partner', href: '/partners' },
+  { key: 'attend', href: '/passes' },
 ] as const;
+const dark = tone === 'dark';
 ---
-<ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
-  {cards.map((c, i) => (
-    <li data-reveal style={`transition-delay:${i * 60}ms`}>
-      <a href={lp(c.href)} class="card lift group flex h-full flex-col p-5 sm:p-6">
-        <IconCircle name={c.icon} tone={c.key === 'register' ? 'lime' : 'sky'} />
-        <h3 class="mt-5 font-display text-xl font-extrabold tracking-tight">{t(`home.involved.${c.key}` as UIKey)}</h3>
-        <p class="mt-1.5 flex-1 text-[0.95rem] leading-snug text-muted">{t(`home.involved.${c.key}.d` as UIKey)}</p>
-        <Icon name="arrow" size={22} class="mt-4 text-blue transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+<ol class:list={['border-t', dark ? 'border-white/15' : 'border-navy/15']} data-reveal-group>
+  {rows.map((r, i) => (
+    <li class:list={['border-b', dark ? 'border-white/15' : 'border-navy/15']}>
+      <a href={lp(r.href)} class="row group relative grid grid-cols-[2.75rem_1fr_auto] items-center gap-x-4 gap-y-1 py-5 sm:grid-cols-[4.5rem_1fr_1.3fr_auto] sm:py-7">
+        <span class:list={['numeral text-[1.9rem] sm:text-[2.6rem]', dark ? 'text-lime' : 'text-blue']}>{String(i + 1).padStart(2, '0')}</span>
+        <span class="font-display text-[1.6rem] font-semibold leading-none tracking-tight sm:text-[2.2rem]">{t(`home.involved.${r.key}` as UIKey)}</span>
+        <span class:list={['col-start-2 row-start-2 text-[0.98rem] leading-snug sm:col-start-auto sm:row-start-auto sm:text-lg', dark ? 'text-cream/80' : 'text-muted']}>
+          {t(`home.involved.${r.key}.d` as UIKey)}
+        </span>
+        <span class:list={['arrow col-start-3 row-span-2 row-start-1 inline-grid size-12 place-items-center rounded-full ring-1 ring-inset transition-colors duration-500 sm:col-start-auto sm:row-span-1 sm:row-start-auto sm:size-14', dark ? 'ring-white/30 group-hover:bg-lime group-hover:text-navy group-hover:ring-lime' : 'ring-navy/20 group-hover:bg-lime group-hover:ring-lime']}>
+          <Icon name="arrow" size={22} class="transition-transform duration-500 ease-[var(--ease-calm)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </span>
       </a>
     </li>
   ))}
-</ul>
+</ol>
+
+<style>
+  .row::before {
+    content: '';
+    position: absolute;
+    inset: 0 -1.25rem;
+    z-index: -1;
+    border-radius: 1rem;
+    background: color-mix(in oklab, var(--color-sky) 70%, transparent);
+    transform: scaleY(0.4);
+    opacity: 0;
+    transition: transform 0.6s var(--ease-calm), opacity 0.4s ease;
+  }
+  :global(.on-dark) .row::before {
+    background: rgb(255 255 255 / 0.06);
+  }
+  .row {
+    isolation: isolate;
+    transition: padding 0.6s var(--ease-calm);
+  }
+  .row:hover::before {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+</style>
