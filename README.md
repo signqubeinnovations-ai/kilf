@@ -62,7 +62,7 @@ All content is validated at build time, so a typo in a field name fails the buil
 | Passes | `src/content/passes.json` |
 | The nine strands (EN + ML) | `src/content/strands.json` |
 | Programme teasers | `src/content/teasers.json` |
-| Full schedule (later) | `src/content/schedule.json` |
+| Programme, day by day (proposed) | `src/content/schedule.json` |
 | Sponsors / partner logos | `src/content/sponsors.json` |
 | Partnership page (why, audience, tiers, benefits) | `src/data/partnership.json` |
 | UI text + Malayalam translations | `src/i18n/ui.ts`, `src/i18n/about-qa.ts` |
@@ -90,26 +90,34 @@ All content is validated at build time, so a typo in a field name fails the buil
 
 To remove a speaker, delete their `.md` file.
 
-### Add the full schedule later
+### The programme
 
-The Programme page shows the six teasers while `src/content/schedule.json` is empty (`[]`). Add days and it switches to a day-by-day schedule; the teasers and "Notify me" banner disappear. No design changes are needed.
+`src/content/schedule.json` holds the day-by-day programme (a proposed one for now: 31 December to 4 January, 45 sessions). The Programme page shows it as tabs, one per day, with a strand filter; with `[]` it falls back to the six teasers and a "Notify me" banner.
+
+Each day has a `theme` ("First light."), a `blurb` and `allDay` lines (book fair, food festival, exhibition). Each session has `start`/`end`, `title`, `description`, `venue` (`sngcc`, `8point` or `ashramam`), `strand` (an id from `strands.json`, or `youth`), `format` (conversation, panel, reading, workshop, performance, screening, walk or ceremony), `speakers` (speaker file names), `guests` (other participants as text, e.g. "Malayalam poets (invited)"), `language`, `highlight` (a ★ must-see) and an optional `link` (e.g. theatre tickets). Speaker chips link to the speaker's note on `/speakers`.
 
 ```json
 [
   {
-    "id": "day-1",
-    "date": "2026-12-31",
-    "label": "Day 1 · New Year's Eve",
+    "id": "2027-01-01",
+    "date": "2027-01-01",
+    "label": "Day 2",
+    "theme": "First light.",
+    "blurb": "One or two sentences about the day.",
+    "allDay": ["Book fair · Ashramam Maidan · 10:00–21:00"],
     "sessions": [
       {
-        "start": "18:30",
-        "end": "19:30",
-        "title": "Masters, unscripted",
+        "start": "10:00",
+        "end": "11:00",
+        "title": "The Malayali in the mirror",
         "description": "Optional one-liner.",
         "venue": "sngcc",
         "strand": "literature",
-        "speakers": ["m-mukundan", "sara-joseph"],
-        "language": "Malayalam"
+        "format": "conversation",
+        "speakers": ["subhash-chandran"],
+        "guests": ["A moderator (to be announced)"],
+        "language": "Malayalam",
+        "highlight": true
       }
     ]
   }
@@ -118,13 +126,13 @@ The Programme page shows the six teasers while `src/content/schedule.json` is em
 
 - `venue` is one of `sngcc` (Sreenarayana Guru Cultural Centre), `8point` (8 Point Art Cafe) or `ashramam` (Ashramam Maidan). Venues are defined in `src/lib/site.ts`.
 - `speakers` are speaker file names without `.md`.
-- `language` is one of `Malayalam`, `English`, `Tamil` or `Bilingual`.
+- `language` (optional) is one of `Malayalam`, `English`, `Tamil` or `Bilingual`.
 
-(The build prints a harmless "No items found" warning while `schedule.json` and `sponsors.json` are empty.)
+(The build prints a harmless "No items found" warning while `sponsors.json` is empty.)
 
 ### Open ticketing
 
-In `src/content/passes.json`, add `"price"` and `"buyUrl"` to each pass. The "Notify me" button becomes a "Buy" button. Until then no price is shown.
+Prices are already in `src/content/passes.json` (`"price"`, with `"priceNote"` saying what it covers). When sales open, add `"buyUrl"` to each pass and the "Notify me" button becomes a "Buy" button. Theatre ticket prices and dates for Khasakkinte Ithihasam are in `src/components/motion/TicketCard.tsx` and `src/views/Khasak.astro`.
 
 ### Translate another page into Malayalam
 
@@ -201,13 +209,16 @@ All animation is calm and water-like, and all of it can be stopped:
 | Page heroes, statement band, New Year's Eve, theatre and notify bands, footer | Rings widening slowly across still water; a faint ripple trails the mouse | `motion/RippleField.tsx` (Motion) |
 | Home "ways in" blocks | A ring spreads across the block on hover; the music waveform breathes | `blocks/WaysIn.astro` |
 | Khasakkinte Ithihasam tickets | Ticket type and preview transitions | `motion/TicketCard.tsx` (Motion) |
-| Strand ribbon (home) | The nine strands drift past, ease to a stop on hover, own pause button | `motion/Marquee.tsx` (Motion) |
+| Khasakkinte Ithihasam (home) | A book opens as you scroll: the cover swings open, pages turn, and the spread shows the title page and the stage, lit by a spotlight. On wide screens the section holds still while it opens; with reduced motion it is shown open | `src/components/art/KhasakBook.astro`, script in `src/views/Home.astro` |
+| New Year's Eve (home) | A night graphic: the horizon is a live sound equaliser with palms, the moon a turning record, sound spreads over the water and notes drift up | `src/components/art/NyeMusic.astro` |
+| Home "The festival" and "Youth" | Five paper boats (one per day) bob on the lake; a microphone sends out rings of sound among speech bubbles | `src/components/art/PaperBoats.astro`, `src/components/art/YouthStage.astro` |
+| Strand ribbon (home) | The nine strands drift across the full width; scrolling the page pushes them left (down) or right (up); they ease to a stop on hover | `motion/Marquee.tsx` (Motion) |
 | New Year's Eve | Countdown digits roll as they change | `motion/Countdown.tsx` (Motion) |
 | Everywhere | Sections rise into place as you scroll, numbers count up, buttons send out a ring on hover | `src/scripts/reveal.ts` (Motion), `global.css` |
 
 - **Pause motion** buttons (hero and footer) stop every loop and remember the choice (WCAG 2.2.2). The operating system's *reduce motion* setting shows still water instead.
 - Animations stop automatically when they scroll off screen.
-- Without WebGL, with reduced motion, or before the script loads, the illustrations are shown as ordinary still images.
+- Without WebGL, with reduced motion, or before the script loads, the illustrations are shown as ordinary still images. The live water also steps aside on computers that draw WebGL without a graphics chip (virtual machines, some test tools) and on devices that can't keep it smooth; add `?water` to the address to preview it there anyway.
 
 ### Layout and colour
 

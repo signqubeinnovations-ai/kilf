@@ -44,11 +44,14 @@ This copy was written to fit the brief, but the source documents were not availa
 - [ ] Strand one-liners (`src/content/strands.json`), youth activity one-liners (`src/views/Youth.astro`) and the Khasak description (`src/views/Khasak.astro`).
 - [ ] "Getting here", "While you’re here", "Around Kollam" and "Good to know" on Plan your visit (`src/views/Visit.astro`).
 - [ ] New sections written for this version, to confirm with the organisers: About ("Why KILF", "What to expect", "What we believe", `about.vision.*`, `about.e*`, `about.v*` in `src/i18n/ui.ts`); the home "A day at KILF" (`home.day.*`); Programme ("A day at the festival", "Formats"); Speakers ("The line-up", "Suggest a voice"); Khasak ("The novel", "The director", "Good to know"); Passes ("Which pass is for me?", "Ticketing, answered"); Get involved (volunteer roles, "What happens next"); Youth ("Campus ambassadors", "How to take part"); Partners ("How it works"); Contact ("Write to us about"); and the eight new FAQ answers in `src/content/faqs.json`.
+- [ ] **The proposed programme** (`src/content/schedule.json`): 45 sessions over five days, written to be viable with the proposed line-up. Every speaker appears once to three times with no clashes; other participants are described by role and marked "(invited)" or "(to be announced)" rather than named. Confirm titles, times, venues and pairings, and replace the invited roles with names as people confirm. Times for the three Khasakkinte Ithihasam evenings are placeholders (19:00, "to be confirmed").
+- [ ] **Speaker notes** (the `note` line in each `src/content/speakers/*.md`, shown on `/speakers` only): short factual notes on each speaker's best-known work and awards. Check them, and ask each speaker's team to approve their line.
+- [ ] **New Year's Eve running order** on the home page (`home.nye.*`: Ouseppachan & friends at 20:30, countdown at 23:45) matches 31 December in the programme; confirm both together.
 - [ ] Privacy page (`src/views/Privacy.astro`): have the organisers review it.
 
 ## 4. Malayalam
 
-- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json` (including the new lines: `home.title`, `home.titleAccent`, `home.hero.*`, `home.live.*`, `home.ways.*`, `home.day.*`, `home.nye.*`, `home.dates.*`, `home.statement.*`, `about.vision.*`, `about.expect.*`, `about.e*`, `about.values.*`, `about.v*`, `footer.closing.*`, `nav.theatre` and `cta.volunteer`).
+- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json` (including the new lines: `home.title`, `home.titleAccent`, `home.khasak.*`, `home.involved.attend.d`, `home.hero.*`, `home.live.*`, `home.ways.*`, `home.day.*`, `home.nye.*`, `home.dates.*`, `home.statement.*`, `about.vision.*`, `about.expect.*`, `about.e*`, `about.values.*`, `about.v*`, `footer.closing.*`, `nav.theatre` and `cta.volunteer`).
 - [ ] Translate the remaining pages: Speakers, Programme, Khasak, Youth, Get involved, Passes, Visit, Partners, FAQ, Contact, Privacy and the 404 page. See README "Translate another page into Malayalam". Until then these `/ml/` pages show English with a notice (`TODO(i18n)` comments in `src/pages/ml/*.astro`).
 - [ ] Optional: Malayalam speaker names (`name_ml` field in the speaker files).
 
@@ -59,7 +62,7 @@ This copy was written to fit the brief, but the source documents were not availa
 | Speaker line-up (all 17) | "Proposed line-up · participation subject to confirmation"; `status: proposed` | Home, `/speakers`, speaker files |
 | Khasakkinte Ithihasam (O. V. Vijayan / Deepan Sivaraman) | "Proposed" | Home band, `/khasak` |
 | Youth activities: Poetry Slam, Open Mic Nights, Reels & Short-Film Challenge, Indie & Rap Night, Meet Your Favourite Authors, Campus Ambassadors | "Proposed" | Home band, `/youth` |
-| Programme | Teasers only, with no dates or times | `/programme` |
+| Programme | "Proposed programme · subject to confirmation" | `/programme` |
 | Pass inclusions | "indicative" note | `/passes` |
 | Partnership benefits | "indicative" note | `/partners` |
 
@@ -67,7 +70,8 @@ When a speaker confirms, set `status: confirmed` in their file. When everything 
 
 ## 6. Later
 
-- [ ] Full schedule → `src/content/schedule.json` (README §3).
+- [ ] Confirmed schedule → `src/content/schedule.json` (README §3), then remove the "Proposed programme" badge in `src/views/Programme.astro`.
+- [ ] Ticketing: add `buyUrl` to each pass in `src/content/passes.json` (and a booking link for Khasakkinte Ithihasam) when sales open; prices are already shown.
 - [ ] Ticket prices and links → `src/content/passes.json`.
 - [ ] **Khasakkinte Ithihasam tickets**: the ticket card on `/khasak` is a preview only and sells nothing. When booking opens, add the date, venue and prices, and point the button at the ticketing page (`src/components/motion/TicketCard.tsx`). Confirm that Festival Passes do not include the play, as the Passes page, FAQ and ticket card now say.
 - [ ] Confirmed sponsor logos → `src/content/sponsors.json` + `kilf-assets/logos/`. Sponsor logos are not rendered yet; add a logo strip to Partners and Footer when the first partner signs.

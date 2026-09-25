@@ -30,6 +30,13 @@ interface Options {
 }
 
 const STEP = 1000 / 40;
+/** Renderers that draw WebGL on the CPU: the effect would cost more than it gives. */
+const SOFTWARE = /swiftshader|llvmpipe|softpipe|software|basic render/i;
+/** `?water` in the address forces the water on, to preview it on such machines. */
+const FORCE = new URLSearchParams(location.search).has('water');
+/** Frames timed after the water appears; if the median is slower than this, it steps aside. */
+const WATCH = 90;
+const TOO_SLOW = 40;
 
 const VERT = `attribute vec2 p;
 varying vec2 v;
@@ -118,6 +125,7 @@ class Lake {
   private lastMove = 0;
   private iw = 0;
   private ih = 0;
+  private times: number[] = [];
   private readonly o: Required<Options>;
 
   constructor(
@@ -144,9 +152,7 @@ class Lake {
     });
     cv.addEventListener('webglcontextlost', (e) => {
       e.preventDefault();
-      this.failed = true;
-      this.stop();
-      cv.style.opacity = '0';
+      this.giveUp();
     });
     if (this.o.interactive) {
       root.addEventListener('pointermove', (e) => this.onMove(e), { passive: true });
@@ -170,6 +176,13 @@ class Lake {
   private setup() {
     const gl = this.cv.getContext('webgl', { antialias: false, depth: false, stencil: false, powerPreference: 'low-power' });
     if (!gl) return false;
+    // No real graphics chip (a virtual machine, a blocked driver): keep the still picture.
+    let renderer = String(gl.getParameter(gl.RENDERER) ?? '');
+    if (/webkit webgl/i.test(renderer)) {
+      const info = gl.getExtension('WEBGL_debug_renderer_info');
+      if (info) renderer = String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL) ?? '');
+    }
+    if (SOFTWARE.test(renderer) && !FORCE) return false;
     try {
       const prog = gl.createProgram();
       if (!prog) return false;
@@ -304,6 +317,14 @@ class Lake {
     const loop = (now: number) => {
       this.raf = requestAnimationFrame(loop);
       if (this.dirty && !this.layout()) return;
+      // If this device can't keep the water smooth, it steps aside for the still picture.
+      if (this.shown && this.times.length < WATCH) {
+        this.times.push(now - this.last);
+        if (this.times.length === WATCH && !FORCE) {
+          const t = this.times.slice(20).sort((a, b) => a - b);
+          if (t[t.length >> 1] > TOO_SLOW) return this.giveUp();
+        }
+      }
       this.acc += Math.min(now - this.last, 100);
       this.last = now;
       const { water, wet } = this;
@@ -331,6 +352,12 @@ class Lake {
   private stop() {
     cancelAnimationFrame(this.raf);
     this.raf = 0;
+  }
+
+  private giveUp() {
+    this.failed = true;
+    this.stop();
+    this.cv.style.opacity = '0';
   }
 
   /** A soft wake while the pointer moves over the water, a ring on tap. */
