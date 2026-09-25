@@ -4,7 +4,7 @@
     "date": "2026-12-31",
     "label": "Day 1",
     "theme": "The Eve.",
-    "blurb": "The first chapter opens at sunset. A great novelist speaks, a lamp is lit by the water, the city eats and sings, and 2027 arrives over Ashtamudi.",
+    "blurb": "The first chapter opens at sunset. A great novelist speaks, a lamp is lit by the water, Shanka Tribe takes the stage, and 2027 arrives over Ashtamudi.",
     "allDay": [
       "Book fair · Ashramam Maidan · 15:00–23:00",
       "Food festival · Ashramam Maidan · from 18:00"
@@ -57,25 +57,22 @@
       {
         "start": "20:30",
         "end": "23:30",
-        "title": "New Year’s Eve by the lake",
-        "description": "Ouseppachan, who has scored Malayalam cinema since Kaathodu Kaathoram, leads an evening of songs with guest singers and the festival band.",
+        "title": "New Year’s Eve by the lake: Shanka Tribe",
+        "description": "Shanka Tribe plays the old year out and the new one in, live on the open-air stage by the lake, all the way to the countdown.",
         "venue": "ashramam",
         "strand": "music",
         "format": "performance",
-        "speakers": [
-          "ouseppachan"
-        ],
+        "speakers": [],
         "guests": [
-          "Guest singers (to be announced)"
+          "Shanka Tribe"
         ],
-        "language": "Malayalam",
         "highlight": true
       },
       {
         "start": "23:45",
         "end": "00:15",
         "title": "Countdown on Ashtamudi",
-        "description": "The countdown to 2027, together by the lake, with music and light, and the first minutes of the new year.",
+        "description": "The countdown to 2027 with Shanka Tribe on stage, together by the lake, and the first minutes of the new year.",
         "venue": "ashramam",
         "format": "ceremony",
         "speakers": [],
