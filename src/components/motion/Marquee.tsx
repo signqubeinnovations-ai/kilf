@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
-import { animate, m, useAnimationFrame, useMotionValue } from 'motion/react';
+import { animate, m, useAnimationFrame, useMotionValue, useScroll, useSpring, useTransform, useVelocity } from 'motion/react';
 import { MotionRoot, useCalmMotion } from './shared';
 
 /**
- * A slow ribbon of strand names on the coral band, set in capitals with a
- * small star between them. It eases to a stop on hover or focus, has its own
- * pause button (WCAG 2.2.2), and stays still for reduced motion.
+ * A ribbon of strand names across the full width of the coral band, set in
+ * capitals with a small star between them. It drifts left on its own; page
+ * scrolling pushes it along (down: left and faster, up: back to the right).
+ * It eases to a stop on hover or focus. The page's "Pause motion" buttons
+ * stop it (WCAG 2.2.2), and it stays still for reduced motion.
  */
 interface Props {
   items: string[];
-  pauseLabel: string;
-  playLabel: string;
   listLabel: string;
   lang?: string;
   /** Pixels per second. */
@@ -25,26 +25,36 @@ function Star() {
   );
 }
 
-function Ribbon({ items, pauseLabel, playLabel, listLabel, lang, speed = 42 }: Props) {
+function Ribbon({ items, listLabel, lang, speed = 42 }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const row = useRef<HTMLDivElement>(null);
   const active = useCalmMotion(wrap);
   const [hold, setHold] = useState(false);
-  const [stopped, setStopped] = useState(false);
   const x = useMotionValue(0);
   const pace = useMotionValue(1);
+  const direction = useRef(1);
+
+  // Scrolling the page adds to the drift, in the direction of the scroll.
+  const { scrollY } = useScroll();
+  const velocity = useSpring(useVelocity(scrollY), { damping: 50, stiffness: 400 });
+  const boost = useTransform(velocity, [-1500, 0, 1500], [-4, 0, 4], { clamp: true });
 
   useEffect(() => {
-    const c = animate(pace, hold || stopped ? 0 : 1, { duration: hold ? 1.1 : 1.6, ease: [0.22, 1, 0.36, 1] });
+    const c = animate(pace, hold ? 0 : 1, { duration: hold ? 1.1 : 1.6, ease: [0.22, 1, 0.36, 1] });
     return () => c.stop();
-  }, [hold, stopped, pace]);
+  }, [hold, pace]);
 
   useAnimationFrame((_, delta) => {
     if (!active || !row.current) return;
     const half = row.current.scrollWidth / 2;
     if (!half) return;
-    let next = x.get() - (speed * pace.get() * Math.min(delta, 64)) / 1000;
+    const b = boost.get();
+    if (b < -0.05) direction.current = -1;
+    else if (b > 0.05) direction.current = 1;
+    const step = (speed * Math.min(delta, 64)) / 1000;
+    let next = x.get() - direction.current * step * pace.get() * (1 + Math.abs(b));
     if (next <= -half) next += half;
+    else if (next > 0) next -= half;
     x.set(next);
   });
 
@@ -57,38 +67,18 @@ function Ribbon({ items, pauseLabel, playLabel, listLabel, lang, speed = 42 }: P
     ));
 
   return (
-    <div
-      ref={wrap}
-      className="relative flex items-center"
-      onMouseEnter={() => setHold(true)}
-      onMouseLeave={() => setHold(false)}
-      onFocus={() => setHold(true)}
-      onBlur={() => setHold(false)}
-    >
+    <div ref={wrap} className="relative" onMouseEnter={() => setHold(true)} onMouseLeave={() => setHold(false)}>
       <ul className="sr-only" aria-label={listLabel} lang={lang}>
         {items.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
-      <div className="flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_3%,#000_97%,transparent)]" aria-hidden="true">
+      <div className="overflow-hidden" aria-hidden="true">
         <m.div ref={row} style={{ x }} className="flex w-max items-center whitespace-nowrap text-[1.05rem] font-semibold uppercase tracking-[0.06em] sm:text-[1.3rem]" lang={lang}>
           {copy('a')}
           {copy('b')}
         </m.div>
       </div>
-      <button
-        type="button"
-        onClick={() => setStopped((s) => !s)}
-        aria-pressed={stopped}
-        className="relative z-10 ml-4 inline-grid size-11 shrink-0 place-items-center text-navy ring-1 ring-inset ring-navy/30 transition-colors hover:bg-navy/10"
-      >
-        <span className="sr-only">{stopped ? playLabel : pauseLabel}</span>
-        {stopped ? (
-          <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5Z" fill="currentColor" /></svg>
-        ) : (
-          <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor" /></svg>
-        )}
-      </button>
     </div>
   );
 }

@@ -4,37 +4,52 @@ import { MotionRoot, calm } from './shared';
 
 /**
  * The theatre ticket card for Khasakkinte Ithihasam. Visitors choose the
- * theatre ticket on its own or the theatre + Festival Pass bundle, pick how
- * many, and see a preview of the ticket. Booking has not opened, so nothing
- * is sold or sent: the preview is clearly marked as not valid for entry.
+ * theatre ticket on its own or the theatre + Festival Pass bundle, pick a
+ * night and how many, see the total and a preview of the ticket. Booking has
+ * not opened, so nothing is sold or sent: the preview is clearly marked as
+ * not valid for entry.
  */
 type Kind = 'theatre' | 'bundle';
 interface Props {
   notifyHref: string;
 }
 
-const kinds: Record<Kind, { tag: string; name: string; line: string; includes: string[] }> = {
+const kinds: Record<Kind, { tag: string; name: string; line: string; price: number; save?: string; includes: string[] }> = {
   theatre: {
     tag: 'Theatre',
     name: 'Theatre ticket',
     line: 'Khasakkinte Ithihasam only',
+    price: 1500,
     includes: ['A seat at the performance'],
   },
   bundle: {
     tag: 'Theatre + Festival Pass',
     name: 'Theatre + Festival Pass',
     line: 'The play, plus all five days of the festival',
+    price: 1600,
+    save: 'All five days for ₹100 more',
     includes: ['A seat at the performance', 'Festival Pass: all five days, 31 Dec – 4 Jan', 'New Year’s Eve by the lake'],
   },
 };
 
+/** The three performances, all at Ashramam Maidan. */
+const nights = [
+  { id: '2027-01-01', day: 'Fri', date: '1 Jan', long: 'Friday 1 January 2027' },
+  { id: '2027-01-02', day: 'Sat', date: '2 Jan', long: 'Saturday 2 January 2027' },
+  { id: '2027-01-03', day: 'Sun', date: '3 Jan', long: 'Sunday 3 January 2027' },
+];
+const venue = 'Ashramam Maidan, Kollam';
+const inr = (n: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n);
+
 function Card({ notifyHref }: Props) {
   const [kind, setKind] = useState<Kind>('theatre');
+  const [night, setNight] = useState(nights[0].id);
   const [qty, setQty] = useState(1);
   const [preview, setPreview] = useState(false);
   const reduce = useReducedMotion();
   const id = useId();
   const k = kinds[kind];
+  const n = nights.find((x) => x.id === night) ?? nights[0];
   const fade = reduce ? { duration: 0 } : { duration: 0.45, ease: calm };
 
   return (
@@ -80,26 +95,47 @@ function Card({ notifyHref }: Props) {
                 <span aria-hidden="true" className={`mt-1 grid size-4 shrink-0 place-items-center rounded-full border transition-colors ${on ? 'border-blue' : 'border-navy/40'}`}>
                   <m.span className="block size-2 rounded-full bg-blue" initial={false} animate={{ scale: on ? 1 : 0 }} transition={fade} />
                 </span>
-                <span>
+                <span className="flex-1">
                   <span className="block font-semibold leading-snug">{kinds[key].name}</span>
                   <span className="mt-0.5 block text-[0.92rem] leading-snug text-navy/75">{kinds[key].line}</span>
+                  {kinds[key].save && <span className="mt-2 inline-block bg-lime px-2 py-0.5 text-[0.72rem] font-bold uppercase tracking-[0.1em] text-ink">{kinds[key].save}</span>}
                 </span>
+                <span className="font-display text-[1.15rem] font-bold tracking-[-0.02em]">{inr(kinds[key].price)}</span>
               </label>
             );
           })}
         </div>
       </fieldset>
 
-      <dl className="mt-7 grid gap-5">
-        <div>
-          <dt className="text-sm text-navy/80">Performance</dt>
-          <dd className="mt-1 font-semibold">Date &amp; venue to be announced</dd>
+      <fieldset className="mt-7">
+        <legend className="text-sm font-medium text-navy/80">Performance</legend>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {nights.map((x) => {
+            const on = night === x.id;
+            return (
+              <label
+                key={x.id}
+                className={`flex cursor-pointer flex-col items-center border px-2 py-3 text-center transition-colors duration-300 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blue ${on ? 'border-navy bg-navy text-white' : 'border-line bg-cream hover:border-navy/40'}`}
+              >
+                <input
+                  type="radio"
+                  name={`${id}-night`}
+                  value={x.id}
+                  checked={on}
+                  onChange={() => {
+                    setNight(x.id);
+                    setPreview(false);
+                  }}
+                  className="sr-only"
+                />
+                <span className="text-[0.7rem] font-bold uppercase tracking-[0.16em] opacity-80">{x.day}</span>
+                <span className="mt-0.5 font-display text-[1.1rem] font-semibold tracking-[-0.02em]">{x.date}</span>
+              </label>
+            );
+          })}
         </div>
-        <div>
-          <dt className="text-sm text-navy/80">Price</dt>
-          <dd className="mt-1 font-semibold">To be announced</dd>
-        </div>
-      </dl>
+        <p className="mt-3 text-[0.92rem] text-navy/80">{venue} · evening, time to be confirmed</p>
+      </fieldset>
       <hr className="my-7 border-0 border-t border-dashed border-[#aab6e3]" />
 
       <label htmlFor={`${id}-qty`} className="text-sm text-navy/80">
@@ -121,6 +157,13 @@ function Card({ notifyHref }: Props) {
           </option>
         ))}
       </select>
+
+      <p className="mt-5 flex items-baseline justify-between gap-4" aria-live="polite">
+        <span className="text-sm text-navy/80">
+          Total · {qty} × {inr(k.price)}
+        </span>
+        <span className="font-display text-[1.6rem] font-bold tracking-[-0.03em]">{inr(k.price * qty)}</span>
+      </p>
 
       <button
         type="button"
@@ -145,7 +188,7 @@ function Card({ notifyHref }: Props) {
         <AnimatePresence initial={false}>
           {preview && (
             <m.div
-              key={`${kind}-${qty}`}
+              key={`${kind}-${qty}-${night}`}
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16, rotate: -1.2 }}
               animate={{ opacity: 1, y: 0, rotate: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }}
@@ -160,7 +203,7 @@ function Card({ notifyHref }: Props) {
                   <span>× {qty}</span>
                 </div>
                 <p className="display mt-4 text-[1.7rem]">Khasakkinte Ithihasam</p>
-                <p className="mt-1 text-sm text-white/80">KILF 2027 · Kollam</p>
+                <p className="mt-1 text-sm text-white/80">{n.long} · {venue}</p>
                 <ul className="mt-4 space-y-1.5 text-[0.95rem]">
                   {k.includes.map((line) => (
                     <li key={line} className="flex gap-2.5">
@@ -183,8 +226,8 @@ function Card({ notifyHref }: Props) {
                     <dd className="font-semibold">{k.name}</dd>
                   </div>
                   <div>
-                    <dt className="text-white/70">Date, venue &amp; price</dt>
-                    <dd className="font-semibold">To be announced</dd>
+                    <dt className="text-white/70">Total</dt>
+                    <dd className="font-semibold">{inr(k.price * qty)}</dd>
                   </div>
                 </dl>
                 <svg viewBox="0 0 64 40" className="h-10 w-16 shrink-0 text-lime" fill="none" stroke="currentColor" aria-hidden="true">

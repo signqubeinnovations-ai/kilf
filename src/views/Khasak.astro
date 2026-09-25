@@ -24,11 +24,13 @@ const facts = [
 ];
 const plan = [
   ['Festival window', '31 Dec 2026 — 4 Jan 2027'],
-  ['Performance date & venue', 'To be announced'],
-  ['Theatre admission', 'To be announced · No live booking yet'],
+  ['Performances', '1, 2 and 3 January 2027 · evenings'],
+  ['Venue', 'Ashramam Maidan, Kollam'],
+  ['Tickets', 'Theatre ticket ₹1,500 · Theatre + Festival Pass ₹1,600 · Booking opens soon'],
 ];
 const goodToKnow = [
-  ['Tickets', 'The play is ticketed separately from festival passes. Choose a theatre ticket, or the theatre + Festival Pass bundle.'],
+  ['Tickets', 'The play is ticketed separately from festival passes: a theatre ticket is ₹1,500, or ₹1,600 with a Festival Pass for all five days.'],
+  ['Dates and venue', 'Three evening performances, on 1, 2 and 3 January 2027, at Ashramam Maidan, Kollam. Start times will be confirmed with booking.'],
   ['Seating', 'Seating will be limited. Leave your details and we’ll write the moment booking opens.'],
   ['Language', 'The performance is in Malayalam.'],
   ['Age guidance', 'To be announced with the performance details.'],
@@ -37,14 +39,14 @@ const goodToKnow = [
 const options = [
   {
     name: 'Theatre ticket',
-    line: 'Khasakkinte Ithihasam only.',
-    text: 'A seat at the performance, for visitors who are coming for the play.',
+    line: '₹1,500 · Khasakkinte Ithihasam only.',
+    text: 'A seat at one performance, on 1, 2 or 3 January, for visitors who are coming for the play.',
     surface: 'bg-sky text-navy',
   },
   {
     name: 'Theatre + Festival Pass',
-    line: 'The play, plus all five days.',
-    text: 'A seat at the performance and a Festival Pass: every session from 31 December to 4 January, New Year’s Eve by the lake, the book fair and exhibitions.',
+    line: '₹1,600 · The play, plus all five days.',
+    text: 'A seat at the performance and a Festival Pass: every session from 31 December to 4 January, New Year’s Eve by the lake, the book fair and exhibitions. All five days for ₹100 more.',
     surface: 'on-dark bg-blue text-white',
   },
 ];
@@ -165,9 +167,9 @@ const options = [
       <p class="eyebrow">Your evening at the theatre</p>
       <Headline id="tickets-h" text="One stage." accent="A world within." tone="coral" accentStyle="gradient" class="mt-6" />
       <p class="mt-6 max-w-lg text-lg leading-relaxed text-ink/85">
-        The play is ticketed separately from the festival. Choose a theatre ticket on its own, or the theatre + Festival Pass
-        bundle for the play and all five days. The date, venue, seating and prices will be announced when the production is
-        confirmed.
+        Three evenings at Ashramam Maidan, on 1, 2 and 3 January. The play is ticketed separately from the festival: a
+        theatre ticket on its own is ₹1,500, and for ₹1,600 the theatre + Festival Pass adds all five days of the festival.
+        Seating is limited.
       </p>
       <ul class="mt-10 grid gap-3 sm:grid-cols-2" data-reveal-group>
         {options.map((o) => (
