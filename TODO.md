@@ -11,6 +11,9 @@
 | `[LAT]`, `[LNG]` for 8 Point Art Cafe | Plan your visit | `src/lib/site.ts` → `venues[1]` |
 | `[LAT]`, `[LNG]` for Ashramam Maidan | Plan your visit | `src/lib/site.ts` → `venues[2]` |
 | `[PROPOSAL PDF]` partnership proposal | Partners page | Add `public/downloads/kilf-2027-partnership-proposal.pdf` |
+| `[CONFIRM]` beside each of the three commitments (a plastic-free festival, one climate conversation every day, an Ashtamudi clean-up) | Home "Our cause", `/cause` | Confirm with the organisers, then remove the `<Placeholder value="[CONFIRM]" />` in `src/views/Home.astro` and `src/views/Cause.astro`; the wording is `home.cause.c1`–`c3` and `cause.c1.d`–`c3.d` in `src/i18n/ui.ts` |
+| `[DATE]` for the Ashtamudi clean-up | `/cause` | `src/views/Cause.astro` ("When") |
+| `[CONFIRM]` for the clean-up meeting point | `/cause` | `src/views/Cause.astro` ("Where"), `cause.join.whereNote` |
 
 The maps and "Get directions" links already work from the venue names. Coordinates just make them exact.
 
@@ -28,8 +31,8 @@ The site currently shows on-brand **stand-ins** because the assets were not in t
 
 - [ ] `logos/kilf-logo.svg` and `logos/kilf-logo-white.svg`
 - [ ] `illustrations/p4_stage.jpg` for Khasakkinte Ithihasam (an abstract stage stands in until then).
-- [ ] Higher-resolution originals of the two lake illustrations in `src/assets/art/` (the current files were AI-upscaled 4× from 1241 px). Keep the same composition, or update the water outlines in `src/components/LakeArt.astro`.
-- [ ] `speakers/*.jpg`: all 17 duotone photos (file names are listed in the README and in each speaker's `.md` file)
+- [ ] Higher-resolution originals of the two lake illustrations in `src/assets/art/` (the current files were AI-upscaled 4× from 1241 px). Keep the same composition, or update the water outline in `src/lib/lake-art.ts`.
+- [ ] `speakers/*.jpg`: **illustrated portraits**, 4:5, at least 640 × 800 px, named after each speaker's file in `src/content/speakers/`. Until then a drawn figure by the water stands in. First the home page's eight voices: `m-mukundan`, `sara-joseph`, `s-hareesh`, `manu-s-pillai`, `sri-m`, `santhosh-george-kulangara`, `lijo-jose-pellissery` and `vairamuthu` (`.jpg`), then the rest of the 17.
 - [ ] Compare the built site side by side with `reference-brochure.pdf` and adjust spacing and type sizes.
 
 ## 3. Copy to check against the brochure or proposal
@@ -43,30 +46,34 @@ This copy was written to fit the brief, but the source documents were not availa
 - [ ] **Pass descriptions and inclusions** (`src/content/passes.json`) are indicative. Confirm them before ticketing.
 - [ ] Strand one-liners (`src/content/strands.json`), youth activity one-liners (`src/views/Youth.astro`) and the Khasak description (`src/views/Khasak.astro`).
 - [ ] "Getting here", "While you’re here", "Around Kollam" and "Good to know" on Plan your visit (`src/views/Visit.astro`).
-- [ ] New sections written for this version, to confirm with the organisers: About ("Why KILF", "What to expect", "What we believe", `about.vision.*`, `about.e*`, `about.v*` in `src/i18n/ui.ts`); the home "A day at KILF" (`home.day.*`); Programme ("A day at the festival", "Formats"); Speakers ("The line-up", "Suggest a voice"); Khasak ("The novel", "The director", "Good to know"); Passes ("Which pass is for me?", "Ticketing, answered"); Get involved (volunteer roles, "What happens next"); Youth ("Campus ambassadors", "How to take part"); Partners ("How it works"); Contact ("Write to us about"); and the eight new FAQ answers in `src/content/faqs.json`.
+- [ ] **Chapter 1: The Pause** copy: the home "The Pause" section (`home.pause.*`), "Why Ashtamudi", and the taglines.
+- [ ] **Our cause** (`/cause`, `cause.*` in `src/i18n/ui.ts`): the facts about Ashtamudi (a Ramsar wetland; its name, "eight braids"; the Kallada river and the opening to the sea at Neendakara; mangroves, clams, the karimeen), the commitments, the clean-up steps and the "Leave no trace" tips. Confirm with the organisers and, ideally, a local environmental group.
+- [ ] New sections written for this version, to confirm with the organisers: About ("Why KILF", "What to expect", "What we believe", `about.vision.*`, `about.e*`, `about.v*` in `src/i18n/ui.ts`); "A day at KILF", now on the Programme (`day.*`); Programme ("Formats"); Speakers ("The line-up", "Suggest a voice"); Khasak ("The novel", "The director", "Good to know"); Passes ("Which pass is for me?", "Ticketing, answered"); Get involved (volunteer roles, "What happens next"); Youth ("Campus ambassadors", "How to take part"); Partners ("How it works"); Contact ("Write to us about"); and the eight new FAQ answers in `src/content/faqs.json`.
 - [ ] **The proposed programme** (`src/content/schedule.json`): 45 sessions over five days, written to be viable with the proposed line-up. Every speaker appears once to three times with no clashes; other participants are described by role and marked "(invited)" or "(to be announced)" rather than named. Confirm titles, times, venues and pairings, and replace the invited roles with names as people confirm. Times for the three Khasakkinte Ithihasam evenings are placeholders (19:00, "to be confirmed").
 - [ ] **Speaker notes** (the `note` line in each `src/content/speakers/*.md`, shown on `/speakers` only): short factual notes on each speaker's best-known work and awards. Check them, and ask each speaker's team to approve their line.
-- [ ] **New Year's Eve running order** on the home page (`home.nye.*`: Shanka Tribe at 20:30, countdown at 23:45) matches 31 December in the programme; confirm both together.
+- [ ] **New Year's Eve running order** on the home page (`home.nye.*` and the times in `src/views/Home.astro`: Shanka Tribe at 20:30, countdown at 23:45) matches 31 December in the programme; confirm both together.
 - [ ] Privacy page (`src/views/Privacy.astro`): have the organisers review it.
 
 ## 4. Malayalam
 
-- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json` (including the new lines: `home.title`, `home.titleAccent`, `home.khasak.*`, `home.involved.attend.d`, `home.hero.*`, `home.live.*`, `home.ways.*`, `home.day.*`, `home.nye.*`, `home.dates.*`, `home.statement.*`, `about.vision.*`, `about.expect.*`, `about.e*`, `about.values.*`, `about.v*`, `footer.closing.*`, `nav.theatre` and `cta.volunteer`).
-- [ ] Translate the remaining pages: Speakers, Programme, Khasak, Youth, Get involved, Passes, Visit, Partners, FAQ, Contact, Privacy and the 404 page. See README "Translate another page into Malayalam". Until then these `/ml/` pages show English with a notice (`TODO(i18n)` comments in `src/pages/ml/*.astro`).
+- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json`, especially the lines new in Chapter 1: The Pause: `home.hero.*`, `home.pause.*`, `home.nye.*`, `home.voices.*`, `home.khasak.*`, `home.cause.*`, `home.plan.*`, `cause.*` (the whole `/ml/cause` page), `day.*`, `footer.closing.*`, `footer.tagline`, `motion.*`, `nav.cause` and `fallback.notice`.
+- [ ] Review the **Malayalam headlines** on the other `/ml/` pages: they sit beside the English in each view, as `h('English', 'മലയാളം')` (`src/views/*.astro`), plus `theme_ml` for each day in `src/content/schedule.json`.
+- [ ] Translate the rest of the remaining pages: Speakers, Programme, Khasak, Youth, Get involved, Passes, Visit, Partners, FAQ, Contact, Privacy and the 404 page. See README "Translate another page into Malayalam". Until then these `/ml/` pages show Malayalam headlines over English text, with a notice (`TODO(i18n)` comments in `src/pages/ml/*.astro`).
 - [ ] Optional: Malayalam speaker names (`name_ml` field in the speaker files).
 
 ## 5. Keep these "Proposed" / "subject to confirmation" labels until confirmed
 
 | Item | Label | Where |
 |---|---|---|
-| Speaker line-up (all 17) | "Proposed line-up · participation subject to confirmation"; `status: proposed` | Home, `/speakers`, speaker files |
-| Khasakkinte Ithihasam (O. V. Vijayan / Deepan Sivaraman) | "Proposed" | Home band, `/khasak` |
-| Youth activities: Poetry Slam, Open Mic Nights, Reels & Short-Film Challenge, Indie & Rap Night, Meet Your Favourite Authors, Campus Ambassadors | "Proposed" | Home band, `/youth` |
+| Speaker line-up (all 17) | "Proposed line-up, subject to confirmation" (home); "Proposed line-up · participation subject to confirmation"; `status: proposed` | Home, `/speakers`, speaker files |
+| Khasakkinte Ithihasam (O. V. Vijayan / Deepan Sivaraman) | "Proposed" | Home, `/khasak` |
+| Youth activities: Poetry Slam, Open Mic Nights, Reels & Short-Film Challenge, Indie & Rap Night, Meet Your Favourite Authors, Campus Ambassadors | "Proposed" | `/youth` |
+| The three commitments of "Keep the waters alive" | `[CONFIRM]` | Home, `/cause` |
 | Programme | "Proposed programme · subject to confirmation" | `/programme` |
 | Pass inclusions | "indicative" note | `/passes` |
 | Partnership benefits | "indicative" note | `/partners` |
 
-When a speaker confirms, set `status: confirmed` in their file. When everything is confirmed, remove the notes in `src/views/Speakers.astro` and `src/i18n/ui.ts` (`home.voices.note`).
+When a speaker confirms, set `status: confirmed` in their file. When everything is confirmed, remove the notes in `src/views/Speakers.astro` and `src/i18n/ui.ts` (`home.voices.proposed`).
 
 ## 6. Later
 

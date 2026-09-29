@@ -1,0 +1,10 @@
+---
+/**
+ * Text for a large headline, with its closing full stop drawn in a little:
+ * at display sizes the typeface leaves a gap before it (see .stop).
+ */
+interface Props { text: string }
+const { text } = Astro.props;
+const stop = text.endsWith('.') && !text.endsWith('..');
+---
+{stop ? <>{text.slice(0, -1)}<span class="stop">.</span></> : text}

@@ -1,0 +1,58 @@
+---
+/**
+ * The karimeen (pearl spot, Etroplus suratensis), Kerala's state fish and a
+ * creature of Ashtamudi's brackish water, as a small line drawing: one navy
+ * line on a cream fill, long fins, a few pearl rings, a round eye and a
+ * smile. Faces right. Used sparingly.
+ */
+interface Props {
+  class?: string;
+  /** Kept for older call sites (the drawing has no ids now). */
+  uid?: string;
+  /** Accessible name; decorative when omitted. */
+  title?: string;
+  /** Fill inside the line. */
+  fill?: string;
+}
+const { class: cls = '', title, fill = '#fcfaf3' } = Astro.props;
+const line = '#13207a';
+// Pearl spots, the fish's namesake: small rings, like the ripples.
+const pearls = [
+  [88, 38], [102, 33], [116, 31], [129, 34],
+  [80, 53], [95, 48], [110, 45], [125, 46],
+  [86, 68], [101, 63],
+  [94, 82],
+];
+---
+<svg viewBox="0 0 200 120" class={cls} role={title ? 'img' : undefined} aria-label={title} aria-hidden={title ? undefined : 'true'} focusable="false">
+  <g fill={fill} stroke={line} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- tail -->
+    <path d="M52 54C42 46 31 40 16 37C22 50 22 70 16 83C31 80 42 74 52 66Z" />
+    <!-- dorsal fin, spiny in front, a soft lobe at the back -->
+    <path d="M142 23C122 7 88 5 68 16C57 22 50 31 47 44L62 40Z" />
+    <!-- anal fin -->
+    <path d="M112 99C94 113 68 112 53 90C50 84 49 78 51 73L82 96Z" />
+    <!-- body -->
+    <path d="M175 60C172 38 151 20 117 20C89 20 67 32 55 48C51 52 49 56 49 60C49 64 51 68 55 72C67 88 89 100 117 100C151 100 172 82 175 60Z" />
+  </g>
+  <!-- fin rays -->
+  <path
+    d="M118 20L116 14.3M106 20.6L104 12.5M94 22.9L92 12.5M82 27.1L80 14.5M71 33.1L69 18.6M100 98.5L97 103.5M88 95.3L85 105.1M77 90.5L74 103.2M47 52L30 45M47 60L25 60M47 68L30 75"
+    fill="none"
+    stroke={line}
+    stroke-width="1.2"
+    stroke-linecap="round"
+  />
+  <!-- gill and side fin -->
+  <path d="M150 38C142 51 142 69 151 82" fill="none" stroke={line} stroke-width="2" stroke-linecap="round" />
+  <path d="M137 63C128 65 121 72 119 81C128 81 135 74 137 63Z" fill={fill} stroke={line} stroke-width="2" stroke-linejoin="round" />
+  <g fill="none" stroke="#1f3fd8" stroke-width="1.3">
+    {pearls.map(([x, y]) => <circle cx={x} cy={y} r="2" />)}
+  </g>
+  <!-- cheek, eye, smile -->
+  <ellipse cx="158" cy="63" rx="4.6" ry="2.6" fill="#f2785a" fill-opacity="0.5" />
+  <circle cx="159" cy="47" r="6.6" fill={fill} stroke={line} stroke-width="2.2" />
+  <circle cx="160.3" cy="47.8" r="3.4" fill={line} />
+  <circle cx="161.6" cy="46.4" r="1.2" fill="#fcfaf3" />
+  <path d="M172 66Q168.5 69 164.5 67.6" fill="none" stroke={line} stroke-width="1.8" stroke-linecap="round" />
+</svg>

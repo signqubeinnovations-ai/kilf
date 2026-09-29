@@ -4,36 +4,44 @@ import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
 import LimeButton from '@/components/LimeButton.astro';
 import { site } from '@/lib/site';
-import { localizePath, type Lang } from '@/i18n/ui';
+import Rings from '@/components/Rings.astro';
+import { localizePath, headings, type Lang } from '@/i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const h = headings(lang);
 const faqs = (await getCollection('faqs')).sort((a, b) => a.data.order - b.data.order);
 const groups = [
-  ['festival', 'The festival'],
-  ['tickets', 'Tickets & passes'],
-  ['visiting', 'Visiting'],
-  ['taking-part', 'Taking part'],
+  ['festival', h('The festival', 'ഉത്സവം')],
+  ['tickets', h('Tickets and passes', 'ടിക്കറ്റുകളും പാസുകളും')],
+  ['visiting', h('Visiting', 'സന്ദർശനം')],
+  ['taking-part', h('Taking part', 'പങ്കാളിത്തം')],
 ] as const;
 ---
-<PageHero chapter={1} label="FAQ" text="Questions," accent="answered." lead="Everything you need to know before the first chapter. Can’t find it? Write to us." />
+<PageHero
+  label={h('FAQ', 'ചോദ്യങ്ങൾ')}
+  text={h('Questions,', 'ചോദ്യങ്ങൾ,')}
+  accent={h('answered.', 'ഉത്തരങ്ങൾ.')}
+  lang={h.lang}
+  lead="Everything you need to know before the first chapter. Can’t find it? Write to us."
+/>
 
 <Section tone="cream" class="!overflow-visible !pt-0" labelledby="faq-list-h">
-  <h2 id="faq-list-h" class="sr-only">Frequently asked questions</h2>
+  <h2 id="faq-list-h" class="sr-only" lang={h.lang}>{h('Frequently asked questions', 'പതിവു ചോദ്യങ്ങൾ')}</h2>
   <nav aria-label="Question topics" class="mb-14 flex flex-wrap gap-2">
     {groups.map(([id, label]) => (
-      <a href={`#${id}`} class="inline-flex min-h-11 items-center px-5 text-sm font-semibold text-navy ring-1 ring-inset ring-navy/20 transition-colors hover:bg-navy hover:text-white">{label}</a>
+      <a href={`#${id}`} lang={h.lang} class="inline-flex min-h-11 items-center px-5 text-sm font-bold text-navy ring-1 ring-inset ring-navy/30 transition-colors hover:bg-navy hover:text-white">{label}</a>
     ))}
   </nav>
   <div class="space-y-16">
     {groups.map(([id, label], gi) => (
       <section id={id} aria-labelledby={`${id}-h`} class="grid gap-6 lg:grid-cols-12 lg:gap-16">
         <div class="lg:col-span-4">
-          <h3 id={`${id}-h`} class="eyebrow text-navy lg:sticky lg:top-[calc(var(--hh)+2rem)]"><span>{String(gi + 1).padStart(2, '0')}</span> / {label}</h3>
+          <h3 id={`${id}-h`} lang={h.lang} class="eyebrow flex items-center gap-3 text-navy lg:sticky lg:top-[calc(var(--hh)+2rem)]"><Rings n={1} size={26} tone="cobalt" />{label}</h3>
         </div>
         <div class="border-t border-line lg:col-span-8">
           {faqs.filter((f) => f.data.group === id).map((f, i) => (
             <details class="group border-b border-line" open={gi === 0 && i === 0} name="faq">
-              <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-6 font-display text-[1.2rem] font-semibold tracking-[-0.02em] text-navy transition-colors hover:text-blue-bright sm:text-[1.35rem] [&::-webkit-details-marker]:hidden">
+              <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-6 font-display text-[1.2rem] font-extrabold tracking-[-0.02em] text-navy transition-colors hover:text-cobalt sm:text-[1.3rem] [&::-webkit-details-marker]:hidden">
                 {f.data.question}
                 <span class="relative size-5 shrink-0" aria-hidden="true">
                   <span class="absolute left-0 top-1/2 h-px w-5 bg-current"></span>
@@ -47,8 +55,8 @@ const groups = [
       </section>
     ))}
   </div>
-  <div class="mt-20 flex flex-col items-start gap-5 bg-sky p-7 sm:flex-row sm:items-center sm:justify-between sm:p-9">
-    <p class="text-lg font-medium">Still wondering? <a href={`mailto:${site.email}`} class="text-blue underline decoration-1 underline-offset-4">{site.email}</a></p>
+  <div class="mt-20 flex flex-col items-start gap-5 bg-lake-soft p-7 sm:flex-row sm:items-center sm:justify-between sm:p-9">
+    <p class="text-lg">Still wondering? <a href={`mailto:${site.email}`} class="font-bold text-cobalt underline decoration-1 underline-offset-4">{site.email}</a></p>
     <LimeButton href={localizePath('/contact', lang)} label="Contact us" />
   </div>
 </Section>

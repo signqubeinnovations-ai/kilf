@@ -4,6 +4,7 @@
     "date": "2026-12-31",
     "label": "Day 1",
     "theme": "The Eve.",
+    "theme_ml": "പുതുവത്സരരാവ്.",
     "blurb": "The first chapter opens at sunset. A great novelist speaks, a lamp is lit by the water, Shanka Tribe takes the stage, and 2027 arrives over Ashtamudi.",
     "allDay": [
       "Book fair · Ashramam Maidan · 15:00–23:00",
@@ -87,6 +88,7 @@
     "date": "2027-01-01",
     "label": "Day 2",
     "theme": "First light.",
+    "theme_ml": "പുലർവെളിച്ചം.",
     "blurb": "New Year’s Day begins with poems at sunrise and becomes a day of great Malayalam storytellers: the novel, the short story and the films that grew from them. At night, Khasak opens.",
     "allDay": [
       "Book fair · Ashramam Maidan · 10:00–21:00",
@@ -255,6 +257,7 @@
     "date": "2027-01-02",
     "label": "Day 3",
     "theme": "Voices without borders.",
+    "theme_ml": "അതിരുകളില്ലാത്ത ശബ്ദങ്ങൾ.",
     "blurb": "A day about crossing over, into other languages, other lives and other art forms: translation, women’s writing, a film that broke loose, history for everyone, and a night that belongs to the young.",
     "allDay": [
       "Book fair · Ashramam Maidan · 10:00–21:00",
@@ -436,6 +439,7 @@
     "date": "2027-01-03",
     "label": "Day 4",
     "theme": "The long road.",
+    "theme_ml": "നീണ്ട വഴി.",
     "blurb": "Journeys of every kind: to over a hundred countries, into silence, across a desert on film, and back through a thousand years of Kollam’s own history. Sunday ends with song, and Khasak’s final night.",
     "allDay": [
       "Book fair · Ashramam Maidan · 10:00–21:00",
@@ -604,6 +608,7 @@
     "date": "2027-01-04",
     "label": "Day 5",
     "theme": "The next chapter.",
+    "theme_ml": "അടുത്ത അധ്യായം.",
     "blurb": "The last day belongs to what comes next: a veteran of stage and screen, a masterclass for storytellers, the poetry slam final, the Khasak company in conversation, and three generations of writers closing the book, for now.",
     "allDay": [
       "Book fair · Ashramam Maidan · 10:00–20:00",

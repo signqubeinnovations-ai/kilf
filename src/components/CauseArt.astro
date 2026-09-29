@@ -1,0 +1,24 @@
+---
+import Karimeen from './Karimeen.astro';
+/**
+ * "Keep the waters alive": the karimeen as a line drawing, above three
+ * ripple rings, with a few bubbles. Still. Decorative.
+ */
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<div class:list={['relative aspect-square overflow-hidden rounded-[1.5rem] bg-lake-soft', cls]} aria-hidden="true">
+  <svg class="absolute inset-0 size-full" viewBox="0 0 400 400">
+    <g fill="none" stroke="#a9c4ea" stroke-width="2">
+      <ellipse cx="200" cy="290" rx="64" ry="11" />
+      <ellipse cx="200" cy="290" rx="118" ry="21" />
+      <ellipse cx="200" cy="290" rx="172" ry="31" />
+    </g>
+    <g fill="none" stroke="#13207a" stroke-width="1.6">
+      <circle cx="304" cy="150" r="5" />
+      <circle cx="315" cy="127" r="3.6" />
+      <circle cx="308" cy="108" r="2.4" />
+    </g>
+  </svg>
+  <Karimeen class="absolute left-1/2 top-[44%] w-[64%] -translate-x-1/2 -translate-y-1/2" />
+</div>

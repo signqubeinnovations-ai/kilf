@@ -1,9 +1,9 @@
 ---
 import { parsePath, isTranslated } from '@/i18n/ui';
 /**
- * Two-line display headline in Plus Jakarta Sans: the first line in the
- * surface's text colour, the second (`accent`) in the accent colour or a
- * gradient: "Some stories you read. / Others, you live."
+ * Headline in Plus Jakarta Sans 800 with tight tracking: a first line in the
+ * surface's text colour and an optional second line (`accent`) in cobalt (lake
+ * blue on dark). `coral` names one word to set in coral: at most one per headline.
  */
 interface Props {
   text?: string;
@@ -11,13 +11,13 @@ interface Props {
   as?: 'h1' | 'h2' | 'h3';
   size?: 'xl' | 'lg' | 'md' | 'sm';
   tone?: 'light' | 'dark' | 'blue' | 'coral' | 'lime';
-  /** How the accent line is set. */
+  /** Kept for older call sites; the accent is always a calm colour now. */
   accentStyle?: 'color' | 'gradient' | 'soft';
-  /** Override the accent colour. */
   accentColor?: 'coral' | 'blue' | 'lime' | 'navy';
+  /** One word (in `text` or `accent`) to set in coral. */
+  coral?: string;
   /** Keep the accent on the same line (default: its own line). */
   inline?: boolean;
-  /** Back-compat: stack is now the default. */
   stack?: boolean;
   class?: string;
   style?: string;
@@ -25,30 +25,47 @@ interface Props {
   lang?: string;
   [key: `data-${string}`]: unknown;
 }
-const { text = '', accent = '', as: Tag = 'h2', size = 'lg', tone = 'light', accentStyle = 'color', accentColor, inline = false, class: cls = '', style, id, lang, stack: _stack, ...rest } = Astro.props;
+const { text = '', accent = '', as: Tag = 'h2', size = 'lg', tone = 'light', accentStyle = 'color', accentColor, coral, inline = false, class: cls = '', style, id, lang, stack: _stack, ...rest } = Astro.props;
 const sizes = {
-  xl: 'text-[2.7rem] sm:text-[4rem] lg:text-[5.2rem]',
-  lg: 'text-[2.15rem] sm:text-[2.9rem] lg:text-[3.4rem]',
-  md: 'text-[1.75rem] sm:text-[2.2rem] lg:text-[2.5rem]',
-  sm: 'text-2xl sm:text-3xl',
+  xl: 'text-[2.6rem] sm:text-[3.8rem] lg:text-[4.6rem]',
+  lg: 'text-[2.1rem] sm:text-[2.8rem] lg:text-[3.3rem]',
+  md: 'text-[1.7rem] sm:text-[2.1rem] lg:text-[2.4rem]',
+  sm: 'text-xl sm:text-2xl',
 };
 // Malayalam words run long: set translated Malayalam headlines a step smaller.
 const page = parsePath(Astro.url.pathname);
-const mlText = page.lang === 'ml' && isTranslated(page.path);
+const mlText = lang === 'ml' || (page.lang === 'ml' && isTranslated(page.path));
 const mlSizes = {
-  xl: 'text-[2.2rem] sm:text-[3.2rem] lg:text-[4rem]',
-  lg: 'text-[1.85rem] sm:text-[2.5rem] lg:text-[2.9rem]',
-  md: 'text-[1.55rem] sm:text-[1.9rem] lg:text-[2.2rem]',
+  xl: 'text-[2.1rem] sm:text-[3rem] lg:text-[3.6rem]',
+  lg: 'text-[1.8rem] sm:text-[2.4rem] lg:text-[2.8rem]',
+  md: 'text-[1.5rem] sm:text-[1.85rem] lg:text-[2.1rem]',
   sm: 'text-xl sm:text-2xl',
 };
 const base = { light: 'text-navy', dark: 'text-white', blue: 'text-white', coral: 'text-navy', lime: 'text-navy' }[tone];
 const onDark = tone === 'dark' || tone === 'blue';
-const colorFor = { coral: onDark ? 'text-coral' : 'text-coral-dark', blue: onDark ? 'text-mist' : tone === 'light' ? 'text-blue-bright' : 'text-blue', lime: 'text-lime', navy: 'text-navy' };
-const defaultAccent = { light: 'text-blue-bright', dark: 'text-lime', blue: 'text-lime', coral: 'text-blue', lime: 'text-blue' }[tone];
-const gradientFor = { light: 'text-grad', dark: 'text-grad-warm', blue: 'text-grad-warm', coral: 'text-grad-ink', lime: 'text-grad-ink' }[tone];
-const accentClass =
-  accentStyle === 'gradient' ? gradientFor : accentStyle === 'soft' ? 'font-normal opacity-90' : accentColor ? colorFor[accentColor] : defaultAccent;
+const colorFor = { coral: onDark ? 'text-coral' : 'text-coral-text', blue: onDark ? 'text-lake' : 'text-cobalt', lime: onDark ? 'text-lake' : 'text-cobalt', navy: onDark ? 'text-white' : 'text-navy' };
+const accentClass = accentStyle === 'soft' ? 'font-medium opacity-90' : accentColor ? colorFor[accentColor] : onDark ? 'text-lake' : 'text-cobalt';
+// Set the one coral word, if it appears.
+const mark = (s: string) => {
+  const i = coral ? s.indexOf(coral) : -1;
+  if (!coral || i === -1) return s;
+  return [s.slice(0, i), wrap(esc(coral)), s.slice(i + coral.length)];
+};
+// Built without literal angle brackets: the Astro parser can mistake them for markup here.
+const LT = String.fromCharCode(60);
+const GT = String.fromCharCode(62);
+const wrap = (w: string) => LT + 'span class="coral-word"' + GT + w + LT + '/span' + GT;
+function esc(s: string) {
+  return s.split('&').join('&amp;').split(String.fromCharCode(60)).join('&lt;').split(String.fromCharCode(62)).join('&gt;');
+}
+// A closing full stop sits a touch closer: at this weight the typeface leaves a gap before it.
+const STOP = LT + 'span class="stop"' + GT + '.' + LT + '/span' + GT;
+const html = (s: string) => {
+  const m = mark(s);
+  const out = Array.isArray(m) ? esc(m[0]) + m[1] + esc(m[2]) : esc(m);
+  return out.endsWith('.') && !out.endsWith('..') ? out.slice(0, -1) + STOP : out;
+};
 ---
-<Tag id={id} lang={lang} style={style} class:list={['display', (mlText ? mlSizes : sizes)[size], base, cls]} {...rest}>
-  {text}{text && accent ? (inline ? ' ' : <br />) : ''}{accent && <span class={accentClass}>{accent}</span>}
+<Tag id={id} lang={lang} style={style} class:list={['display', (mlText ? mlSizes : sizes)[size], base, onDark && 'on-dark', cls]} {...rest}>
+  {text && <Fragment set:html={html(text)} />}{text && accent ? (inline ? ' ' : <br />) : ''}{accent && <span class={accentClass} set:html={html(accent)} />}
 </Tag>

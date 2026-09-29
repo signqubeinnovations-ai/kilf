@@ -1,13 +1,20 @@
 ---
-/** Section label in the print style: "01 / THE CITY OPENS ITS PAGES". */
+import Rings from './Rings.astro';
+/**
+ * Section label: a single ripple ring and a few words in capitals. No
+ * numbers: sections are not a sequence. (`n` is accepted and ignored, for
+ * older call sites.)
+ */
 interface Props {
-  n: number;
+  n?: number;
   label: string;
   tone?: 'light' | 'dark' | 'lime' | 'coral';
   class?: string;
+  /** Language of the label, when it differs from the page. */
+  lang?: string;
 }
-const { n, label, tone = 'light', class: cls = '' } = Astro.props;
-const num = String(n).padStart(2, '0');
+const { label, tone = 'light', class: cls = '', lang } = Astro.props;
 const color = { light: 'text-navy', dark: 'text-white/85', lime: 'text-navy', coral: 'text-navy' }[tone];
+const ring = tone === 'dark' ? 'lake' : 'cobalt';
 ---
-<p class:list={['eyebrow', color, cls]}><span lang="en">{num}</span> <span aria-hidden="true">/</span> {label}</p>
+<p class:list={['eyebrow inline-flex items-center gap-3', color, cls]} lang={lang}><Rings n={1} size={26} tone={ring} />{label}</p>

@@ -6,11 +6,13 @@ import ChapterLabel from '@/components/ChapterLabel.astro';
 import Headline from '@/components/Headline.astro';
 import LimeButton from '@/components/LimeButton.astro';
 import TextLink from '@/components/TextLink.astro';
+import Rings from '@/components/Rings.astro';
 import NotifyBanner from '@/components/blocks/NotifyBanner.astro';
-import { localizePath, type Lang } from '@/i18n/ui';
+import { localizePath, headings, type Lang } from '@/i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const lp = (p: string) => localizePath(p, lang);
+const h = headings(lang);
 const passes = (await getCollection('passes')).sort((a, b) => a.data.order - b.data.order);
 const guide = [
   ['Coming for one day?', 'Day Pass · ₹299', 'Pick your day: sessions, the book fair and the lakeside evening.', '#notify'],
@@ -26,31 +28,37 @@ const questions = [
   ['How much do passes cost?', 'A Day Pass is ₹299, the Festival Pass ₹499 for all five days, and the Young Reader Pass ₹199 for students. Khasakkinte Ithihasam is ₹1,500, or ₹1,600 with a Festival Pass. Nothing is on sale yet, and no payment is taken until ticketing opens.'],
 ];
 ---
-<PageHero chapter={1} label="Passes" text="Your seat by the" accent="lake." lead="Five days by the lake from ₹199. Ticketing opens soon: register early and we’ll tell you the moment passes go on sale." />
+<PageHero
+  label={h('Passes', 'പാസുകൾ')}
+  text={h('Your seat by the', 'കായലോരത്ത്')}
+  accent={h('lake.', 'നിങ്ങളുടെ ഇരിപ്പിടം.')}
+  lang={h.lang}
+  lead="Five days by the lake from ₹199. Ticketing opens soon: register early and we’ll tell you the moment passes go on sale."
+/>
 
 <Section tone="cream" class="!pt-0" labelledby="passes-h">
-  <h2 id="passes-h" class="sr-only">Pass types</h2>
-  <ul class="grid border-l border-t border-line lg:grid-cols-3" data-reveal-group>
-    {passes.map((p, i) => {
+  <h2 id="passes-h" class="sr-only" lang={h.lang}>{h('Pass types', 'പാസുകൾ')}</h2>
+  <ul class="grid gap-6 lg:grid-cols-3 lg:gap-8">
+    {passes.map((p) => {
       const hi = p.data.highlighted;
       return (
-        <li class:list={['flex flex-col border-b border-r border-line p-8 sm:p-10', hi ? 'on-dark bg-blue text-white' : 'bg-cream text-navy']}>
-          <div class="flex items-start justify-between gap-4">
-            <p class="eyebrow"><span lang="en">{String(i + 1).padStart(2, '0')}</span> / {p.data.audience}</p>
-            {hi && <span class="bg-lime px-2.5 py-1 text-[0.66rem] font-bold uppercase tracking-[0.14em] text-ink">Most complete</span>}
+        <li class:list={['flex flex-col border-t-2 p-7 sm:p-9', hi ? 'border-cobalt bg-lake-soft' : 'border-navy/15 bg-cream']}>
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <p class="eyebrow text-muted">{p.data.audience}</p>
+            {hi && <span class="bg-cobalt px-2.5 py-1 text-[0.66rem] font-bold uppercase tracking-[0.14em] text-white">Most complete</span>}
           </div>
-          <h3 class="display mt-10 text-[2.2rem] sm:text-[2.5rem]">{p.data.name}</h3>
-          <p class:list={['mt-4 text-[1.02rem] leading-relaxed', hi ? 'text-white/85' : 'text-muted']}>{p.data.description}</p>
+          <h3 class="display mt-8 text-[2.2rem] sm:text-[2.5rem]">{p.data.name}</h3>
+          <p class="mt-4 text-[1.02rem] leading-relaxed text-muted">{p.data.description}</p>
           {p.data.price && (
             <p class="mt-7 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span class:list={['numeral text-[3.4rem] leading-none sm:text-[3.8rem]', hi ? 'text-lime' : 'text-blue-bright']}>{p.data.price}</span>
-              {p.data.priceNote && <span class:list={['text-[0.95rem]', hi ? 'text-white/80' : 'text-muted']}>{p.data.priceNote}</span>}
+              <span class="numeral text-[3.4rem] leading-none text-cobalt sm:text-[3.8rem]">{p.data.price}</span>
+              {p.data.priceNote && <span class="text-[0.95rem] text-muted">{p.data.priceNote}</span>}
             </p>
           )}
-          <ul class:list={['mt-7 flex-1 border-t', hi ? 'border-white/20' : 'border-line']}>
+          <ul class="mt-7 flex-1 border-t border-navy/10">
             {p.data.includes.map((inc) => (
-              <li class:list={['flex items-start gap-3 border-b py-3 text-[0.98rem]', hi ? 'border-white/20' : 'border-line']}>
-                <span aria-hidden="true" class:list={['mt-2.5 size-1.5 shrink-0', hi ? 'bg-lime' : 'bg-blue']}></span>
+              <li class="flex items-center gap-3 border-b border-navy/10 py-3 text-[0.98rem]">
+                <Rings n={1} size={20} tone="cobalt" />
                 <span>{inc}</span>
               </li>
             ))}
@@ -60,8 +68,8 @@ const questions = [
               <LimeButton href={p.data.buyUrl} label={`Buy · ${p.data.price}`} class="w-full" external />
             ) : (
               <>
-                <p class:list={['eyebrow mb-4', hi ? 'text-white/80' : 'text-muted']}>On sale soon</p>
-                <LimeButton href="#notify" label="Notify me" variant={hi ? 'lime' : 'primary'} class="w-full justify-between" />
+                <p class="eyebrow mb-4 text-muted">On sale soon</p>
+                <LimeButton href="#notify" label="Notify me" variant={hi ? 'primary' : 'ghost'} class="w-full justify-between" />
               </>
             )}
           </div>
@@ -76,56 +84,56 @@ const questions = [
 <Section tone="cream" rule labelledby="guide-h">
   <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="lg:col-span-4">
-      <ChapterLabel n={2} label="Choosing" />
-      <Headline id="guide-h" text="Which pass" accent="is for me?" class="mt-6" />
+      <ChapterLabel label={h('Choosing', 'തിരഞ്ഞെടുക്കാൻ')} lang={h.lang} />
+      <Headline id="guide-h" text={h('Which pass', 'എനിക്ക്')} accent={h('is for me?', 'ഏതു പാസ്?')} lang={h.lang} class="mt-6" />
       <p class="mt-6 max-w-sm text-lg leading-relaxed text-muted">Five ways to come to KILF 2027. Find the line that sounds like you.</p>
     </div>
-    <ol class="border-t border-line lg:col-span-8" data-reveal-group>
+    <ul class="border-t border-line lg:col-span-8">
       {guide.map(([q, name, line, href]) => (
         <li class="border-b border-line">
           <a href={href.startsWith('#') ? href : lp(href)} class="group grid gap-x-6 gap-y-1 py-6 sm:grid-cols-[1fr_1.1fr_auto] sm:items-baseline">
             <span class="text-[1.02rem] text-muted">{q}</span>
             <span>
-              <span class="block font-display text-[1.45rem] font-semibold leading-tight tracking-[-0.03em] text-navy transition-colors group-hover:text-blue-bright">{name}</span>
+              <span class="block font-display text-[1.4rem] font-extrabold leading-tight tracking-[-0.03em] text-navy transition-colors group-hover:text-cobalt">{name}</span>
               <span class="mt-1 block text-[0.98rem] leading-relaxed text-muted">{line}</span>
             </span>
-            <span aria-hidden="true" class="hidden text-xl text-blue-bright transition-transform duration-500 ease-[var(--ease-calm)] group-hover:-translate-y-1 group-hover:translate-x-1 sm:block">↗</span>
+            <span aria-hidden="true" class="hidden text-xl text-cobalt sm:block">↗</span>
           </a>
         </li>
       ))}
-    </ol>
+    </ul>
   </div>
 </Section>
 
-<!-- The play is ticketed separately -->
-<section class="relative overflow-hidden bg-coral text-ink" aria-labelledby="theatre-h">
-  <div class="container-kilf grid items-center gap-10 py-20 sm:py-24 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+<!-- The play is ticketed separately: an evening at the theatre -->
+<section class="on-dark relative overflow-hidden bg-night text-white" aria-labelledby="theatre-h">
+  <div class="container-kilf grid items-center gap-12 py-24 sm:py-28 lg:grid-cols-[1.2fr_1fr] lg:gap-16 lg:py-32">
     <div>
-      <ChapterLabel n={3} label="Signature theatre" tone="coral" />
-      <Headline id="theatre-h" text="The play is" accent="ticketed separately." tone="coral" accentStyle="gradient" class="mt-6" />
-      <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink/85">
+      <ChapterLabel label={h('Signature theatre', 'സവിശേഷ നാടകം')} lang={h.lang} tone="dark" />
+      <Headline id="theatre-h" text={h('The play is', 'നാടകത്തിന്')} accent={h('ticketed separately.', 'പ്രത്യേകം ടിക്കറ്റ്.')} lang={h.lang} tone="dark" class="mt-6" />
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/85">
         Khasakkinte Ithihasam needs its own ticket: three evenings at Ashramam Maidan, on 1, 2 and 3 January. Choose a theatre
-        ticket on its own, or add all five days of the festival for just ₹100 more.
+        ticket on its own, or add all five days of the festival for ₹100 more.
       </p>
       <div class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
-        <LimeButton href={lp('/khasak#tickets')} label="Theatre tickets" size="lg" class="min-w-[13rem] justify-between !gap-10" />
-        <TextLink href={lp('/khasak')} label="About the play" tone="navy" />
+        <LimeButton href={lp('/khasak#tickets')} label="Theatre tickets" size="lg" />
+        <TextLink href={lp('/khasak')} label="About the play" tone="dark" />
       </div>
     </div>
-    <ul class="grid gap-3" data-reveal-group>
-      <li class="flex items-end justify-between gap-6 bg-cream p-6 text-navy">
+    <ul class="border-t border-white/15">
+      <li class="flex items-end justify-between gap-6 border-b border-white/15 py-6">
         <div>
-          <p class="eyebrow">Theatre ticket</p>
-          <p class="mt-2 font-display text-xl font-semibold tracking-[-0.02em]">Khasakkinte Ithihasam only</p>
+          <p class="eyebrow text-white/70">Theatre ticket</p>
+          <p class="mt-2 font-display text-xl font-extrabold tracking-[-0.02em]">Khasakkinte Ithihasam only</p>
         </div>
-        <p class="numeral text-[2.4rem] leading-none text-blue-bright">₹1,500</p>
+        <p class="numeral text-[2.4rem] leading-none text-white">₹1,500</p>
       </li>
-      <li class="on-dark flex items-end justify-between gap-6 bg-blue p-6 text-white">
+      <li class="flex items-end justify-between gap-6 border-b border-white/15 py-6">
         <div>
-          <p class="eyebrow text-white/80">Theatre + Festival Pass</p>
-          <p class="mt-2 font-display text-xl font-semibold tracking-[-0.02em]">The play, plus all five days</p>
+          <p class="eyebrow text-white/70">Theatre + Festival Pass</p>
+          <p class="mt-2 font-display text-xl font-extrabold tracking-[-0.02em]">The play, plus all five days</p>
         </div>
-        <p class="numeral text-[2.4rem] leading-none text-lime">₹1,600</p>
+        <p class="numeral text-[2.4rem] leading-none text-lake">₹1,600</p>
       </li>
     </ul>
   </div>
@@ -135,14 +143,14 @@ const questions = [
 <Section tone="cream" labelledby="questions-h">
   <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="lg:col-span-4">
-      <ChapterLabel n={4} label="Questions" />
-      <Headline id="questions-h" text="Ticketing," accent="answered." class="mt-6" />
+      <ChapterLabel label={h('Questions', 'ചോദ്യങ്ങൾ')} lang={h.lang} />
+      <Headline id="questions-h" text={h('Ticketing,', 'ടിക്കറ്റുകൾ,')} accent={h('answered.', 'ഉത്തരങ്ങൾ.')} lang={h.lang} class="mt-6" />
       <TextLink href={lp('/faq')} label="All questions" class="mt-8" />
     </div>
     <dl class="border-t border-line lg:col-span-8">
       {questions.map(([q, a]) => (
         <div class="border-b border-line py-7">
-          <dt class="font-display text-[1.25rem] font-semibold tracking-[-0.02em] text-navy">{q}</dt>
+          <dt class="font-display text-[1.25rem] font-extrabold tracking-[-0.02em] text-navy">{q}</dt>
           <dd class="mt-2 max-w-2xl text-[1.02rem] leading-relaxed text-muted">{a}</dd>
         </div>
       ))}
@@ -154,8 +162,9 @@ const questions = [
   id="notify"
   formName="passes-notify"
   kicker="Ticketing opens soon"
-  text="Be first in line"
-  accent="for passes."
+  text={h('Be first in line', 'പാസുകൾ എത്തുമ്പോൾ')}
+  accent={h('for passes.', 'ആദ്യം അറിയാം.')}
+  headingLang={h.lang}
   lead="Register early and we’ll tell you the moment passes go on sale."
   lang={lang}
   extraField={{ name: 'pass', label: 'Pass you’re interested in', options: ['Day Pass', 'Festival Pass', 'Young Reader Pass', 'Theatre ticket', 'Theatre + Festival Pass', 'Not sure yet'] }}

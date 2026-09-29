@@ -7,10 +7,11 @@ import Icon from '@/components/Icon.astro';
 import Form from '@/components/Form.astro';
 import Field from '@/components/Field.astro';
 import LimeButton from '@/components/LimeButton.astro';
-import { localizePath, type Lang } from '@/i18n/ui';
+import { localizePath, headings, type Lang } from '@/i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const lp = (p: string) => localizePath(p, lang);
+const h = headings(lang);
 const tabs = [
   ['register', 'pen', 'Register', '#register'],
   ['volunteer', 'heart', 'Volunteer', '#volunteer'],
@@ -22,6 +23,7 @@ const roles = [
   ['Hospitality', 'Welcome visitors, guide them around the venues and help at the information desks.'],
   ['Stage', 'Help sessions run on time: seating, microphones, speaker cues and the audience queue.'],
   ['Guest care', 'Look after speakers and guests, from their arrival to the green room.'],
+  ['Ashtamudi clean-up', 'One morning on the shore with the festival, to keep the waters alive.'],
 ];
 const next = [
   ['Send the form', 'It takes about a minute. Tell us what you’d like to do.'],
@@ -30,20 +32,20 @@ const next = [
   ['The five days', 'Be part of the first chapter, from the inside.'],
 ];
 ---
-<PageHero chapter={1} label="Join in" text="Be part of" accent="KILF." lead="Five ways into the first chapter. Pick yours: every form takes about a minute.">
+<PageHero
+  label={h('Join in', 'പങ്കുചേരാം')}
+  text={h('Be part of', 'KILF-ന്റെ')}
+  accent={h('KILF.', 'ഭാഗമാകൂ.')}
+  lang={h.lang}
+  lead="Five ways into the first chapter. Pick yours: every form takes about a minute."
+>
   <nav aria-label="Ways to get involved" class="mt-12">
-    <ul class="grid grid-cols-2 border-l border-t border-line sm:grid-cols-3 lg:grid-cols-5">
-      {tabs.map(([key, icon, label, href], i) => (
-        <li class:list={['border-b border-r border-line', key === 'register' && 'col-span-2 sm:col-span-1']}>
-          <a href={href} class:list={['group flex min-h-32 flex-col justify-between gap-6 p-5 transition-colors duration-300 sm:p-6', key === 'volunteer' ? 'bg-blue text-white hover:bg-[#1230a8]' : 'hover:bg-sky']}>
-            <span class="flex items-start justify-between gap-3">
-              <span class:list={['eyebrow', key === 'volunteer' ? 'text-white/80' : 'text-navy']}>{String(i + 1).padStart(2, '0')}</span>
-              <Icon name={icon} size={24} class={key === 'volunteer' ? 'text-lime' : 'text-blue-bright'} />
-            </span>
-            <span class="flex items-end justify-between gap-2 font-display text-[1.35rem] font-semibold tracking-[-0.03em]">
-              {label}
-              <span aria-hidden="true" class="text-base transition-transform duration-500 ease-[var(--ease-calm)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5">{href.startsWith('#') ? '↓' : '↗'}</span>
-            </span>
+    <ul class="grid gap-x-8 sm:grid-cols-3 lg:grid-cols-5">
+      {tabs.map(([, icon, label, href]) => (
+        <li class="border-t border-line">
+          <a href={href} class="group flex min-h-20 items-center justify-between gap-4 py-5 text-navy transition-colors hover:text-cobalt">
+            <span class="flex items-center gap-4 font-display text-[1.3rem] font-extrabold tracking-[-0.03em]"><Icon name={icon} size={24} class="text-cobalt" />{label}</span>
+            <span aria-hidden="true" class="text-base text-cobalt transition-transform duration-500 ease-[var(--ease-calm)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5">{href.startsWith('#') ? '↓' : '↗'}</span>
           </a>
         </li>
       ))}
@@ -54,8 +56,8 @@ const next = [
 <Section tone="cream" id="register" labelledby="register-h" class="border-t border-line">
   <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
     <div>
-      <ChapterLabel n={2} label="Register" />
-      <Headline id="register-h" text="Register your" accent="interest." class="mt-6" />
+      <ChapterLabel label={h('Register', 'രജിസ്റ്റർ')} lang={h.lang} />
+      <Headline id="register-h" text={h('Register your', 'താൽപര്യം')} accent={h('interest.', 'അറിയിക്കൂ.')} lang={h.lang} class="mt-6" />
       <p class="mt-6 max-w-md text-lg leading-relaxed text-muted">Be a delegate at the first edition. We’ll send you early access to passes, speaker news and the programme as it is unveiled.</p>
     </div>
     <Form id="register-form" name="register" lang={lang} class="card p-6 sm:p-9">
@@ -73,13 +75,13 @@ const next = [
 <Section tone="sky" id="volunteer" labelledby="volunteer-h">
   <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
     <div>
-      <ChapterLabel n={3} label="Volunteer" />
-      <Headline id="volunteer-h" text="Help us write the" accent="first chapter." class="mt-6" />
-      <p class="mt-6 max-w-md text-lg leading-relaxed text-navy/80">Hospitality, stage and guest care. Meet the speakers, learn how a festival runs, and be part of the story from the inside.</p>
+      <ChapterLabel label={h('Volunteer', 'സന്നദ്ധസേവനം')} lang={h.lang} />
+      <Headline id="volunteer-h" text={h('Help us write the', 'ആദ്യ അധ്യായം എഴുതാൻ')} accent={h('first chapter.', 'ഒപ്പം ചേരൂ.')} lang={h.lang} class="mt-6" />
+      <p class="mt-6 max-w-md text-lg leading-relaxed text-navy/80">Hospitality, stage, guest care and the Ashtamudi clean-up. Meet the speakers, learn how a festival runs, and be part of the story from the inside.</p>
       <dl class="mt-10 max-w-md border-t border-navy/15">
         {roles.map(([role, line]) => (
           <div class="border-b border-navy/15 py-5">
-            <dt class="font-display text-lg font-semibold tracking-[-0.02em]">{role}</dt>
+            <dt class="font-display text-lg font-extrabold tracking-[-0.02em]">{role}</dt>
             <dd class="mt-1 text-navy/75">{line}</dd>
           </div>
         ))}
@@ -90,7 +92,7 @@ const next = [
       <Field formId="volunteer-form" name="email" type="email" label="Email" autocomplete="email" required />
       <Field formId="volunteer-form" name="phone" type="tel" label="Phone" autocomplete="tel" inputmode="tel" required />
       <Field formId="volunteer-form" name="organisation" label="College / organisation" autocomplete="organization" />
-      <Field formId="volunteer-form" name="team" type="select" label="I’d like to help with" options={['Hospitality', 'Stage', 'Guest care', 'Anywhere I’m needed']} required />
+      <Field formId="volunteer-form" name="team" type="select" label="I’d like to help with" options={['Hospitality', 'Stage', 'Guest care', 'Ashtamudi clean-up', 'Anywhere I’m needed']} required />
       <Field formId="volunteer-form" name="availability" type="select" label="Availability" options={['All five days', 'Some days', 'Before the festival only']} />
       <Field formId="volunteer-form" name="languages" label="Languages you speak" hint="e.g. Malayalam, English, Tamil" />
       <Field formId="volunteer-form" name="message" type="textarea" label="Anything else?" full rows={3} />
@@ -101,8 +103,8 @@ const next = [
 <Section tone="cream" id="exhibit" labelledby="exhibit-h">
   <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
     <div>
-      <ChapterLabel n={4} label="Exhibit" />
-      <Headline id="exhibit-h" text="Set up on the" accent="shore." class="mt-6" />
+      <ChapterLabel label={h('Exhibit', 'പ്രദർശനം')} lang={h.lang} />
+      <Headline id="exhibit-h" text={h('Set up on the', 'തീരത്ത്')} accent={h('shore.', 'ഇടം ഒരുക്കാം.')} lang={h.lang} class="mt-6" />
       <p class="mt-6 max-w-md text-lg leading-relaxed text-muted">Publishers at the book fair, artists in the exhibition spaces and food stalls for the lakeside evenings. Tell us what you’d bring.</p>
     </div>
     <Form id="exhibit-form" name="exhibit" lang={lang} class="card p-6 sm:p-9">
@@ -117,36 +119,34 @@ const next = [
   </div>
 </Section>
 
-<!-- What happens next -->
-<section class="bg-lime text-ink" aria-labelledby="next-h">
-  <div class="container-kilf py-20 sm:py-24">
-    <ChapterLabel n={5} label="What happens next" tone="lime" />
-    <Headline id="next-h" text="From the form" accent="to the festival." tone="lime" class="mt-6" />
-    <ol class="mt-12 grid border-t border-ink/15 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
-      {next.map(([title, line], i) => (
-        <li class:list={['border-b border-ink/15 py-7 sm:px-6', i % 2 === 1 && 'sm:border-l', i > 0 && 'lg:border-l', 'lg:first:pl-0']}>
-          <span class="numeral text-[2.6rem] text-blue">{String(i + 1).padStart(2, '0')}</span>
-          <h3 class="mt-6 font-display text-[1.35rem] font-semibold leading-tight tracking-[-0.03em]">{title}</h3>
-          <p class="mt-2 text-[0.98rem] leading-relaxed text-ink/80">{line}</p>
-        </li>
-      ))}
-    </ol>
-  </div>
-</section>
+<!-- What happens next: four steps, in order -->
+<Section tone="cream" labelledby="next-h" class="border-t border-line">
+  <ChapterLabel label={h('What happens next', 'ഇനി എന്ത്')} lang={h.lang} />
+  <Headline id="next-h" text={h('From the form', 'ഫോമിൽ നിന്ന്')} accent={h('to the festival.', 'ഉത്സവത്തിലേക്ക്.')} lang={h.lang} class="mt-6" />
+  <ol class="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+    {next.map(([title, line], i) => (
+      <li class="border-t border-line pt-6">
+        <span class="numeral text-[2.4rem] text-cobalt">{i + 1}</span>
+        <h3 class="mt-5 font-display text-[1.3rem] leading-tight tracking-[-0.03em]">{title}</h3>
+        <p class="mt-2 text-[0.98rem] leading-relaxed text-muted">{line}</p>
+      </li>
+    ))}
+  </ol>
+</Section>
 
-<Section tone="cream" labelledby="more-h">
-  <h2 id="more-h" class="sr-only">Partner or attend</h2>
-  <div class="grid border-l border-t border-line md:grid-cols-2">
-    <div id="partner" class="on-dark border-b border-r border-line bg-blue p-8 text-white sm:p-12">
-      <ChapterLabel n={6} label="Partner" tone="dark" />
-      <Headline text="Your brand. Our story." accent="One lake." tone="blue" size="md" class="mt-6" />
-      <p class="mt-5 text-white/85">Founding partnerships for the first edition.</p>
+<Section tone="sky" labelledby="more-h">
+  <h2 id="more-h" class="sr-only" lang={h.lang}>{h('Partner or attend', 'പങ്കാളിയാകാം, പങ്കെടുക്കാം')}</h2>
+  <div class="grid gap-14 md:grid-cols-2 md:gap-16">
+    <div id="partner" class="border-t border-navy/15 pt-8">
+      <ChapterLabel label={h('Partner', 'പങ്കാളിത്തം')} lang={h.lang} />
+      <Headline text={h('Your brand. Our story.', 'നിങ്ങളുടെ ബ്രാൻഡ്. ഞങ്ങളുടെ കഥ.')} accent={h('One lake.', 'ഒരേ കായൽ.')} lang={h.lang} size="md" class="mt-6" />
+      <p class="mt-5 text-navy/80">Founding partnerships for the first edition.</p>
       <LimeButton href={lp('/partners')} label="See partnership options" class="mt-8" />
     </div>
-    <div id="attend" class="border-b border-r border-line bg-lime p-8 text-ink sm:p-12">
-      <ChapterLabel n={7} label="Attend" tone="lime" />
-      <Headline text="Get your" accent="pass." tone="lime" size="md" class="mt-6" />
-      <p class="mt-5 text-ink/80">Day Pass ₹299, Festival Pass ₹499 and Young Reader Pass ₹199, plus theatre tickets for Khasakkinte Ithihasam from ₹1,500. Ticketing opens soon.</p>
+    <div id="attend" class="border-t border-navy/15 pt-8">
+      <ChapterLabel label={h('Attend', 'പങ്കെടുക്കാം')} lang={h.lang} />
+      <Headline text={h('Get your', 'നിങ്ങളുടെ പാസ്')} accent={h('pass.', 'എടുക്കാം.')} lang={h.lang} size="md" class="mt-6" />
+      <p class="mt-5 text-navy/80">Day Pass ₹299, Festival Pass ₹499 and Young Reader Pass ₹199, plus theatre tickets for Khasakkinte Ithihasam from ₹1,500. Ticketing opens soon.</p>
       <LimeButton href={lp('/passes')} label="See passes" class="mt-8" />
     </div>
   </div>

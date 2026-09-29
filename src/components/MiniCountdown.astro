@@ -1,0 +1,48 @@
+---
+import Rings from './Rings.astro';
+import { site } from '@/lib/site';
+import { useTranslations, type Lang } from '@/i18n/ui';
+/**
+ * A small, quiet countdown to the first page: days, hours and minutes, in
+ * one line. Rendered at build time; a tiny script keeps it current. Once the
+ * festival starts it says so.
+ */
+interface Props { lang: Lang; class?: string }
+const { lang, class: cls = '' } = Astro.props;
+const t = useTranslations(lang);
+const left = Math.max(0, new Date(site.startISO).getTime() - Date.now());
+const d = Math.floor(left / 86400000);
+const h = Math.floor((left % 86400000) / 3600000);
+const m = Math.floor((left % 3600000) / 60000);
+const unit = (s: string) => s.toLowerCase();
+---
+<p
+  class:list={['flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted', cls]}
+  data-countdown
+  data-target={site.startISO}
+  data-live={t('countdown.live')}
+>
+  <Rings n={1} size={24} tone="cobalt" />
+  <span>{t('countdown.title')}</span>
+  <span class="font-bold tabular-nums text-navy"
+    ><span data-d>{d}</span> {unit(t('countdown.days'))} · <span data-h>{h}</span> {unit(t('countdown.hours'))} · <span data-m>{m}</span> {unit(t('countdown.minutes'))}</span
+  >
+</p>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-countdown]').forEach((el) => {
+    const target = new Date(el.dataset.target!).getTime();
+    const tick = () => {
+      const left = target - Date.now();
+      if (left <= 0) {
+        el.textContent = el.dataset.live!;
+        return;
+      }
+      el.querySelector('[data-d]')!.textContent = String(Math.floor(left / 86400000));
+      el.querySelector('[data-h]')!.textContent = String(Math.floor((left % 86400000) / 3600000));
+      el.querySelector('[data-m]')!.textContent = String(Math.floor((left % 3600000) / 60000));
+    };
+    tick();
+    setInterval(tick, 30000);
+  });
+</script>
