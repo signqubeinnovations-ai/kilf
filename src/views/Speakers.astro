@@ -8,12 +8,14 @@ import ChapterLabel from '@/components/ChapterLabel.astro';
 import Headline from '@/components/Headline.astro';
 import LimeButton from '@/components/LimeButton.astro';
 import TextLink from '@/components/TextLink.astro';
+import Rings from '@/components/Rings.astro';
 import { site } from '@/lib/site';
 import { hasBio } from '@/lib/speakers';
-import { localizePath, type Lang } from '@/i18n/ui';
+import { localizePath, headings, type Lang } from '@/i18n/ui';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const h = headings(lang);
 const speakers = (await getCollection('speakers')).sort((a, b) => a.data.order - b.data.order);
 const filters = [
   ['all', 'All'],
@@ -23,7 +25,7 @@ const filters = [
   ['history-ideas', 'History & Ideas'],
 ];
 ---
-<PageHero chapter={1} label="Voices" text="Voices without" accent="borders.">
+<PageHero label={h('Voices', 'ശബ്ദങ്ങൾ')} text={h('Voices without', 'അതിരുകളില്ലാത്ത')} accent={h('borders.', 'ശബ്ദങ്ങൾ.')} lang={h.lang}>
   <p class="mt-8 flex flex-wrap items-center gap-3 text-base text-muted">
     <Badge>Proposed line-up</Badge> Participation subject to confirmation.
   </p>
@@ -39,7 +41,7 @@ const filters = [
             type="button"
             data-filter={value}
             aria-pressed={i === 0 ? 'true' : 'false'}
-            class="min-h-11 whitespace-nowrap px-5 text-sm font-semibold text-navy ring-1 ring-inset ring-navy/20 transition-colors hover:bg-navy/5 aria-pressed:bg-navy aria-pressed:text-white aria-pressed:ring-navy"
+            class="min-h-11 whitespace-nowrap px-5 text-sm font-bold text-navy ring-1 ring-inset ring-navy/30 transition-colors hover:bg-navy/5 aria-pressed:bg-navy aria-pressed:text-white aria-pressed:ring-navy"
           >
             {label}
           </button>
@@ -63,8 +65,8 @@ const filters = [
     ))}
     <li class="list-none" data-categories="always">
       <div class="flex aspect-[4/5] flex-col items-start justify-end rounded-[1.25rem] border border-dashed border-navy/25 p-5">
-        <span class="font-display text-[2.2rem] font-semibold leading-none text-blue-bright" aria-hidden="true">+</span>
-        <span class="mt-3 max-w-[10rem] font-display text-lg font-semibold leading-tight tracking-[-0.02em]">More voices to be announced</span>
+        <Rings n={3} size={56} tone="cobalt" />
+        <span class="mt-4 max-w-[10rem] font-display text-lg font-extrabold leading-tight tracking-[-0.02em]">More voices to be announced</span>
       </div>
     </li>
   </ul>
@@ -77,8 +79,8 @@ const filters = [
 <Section tone="cream" rule labelledby="lineup-h">
   <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="lg:col-span-5">
-      <ChapterLabel n={2} label="The line-up" />
-      <Headline id="lineup-h" text="Masters and" accent="first-time voices." class="mt-6" />
+      <ChapterLabel label={h('The line-up', 'നിര')} lang={h.lang} />
+      <Headline id="lineup-h" text={h('Masters and', 'മഹാരഥന്മാരും')} accent={h('first-time voices.', 'പുതിയ ശബ്ദങ്ങളും.')} lang={h.lang} class="mt-6" />
     </div>
     <div class="lg:col-span-7">
       <p class="text-lg leading-relaxed text-navy/85">
@@ -86,7 +88,7 @@ const filters = [
         reading and the voices it is only beginning to hear. Invitations go out strand by strand, and new names will join
         this page as they confirm.
       </p>
-      <dl class="mt-10 grid border-t border-line sm:grid-cols-3" data-reveal-group>
+      <dl class="mt-10 grid border-t border-line sm:grid-cols-3">
         {[
           ['Literature', 'Novelists, poets and critics'],
           ['Cinema & music', 'Directors, composers and lyricists'],
@@ -103,11 +105,11 @@ const filters = [
 </Section>
 
 <!-- Suggest a voice -->
-<section class="bg-sky text-navy" aria-labelledby="suggest-h">
-  <div class="container-kilf grid items-end gap-8 py-20 sm:py-24 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
+<section class="bg-lake-soft text-navy" aria-labelledby="suggest-h">
+  <div class="container-kilf grid items-end gap-8 py-24 sm:py-28 lg:grid-cols-[1.3fr_1fr] lg:gap-16 lg:py-32">
     <div>
-      <p class="eyebrow">Suggest a voice</p>
-      <Headline id="suggest-h" text="Who would you" accent="like to hear?" class="mt-6" />
+      <ChapterLabel label={h('Suggest a voice', 'ഒരു ശബ്ദം നിർദ്ദേശിക്കാം')} lang={h.lang} />
+      <Headline id="suggest-h" text={h('Who would you', 'ആരെയാണ് നിങ്ങൾക്ക്')} accent={h('like to hear?', 'കേൾക്കേണ്ടത്?')} lang={h.lang} class="mt-6" />
       <p class="mt-6 max-w-xl text-lg leading-relaxed text-navy/80">
         A writer you admire, a poet from your town, a thinker Kerala should listen to. Tell us who, and why. Every
         suggestion is read by the programme team.

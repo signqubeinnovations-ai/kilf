@@ -2,9 +2,9 @@
 import { Image } from 'astro:assets';
 import { asset } from '@/lib/images';
 /**
- * A speaker portrait in a rounded rectangle (4:5). Until the real duotone
- * photo is in kilf-assets/speakers/, a quiet stand-in shows the speaker's
- * initials in live type: pale blue on light sections, deep blue on dark ones.
+ * A speaker portrait in a rounded rectangle (4:5), lazy-loaded. Until the
+ * illustrated portrait is in kilf-assets/speakers/<slug>.jpg, a calm stand-in
+ * shows a figure by the water (no initials).
  */
 interface Props {
   name: string;
@@ -17,41 +17,30 @@ interface Props {
 }
 const { name, photo, sizes = '(min-width: 1024px) 280px, (min-width: 640px) 33vw, 50vw', widths = [320, 480, 640], class: cls = '', eager = false, tone = 'light' } = Astro.props;
 const { src, placeholder } = asset(`speakers/${photo}`);
-const initials = name
-  .replace(/\./g, ' ')
-  .split(/\s+/)
-  .filter((w) => w.length > 1 || /[A-Z]/.test(w))
-  .slice(-2)
-  .map((w) => w[0].toUpperCase())
-  .join('');
-// Close tints so a grid of stand-ins doesn't look cloned.
-const moods = {
-  light: [
-    'linear-gradient(165deg, #F3F6FD 0%, #DFE6F8 58%, #C9D4F4 100%)',
-    'linear-gradient(200deg, #F5F7FD 0%, #E2E8F8 52%, #CDD6F4 100%)',
-    'linear-gradient(145deg, #EFF3FC 0%, #D9E1F7 60%, #C2CEF2 100%)',
-  ],
-  dark: [
-    'linear-gradient(165deg, #2A4BEF 0%, #1A36C4 55%, #13288F 100%)',
-    'linear-gradient(200deg, #2D4EF0 0%, #1C39C9 50%, #142A94 100%)',
-    'linear-gradient(145deg, #2748EE 0%, #1733BD 60%, #122689 100%)',
-  ],
-}[tone];
+// Close lake tints, so a grid of stand-ins doesn't look cloned.
+const tints = ['#eaf1fb', '#e3ecf9', '#edf2fb'];
 let hash = 0;
 for (const c of name) hash = (hash * 31 + c.charCodeAt(0)) >>> 0;
-const mood = moods[hash % moods.length];
+const moodFill = tints[hash % tints.length];
 const dark = tone === 'dark';
 ---
-<div class:list={['relative aspect-[4/5] overflow-hidden rounded-[1.25rem]', dark ? 'bg-blue' : 'bg-sky', cls]}>
+<div class:list={['relative aspect-[4/5] overflow-hidden rounded-[1.25rem]', dark ? 'bg-night' : 'bg-lake-soft', cls]}>
   {
     placeholder ? (
-      <div class="absolute inset-0" style={`background:${mood}`} role="img" aria-label={`Portrait of ${name} (photo to come)`}>
-        <svg class:list={['absolute -right-12 -top-12 size-56 transition-transform duration-[1.4s] ease-[var(--ease-calm)] group-hover:scale-110', dark ? 'text-white/15' : 'text-white/80']} viewBox="0 0 200 200" fill="none" stroke="currentColor" aria-hidden="true">
-          <circle cx="100" cy="100" r="30" stroke-width="1.2" />
-          <circle cx="100" cy="100" r="58" stroke-width="1" />
-          <circle cx="100" cy="100" r="86" stroke-width="0.8" />
+      <div class="absolute inset-0" role="img" aria-label={`Portrait of ${name} (to come)`}>
+        <!-- Until the illustrated portrait arrives: a figure by the water, three rings at its feet. -->
+        <svg class="absolute inset-0 size-full" viewBox="0 0 200 250" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+          <rect width="200" height="250" fill={dark ? '#101b62' : moodFill} />
+          <g fill="none" stroke={dark ? '#a9c4ea' : '#ffffff'} stroke-opacity={dark ? 0.35 : 0.9} stroke-width="1.2">
+            <ellipse cx="100" cy="236" rx="40" ry="8" />
+            <ellipse cx="100" cy="236" rx="72" ry="14" />
+            <ellipse cx="100" cy="236" rx="104" ry="20" />
+          </g>
+          <g fill={dark ? '#1f3fd8' : '#a9c4ea'}>
+            <circle cx="100" cy="98" r="34" />
+            <path d="M34 250c0-52 30-86 66-86s66 34 66 86z" />
+          </g>
         </svg>
-        <span class:list={['absolute bottom-4 left-5 font-display text-[3.6rem] font-semibold leading-none tracking-[-0.04em] sm:text-[4.2rem]', dark ? 'text-white/85' : 'text-navy/75']} aria-hidden="true">{initials}</span>
       </div>
     ) : (
       <Image
@@ -59,7 +48,7 @@ const dark = tone === 'dark';
         alt={`Portrait of ${name}`}
         widths={widths.filter((w) => w <= src.width).length ? widths.filter((w) => w <= src.width) : [src.width]}
         sizes={sizes}
-        class="size-full object-cover transition-transform duration-700 ease-[var(--ease-calm)] group-hover:scale-[1.04]"
+        class="size-full object-cover transition-transform duration-700 ease-[var(--ease-calm)] group-hover:scale-[1.03]"
         loading={eager ? 'eager' : 'lazy'}
         decoding="async"
       />

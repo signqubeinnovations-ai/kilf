@@ -1,8 +1,9 @@
 ---
 /**
  * Square button with a ↗. On hover a ring spreads from it, like a drop on
- * water. `primary` (the default) is blue on light surfaces and lime inside
- * `.on-dark` sections. Renders <a> when href is set.
+ * water. `primary` (the default) is cobalt on light surfaces and cream inside
+ * `.on-dark` sections; `lime` is the older name for the pale lake-blue one.
+ * Renders <a> when href is set.
  */
 interface Props {
   href?: string;
@@ -18,16 +19,16 @@ interface Props {
 const { href, label, type = 'button', variant = 'primary', size = 'md', arrow = true, class: cls = '', external = false, ...rest } = Astro.props;
 const variants = {
   primary: 'btn-primary',
-  lime: 'bg-lime text-ink hover:bg-lime-deep [--ring:var(--color-lime)]',
-  navy: 'bg-navy text-white hover:bg-ink [--ring:var(--color-navy)]',
+  lime: 'bg-lake text-navy hover:bg-[#bcd1ef] [--ring:var(--color-lake)]',
+  navy: 'bg-navy text-white hover:bg-night [--ring:var(--color-navy)]',
   white: 'bg-cream text-navy hover:bg-white [--ring:#fff]',
-  coral: 'bg-coral text-ink hover:bg-[#ff7a60] [--ring:var(--color-coral)]',
-  ghost: 'bg-transparent text-navy ring-1 ring-inset ring-navy/30 hover:bg-navy/5 [--ring:var(--color-navy)]',
+  coral: 'bg-coral text-night hover:bg-[#f48a70] [--ring:var(--color-coral)]',
+  ghost: 'bg-transparent text-navy ring-1 ring-inset ring-navy/55 hover:bg-navy/5 [--ring:var(--color-navy)]',
   'outline-light': 'bg-transparent text-white ring-1 ring-inset ring-white/50 hover:bg-white/10 [--ring:#fff]',
 };
-const sizes = { lg: 'min-h-14 px-7 text-[0.98rem]', md: 'min-h-13 px-6 text-[0.95rem]', sm: 'min-h-11 px-5 text-sm' };
+const sizes = { lg: 'min-h-14 px-7 text-[1rem]', md: 'min-h-13 px-6 text-[0.95rem]', sm: 'min-h-11 px-5 text-sm' };
 const classes = [
-  'btn group inline-flex max-w-full items-center justify-center gap-2.5 font-semibold transition-colors duration-300 whitespace-nowrap max-[379px]:whitespace-normal',
+  'btn group inline-flex max-w-full items-center justify-center gap-2.5 font-bold transition-colors duration-300 whitespace-nowrap max-[379px]:whitespace-normal',
   variants[variant],
   sizes[size],
   cls,

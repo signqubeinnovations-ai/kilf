@@ -19,19 +19,20 @@ export const site = {
   endISO: '2027-01-04T23:59:59+05:30',
   startDate: '2026-12-31',
   endDate: '2027-01-04',
+  /** Chapter 1: The Pause. */
   taglines: {
-    main: 'Where words meet the world.',
-    water: 'Eight arms of water. One embrace of words.',
-    live: 'Some stories you read. Others, you live.',
+    main: 'Chapter 1: The Pause.',
+    second: 'Pause. Turn a page.',
+    closing: 'Come for a story. Stay for the connection.',
+    cause: 'Keep the waters alive.',
   },
-  stats: [
-    { value: '100+', label: 'Speakers' },
-    { value: '10,000+', label: 'Audience' },
-    { value: '1', label: 'Shore' },
-  ],
+  /** Meta and share description for the whole site. */
+  description: 'Chapter 1: The Pause — the first Kollam International Literature Festival, 31 Dec 2026 – 4 Jan 2027, by Ashtamudi Lake.',
   venues: [
     {
       id: 'sngcc',
+      /** Venue code: 1 ripple ring. */
+      rings: 1,
       name: 'Sreenarayana Guru Cultural Centre',
       area: 'Kollam',
       lat: '[LAT]',
@@ -40,6 +41,8 @@ export const site = {
     },
     {
       id: '8point',
+      /** Venue code: 2 ripple rings. */
+      rings: 2,
       name: '8 Point Art Cafe',
       area: 'Asramam, Kollam',
       lat: '[LAT]',
@@ -48,6 +51,8 @@ export const site = {
     },
     {
       id: 'ashramam',
+      /** Venue code: 3 ripple rings. */
+      rings: 3,
       name: 'Ashramam Maidan',
       area: 'Asramam, Kollam',
       lat: '[LAT]',

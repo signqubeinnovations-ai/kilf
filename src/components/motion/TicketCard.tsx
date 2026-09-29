@@ -79,7 +79,7 @@ function Card({ notifyHref }: Props) {
             return (
               <label
                 key={key}
-                className={`relative flex cursor-pointer items-start gap-3.5 border p-4 transition-colors duration-300 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blue ${on ? 'border-blue bg-white' : 'border-line bg-cream hover:border-navy/40'}`}
+                className={`relative flex cursor-pointer items-start gap-3.5 border p-4 transition-colors duration-300 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-cobalt ${on ? 'border-cobalt bg-white' : 'border-line bg-cream hover:border-navy/40'}`}
               >
                 <input
                   type="radio"
@@ -92,13 +92,13 @@ function Card({ notifyHref }: Props) {
                   }}
                   className="sr-only"
                 />
-                <span aria-hidden="true" className={`mt-1 grid size-4 shrink-0 place-items-center rounded-full border transition-colors ${on ? 'border-blue' : 'border-navy/40'}`}>
-                  <m.span className="block size-2 rounded-full bg-blue" initial={false} animate={{ scale: on ? 1 : 0 }} transition={fade} />
+                <span aria-hidden="true" className={`mt-1 grid size-4 shrink-0 place-items-center rounded-full border transition-colors ${on ? 'border-cobalt' : 'border-navy/40'}`}>
+                  <m.span className="block size-2 rounded-full bg-cobalt" initial={false} animate={{ scale: on ? 1 : 0 }} transition={fade} />
                 </span>
                 <span className="flex-1">
                   <span className="block font-semibold leading-snug">{kinds[key].name}</span>
                   <span className="mt-0.5 block text-[0.92rem] leading-snug text-navy/75">{kinds[key].line}</span>
-                  {kinds[key].save && <span className="mt-2 inline-block bg-lime px-2 py-0.5 text-[0.72rem] font-bold uppercase tracking-[0.1em] text-ink">{kinds[key].save}</span>}
+                  {kinds[key].save && <span className="mt-2 inline-block bg-lake-soft px-2 py-0.5 text-[0.72rem] font-bold uppercase tracking-[0.1em] text-navy">{kinds[key].save}</span>}
                 </span>
                 <span className="font-display text-[1.15rem] font-bold tracking-[-0.02em]">{inr(kinds[key].price)}</span>
               </label>
@@ -115,7 +115,7 @@ function Card({ notifyHref }: Props) {
             return (
               <label
                 key={x.id}
-                className={`flex cursor-pointer flex-col items-center border px-2 py-3 text-center transition-colors duration-300 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blue ${on ? 'border-navy bg-navy text-white' : 'border-line bg-cream hover:border-navy/40'}`}
+                className={`flex cursor-pointer flex-col items-center border px-2 py-3 text-center transition-colors duration-300 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-cobalt ${on ? 'border-navy bg-navy text-white' : 'border-line bg-cream hover:border-navy/40'}`}
               >
                 <input
                   type="radio"
@@ -148,7 +148,7 @@ function Card({ notifyHref }: Props) {
           setQty(Number(e.target.value));
           setPreview(false);
         }}
-        className="mt-2 block w-full appearance-none rounded-none border border-[#c7cfeb] bg-white bg-[length:20px] bg-[right_1rem_center] bg-no-repeat px-4 py-3.5 text-base text-navy focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/20"
+        className="mt-2 block w-full appearance-none rounded-none border border-[#c7cfeb] bg-white bg-[length:20px] bg-[right_1rem_center] bg-no-repeat px-4 py-3.5 text-base text-navy focus:border-cobalt focus:outline-none focus:ring-2 focus:ring-cobalt"
         style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23152F81' stroke-width='1.5'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E\")" }}
       >
         {[1, 2, 3, 4, 5, 6].map((n) => (
@@ -179,7 +179,7 @@ function Card({ notifyHref }: Props) {
       </button>
       <p className="mt-4 text-[0.92rem] text-navy/80">
         Booking has not opened. Preview only.{' '}
-        <a href={notifyHref} className="font-semibold underline decoration-1 underline-offset-4 hover:text-blue">
+        <a href={notifyHref} className="font-semibold underline decoration-1 underline-offset-4 hover:text-cobalt">
           Get notified when it opens
         </a>
       </p>
@@ -193,7 +193,7 @@ function Card({ notifyHref }: Props) {
               animate={{ opacity: 1, y: 0, rotate: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }}
               transition={reduce ? { duration: 0 } : { duration: 0.7, ease: calm }}
-              className="on-dark relative mt-7 overflow-hidden bg-blue text-white"
+              className="on-dark relative mt-7 overflow-hidden bg-night text-white"
               role="group"
               aria-label="Ticket preview, not valid for entry"
             >
@@ -207,7 +207,7 @@ function Card({ notifyHref }: Props) {
                 <ul className="mt-4 space-y-1.5 text-[0.95rem]">
                   {k.includes.map((line) => (
                     <li key={line} className="flex gap-2.5">
-                      <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 bg-lime" />
+                      <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-lake" />
                       {line}
                     </li>
                   ))}
@@ -230,7 +230,7 @@ function Card({ notifyHref }: Props) {
                     <dd className="font-semibold">{inr(k.price * qty)}</dd>
                   </div>
                 </dl>
-                <svg viewBox="0 0 64 40" className="h-10 w-16 shrink-0 text-lime" fill="none" stroke="currentColor" aria-hidden="true">
+                <svg viewBox="0 0 64 40" className="h-10 w-16 shrink-0 text-lake" fill="none" stroke="currentColor" aria-hidden="true">
                   <ellipse cx="32" cy="20" rx="8" ry="3" strokeWidth="1.2" />
                   <ellipse cx="32" cy="20" rx="18" ry="7" strokeWidth="1" opacity="0.7" />
                   <ellipse cx="32" cy="20" rx="30" ry="12" strokeWidth="0.8" opacity="0.45" />

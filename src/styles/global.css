@@ -1,54 +1,61 @@
 @import 'tailwindcss';
 
 /* ---------------------------------------------------------------------------
+   Chapter 1: The Pause. Calm, shore, ripple.
    Type (self-hosted, display=swap inside each @font-face)
-   - Plus Jakarta Sans: headlines and numerals
-   - Manrope: text, labels and buttons
-   - Anek Malayalam: Malayalam
+   - Plus Jakarta Sans: headlines at 800 with tight tracking, text at 500
+   - Noto Sans Malayalam: Malayalam
 --------------------------------------------------------------------------- */
 @import '@fontsource-variable/plus-jakarta-sans/wght.css';
-@import '@fontsource-variable/manrope/wght.css';
-@import '@fontsource-variable/anek-malayalam/wght.css';
+@import '@fontsource-variable/noto-sans-malayalam/wght.css';
 
 /* ---------------------------------------------------------------------------
-   KILF design tokens
-   Contrast (WCAG AA):
-   - navy #152F81 on cream 11.7:1; body #4B5573 on cream 7.2:1
-   - white on blue #173CCB 8.3:1 and on hero blue #2447ED 6.5:1
-   - navy on coral 5.1:1 and on lime 9.8:1
-   - coral text is never used small on cream; coral-dark #D4553A is for
-     large accents only (3.9:1)
+   Colours. Contrast (WCAG AA) on cream #FCFAF3:
+   - navy #13207A 13.3:1 · cobalt #1F3FD8 7.3:1 · muted #4A5478 7.1:1
+   - coral #F2785A is 2.6:1 on cream, so it is used for shapes, and for text
+     only on night navy (5.6:1). A coral word in a light headline uses
+     coral-text #DB5A3B (3.7:1, large text only).
+   - white on cobalt 7.6:1 · white on night #101B62 16:1 · navy on lake 7.8:1
+   Old token names (blue, sky, footer, lime…) point at the new palette, so
+   nothing green is left anywhere.
 --------------------------------------------------------------------------- */
 @theme {
-  --color-cream: #fffdf4;
+  --color-cream: #fcfaf3;
   --color-paper: #ffffff;
-  --color-navy: #152f81;
-  --color-navy-deep: #0f1a47;
-  --color-ink: #101b46;
-  --color-footer: #13308c;
-  --color-cobalt: #0047ab;
-  --color-blue: #173ccb;
-  --color-blue-bright: #2447ed;
-  --color-coral: #ff8870;
-  --color-coral-soft: #ffe3db;
-  --color-coral-dark: #d4553a;
-  --color-coral-ink: #b8432a;
-  --color-coral-deep: #a3391f;
-  --color-lime: #e7ef92;
-  --color-lime-deep: #d9e36b;
-  --color-sky: #e8edf8;
-  --color-line: #d5d8d8;
-  --color-muted: #4b5573;
-  --color-mist: #b8c3f0;
+  --color-navy: #13207a;
+  --color-cobalt: #1f3fd8;
+  --color-coral: #f2785a;
+  --color-coral-text: #db5a3b;
+  --color-lake: #a9c4ea;
+  --color-lake-soft: #eaf1fb;
+  --color-night: #101b62;
+  --color-muted: #4a5478;
+  --color-line: #dde3ee;
+
+  /* Aliases kept for older markup; all map onto the palette above. */
+  --color-navy-deep: #101b62;
+  --color-ink: #101b62;
+  --color-footer: #101b62;
+  --color-blue: #1f3fd8;
+  --color-blue-bright: #1f3fd8;
+  --color-sky: #eaf1fb;
+  --color-mist: #c9d8f1;
+  --color-lime: #a9c4ea;
+  --color-lime-deep: #8fb0e0;
+  --color-coral-soft: #fde7e0;
+  --color-coral-dark: #db5a3b;
+  --color-coral-ink: #b4462d;
+  --color-coral-deep: #b4462d;
 
   --font-display: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: 'Manrope Variable', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-display);
-  --font-ml: 'Anek Malayalam Variable', 'Anek Malayalam', 'Noto Sans Malayalam', sans-serif;
+  /* Latin in Plus Jakarta Sans, Malayalam script in Noto Sans Malayalam */
+  --font-ml: 'Plus Jakarta Sans Variable', 'Noto Sans Malayalam Variable', 'Noto Sans Malayalam', sans-serif;
 
   --radius-card: 0;
-  --tracking-display: -0.035em;
-  --leading-display: 1.04;
+  --tracking-display: -0.045em;
+  --leading-display: 1.02;
 
   --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -69,6 +76,7 @@
     background: var(--color-cream);
     color: var(--color-navy);
     font-family: var(--font-sans);
+    font-weight: 500;
     font-size: 1.0625rem;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
@@ -77,6 +85,8 @@
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.03em;
     text-wrap: balance;
   }
   p { text-wrap: pretty; }
@@ -93,16 +103,17 @@
   a {
     color: inherit;
   }
+  /* Focus is always visible: a cobalt ring, lake blue on dark sections. */
   :focus-visible {
-    outline: 3px solid var(--color-blue);
+    outline: 3px solid var(--color-cobalt);
     outline-offset: 3px;
   }
   .on-dark :focus-visible,
   .on-dark:focus-visible {
-    outline-color: var(--color-lime);
+    outline-color: var(--color-lake);
   }
   ::selection {
-    background: var(--color-lime);
+    background: var(--color-lake);
     color: var(--color-navy);
   }
 }
@@ -123,7 +134,7 @@
 
   .display {
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 800;
     letter-spacing: var(--tracking-display);
     line-height: var(--leading-display);
     text-wrap: balance;
@@ -135,40 +146,15 @@
     line-height: 1.22;
   }
 
-  /* Gradient text, one per surface so contrast holds */
-  .text-grad {
-    background-image: linear-gradient(100deg, #173ccb 0%, #2447ed 30%, #8a3fd1 64%, #d4553a 100%);
-    background-image: linear-gradient(100deg in oklch, #173ccb 0%, #2447ed 30%, #8a3fd1 64%, #d4553a 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
+  /* The one coral word in a headline. */
+  .coral-word {
+    color: var(--color-coral-text);
   }
-  .text-grad-warm {
-    background-image: linear-gradient(100deg, #ff9a82 0%, #ffc3a0 42%, #e7ef92 100%);
-    background-image: linear-gradient(100deg in oklab, #ff9a82 0%, #ffc3a0 42%, #e7ef92 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-  }
-  .text-grad-ink {
-    background-image: linear-gradient(100deg, #101b46 0%, #173ccb 55%, #3f2fb8 100%);
-    background-image: linear-gradient(100deg in oklch, #101b46 0%, #173ccb 55%, #3f2fb8 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .on-dark .coral-word {
+    color: var(--color-coral);
   }
 
-  @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
-    .text-grad { color: var(--color-blue-bright); background: none; }
-    .text-grad-warm { color: var(--color-lime); background: none; }
-    .text-grad-ink { color: var(--color-blue); background: none; }
-  }
-
-  /* Small uppercase label: "01 / THE CITY OPENS ITS PAGES" */
+  /* Small uppercase label, beside a ripple ring. */
   .eyebrow {
     font-family: var(--font-sans);
     font-size: 0.75rem;
@@ -182,25 +168,13 @@
     font-size: 0.85rem;
   }
 
-  /* Big numerals (05, 31.12) */
+  /* Big numerals: dates, times, prices */
   .numeral {
     font-family: var(--font-display);
-    font-weight: 500;
+    font-weight: 800;
     letter-spacing: -0.045em;
     line-height: 0.9;
     font-variant-numeric: tabular-nums lining-nums;
-  }
-
-  /* Faint, long wave lines behind sections, like wind on the lake */
-  .waves {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900' viewBox='0 0 1600 900'%3E%3Cg fill='none' stroke='%23152F81' stroke-opacity='.07' stroke-width='1.2'%3E%3Cpath d='M-50 170C250 118 520 232 820 190S1380 112 1650 172'/%3E%3Cpath d='M-50 470C300 522 620 398 930 452S1400 520 1650 440'/%3E%3Cpath d='M-50 762C280 720 560 802 860 770S1390 700 1650 760'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: max(100%, 1200px) auto;
-    background-position: center top;
-  }
-  .waves-light {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900' viewBox='0 0 1600 900'%3E%3Cg fill='none' stroke='%23FFFFFF' stroke-opacity='.08' stroke-width='1.2'%3E%3Cpath d='M-50 170C250 118 520 232 820 190S1380 112 1650 172'/%3E%3Cpath d='M-50 470C300 522 620 398 930 452S1400 520 1650 440'/%3E%3Cpath d='M-50 762C280 720 560 802 860 770S1390 700 1650 760'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: max(100%, 1200px) auto;
-    background-position: center top;
   }
 
   /* Square boxes with a hairline */
@@ -209,7 +183,7 @@
     border: 1px solid var(--color-line);
   }
 
-  /* Buttons: square; primary is blue on light surfaces and lime on dark ones */
+  /* Buttons: square; primary is cobalt on light surfaces and cream on dark ones */
   .btn {
     position: relative;
     isolation: isolate;
@@ -227,28 +201,28 @@
     animation: ring-out 1.1s var(--ease-calm) 1;
   }
   .btn-primary {
-    background: var(--color-blue);
+    background: var(--color-cobalt);
     color: #fff;
-    --ring: var(--color-blue);
+    --ring: var(--color-cobalt);
   }
   .btn-primary:hover {
-    background: #1230a8;
+    background: var(--color-navy);
   }
   .on-dark .btn-primary {
-    background: var(--color-lime);
-    color: var(--color-ink);
-    --ring: var(--color-lime);
+    background: var(--color-cream);
+    color: var(--color-navy);
+    --ring: var(--color-cream);
   }
   .on-dark .btn-primary:hover {
-    background: var(--color-lime-deep);
+    background: #ffffff;
   }
   .on-dark .on-light .btn-primary {
-    background: var(--color-blue);
+    background: var(--color-cobalt);
     color: #fff;
-    --ring: var(--color-blue);
+    --ring: var(--color-cobalt);
   }
   .on-dark .on-light .btn-primary:hover {
-    background: #1230a8;
+    background: var(--color-navy);
   }
 
   /* Text links: an underline rule with a ↗ */
@@ -277,14 +251,6 @@
     animation-delay: var(--d, 0s);
   }
 
-  /* Scroll reveal: hidden only when JS runs and motion is allowed;
-     src/scripts/reveal.ts animates them in with Motion. */
-  .js [data-reveal] {
-    opacity: 0;
-  }
-  .js [data-reveal-group] > * {
-    opacity: 0;
-  }
 }
 
 @keyframes hero-in {
@@ -313,6 +279,4 @@ html[data-motion='paused'] *::after {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-  .js [data-reveal],
-  .js [data-reveal-group] > * { opacity: 1; }
 }

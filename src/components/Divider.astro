@@ -1,0 +1,11 @@
+---
+import Rings from './Rings.astro';
+/** A quiet break between sections: a hairline with three ripple rings at its centre. */
+interface Props { class?: string; tone?: 'light' | 'dark' }
+const { class: cls = '', tone = 'light' } = Astro.props;
+---
+<div class:list={['container-kilf flex items-center gap-6', cls]} aria-hidden="true">
+  <span class:list={['h-px flex-1', tone === 'dark' ? 'bg-white/15' : 'bg-line']}></span>
+  <Rings n={3} size={52} tone="lake" />
+  <span class:list={['h-px flex-1', tone === 'dark' ? 'bg-white/15' : 'bg-line']}></span>
+</div>

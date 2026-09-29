@@ -99,6 +99,8 @@ const schedule = defineCollection({
     label: z.string(), // e.g. "Day 2"
     /** The day's title, e.g. "First light." */
     theme: z.string(),
+    /** The day's title in Malayalam, for /ml/. */
+    theme_ml: z.string().optional(),
     blurb: z.string(),
     /** Things that run all day, e.g. "Book fair · Ashramam Maidan · 10:00–21:00". */
     allDay: z.array(z.string()).default([]),

@@ -8,10 +8,11 @@ import Field from '@/components/Field.astro';
 import { site, isPlaceholder } from '@/lib/site';
 import ChapterLabel from '@/components/ChapterLabel.astro';
 import Headline from '@/components/Headline.astro';
-import { localizePath, type Lang } from '@/i18n/ui';
+import { localizePath, headings, type Lang } from '@/i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const lp = (p: string) => localizePath(p, lang);
+const h = headings(lang);
 const mail = (subject: string) => `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;
 const topics = [
   ['Media & press', 'Interviews, press passes and images.', mail('KILF 2027: media'), 'Email the team'],
@@ -22,29 +23,35 @@ const topics = [
   ['Access', 'Anything that would make your visit easier.', mail('KILF 2027: access needs'), 'Tell us'],
 ];
 ---
-<PageHero chapter={1} label="Contact" text="Say" accent="hello." lead="Questions, ideas, invitations, a story you think we should hear. We read everything." />
+<PageHero
+  label={h('Contact', 'ബന്ധപ്പെടാൻ')}
+  text={h('Say', 'ഞങ്ങൾക്ക്')}
+  accent={h('hello.', 'എഴുതൂ.')}
+  lang={h.lang}
+  lead="Questions, ideas, invitations, a story you think we should hear. We read everything."
+/>
 
 <Section tone="cream" class="!pt-0" labelledby="contact-h">
   <h2 id="contact-h" class="sr-only">Contact details and form</h2>
   <div class="grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
     <ul class="self-start border-t border-line">
       <li class="flex items-start gap-5 border-b border-line py-6">
-        <Icon name="mail" size={26} class="mt-1 shrink-0 text-blue-bright" />
-        <div class="min-w-0"><p class="eyebrow text-muted">Email</p><a href={`mailto:${site.email}`} class="mt-1 block break-all font-display text-xl font-semibold tracking-[-0.02em] text-navy hover:text-blue-bright">{site.email}</a></div>
+        <Icon name="mail" size={26} class="mt-1 shrink-0 text-cobalt" />
+        <div class="min-w-0"><p class="eyebrow text-muted">Email</p><a href={`mailto:${site.email}`} class="mt-1 block break-all font-display text-xl font-extrabold tracking-[-0.02em] text-navy hover:text-cobalt">{site.email}</a></div>
       </li>
       <li class="flex items-start gap-5 border-b border-line py-6">
-        <Icon name="at" size={26} class="mt-1 shrink-0 text-blue-bright" />
+        <Icon name="at" size={26} class="mt-1 shrink-0 text-cobalt" />
         <div><p class="eyebrow text-muted">Social</p>
-          {site.socialUrl && !isPlaceholder(site.socialHandle) ? <a href={site.socialUrl} class="mt-1 block font-display text-xl font-semibold tracking-[-0.02em] text-navy hover:text-blue-bright" target="_blank" rel="noopener">{site.socialHandle}</a> : <p class="mt-1 font-display text-xl font-semibold"><Placeholder value={site.socialHandle} /></p>}
+          {site.socialUrl && !isPlaceholder(site.socialHandle) ? <a href={site.socialUrl} class="mt-1 block font-display text-xl font-extrabold tracking-[-0.02em] text-navy hover:text-cobalt" target="_blank" rel="noopener">{site.socialHandle}</a> : <p class="mt-1 font-display text-xl font-extrabold"><Placeholder value={site.socialHandle} /></p>}
         </div>
       </li>
       <li class="flex items-start gap-5 border-b border-line py-6">
-        <Icon name="star" size={26} class="mt-1 shrink-0 text-blue-bright" />
-        <div><p class="eyebrow text-muted">Organiser</p><p class="mt-1 font-display text-xl font-semibold tracking-[-0.02em]">{site.organiser}</p></div>
+        <Icon name="star" size={26} class="mt-1 shrink-0 text-cobalt" />
+        <div><p class="eyebrow text-muted">Organiser</p><p class="mt-1 font-display text-xl font-extrabold tracking-[-0.02em]">{site.organiser}</p></div>
       </li>
       <li class="flex items-start gap-5 border-b border-line py-6">
-        <Icon name="pin" size={26} class="mt-1 shrink-0 text-blue-bright" />
-        <div><p class="eyebrow text-muted">Where</p><p class="mt-1 font-display text-xl font-semibold tracking-[-0.02em]">{site.city}</p></div>
+        <Icon name="pin" size={26} class="mt-1 shrink-0 text-cobalt" />
+        <div><p class="eyebrow text-muted">Where</p><p class="mt-1 font-display text-xl font-extrabold tracking-[-0.02em]">{site.city}</p></div>
       </li>
     </ul>
     <Form id="contact-form" name="contact" lang={lang} class="card p-6 sm:p-9" successText="Thanks for writing. We’ll reply as soon as we can.">
@@ -60,15 +67,15 @@ const topics = [
 
 <!-- Write to us about -->
 <Section tone="cream" rule labelledby="topics-h">
-  <ChapterLabel n={2} label="Write to us about" />
-  <Headline id="topics-h" text="The quickest way" accent="to the right person." class="mt-6" />
-  <ul class="mt-12 grid border-l border-t border-line sm:grid-cols-2 lg:grid-cols-3" data-reveal-group>
+  <ChapterLabel label={h('Write to us about', 'എന്തിനെക്കുറിച്ചും എഴുതാം')} lang={h.lang} />
+  <Headline id="topics-h" text={h('The quickest way', 'ശരിയായ ആളിലേക്കുള്ള')} accent={h('to the right person.', 'എളുപ്പവഴി.')} lang={h.lang} class="mt-6" />
+  <ul class="mt-14 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
     {topics.map(([title, line, href, cta]) => (
-      <li class="border-b border-r border-line">
-        <a href={href} class="group flex h-full min-h-[12rem] flex-col p-7 transition-colors duration-300 hover:bg-sky">
-          <h3 class="font-display text-[1.35rem] font-semibold tracking-[-0.03em]">{title}</h3>
+      <li class="border-t border-line">
+        <a href={href} class="group flex h-full flex-col py-7">
+          <h3 class="font-display text-[1.3rem] tracking-[-0.03em] transition-colors group-hover:text-cobalt">{title}</h3>
           <p class="mt-2 text-muted">{line}</p>
-          <span class="mt-auto inline-flex items-center gap-2 pt-6 font-semibold text-blue-bright">{cta} <span aria-hidden="true" class="transition-transform duration-500 ease-[var(--ease-calm)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span></span>
+          <span class="mt-auto inline-flex items-center gap-2 pt-5 font-bold text-cobalt">{cta} <span aria-hidden="true" class="transition-transform duration-500 ease-[var(--ease-calm)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span></span>
         </a>
       </li>
     ))}

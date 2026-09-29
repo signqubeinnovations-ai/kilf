@@ -3,11 +3,11 @@
 interface Props { href: string; label: string; tone?: 'light' | 'dark' | 'navy'; class?: string; arrow?: '↗' | '→' }
 const { href, label, tone = 'light', class: cls = '', arrow = '↗' } = Astro.props;
 const tones = {
-  light: 'text-navy hover:text-blue',
-  dark: 'text-white hover:text-lime',
-  navy: 'text-navy hover:text-ink',
+  light: 'text-cobalt hover:text-navy',
+  dark: 'text-white hover:text-lake',
+  navy: 'text-navy hover:text-cobalt',
 };
 ---
-<a href={href} class:list={['text-link group inline-flex min-h-11 items-end gap-2 font-semibold', tones[tone], cls]}>
+<a href={href} class:list={['text-link group inline-flex min-h-11 items-end gap-2 font-bold', tones[tone], cls]}>
   <span>{label}</span><span aria-hidden="true" class="text-[0.85em] transition-transform duration-500 ease-[var(--ease-calm)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5">{arrow}</span>
 </a>
