@@ -206,7 +206,7 @@ One orchestrated moment on its own, and one that follows your scroll:
 
 | Where | What moves | Component |
 |---|---|---|
-| Home hero | The lake is still. Soon after the page opens, a karimeen (a small line drawing) leaps once from the water and slips back in; every six seconds a single ripple spreads from the open book, over the water only | `src/components/HeroLake.astro` (pure CSS), `Karimeen.astro` |
+| Home hero | The lake is still. Soon after the page opens, a karimeen (a small drawing: a navy line around the old colours, navy to cobalt to lake blue, with cream pearl spots) leaps once from the water and slips back in; every six seconds a single ripple spreads from the open book, over the water only | `src/components/HeroLake.astro` (pure CSS), `Karimeen.astro` |
 | "Keep the waters alive" artwork (home and `/cause`) | The karimeen swims with the page: as the card scrolls into view it swims in from the left, tail swishing and bubbles rising, settles in the middle, and drifts on as you keep scrolling. Scrolling back reverses it | `src/components/CauseArt.astro` (a small scroll script) |
 | Khasakkinte Ithihasam tickets | Ticket type and preview transitions, when you use the card | `motion/TicketCard.tsx` (Motion) |
 | Buttons | A ring spreads once on hover | `global.css` |

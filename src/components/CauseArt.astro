@@ -25,7 +25,7 @@ const bubbles = [
     </g>
   </svg>
   <div class="swim-fish absolute left-1/2 top-[44%] w-[64%]">
-    <Karimeen class="block h-auto w-full" />
+    <Karimeen uid="cause" class="block h-auto w-full" />
     <!-- Bubbles from the fish's mouth, drawn in the fish's own units. -->
     <svg class="swim-bubbles absolute inset-0 size-full overflow-visible" viewBox="0 0 200 120">
       {bubbles.map(([x, y, r]) => <circle class="bubble" cx={x} cy={y} r={r} fill="none" stroke="#13207a" stroke-width="1.2" />)}
