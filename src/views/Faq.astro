@@ -26,7 +26,7 @@ const groups = [
 />
 
 <Section tone="cream" class="!overflow-visible !pt-0" labelledby="faq-list-h">
-  <h2 id="faq-list-h" class="sr-only">Frequently asked questions</h2>
+  <h2 id="faq-list-h" class="sr-only" lang={h.lang}>{h('Frequently asked questions', 'പതിവു ചോദ്യങ്ങൾ')}</h2>
   <nav aria-label="Question topics" class="mb-14 flex flex-wrap gap-2">
     {groups.map(([id, label]) => (
       <a href={`#${id}`} lang={h.lang} class="inline-flex min-h-11 items-center px-5 text-sm font-bold text-navy ring-1 ring-inset ring-navy/30 transition-colors hover:bg-navy hover:text-white">{label}</a>

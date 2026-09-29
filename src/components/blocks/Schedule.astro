@@ -82,7 +82,7 @@ const total = sorted.reduce((n, d) => n + d.data.sessions.length, 0);
             <p class="eyebrow text-navy">
               {d.data.label} · <time datetime={d.data.date}>{when(d.data.date, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</time>
             </p>
-            <h3 id={`day-${d.id}-h`} class:list={['display mt-4 text-navy', ml && d.data.theme_ml ? 'text-[2.2rem] sm:text-[3rem] lg:text-[3.5rem]' : 'text-[2.7rem] sm:text-[3.8rem] lg:text-[4.4rem]']} lang={ml && d.data.theme_ml ? 'ml' : undefined}>
+            <h3 id={`day-${d.id}-h`} class:list={['display mt-4 text-navy', ml && d.data.theme_ml ? 'text-[1.75rem] min-[380px]:text-[2.2rem] sm:text-[3rem] lg:text-[3.5rem]' : 'text-[2.7rem] sm:text-[3.8rem] lg:text-[4.4rem]']} lang={ml && d.data.theme_ml ? 'ml' : undefined}>
               {theme(d.data)}
             </h3>
             <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted">{d.data.blurb}</p>

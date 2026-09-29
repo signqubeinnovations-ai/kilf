@@ -32,7 +32,7 @@ const filters = [
 </PageHero>
 
 <Section tone="cream" class="!pt-0" labelledby="speakers-list-h">
-  <h2 id="speakers-list-h" class="sr-only">All speakers</h2>
+  <h2 id="speakers-list-h" class="sr-only" lang={h.lang}>{h('All speakers', 'എല്ലാ പ്രഭാഷകരും')}</h2>
   <div class="-mx-5 overflow-x-auto border-y border-line px-5 py-4 sm:mx-0 sm:px-0" data-filter-bar>
     <ul class="flex gap-2" aria-label="Filter speakers by strand">
       {filters.map(([value, label], i) => (

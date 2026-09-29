@@ -7,6 +7,7 @@ import Illustration from '@/components/Illustration.astro';
 import LimeButton from '@/components/LimeButton.astro';
 import TextLink from '@/components/TextLink.astro';
 import Rings from '@/components/Rings.astro';
+import Stopped from '@/components/Stopped.astro';
 import NotifyBanner from '@/components/blocks/NotifyBanner.astro';
 import TicketCard from '@/components/motion/TicketCard';
 import { site } from '@/lib/site';
@@ -54,14 +55,14 @@ const options = [
       {ml ? (
         <>
           <h1 id="khasak-h" class="display mt-7 text-[2.5rem] sm:text-[3.4rem] lg:text-[3.8rem]" lang="ml">
-            ഖസാക്കിന്റെ<br /><span class="text-cobalt">ഇതിഹാസം.</span>
+            ഖസാക്കിന്റെ<br /><span class="text-cobalt"><Stopped text="ഇതിഹാസം." /></span>
           </h1>
           <p class="mt-4 text-2xl text-muted">Khasakkinte Ithihasam</p>
         </>
       ) : (
         <>
           <h1 id="khasak-h" class="display mt-7 text-[3rem] sm:text-[4.4rem] lg:text-[4.3rem] xl:text-[5rem]">
-            Khasakkinte<br /><span class="text-cobalt">Ithihasam.</span>
+            Khasakkinte<br /><span class="text-cobalt"><Stopped text="Ithihasam." /></span>
           </h1>
           <p class="mt-4 text-2xl text-muted" lang="ml">ഖസാക്കിന്റെ ഇതിഹാസം</p>
         </>
@@ -120,12 +121,12 @@ const options = [
 
 <!-- The novel and the director -->
 <Section tone="cream" rule labelledby="story-h">
-  <h2 id="story-h" class="sr-only">The novel and the director</h2>
+  <h2 id="story-h" class="sr-only" lang={h.lang}>{h('The novel and the director', 'നോവലും സംവിധായകനും')}</h2>
   <div class="grid gap-14 md:grid-cols-2 md:gap-16">
     <article class="border-t border-line pt-8">
       <p class="eyebrow text-navy">The novel</p>
       <h3 class="display mt-6 text-[2rem] text-navy sm:text-[2.4rem]" lang={h.lang}>
-        {h('A village, a teacher,', 'ഒരു ഗ്രാമം, ഒരു അധ്യാപകൻ,')}<br /><span class="text-cobalt">{h('a legend.', 'ഒരു ഇതിഹാസം.')}</span>
+        {h('A village, a teacher,', 'ഒരു ഗ്രാമം, ഒരു അധ്യാപകൻ,')}<br /><span class="text-cobalt"><Stopped text={h('a legend.', 'ഒരു ഇതിഹാസം.')} /></span>
       </h3>
       <p class="mt-6 text-[1.05rem] leading-relaxed text-muted">
         Ravi, a restless young man, arrives in Khasak, a remote village in Palakkad, to start a single-teacher school. Around
@@ -136,7 +137,7 @@ const options = [
     <article class="border-t border-line pt-8">
       <p class="eyebrow text-navy">The director</p>
       <h3 class="display mt-6 text-[2rem] text-navy sm:text-[2.4rem]" lang={h.lang}>
-        {h('Deepan', 'ദീപൻ')}<br /><span class="text-cobalt">{h('Sivaraman.', 'ശിവരാമൻ.')}</span>
+        {h('Deepan', 'ദീപൻ')}<br /><span class="text-cobalt"><Stopped text={h('Sivaraman.', 'ശിവരാമൻ.')} /></span>
       </h3>
       <p class="mt-6 text-[1.05rem] leading-relaxed text-muted">
         A theatre director and scenographer known for large, immersive productions in which the space itself becomes part of

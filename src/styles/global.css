@@ -153,6 +153,10 @@
   .on-dark .coral-word {
     color: var(--color-coral);
   }
+  /* A headline's closing full stop, drawn in a little (see Headline.astro). */
+  .stop {
+    margin-inline-start: -0.06em;
+  }
 
   /* Small uppercase label, beside a ripple ring. */
   .eyebrow {

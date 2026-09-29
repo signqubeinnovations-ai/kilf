@@ -12,6 +12,7 @@ import MiniCountdown from '@/components/MiniCountdown.astro';
 import Illustration from '@/components/Illustration.astro';
 import Placeholder from '@/components/Placeholder.astro';
 import Rings from '@/components/Rings.astro';
+import Stopped from '@/components/Stopped.astro';
 import Divider from '@/components/Divider.astro';
 import CauseArt from '@/components/CauseArt.astro';
 import { site } from '@/lib/site';
@@ -69,7 +70,7 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
     <div class="max-w-[46rem]">
       <h1 id="hero-h">
         <span class:list={['display block', ml ? 'text-[2.6rem] leading-[1.15] sm:text-[3.6rem] lg:text-[4.2rem]' : 'text-[3.1rem] leading-[0.98] sm:text-[4.5rem] lg:text-[5.4rem]']}>
-          {t('home.hero.line1')}<br />{pre}<span class="coral-word">{coralWord}</span>{post}
+          {t('home.hero.line1')}<br />{pre}<span class="coral-word">{coralWord}</span>{post === '.' ? <span class="stop">.</span> : post}
         </span>
         <span class="mt-5 block font-display text-[1.3rem] font-extrabold leading-snug tracking-[-0.02em] text-navy sm:text-[1.6rem]">{t('home.hero.name')}</span>
       </h1>
@@ -82,7 +83,7 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
     </div>
   </div>
 
-  <div class="container-kilf pointer-events-none absolute inset-x-0 bottom-0 flex justify-end pb-4 sm:pb-7">
+  <div class="container-kilf pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-end pb-4 sm:pb-7">
     <div class="pointer-events-auto flex items-center gap-3 bg-cream/90 py-1.5 pl-4 pr-1.5 backdrop-blur-sm">
       <span class="eyebrow hidden text-[0.66rem] sm:inline">{t('home.hero.lakeCaption')}</span>
       <MotionToggle lang={lang} tone="light" />
@@ -95,7 +96,7 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
   <div class="container-kilf">
     <div class="mx-auto max-w-3xl text-center">
       <p class="eyebrow inline-flex items-center gap-3 text-navy"><Rings n={1} size={26} tone="cobalt" />{t('home.pause.label')}</p>
-      <h2 id="pause-h" class:list={['display mt-8', ml ? 'text-[2.1rem] sm:text-[2.8rem] lg:text-[3.3rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4rem]']}>{t('home.pause.h')}</h2>
+      <h2 id="pause-h" class:list={['display mt-8', ml ? 'text-[2.1rem] sm:text-[2.8rem] lg:text-[3.3rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4rem]']}><Stopped text={t('home.pause.h')} /></h2>
       <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-muted sm:text-[1.4rem]">{t('home.pause.body')}</p>
       <p class="mt-10 font-display text-[1.6rem] font-extrabold tracking-[-0.03em] text-cobalt sm:text-[2rem]">{t('home.pause.second')}</p>
       <Rings n={3} size={96} tone="lake" class="mx-auto mt-16" />
@@ -109,18 +110,13 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
 
 <!-- 3 · New Year's Eve: Turn the page -->
 <section class="on-dark relative overflow-hidden bg-night text-white" aria-labelledby="nye-h">
-  <svg class="pointer-events-none absolute -bottom-6 left-0 hidden w-[26rem] opacity-50 lg:block" viewBox="0 0 300 220" aria-hidden="true">
-    <circle cx="210" cy="60" r="30" fill="#fcfaf3" fill-opacity="0.9" />
-    <g fill="#fcfaf3" fill-opacity="0.35">
-      <rect x="190" y="150" width="40" height="2.5" rx="1.2" />
-      <rect x="196" y="162" width="28" height="2.5" rx="1.2" />
-      <rect x="201" y="174" width="18" height="2.5" rx="1.2" />
-    </g>
-    <line x1="0" x2="300" y1="138" y2="138" stroke="#a9c4ea" stroke-opacity="0.35" />
-    <g fill="none" stroke="#a9c4ea" stroke-opacity="0.4" stroke-width="1.2">
-      <ellipse cx="120" cy="186" rx="24" ry="6" />
-      <ellipse cx="120" cy="186" rx="52" ry="12" />
-      <ellipse cx="120" cy="186" rx="84" ry="19" />
+  <!-- Night water along the bottom edge: a horizon line and three rings, below the text. -->
+  <svg class="pointer-events-none absolute bottom-0 left-0 hidden w-[26rem] opacity-60 lg:block" viewBox="0 0 300 70" aria-hidden="true">
+    <line x1="0" x2="300" y1="6" y2="6" stroke="#a9c4ea" stroke-opacity="0.35" />
+    <g fill="none" stroke="#a9c4ea" stroke-opacity="0.45" stroke-width="1.2">
+      <ellipse cx="120" cy="46" rx="24" ry="6" />
+      <ellipse cx="120" cy="46" rx="52" ry="12" />
+      <ellipse cx="120" cy="46" rx="84" ry="19" />
     </g>
   </svg>
   <div class="container-kilf relative grid gap-14 py-24 sm:py-28 lg:grid-cols-12 lg:gap-16 lg:py-32">
@@ -263,8 +259,8 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
       </div>
     </div>
 
-    <p class:list={['display mx-auto mt-28 max-w-4xl text-center', ml ? 'text-[2rem] sm:text-[2.8rem] lg:text-[3.3rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4.2rem]']}>
-      {t('footer.closing.h')}<br /><span class="text-cobalt">{t('footer.closing.accent')}</span>
+    <p class:list={['display mx-auto mt-28 max-w-4xl text-center', ml ? 'text-[1.7rem] min-[380px]:text-[2rem] sm:text-[2.8rem] lg:text-[3.3rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4.2rem]']}>
+      <Stopped text={t('footer.closing.h')} /><br /><span class="text-cobalt"><Stopped text={t('footer.closing.accent')} /></span>
     </p>
   </div>
 </section>

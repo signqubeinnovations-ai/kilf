@@ -58,9 +58,12 @@ const wrap = (w: string) => LT + 'span class="coral-word"' + GT + w + LT + '/spa
 function esc(s: string) {
   return s.split('&').join('&amp;').split(String.fromCharCode(60)).join('&lt;').split(String.fromCharCode(62)).join('&gt;');
 }
+// A closing full stop sits a touch closer: at this weight the typeface leaves a gap before it.
+const STOP = LT + 'span class="stop"' + GT + '.' + LT + '/span' + GT;
 const html = (s: string) => {
   const m = mark(s);
-  return Array.isArray(m) ? esc(m[0]) + m[1] + esc(m[2]) : esc(m);
+  const out = Array.isArray(m) ? esc(m[0]) + m[1] + esc(m[2]) : esc(m);
+  return out.endsWith('.') && !out.endsWith('..') ? out.slice(0, -1) + STOP : out;
 };
 ---
 <Tag id={id} lang={lang} style={style} class:list={['display', (mlText ? mlSizes : sizes)[size], base, onDark && 'on-dark', cls]} {...rest}>

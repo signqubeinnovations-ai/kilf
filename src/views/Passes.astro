@@ -37,7 +37,7 @@ const questions = [
 />
 
 <Section tone="cream" class="!pt-0" labelledby="passes-h">
-  <h2 id="passes-h" class="sr-only">Pass types</h2>
+  <h2 id="passes-h" class="sr-only" lang={h.lang}>{h('Pass types', 'പാസുകൾ')}</h2>
   <ul class="grid gap-6 lg:grid-cols-3 lg:gap-8">
     {passes.map((p) => {
       const hi = p.data.highlighted;

@@ -55,7 +55,7 @@ const tips = [
 />
 
 <Section tone="cream" class="!pt-0" labelledby="venues-h">
-  <h2 id="venues-h" class="sr-only">Venues</h2>
+  <h2 id="venues-h" class="sr-only" lang={h.lang}>{h('Venues', 'വേദികൾ')}</h2>
   <ul class="grid gap-8 lg:grid-cols-3 lg:gap-8">
     {venues.map((v) => (
       <li class="flex flex-col">

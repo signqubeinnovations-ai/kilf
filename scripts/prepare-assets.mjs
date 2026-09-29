@@ -4,7 +4,8 @@
 //    lands in kilf-assets/. Real files in kilf-assets/ always win.
 // 2. Makes a blue duotone initials placeholder for any speaker whose photo
 //    is missing from kilf-assets/speakers/.
-// 3. Builds the 1200×630 Open Graph share image from the cover illustration.
+// 3. Builds the 1200×630 Open Graph share image: the title panel beside the
+//    cover illustration.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
@@ -70,26 +71,16 @@ for (const file of await fs.readdir(speakersDir)) {
   await sharp(Buffer.from(svg)).jpeg({ quality: 85 }).toFile(target);
 }
 
-// 3. Open Graph image (1200×630): the hero in miniature, a blue panel with
-//    the title beside the lake illustration (or the real cover, if supplied).
+// 3. Open Graph image (1200×630): "Chapter 1: The Pause." on cream beside the
+//    lake illustration (or the real cover, if supplied). The title panel,
+//    scripts/og-panel.png, is drawn once in the site's type (Plus Jakarta
+//    Sans); redraw it if the title or dates change.
 const cover = (await findReal('illustrations', 'cover')) ?? path.join(root, 'src/assets/art/lake-hero.jpg');
 const art = await sharp(cover).resize(640, 630, { fit: 'cover', position: 'right' }).toBuffer();
-const panel = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="560" height="630">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF9A82"/><stop offset=".45" stop-color="#FFC3A0"/><stop offset="1" stop-color="#E7EF92"/></linearGradient></defs>
-  <rect width="560" height="630" fill="#2447ED"/>
-  <text font-family="sans-serif" font-weight="700" font-size="16" letter-spacing="3" fill="#FFFFFF"><tspan x="56" y="92">KOLLAM INTERNATIONAL</tspan><tspan x="56" y="116">LITERATURE FESTIVAL</tspan></text>
-  <text x="56" y="178" font-family="sans-serif" font-weight="600" font-size="22" fill="#FFFFFF" fill-opacity=".85">The first chapter · 2027</text>
-  <text font-family="sans-serif" font-weight="700" font-size="62" letter-spacing="-2" fill="#FFFFFF">
-    <tspan x="52" y="262">Where words</tspan><tspan x="52" y="330">meet the</tspan><tspan x="52" y="398" fill="url(#g)">world.</tspan>
-  </text>
-  <line x1="56" y1="458" x2="504" y2="458" stroke="#FFFFFF" stroke-opacity=".25"/>
-  <text x="56" y="500" font-family="sans-serif" font-weight="700" font-size="17" letter-spacing="2.4" fill="#FFFFFF">31 DEC 2026 – 4 JAN 2027</text>
-  <text x="56" y="534" font-family="sans-serif" font-weight="500" font-size="21" fill="#FFFFFF" fill-opacity=".85">Ashtamudi Lake · Kollam, Kerala</text>
-</svg>`);
-await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#2447ED' } })
+await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#FCFAF3' } })
   .composite([
     { input: art, left: 560, top: 0 },
-    { input: panel, left: 0, top: 0 },
+    { input: path.join(root, 'scripts/og-panel.png'), left: 0, top: 0 },
   ])
   .jpeg({ quality: 86, mozjpeg: true })
   .toFile(path.join(root, 'public/og-image.jpg'));

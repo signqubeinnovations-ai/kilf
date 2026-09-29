@@ -1,4 +1,5 @@
 ---
+import Stopped from './Stopped.astro';
 import QRCode from 'qrcode';
 import Logo from './Logo.astro';
 import Placeholder from './Placeholder.astro';
@@ -55,8 +56,8 @@ const cols = [
       <section class="flex flex-col gap-10 pb-16 pt-20 sm:pb-20 sm:pt-24 lg:flex-row lg:items-end lg:justify-between lg:gap-16" aria-labelledby="closing-h">
         <div>
           <p class="eyebrow flex items-center gap-3 text-white/75"><Rings n={3} size={40} tone="lake" />{t('footer.closing.kicker')}</p>
-          <h2 id="closing-h" class:list={['display mt-6', lang === 'ml' ? 'text-[2.1rem] sm:text-[2.8rem] lg:text-[3.4rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4.2rem]']}>
-            {t('footer.closing.h')}<br /><span class="text-lake">{t('footer.closing.accent')}</span>
+          <h2 id="closing-h" class:list={['display mt-6', lang === 'ml' ? 'text-[1.7rem] min-[380px]:text-[2.1rem] sm:text-[2.8rem] lg:text-[3.4rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4.2rem]']}>
+            <Stopped text={t('footer.closing.h')} /><br /><span class="text-lake"><Stopped text={t('footer.closing.accent')} /></span>
           </h2>
         </div>
         <div class="flex flex-wrap items-center gap-3 lg:pb-3">

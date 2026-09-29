@@ -2,9 +2,9 @@
 
 Official website for the **Kollam International Literature Festival (KILF) 2027**: 31 December 2026 – 4 January 2027, Kollam, Kerala.
 
-Built with [Astro](https://astro.build) and Tailwind CSS. It is a fully static site: fast, SEO-friendly and hostable anywhere. The calm lake animations run on [Motion](https://motion.dev) (formerly Framer Motion) inside small React islands; everything else is plain HTML with a few tiny scripts (menu, speaker filters, map loader, forms).
+Built with [Astro](https://astro.build) and Tailwind CSS. It is a fully static site: fast, SEO-friendly and hostable anywhere. The design is **Chapter 1: The Pause**: calm, intimate and still, like Ashtamudi Lake in the morning. Its one moment of motion is pure CSS; the only React island is the theatre ticket card on the Khasak page (with [Motion](https://motion.dev)). Everything else is plain HTML with a few tiny scripts (menu, countdown, speaker filters, schedule tabs, map loader, forms).
 
-- **English** at `/` (default), **Malayalam** at `/ml/`. Home and About are translated; other `/ml/` pages show the English content with a notice.
+- **English** at `/` (default), **Malayalam** at `/ml/`. Home, About and Our cause are fully translated; every other `/ml/` page has its headlines in Malayalam over the English text, with a notice.
 - Content (speakers, FAQs, passes, strands, programme, sponsors) lives in `src/content/` and can be edited without touching code.
 
 ---
@@ -36,19 +36,21 @@ Put the brochure artwork here, using these names:
 kilf-assets/
   logos/kilf-logo.svg            # main logo (cobalt), used in the header
   logos/kilf-logo-white.svg      # logo for dark backgrounds (footer)
-  illustrations/p4_stage.jpg     # Khasakkinte Ithihasam stage (home band, /khasak)
+  illustrations/p4_stage.jpg     # Khasakkinte Ithihasam stage (home, /khasak)
   illustrations/cover.jpg        # optional: replaces the art in the social share image
-  speakers/<file>.jpg            # duotone speaker photos, e.g. m-mukundan.jpg
+  speakers/<file>.jpg            # illustrated speaker portraits, e.g. m-mukundan.jpg
   reference-brochure.pdf         # design reference (not published)
 ```
 
-Until a file is present, the site uses an on-brand **stand-in**: flat SVG illustrations in `src/placeholders/`, and initials for speakers. A real file with the same name (any of `.jpg .png .webp .avif`) replaces its stand-in automatically on the next build. Images are resized and served as AVIF/WebP with `<picture>`.
+Until a file is present, the site uses an on-brand **stand-in**: flat SVG illustrations in `src/placeholders/`, and, for speakers, a drawn figure by the water (no initials). A real file with the same name (any of `.jpg .png .webp .avif`) replaces its stand-in automatically on the next build. Images are resized and served as AVIF/WebP with `<picture>`; portraits load lazily.
 
-The lake illustrations (`src/assets/art/lake-hero.jpg`, the open book on the jetty, and `lake-jetty.jpg`, the wide jetty scene) are part of the design: the home hero and the About, Visit and Partners pages draw them with live water (see Motion below). Both were upscaled 4× from 1241 px originals with Real-ESRGAN; higher-resolution originals of the same scenes can replace them. If you change their composition, update the water outlines (`mask`) in `src/components/LakeArt.astro`.
+**Speaker portraits:** the home page's eight featured voices (and the Speakers page) are waiting for illustrated portraits. Save each as `kilf-assets/speakers/<slug>.jpg`, where `<slug>` is the speaker's file name in `src/content/speakers/` (for example `m-mukundan.jpg`). 4:5, at least 640 × 800 px.
 
-The home hero is full-bleed on desktop (the illustration covers the whole section, with a soft "mist" behind the words) and stacked on phones and tablets (words on the cream sky, the lake below). Its crop at each screen size is set with `object-[…]` classes on the hero's `LakeArt` in `src/views/Home.astro`; the live water follows the same crop automatically.
+The lake illustrations (`src/assets/art/lake-hero.jpg`, the open book on the jetty, and `lake-jetty.jpg`, the wide jetty scene) are part of the design and stay still, apart from the home hero's one moment (see Motion below). Both were upscaled 4× from 1241 px originals with Real-ESRGAN; higher-resolution originals of the same scenes can replace them. The hero's ripple is clipped to the water's outline (`mask` in `src/lib/lake-art.ts`): if you change the picture's composition, update the outline.
 
-The 1200×630 social share image (`public/og-image.jpg`) is built on every build from the lake-and-book art (or `kilf-assets/illustrations/cover.jpg`, if present).
+The home hero is full-bleed on desktop (the illustration covers the whole section, with a soft "mist" behind the words) and stacked on phones and tablets (words on the cream sky, the lake below). Its crop at each screen size is set with `object-[…]` classes and the matching `[--px:…]` values on `HeroLake` in `src/views/Home.astro`, so the ripple and the karimeen stay pinned to the picture.
+
+The 1200×630 social share image (`public/og-image.jpg`) is built on every build: the title panel (`scripts/og-panel.png`, "Chapter 1: The Pause." with the dates, drawn once in the site's type) beside the lake-and-book art, or `kilf-assets/illustrations/cover.jpg` if present. Redraw the panel if the title or dates change.
 
 ## 3. Editing content
 
@@ -66,10 +68,12 @@ All content is validated at build time, so a typo in a field name fails the buil
 | Sponsors / partner logos | `src/content/sponsors.json` |
 | Partnership page (why, audience, tiers, benefits) | `src/data/partnership.json` |
 | UI text + Malayalam translations | `src/i18n/ui.ts`, `src/i18n/about-qa.ts` |
+| Malayalam headlines on the other `/ml/` pages | Beside the English, in each view: `h('English', 'മലയാളം')` |
+| Our cause (commitments, clean-up) | `src/i18n/ui.ts` (`cause.*`, `home.cause.*`) |
 
 ### Add a speaker
 
-1. Put the duotone photo in `kilf-assets/speakers/`, e.g. `kilf-assets/speakers/k-r-meera.jpg`.
+1. Put the illustrated portrait (4:5) in `kilf-assets/speakers/`, e.g. `kilf-assets/speakers/k-r-meera.jpg`.
 2. Create `src/content/speakers/k-r-meera.md`:
 
    ```md
@@ -79,7 +83,7 @@ All content is validated at build time, so a typo in a field name fails the buil
    photo: k-r-meera.jpg
    categories: [literature]          # any of: literature, cinema, music, history-ideas
    order: 175                        # lower = earlier in the grid
-   featured: false                   # true = eligible for the 12 on the home page
+   featured: false                   # the home page's eight voices are chosen in src/views/Home.astro
    status: proposed                  # change to "confirmed" once confirmed
    ---
 
@@ -94,7 +98,7 @@ To remove a speaker, delete their `.md` file.
 
 `src/content/schedule.json` holds the day-by-day programme (a proposed one for now: 31 December to 4 January, 45 sessions). The Programme page shows it as tabs, one per day, with a strand filter; with `[]` it falls back to the six teasers and a "Notify me" banner.
 
-Each day has a `theme` ("First light."), a `blurb` and `allDay` lines (book fair, food festival, exhibition). Each session has `start`/`end`, `title`, `description`, `venue` (`sngcc`, `8point` or `ashramam`), `strand` (an id from `strands.json`, or `youth`), `format` (conversation, panel, reading, workshop, performance, screening, walk or ceremony), `speakers` (speaker file names), `guests` (other participants as text, e.g. "Malayalam poets (invited)"), `language`, `highlight` (a ★ must-see) and an optional `link` (e.g. theatre tickets). Speaker chips link to the speaker's note on `/speakers`.
+Each day has a `theme` ("First light.") and `theme_ml` (its Malayalam title, for `/ml/`), a `blurb` and `allDay` lines (book fair, food festival, exhibition). Each session has `start`/`end`, `title`, `description`, `venue` (`sngcc`, `8point` or `ashramam`), `strand` (an id from `strands.json`, or `youth`), `format` (conversation, panel, reading, workshop, performance, screening, walk or ceremony), `speakers` (speaker file names), `guests` (other participants as text, e.g. "Malayalam poets (invited)"), `language`, `highlight` (a ★ must-see) and an optional `link` (e.g. theatre tickets). Speaker chips link to the speaker's note on `/speakers`.
 
 ```json
 [
@@ -124,7 +128,7 @@ Each day has a `theme` ("First light."), a `blurb` and `allDay` lines (book fair
 ]
 ```
 
-- `venue` is one of `sngcc` (Sreenarayana Guru Cultural Centre), `8point` (8 Point Art Cafe) or `ashramam` (Ashramam Maidan). Venues are defined in `src/lib/site.ts`.
+- `venue` is one of `sngcc` (Sreenarayana Guru Cultural Centre, venue code 1), `8point` (8 Point Art Cafe, code 2) or `ashramam` (Ashramam Maidan, code 3). Venues and their ring codes are defined in `src/lib/site.ts`.
 - `speakers` are speaker file names without `.md`.
 - `language` (optional) is one of `Malayalam`, `English`, `Tamil` or `Bilingual`.
 
@@ -136,15 +140,15 @@ Prices are already in `src/content/passes.json` (`"price"`, with `"priceNote"` s
 
 ### Translate another page into Malayalam
 
-1. Move the page's English strings into `src/i18n/ui.ts` (the `en` block) and add the Malayalam strings to the `ml` block, as Home and About do. Use `t('key')` in the view in `src/views/`.
+1. Move the page's English strings into `src/i18n/ui.ts` (the `en` block) and add the Malayalam strings to the `ml` block, as Home, About and Our cause do. Use `t('key')` in the view in `src/views/`. (Its headlines are already in Malayalam, via `headings()`.)
 2. Add the path (e.g. `'/programme'`) to `translatedPaths` in `src/i18n/ui.ts`.
 3. Add the path to the sitemap filter in `astro.config.mjs`.
 
-Untranslated `/ml/` pages show a notice, are `noindex`, and point their canonical URL at the English page.
+Untranslated `/ml/` pages show a notice, are `noindex`, and point their canonical URL at the English page. Their headlines are set in Malayalam with `lang="ml"`.
 
 ## 4. Forms
 
-Every form (Register, Volunteer, Exhibit, College, Partner enquiry, Contact, newsletter and the "Notify me" banners) sends a JSON POST to **`PUBLIC_FORM_ENDPOINT`**. Each submission carries a `form` field naming the form (`register`, `volunteer`, `exhibit`, `partner`, `contact`, `newsletter`, `programme-notify`, `passes-notify`, `khasak-seats`, `college`) and the `page` it came from.
+Every form (Register, Volunteer, Exhibit, College, Partner enquiry, Contact and the "Notify me" banners) sends a JSON POST to **`PUBLIC_FORM_ENDPOINT`**. Each submission carries a `form` field naming the form (`register`, `volunteer`, `exhibit`, `partner`, `contact`, `college`, `passes-notify`, `khasak-tickets`, and `programme-notify` while the programme is empty) and the `page` it came from. Volunteers can choose the Ashtamudi clean-up.
 
 - **Formspree** (simplest): create a form, then set `PUBLIC_FORM_ENDPOINT=https://formspree.io/f/xxxxxxx`.
 - **Google Sheets**: deploy an Apps Script web app whose `doPost(e)` appends `JSON.parse(e.postData.contents)` to a sheet, then set the endpoint to its `https://script.google.com/macros/s/…/exec` URL. The site sends a CORS-safe request for Apps Script automatically.
@@ -162,7 +166,7 @@ See `.env.example`. Set them in Vercel/Netlify under *Settings → Environment v
 | `PUBLIC_FORM_ENDPOINT` | Form backend (see above). |
 | `PUBLIC_GA4_ID` *or* `PUBLIC_PLAUSIBLE_DOMAIN` | Analytics. Nothing loads if both are empty. The privacy page adapts automatically. |
 | `PUBLIC_PARTNER_CALL_URL` | Link for "Book a partnership call" (Calendly, Cal.com…). Falls back to an email link. |
-| `PUBLIC_WHATSAPP_URL` | WhatsApp channel/community link; shows a "Join on WhatsApp" button in the signup block. |
+| `PUBLIC_WHATSAPP_URL` | WhatsApp channel/community link (not shown anywhere at the moment). |
 
 ## 6. Deploy
 
@@ -178,58 +182,49 @@ The partnership proposal PDF: put it at `public/downloads/kilf-2027-partnership-
 
 ```
 src/
-  components/     Header, Footer, ChapterLabel, Headline, LimeButton, TextLink,
-                  SpeakerCard, LakeArt, Section, Form/Field, MotionToggle, Icon …
-  components/motion/  Animated React islands: TicketCard, RippleField, Marquee,
-                  Countdown (Motion), and water.ts, the lake's wave engine
-  components/blocks/  Larger reusable sections (ways in, strands grid, notify banner,
-                  schedule…)
+  components/     Header, Footer, ChapterLabel, Headline, Rings, Divider,
+                  HeroLake, Karimeen, CauseArt, MiniCountdown, LakeArt,
+                  SpeakerCard, Portrait, Section, Form/Field, MotionToggle, Icon …
+  components/motion/  The theatre ticket card (TicketCard, a React island with Motion)
+  components/blocks/  Larger reusable sections (strands, notify banner, schedule)
   assets/art/     The lake illustrations used across the site
   views/          Page bodies, shared by the English and /ml/ routes
   pages/          Routes (thin wrappers around views) + robots.txt
   layouts/        BaseLayout: SEO, Open Graph, JSON-LD, fonts, analytics
   content/        Editable content collections
-  i18n/           Translations
-  lib/            Site facts, image lookup
-  scripts/        Scroll reveals and count-ups (Motion's vanilla API), and
-                  lake-water.ts, the live water on the lake illustrations
-  styles/         Brand tokens (colours, type) in global.css
+  i18n/           Translations, and headings() for Malayalam headlines
+  lib/            Site facts (venues and ring codes), lake-art outlines, image lookup
+  styles/         Design tokens (colours, type) in global.css
   placeholders/   Stand-in SVG illustrations
-scripts/          Asset preparation and screenshots
+scripts/          Asset preparation (and the share image's title panel), screenshots
 kilf-assets/      Real artwork (see section 2)
 ```
 
 ### Motion
 
-All animation is calm and water-like, and all of it can be stopped:
+One orchestrated moment, and nothing else moves on its own:
 
 | Where | What moves | Component |
 |---|---|---|
-| Home hero; About, Visit and Partners illustrations | The drawn lake comes alive: a small wave simulation bends the illustration's water through WebGL. Drops fall now and then, the cursor leaves a gentle wake, a tap sends out a ring; the jetty, the book and the shore stay still | `src/components/LakeArt.astro`, `src/scripts/lake-water.ts` (plain script, no framework: it is on the first screen), `motion/water.ts` |
-| Page heroes, statement band, New Year's Eve, theatre and notify bands, footer | Rings widening slowly across still water; a faint ripple trails the mouse | `motion/RippleField.tsx` (Motion) |
-| Home "ways in" blocks | A ring spreads across the block on hover; the music waveform breathes | `blocks/WaysIn.astro` |
-| Khasakkinte Ithihasam tickets | Ticket type and preview transitions | `motion/TicketCard.tsx` (Motion) |
-| Khasakkinte Ithihasam (home) | A book opens as you scroll: the cover swings open, pages turn, and the spread shows the title page and the stage, lit by a spotlight. On wide screens the section holds still while it opens; with reduced motion it is shown open | `src/components/art/KhasakBook.astro`, script in `src/views/Home.astro` |
-| New Year's Eve (home) | A night graphic: the horizon is a live sound equaliser with palms, the moon a turning record, sound spreads over the water and notes drift up | `src/components/art/NyeMusic.astro` |
-| Home "The festival" and "Youth" | Five paper boats (one per day) bob on the lake; a microphone sends out rings of sound among speech bubbles | `src/components/art/PaperBoats.astro`, `src/components/art/YouthStage.astro` |
-| Strand ribbon (home) | The nine strands drift across the full width; scrolling the page pushes them left (down) or right (up); they ease to a stop on hover | `motion/Marquee.tsx` (Motion) |
-| New Year's Eve | Countdown digits roll as they change | `motion/Countdown.tsx` (Motion) |
-| Everywhere | Sections rise into place as you scroll, numbers count up, buttons send out a ring on hover | `src/scripts/reveal.ts` (Motion), `global.css` |
+| Home hero | The lake is still. Soon after the page opens, a karimeen (a small line drawing) leaps once from the water and slips back in; every six seconds a single ripple spreads from the open book, over the water only | `src/components/HeroLake.astro` (pure CSS), `Karimeen.astro` |
+| Khasakkinte Ithihasam tickets | Ticket type and preview transitions, when you use the card | `motion/TicketCard.tsx` (Motion) |
+| Buttons | A ring spreads once on hover | `global.css` |
 
-- **Pause motion** buttons (hero and footer) stop every loop and remember the choice (WCAG 2.2.2). The operating system's *reduce motion* setting shows still water instead.
-- Animations stop automatically when they scroll off screen.
-- Without WebGL, with reduced motion, or before the script loads, the illustrations are shown as ordinary still images. The live water also steps aside on computers that draw WebGL without a graphics chip (virtual machines, some test tools) and on devices that can't keep it smooth; add `?water` to the address to preview it there anyway.
+- **Pause the lake** buttons (hero and footer) stop it and remember the choice (WCAG 2.2.2). The operating system's *reduce motion* setting shows the lake still.
+- There are no scroll reveals, marquees or count-ups.
 
 ### Layout and colour
 
-- Clean and square: cream pages, full-width colour bands (bright blue hero, coral, blue, lime, navy footer), square boxes that share 1 px hairlines, and generous white space.
-- Section labels read "01 / THE FESTIVAL" (`ChapterLabel`); headlines are two lines, the second in bright blue (`Headline`).
-- **Gradient text** marks the key words: page-hero accents and a few headlines (`accentStyle="gradient"` on `Headline`, or the `text-grad`, `text-grad-warm` and `text-grad-ink` classes). Each class is tuned for the surface it sits on.
-- Buttons are square. Primary buttons are blue on light surfaces and turn lime on blue or navy bands automatically (`LimeButton` with the default `primary` variant). Secondary actions are underlined text links with a ↗ (`TextLink`).
-- Speaker portraits are 4:5 rounded rectangles (`Portrait.astro`); until a photo arrives, a quiet blue tint with the speaker's initials stands in.
+- Calm surfaces: cream pages, pale lake-blue bands, and night navy for the evenings (New Year's Eve, the theatre). Generous space, one idea per screen, hairlines instead of boxes.
+- **Ripple rings** are the system motif (`Rings.astro`): one ring beside every section label (`ChapterLabel`), three between sections (`Divider`), and the **venue codes**: Sreenarayana Guru Cultural Centre 1 ring, 8 Point Art Cafe 2, Ashramam Maidan 3, on the home page, the Programme and Visit.
+- Headlines (`Headline`) are Plus Jakarta Sans 800 with tight tracking; a second line in cobalt, and at most **one coral word** per headline (`coral="word"`). Coral text on light surfaces uses `coral-text` (#DB5A3B) to pass WCAG AA for large text.
+- Section labels have no numbers; only real sequences (steps, times) are numbered.
+- Buttons are square. Primary buttons are cobalt on light surfaces and cream on night navy (`LimeButton`, default `primary`). Secondary actions are underlined text links with a ↗ (`TextLink`).
+- Speaker portraits are 4:5 rounded rectangles (`Portrait.astro`), lazy-loaded.
 
 ### Brand notes
 
-- **Type:** Plus Jakarta Sans (headlines and numbers), Manrope (text, labels and buttons), Anek Malayalam for Malayalam. All self-hosted.
-- Colours are Tailwind tokens (`bg-navy`, `text-coral`, `bg-lime`, …) defined in `src/styles/global.css`.
-- For WCAG AA: text on coral and lime is navy or ink; small coral text on light surfaces uses `coral-deep`; the warm gradient (coral to lime) is only used for large text on blue.
+- **Type:** Plus Jakarta Sans (800 for headlines, 500 for text), Noto Sans Malayalam for Malayalam. Both self-hosted.
+- **Colours** (Tailwind tokens in `src/styles/global.css`): cream `#FCFAF3`, navy `#13207A`, cobalt `#1F3FD8`, coral `#F2785A`, lake `#A9C4EA`, night `#101B62`. No lime or green.
+- **Voice:** calm, short sentences; no hype, no exclamation marks, no unverified numbers. Taglines: "Chapter 1: The Pause.", "Pause. Turn a page.", and to close, "Come for a story. Stay for the connection." The cause: "Keep the waters alive."
+- The previous design is kept on the branch `archive/design-2026-09-astra`.
