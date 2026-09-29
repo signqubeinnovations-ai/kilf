@@ -25,9 +25,12 @@ const pearls = [
 ];
 ---
 <svg viewBox="0 0 200 120" class={cls} role={title ? 'img' : undefined} aria-label={title} aria-hidden={title ? undefined : 'true'} focusable="false">
+  <!-- tail (a group, so it can swish: see CauseArt) -->
+  <g class="k-tail">
+    <path d="M52 54C42 46 31 40 16 37C22 50 22 70 16 83C31 80 42 74 52 66Z" fill={fill} stroke={line} stroke-width="2.4" stroke-linejoin="round" />
+    <path d="M47 52L30 45M47 60L25 60M47 68L30 75" fill="none" stroke={line} stroke-width="1.2" stroke-linecap="round" />
+  </g>
   <g fill={fill} stroke={line} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-    <!-- tail -->
-    <path d="M52 54C42 46 31 40 16 37C22 50 22 70 16 83C31 80 42 74 52 66Z" />
     <!-- dorsal fin, spiny in front, a soft lobe at the back -->
     <path d="M142 23C122 7 88 5 68 16C57 22 50 31 47 44L62 40Z" />
     <!-- anal fin -->
@@ -37,7 +40,7 @@ const pearls = [
   </g>
   <!-- fin rays -->
   <path
-    d="M118 20L116 14.3M106 20.6L104 12.5M94 22.9L92 12.5M82 27.1L80 14.5M71 33.1L69 18.6M100 98.5L97 103.5M88 95.3L85 105.1M77 90.5L74 103.2M47 52L30 45M47 60L25 60M47 68L30 75"
+    d="M118 20L116 14.3M106 20.6L104 12.5M94 22.9L92 12.5M82 27.1L80 14.5M71 33.1L69 18.6M100 98.5L97 103.5M88 95.3L85 105.1M77 90.5L74 103.2"
     fill="none"
     stroke={line}
     stroke-width="1.2"
