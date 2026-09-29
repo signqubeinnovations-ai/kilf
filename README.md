@@ -202,15 +202,16 @@ kilf-assets/      Real artwork (see section 2)
 
 ### Motion
 
-One orchestrated moment, and nothing else moves on its own:
+One orchestrated moment on its own, and one that follows your scroll:
 
 | Where | What moves | Component |
 |---|---|---|
 | Home hero | The lake is still. Soon after the page opens, a karimeen (a small line drawing) leaps once from the water and slips back in; every six seconds a single ripple spreads from the open book, over the water only | `src/components/HeroLake.astro` (pure CSS), `Karimeen.astro` |
+| "Keep the waters alive" artwork (home and `/cause`) | The karimeen swims with the page: as the card scrolls into view it swims in from the left, tail swishing and bubbles rising, settles in the middle, and drifts on as you keep scrolling. Scrolling back reverses it | `src/components/CauseArt.astro` (a small scroll script) |
 | Khasakkinte Ithihasam tickets | Ticket type and preview transitions, when you use the card | `motion/TicketCard.tsx` (Motion) |
 | Buttons | A ring spreads once on hover | `global.css` |
 
-- **Pause the lake** buttons (hero and footer) stop it and remember the choice (WCAG 2.2.2). The operating system's *reduce motion* setting shows the lake still.
+- **Pause the lake** buttons (hero and footer) stop both and remember the choice (WCAG 2.2.2). The operating system's *reduce motion* setting shows the lake still and the fish resting in the middle of its card.
 - There are no scroll reveals, marquees or count-ups.
 
 ### Layout and colour

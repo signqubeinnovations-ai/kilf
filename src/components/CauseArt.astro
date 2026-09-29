@@ -2,23 +2,117 @@
 import Karimeen from './Karimeen.astro';
 /**
  * "Keep the waters alive": the karimeen as a line drawing, above three
- * ripple rings, with a few bubbles. Still. Decorative.
+ * ripple rings. It swims with the page: as the card scrolls into view the
+ * fish swims in from the left, tail swishing, bubbles rising, and settles in
+ * the middle when the card does; scrolling on, it drifts a little further.
+ * Without JavaScript, with reduced motion or with "Pause the lake" on, it
+ * rests in the middle. Decorative.
  */
 interface Props { class?: string }
 const { class: cls = '' } = Astro.props;
+const bubbles = [
+  [182, 44, 3.6],
+  [190, 26, 2.8],
+  [184, 10, 2],
+];
 ---
-<div class:list={['relative aspect-square overflow-hidden rounded-[1.5rem] bg-lake-soft', cls]} aria-hidden="true">
+<div class:list={['relative aspect-square overflow-hidden rounded-[1.5rem] bg-lake-soft', cls]} data-swim aria-hidden="true">
   <svg class="absolute inset-0 size-full" viewBox="0 0 400 400">
-    <g fill="none" stroke="#a9c4ea" stroke-width="2">
+    <g class="swim-rings" fill="none" stroke="#a9c4ea" stroke-width="2">
       <ellipse cx="200" cy="290" rx="64" ry="11" />
       <ellipse cx="200" cy="290" rx="118" ry="21" />
       <ellipse cx="200" cy="290" rx="172" ry="31" />
     </g>
-    <g fill="none" stroke="#13207a" stroke-width="1.6">
-      <circle cx="304" cy="150" r="5" />
-      <circle cx="315" cy="127" r="3.6" />
-      <circle cx="308" cy="108" r="2.4" />
-    </g>
   </svg>
-  <Karimeen class="absolute left-1/2 top-[44%] w-[64%] -translate-x-1/2 -translate-y-1/2" />
+  <div class="swim-fish absolute left-1/2 top-[44%] w-[64%]">
+    <Karimeen class="block h-auto w-full" />
+    <!-- Bubbles from the fish's mouth, drawn in the fish's own units. -->
+    <svg class="swim-bubbles absolute inset-0 size-full overflow-visible" viewBox="0 0 200 120">
+      {bubbles.map(([x, y, r]) => <circle class="bubble" cx={x} cy={y} r={r} fill="none" stroke="#13207a" stroke-width="1.2" />)}
+    </svg>
+  </div>
 </div>
+
+<script>
+  // Swim with the scroll. `d` is where the card's centre is: 1 as it enters
+  // at the bottom of the screen, 0 in the middle, -1 as it leaves at the top.
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-swim]')];
+  if (cards.length) {
+    const root = document.documentElement;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    const still = () => reduce.matches || root.dataset.motion === 'paused';
+    const clamp = (v: number) => Math.min(1, Math.max(0, v));
+    let queued = false;
+    const rest = (card: HTMLElement) => {
+      for (const k of ['--sx', '--sy', '--sr', '--st', '--rings']) card.style.removeProperty(k);
+      card.querySelectorAll<SVGElement>('.bubble').forEach((b) => {
+        b.style.transform = '';
+        b.style.opacity = '';
+      });
+    };
+    const update = () => {
+      queued = false;
+      const vh = innerHeight;
+      for (const card of cards) {
+        if (still()) {
+          rest(card);
+          continue;
+        }
+        const r = card.getBoundingClientRect();
+        if (r.bottom < -40 || r.top > vh + 40) continue;
+        const d = Math.max(-1, Math.min(1, (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2)));
+        // Swimming in: from off the card on the left to the middle, easing out.
+        const s = clamp((1 - d) / 0.85);
+        const e = 1 - (1 - s) ** 3;
+        const drift = d < 0.15 ? (0.15 - d) * 12 : 0;
+        const x = (e - 1) * 125 + drift;
+        const y = Math.sin(d * Math.PI * 4) * 4;
+        const tilt = Math.cos(d * Math.PI * 4) * 3 + (1 - e) * -6;
+        const tail = Math.sin(d * Math.PI * 22) * (6 + 12 * (1 - e));
+        card.style.setProperty('--sx', `${x.toFixed(2)}%`);
+        card.style.setProperty('--sy', `${y.toFixed(2)}%`);
+        card.style.setProperty('--sr', `${tilt.toFixed(2)}deg`);
+        card.style.setProperty('--st', `${tail.toFixed(2)}deg`);
+        card.style.setProperty('--rings', (0.9 + 0.1 * e).toFixed(3));
+        // Bubbles rise from the mouth in a stream, once the fish is nearly there.
+        card.querySelectorAll<SVGElement>('.bubble').forEach((b, i) => {
+          const f = ((((1 - d) * 1.6 + i / 3) % 1) + 1) % 1;
+          b.style.transform = `translateY(${(-f * 30).toFixed(1)}px)`;
+          b.style.opacity = (clamp((e - 0.6) / 0.4) * (1 - f)).toFixed(2);
+        });
+      }
+    };
+    const queue = () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    };
+    addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', queue);
+    addEventListener('kilf:motion', queue);
+    reduce.addEventListener('change', queue);
+    update();
+  }
+</script>
+
+<style>
+  .swim-fish {
+    transform: translate(calc(-50% + var(--sx, 0%)), calc(-50% + var(--sy, 0%))) rotate(var(--sr, 0deg));
+    will-change: transform;
+  }
+  .swim-fish :global(.k-tail) {
+    transform-box: view-box;
+    transform-origin: 52px 60px;
+    transform: rotate(var(--st, 0deg));
+  }
+  .swim-rings {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(var(--rings, 1));
+  }
+  .bubble {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+</style>
