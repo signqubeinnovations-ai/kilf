@@ -2,12 +2,13 @@
 /** Small square label, e.g. "Proposed" or "Subject to confirmation". */
 interface Props { tone?: 'coral' | 'lime' | 'sky' | 'outline' | 'dark'; class?: string }
 const { tone = 'coral', class: cls = '' } = Astro.props;
+// "Proposed" and other tags are marigold: navy on marigold, on any surface.
 const tones = {
-  coral: 'bg-coral-soft text-coral-deep',
-  lime: 'bg-lake-soft text-navy',
-  sky: 'bg-lake-soft text-navy',
+  coral: 'bg-marigold text-navy',
+  lime: 'bg-marigold text-navy',
+  sky: 'bg-teal-soft text-navy',
   outline: 'ring-1 ring-inset ring-current text-muted',
-  dark: 'bg-white/10 text-lake ring-1 ring-inset ring-white/25',
+  dark: 'bg-marigold text-navy',
 };
 ---
 <span class:list={['inline-flex items-center gap-1 px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-[0.14em]', tones[tone], cls]}><slot /></span>

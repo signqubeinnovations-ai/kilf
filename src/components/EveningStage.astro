@@ -1,0 +1,136 @@
+---
+/**
+ * The evening stage by the lake, for New Year's Eve: a cobalt sky with a
+ * glowing sun going down over teal water, strings of bunting and lanterns,
+ * a lit stage and the crowd in silhouette. Decorative (the text beside it
+ * says what happens), drawn in the festival palette.
+ */
+interface Props {
+  class?: string;
+}
+const { class: cls = '' } = Astro.props;
+
+const C = { navy: '#0B1A4A', cobalt: '#1E3FD8', deep: '#1531B0', coral: '#F2483A', marigold: '#FFB703', teal: '#14B8A6', tealLight: '#7EDBCF', cream: '#FFF8EE' };
+const flagColours = [C.coral, C.marigold, C.teal, C.cream];
+
+// Bunting: flags hung along a gentle curve between two points.
+function bunting(x0: number, y0: number, x1: number, y1: number, sag: number, n: number, size: number, offset = 0) {
+  const flags = [];
+  for (let i = 0; i < n; i++) {
+    const t = (i + 0.5) / n;
+    const x = x0 + (x1 - x0) * t;
+    const y = y0 + (y1 - y0) * t + sag * 4 * t * (1 - t);
+    const w = size;
+    flags.push({ d: `M${(x - w / 2).toFixed(1)} ${y.toFixed(1)}L${(x + w / 2).toFixed(1)} ${y.toFixed(1)}L${x.toFixed(1)} ${(y + w * 1.15).toFixed(1)}Z`, fill: flagColours[(i + offset) % flagColours.length] });
+  }
+  const line = `M${x0} ${y0}Q${(x0 + x1) / 2} ${(y0 + y1) / 2 + sag * 2} ${x1} ${y1}`;
+  return { line, flags };
+}
+const strings = [bunting(-10, 38, 420, 70, 46, 13, 22), bunting(380, 64, 810, 30, 52, 13, 22, 2), bunting(120, 120, 680, 120, 40, 15, 16, 1)];
+
+// Lanterns hanging from the lower string.
+const lanterns = [190, 300, 410, 520, 630].map((x, i) => ({ x, y: 150 + (i % 2) * 18, c: i % 2 ? C.coral : C.marigold }));
+
+// Stars.
+const stars = [[60, 110], [140, 160], [250, 40], [470, 140], [560, 22], [700, 120], [760, 170], [330, 170], [620, 190]];
+
+// The crowd: a row of heads and shoulders along the shore.
+const crowd = Array.from({ length: 22 }, (_, i) => ({ x: 14 + i * 37 + (i % 3) * 6, r: 11 + (i % 4) * 1.5, y: 470 + (i % 2) * 6 }));
+---
+<svg viewBox="0 0 800 500" class:list={['block h-auto w-full', cls]} role="presentation" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="es-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color={C.navy} />
+      <stop offset="0.55" stop-color={C.cobalt} />
+      <stop offset="1" stop-color="#3F64F0" />
+    </linearGradient>
+    <radialGradient id="es-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color={C.marigold} stop-opacity="0.85" />
+      <stop offset="0.45" stop-color={C.coral} stop-opacity="0.35" />
+      <stop offset="1" stop-color={C.coral} stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="es-lantern" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color={C.marigold} stop-opacity="0.75" />
+      <stop offset="1" stop-color={C.marigold} stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="es-water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color={C.teal} />
+      <stop offset="1" stop-color="#0E8F80" />
+    </linearGradient>
+    <linearGradient id="es-beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color={C.marigold} stop-opacity="0.55" />
+      <stop offset="1" stop-color={C.marigold} stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <!-- sky, stars, the setting sun and its glow -->
+  <rect width="800" height="500" fill="url(#es-sky)" />
+  <g fill={C.cream}>
+    {stars.map(([x, y], i) => <circle cx={x} cy={y} r={i % 3 === 0 ? 2.2 : 1.4} opacity="0.85" />)}
+  </g>
+  <circle cx="600" cy="300" r="150" fill="url(#es-glow)" />
+  <circle cx="600" cy="300" r="46" fill={C.coral} />
+
+  <!-- far shore with palms -->
+  <path d="M0 300C90 286 160 292 240 298S420 290 500 296 700 288 800 294V320H0Z" fill={C.deep} />
+  <g fill={C.deep}>
+    <path d="M70 296V250M70 250C58 244 48 246 40 252M70 250C80 242 92 242 100 248M70 250C66 238 70 230 76 226M70 250C76 240 86 236 94 238" stroke={C.deep} stroke-width="4" fill="none" stroke-linecap="round" />
+    <path d="M720 292V244M720 244C708 238 698 240 690 246M720 244C730 236 742 236 750 242M720 244C716 232 720 224 726 220" stroke={C.deep} stroke-width="4" fill="none" stroke-linecap="round" />
+  </g>
+
+  <!-- the lake, with the sun's path in marigold and coral -->
+  <rect y="310" width="800" height="190" fill="url(#es-water)" />
+  <g stroke-linecap="round">
+    <path d="M560 326H640M548 344H652M566 362H634M556 382H644M574 402H626" stroke={C.marigold} stroke-width="5" />
+    <path d="M580 336H620M572 372H628M584 392H616" stroke={C.coral} stroke-width="4" />
+    <path d="M40 340H130M200 360H300M90 400H190M260 420H340M680 350H760M700 410H780" stroke={C.tealLight} stroke-width="3" opacity="0.8" />
+  </g>
+  <g fill="none" stroke={C.cream} stroke-width="2" opacity="0.7">
+    <ellipse cx="300" cy="380" rx="34" ry="7" />
+    <ellipse cx="300" cy="380" rx="70" ry="14" />
+  </g>
+
+  <!-- the stage: a lit platform with a canopy -->
+  <path d="M150 300L250 230H550L650 300Z" fill={C.coral} />
+  <path d="M150 300L250 230H550L650 300" fill="none" stroke={C.navy} stroke-width="3" />
+  <g fill={C.cream}>
+    {[170, 230, 290, 350, 410, 470, 530, 590].map((x) => <path d={`M${x} 300Q${x + 30} 322 ${x + 60} 300Z`} />)}
+  </g>
+  <rect x="190" y="300" width="420" height="8" fill={C.navy} />
+  <rect x="200" y="308" width="400" height="74" fill={C.deep} />
+  <path d="M260 308L210 382H590L540 308Z" fill="url(#es-beam)" />
+  <rect x="190" y="382" width="420" height="16" fill={C.navy} />
+  <!-- a band on stage -->
+  <g fill={C.navy}>
+    <circle cx="330" cy="330" r="8" /><rect x="322" y="338" width="16" height="44" rx="6" />
+    <circle cx="400" cy="326" r="9" /><rect x="391" y="335" width="18" height="47" rx="7" />
+    <circle cx="470" cy="330" r="8" /><rect x="462" y="338" width="16" height="44" rx="6" />
+  </g>
+  <rect x="398" y="342" width="2" height="40" fill={C.marigold} />
+
+  <!-- bunting -->
+  {strings.map((s) => (
+    <g>
+      <path d={s.line} fill="none" stroke={C.cream} stroke-opacity="0.7" stroke-width="1.6" />
+      {s.flags.map((f) => <path d={f.d} fill={f.fill} />)}
+    </g>
+  ))}
+
+  <!-- lanterns -->
+  {lanterns.map((l) => (
+    <g>
+      <line x1={l.x} y1="128" x2={l.x} y2={l.y - 14} stroke={C.cream} stroke-opacity="0.6" stroke-width="1.4" />
+      <circle cx={l.x} cy={l.y} r="34" fill="url(#es-lantern)" />
+      <ellipse cx={l.x} cy={l.y} rx="11" ry="14" fill={l.c} />
+      <rect x={l.x - 6} y={l.y - 17} width="12" height="4" fill={C.navy} />
+      <rect x={l.x - 6} y={l.y + 13} width="12" height="4" fill={C.navy} />
+    </g>
+  ))}
+
+  <!-- the crowd on the shore -->
+  <g fill={C.navy}>
+    {crowd.map((p) => (
+      <path d={`M${p.x - p.r * 1.6} 500C${p.x - p.r * 1.6} ${p.y + p.r * 0.6} ${p.x + p.r * 1.6} ${p.y + p.r * 0.6} ${p.x + p.r * 1.6} 500Z M${p.x} ${p.y - p.r * 0.2}m${-p.r} 0a${p.r} ${p.r} 0 1 0 ${p.r * 2} 0a${p.r} ${p.r} 0 1 0 ${-p.r * 2} 0`} />
+    ))}
+  </g>
+</svg>

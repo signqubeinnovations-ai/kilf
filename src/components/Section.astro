@@ -1,7 +1,8 @@
 ---
 /** Page section: generous space on a calm surface (cream, pale lake, or night for the evenings). */
 interface Props {
-  tone?: 'cream' | 'white' | 'sky' | 'navy' | 'blue' | 'lime' | 'coral' | 'ink';
+  /** cream = off-white; sky/lime/coral = warm light band; teal = soft teal (music, youth); navy/ink/blue = cobalt. */
+  tone?: 'cream' | 'white' | 'sky' | 'navy' | 'blue' | 'lime' | 'coral' | 'ink' | 'teal';
   /** A hairline across the top of the content, between two cream sections. */
   rule?: boolean;
   id?: string;
@@ -18,6 +19,7 @@ const tones = {
   navy: 'bg-night text-white on-dark',
   ink: 'bg-night text-white on-dark',
   blue: 'bg-cobalt text-white on-dark',
+  teal: 'bg-teal-soft text-navy',
   lime: 'bg-lake-soft text-navy',
   coral: 'bg-lake-soft text-navy',
 };

@@ -53,8 +53,8 @@ const ambassador = [
   <Headline id="activities-h" text={h('Six ways to take the', 'വേദിയിലെത്താൻ')} accent={h('stage.', 'ആറു വഴികൾ.')} lang={h.lang} class="mt-6" />
   <ul class="mt-14 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
     {activities.map(([icon, title, line]) => (
-      <li class="flex gap-5 border-t border-line py-7">
-        <Icon name={icon} size={28} class="mt-1 shrink-0 text-cobalt" />
+      <li class:list={['flex gap-5 border-t-4 py-7', icon === 'music' ? 'border-teal' : 'border-marigold']}>
+        <span class:list={['grid size-12 shrink-0 place-items-center text-navy', icon === 'music' ? 'bg-teal' : 'bg-marigold']}><Icon name={icon} size={26} /></span>
         <div>
           <h3 class="font-display text-[1.3rem] leading-tight tracking-[-0.03em]">{title}</h3>
           <p class="mt-1.5 text-muted">{line}</p>
@@ -66,7 +66,7 @@ const ambassador = [
 </Section>
 
 <!-- Campus ambassadors -->
-<section class="relative overflow-hidden bg-lake-soft text-navy" aria-labelledby="ambassadors-h">
+<section class="relative overflow-hidden bg-teal-soft text-navy" aria-labelledby="ambassadors-h">
   <div class="container-kilf grid items-center gap-12 py-24 sm:py-28 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:py-32">
     <div>
       <ChapterLabel label={h('Campus ambassadors', 'ക്യാമ്പസ് അംബാസഡർമാർ')} lang={h.lang} />
@@ -103,7 +103,7 @@ const ambassador = [
   </ol>
 </Section>
 
-<Section tone="sky" id="college" labelledby="college-h">
+<Section tone="teal" id="college" labelledby="college-h">
   <div class="grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
     <div>
       <ChapterLabel label={h('Colleges', 'കോളേജുകൾ')} lang={h.lang} />

@@ -53,7 +53,7 @@ function Card({ notifyHref }: Props) {
   const fade = reduce ? { duration: 0 } : { duration: 0.45, ease: calm };
 
   return (
-    <div className="border border-[#c7cfeb] bg-cream p-7 text-navy shadow-[0_40px_80px_-50px_rgb(26_26_26/0.5)] sm:p-9">
+    <div className="border border-[#c7cfeb] bg-cream p-7 text-navy shadow-[0_40px_80px_-50px_rgb(11_26_74/0.45)] sm:p-9">
       <div className="flex items-center justify-between gap-4 text-[0.78rem] font-medium uppercase tracking-[0.16em]">
         <span>KILF 2027</span>
         <AnimatePresence mode="wait" initial={false}>

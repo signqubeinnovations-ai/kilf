@@ -17,26 +17,26 @@ interface Props {
 }
 const { name, photo, sizes = '(min-width: 1024px) 280px, (min-width: 640px) 33vw, 50vw', widths = [320, 480, 640], class: cls = '', eager = false, tone = 'light' } = Astro.props;
 const { src, placeholder } = asset(`speakers/${photo}`);
-// Close water tints, so a grid of stand-ins doesn't look cloned.
-const tints = ['#d9dcd8', '#dcdedb', '#d5d9d7'];
+// Festive tints (warm, teal, marigold), so a grid of stand-ins doesn't look cloned.
+const tints = ['#ffefd6', '#ddf5f1', '#fff0c7'];
 let hash = 0;
 for (const c of name) hash = (hash * 31 + c.charCodeAt(0)) >>> 0;
 const moodFill = tints[hash % tints.length];
 const dark = tone === 'dark';
 ---
-<div class:list={['relative aspect-[4/5] overflow-hidden rounded-[1.25rem]', dark ? 'bg-night' : 'bg-lake-soft', cls]}>
+<div class:list={['relative aspect-[4/5] overflow-hidden rounded-[1.25rem]', dark ? 'bg-cobalt-deep' : 'bg-warm', cls]}>
   {
     placeholder ? (
       <div class="absolute inset-0" role="img" aria-label={`Portrait of ${name} (to come)`}>
         <!-- Until the illustrated portrait arrives: a figure by the water, three rings at its feet. -->
         <svg class="absolute inset-0 size-full" viewBox="0 0 200 250" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-          <rect width="200" height="250" fill={dark ? '#1a1a1a' : moodFill} />
-          <g fill="none" stroke={dark ? '#8e9ea8' : '#f3efe8'} stroke-opacity={dark ? 0.35 : 0.9} stroke-width="1.2">
+          <rect width="200" height="250" fill={dark ? '#1531b0' : moodFill} />
+          <g fill="none" stroke={dark ? '#ffb703' : '#ffffff'} stroke-opacity={dark ? 0.35 : 0.9} stroke-width="1.2">
             <ellipse cx="100" cy="236" rx="40" ry="8" />
             <ellipse cx="100" cy="236" rx="72" ry="14" />
             <ellipse cx="100" cy="236" rx="104" ry="20" />
           </g>
-          <g fill={dark ? '#3c4850' : '#b3bdc1'}>
+          <g fill={dark ? '#7edbcf' : '#1e3fd8'} fill-opacity={dark ? 1 : 0.85}>
             <circle cx="100" cy="98" r="34" />
             <path d="M34 250c0-52 30-86 66-86s66 34 66 86z" />
           </g>

@@ -10,7 +10,7 @@ export const arts = {
   hero: {
     img: lakeHero,
     widths: [640, 960, 1280, 1920, 2560, 3200],
-    alt: 'An open book on a wooden jetty by a still lake, palms on the far shore and a red sun low in the sky.',
+    alt: 'An open book on a wooden jetty by a bright, still lake, palms on the far shore and a glowing sun low in the sky.',
     mask: [
       [0.0, 0.245], [1.0, 0.245], [1.0, 0.412], [0.948, 0.448], [0.9, 0.486], [0.852, 0.523], [0.811, 0.545], [0.779, 0.534], [0.739, 0.523], [0.699, 0.531], [0.642, 0.562], [0.586, 0.614], [0.546, 0.653], [0.521, 0.684], [0.465, 0.716], [0.433, 0.731], [0.332, 0.791], [0.332, 0.875], [0.0, 0.773],
     ],

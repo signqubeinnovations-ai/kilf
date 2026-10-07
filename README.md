@@ -48,14 +48,14 @@ Until a file is present, the site uses an on-brand **stand-in**: flat SVG illust
 
 The lake illustrations (`src/assets/art/lake-hero.jpg`, the open book on the jetty, and `lake-jetty.jpg`, the wide jetty scene) are part of the design and stay still, apart from the home hero's one moment (see Motion below). Both were upscaled 4× from 1241 px originals with Real-ESRGAN; higher-resolution originals of the same scenes can replace them. The hero's ripple is clipped to the water's outline (`mask` in `src/lib/lake-art.ts`): if you change the picture's composition, update the outline.
 
-The home hero is full-bleed on desktop (the illustration covers the whole section, with a soft "mist" behind the words) and stacked on phones and tablets (words on the canvas sky, the lake below). Its crop at each screen size is set with `object-[…]` classes and the matching `[--px:…]` values on `HeroLake` in `src/views/Home.astro`, so the ripple and the karimeen stay pinned to the picture.
+The home hero is full-bleed on desktop (the illustration covers the whole section, with a soft "mist" behind the words) and stacked on phones and tablets (words on the warm off-white sky, the lake below). Its crop at each screen size is set with `object-[…]` classes and the matching `[--px:…]` values on `HeroLake` in `src/views/Home.astro`, so the ripple and the karimeen stay pinned to the picture.
 
 The 1200×630 social share image (`public/og-image.jpg`) is built on every build: the title panel (`scripts/og-panel.png`: the logo, "Pause. Turn a page.", the subline and the dates) beside the lake-and-book art, or `kilf-assets/illustrations/cover.jpg` if present. Redraw the panel with `node scripts/draw-brand.mjs` if the title or dates change.
 
 ### The logo and the art
 
-- **The logo** is drawn in code, so it is always sharp: the ripple mark (eight tapered strokes for Ashtamudi's eight arms, under a red sun), a divider and the wordmark "Kollam International Literature Festival 2027". The mark's geometry lives in `src/lib/ripple.mjs`; `src/components/Logo.astro` renders the lockup (three lines; four on screens under 360px). `node scripts/draw-brand.mjs` redraws the favicon, `public/brand/` (mark SVGs and transparent logo PNGs for partners and print) and the share panel from the same geometry. Always "Festival", never "Fest".
-- **The lake illustrations** were recoloured into the palette with `node scripts/recolor-art.mjs <input> <output>`: blues to muted grey-blue water, navy to ink, the sky to canvas, the sun to deep red. Run it on any new or higher-resolution artwork of the same scenes.
+- **The logo** is drawn in code, so it is always sharp: the ripple mark (eight tapered strokes for Ashtamudi's eight arms, under a sun), a divider and the wordmark "Kollam International Literature Festival 2027". On light backgrounds: cobalt arcs and wordmark with a red-coral sun. On cobalt (the header, the menu, the footer): white with a marigold sun. The mark's geometry lives in `src/lib/ripple.mjs`; `src/components/Logo.astro` renders the lockup (three lines; four on screens under 360px). `node scripts/draw-brand.mjs` redraws the favicon, `public/brand/` (mark SVGs and transparent logo PNGs for partners and print) and the share panel from the same geometry. Always "Festival", never "Fest".
+- **The lake illustrations** were recoloured into the festival palette with `node scripts/recolor-art.mjs <input> <output>`: a bright teal lake, a cobalt jetty, a warm off-white sky, and a red-coral sun with a marigold glow and glints. Run it on any new or higher-resolution artwork of the same scenes. The New Year's Eve stage (bunting, lanterns, a lit stage over the lake) is drawn in `src/components/EveningStage.astro`.
 
 ## 3. Editing content
 
@@ -211,7 +211,7 @@ One quiet moment on its own, and one that follows your scroll:
 
 | Where | What moves | Component |
 |---|---|---|
-| Home hero | The lake is still under a red sun. Every seven seconds a single ripple ring spreads from the open book, over the water only | `src/components/HeroLake.astro` (pure CSS) |
+| Home hero | The lake is still under a glowing sun. Every seven seconds a single ripple ring spreads from the open book, over the water only | `src/components/HeroLake.astro` (pure CSS) |
 | "Keep the waters alive" artwork (home and `/cause`) | The karimeen swims with the page: as the card scrolls into view it swims in from the left, tail swishing and bubbles rising, settles in the middle, and drifts on as you keep scrolling. Scrolling back reverses it | `src/components/CauseArt.astro` (a small scroll script) |
 | Khasakkinte Ithihasam tickets | Ticket type and preview transitions, when you use the card | `motion/TicketCard.tsx` (Motion) |
 | Buttons | A ring spreads once on hover | `global.css` |
@@ -221,17 +221,18 @@ One quiet moment on its own, and one that follows your scroll:
 
 ### Layout and colour
 
-- Calm surfaces: canvas pages, pale water-grey bands, and ink for the evenings (New Year's Eve, the theatre) and the footer. Generous space, one idea per screen, hairlines instead of boxes.
-- **Ripple rings** are the system motif (`Rings.astro`): one ring beside every section label (`ChapterLabel`), three between sections (`Divider`), and the **venue codes**: Sree Narayana Cultural Complex 1 ring, 8 Point Art Cafe 2, on the home page, the Programme and Visit.
-- Headlines (`Headline`) are Plus Jakarta Sans 800 with tight tracking, in ink. Each headline has **one highlight in red**: the word named by `coral="word"` (the prop keeps its old name), or else the second line.
+- **Rhythm:** warm off-white pages with full-width cobalt sections, alternating down the page (on the home page: hero, cobalt Pause, the evening stage, cobalt Voices, theatre, cobalt cause, plan, cobalt footer). The header and footer are cobalt. Only the hero keeps the calm "Pause" feeling; the rest is bold and festive.
+- **Ripple rings** are the system motif (`Rings.astro`): one ring beside every section label (`ChapterLabel`), three between sections (`Divider`), and the **venue codes**: Sree Narayana Cultural Complex 1 ring, 8 Point Art Cafe 2. Cobalt on light surfaces, marigold on cobalt.
+- Headlines (`Headline`) are Plus Jakarta Sans 800 with tight tracking, in cobalt (white on cobalt). Every headline has **one highlight**: red-coral on light surfaces, marigold on cobalt. It is the word named by `coral="word"`, or else the second line.
 - Section labels have no numbers; only real sequences (steps, times) are numbered.
-- Buttons are square. Primary buttons are red on light surfaces and canvas on ink (`LimeButton`, default `primary`). Secondary actions are underlined text links with a ↗ (`TextLink`).
+- Buttons are square. Main buttons are red-coral with navy text (marigold on hover); on cobalt sections they are marigold. Secondary actions are underlined text links with a ↗ (`TextLink`), with a marigold underline on hover.
 - Speaker portraits are 4:5 rounded rectangles (`Portrait.astro`), lazy-loaded.
 
 ### Brand notes
 
 - **Type:** Plus Jakarta Sans (800 for headlines, 700 tracked capitals for the wordmark and labels, 500 for text), Noto Sans Malayalam for Malayalam. Both self-hosted. No handwritten faces.
-- **Colours** (Tailwind tokens in `src/styles/global.css`): canvas `#E8E1D7` (background), ink `#1A1A1A` (text and logo), red `#A80E0E` (the sun dot, highlight words, buttons; `#D42A1F` on ink), and a muted grey-blue for water only (`#8E9EA8`, `#B9C3C8`, `#D9DCD8`). No cobalt, coral, lime or green. Older token names (navy, cobalt, coral, lake, night, cream) are aliases onto this palette.
+- **Colours** (Tailwind tokens in `src/styles/global.css`): cobalt `#1E3FD8` (logo arcs, headlines, header, footer, main sections), red-coral `#F2483A` (the logo's sun, the highlight word, main buttons), marigold `#FFB703` (badges, dates, "Proposed" tags, hover states, icons on cobalt), backwater teal `#14B8A6` (water in the illustrations, music and youth), warm off-white `#FFF8EE` (background) and deep navy `#0B1A4A` (text; never pure black). Marigold and teal are fills, chips and lines on off-white, never text there. Small coral text uses `coral-ink` `#C42E22`.
+- **Strand colours** (`accent` in `src/content/strands.json`, helpers in `src/lib/strands.ts`): Literature cobalt, Music teal, Theatre and Art coral, Youth marigold; Cinema coral, Ideas and the Book Fair cobalt, Children's and Food marigold. They colour the strand grid, the programme's filter chips and each session's strand dot.
 - **Voice:** quiet, warm, inviting. Short lines, no hype, no exclamation marks, no unverified numbers. **One tagline only, site-wide: "Pause. Turn a page."** The theme is "Chapter 1 — The Pause" (a chapter title, not a tagline). The About story line: "Every ripple begins with a pause. One page, one idea, spreading outward." Retired: "Where words meet the world", "Be the flow", "Where words, stories and people connect", "Come for a story. Stay for the connection."
 - **Bilingual:** every line is in one language only; never the same words in Malayalam and English side by side. In Malayalam the festival is ഫെസ്റ്റിവൽ, never ഉത്സവം (the name: കൊല്ലം ഇന്റർനാഷണൽ ലിറ്ററേച്ചർ ഫെസ്റ്റിവൽ).
 - The previous design is kept on the branch `archive/design-2026-09-astra`.

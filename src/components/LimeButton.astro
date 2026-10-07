@@ -1,8 +1,8 @@
 ---
 /**
  * Square button with a ↗. On hover a ring spreads from it, like a drop on
- * water. `primary` (the default) is red on light surfaces and canvas inside
- * `.on-dark` sections; `lime` is the older name for the pale water one.
+ * water. `primary` (the default) is red-coral on light surfaces and marigold
+ * inside cobalt (`.on-dark`) sections; `lime` is marigold everywhere.
  * Renders <a> when href is set.
  */
 interface Props {
@@ -19,12 +19,12 @@ interface Props {
 const { href, label, type = 'button', variant = 'primary', size = 'md', arrow = true, class: cls = '', external = false, ...rest } = Astro.props;
 const variants = {
   primary: 'btn-primary',
-  lime: 'bg-water-light text-ink hover:bg-water-soft [--ring:var(--color-water)]',
-  navy: 'bg-ink text-white hover:bg-[#333] [--ring:var(--color-ink)]',
-  white: 'bg-canvas text-ink hover:bg-paper [--ring:var(--color-canvas)]',
-  coral: 'bg-red text-white hover:bg-red-deep [--ring:var(--color-red)]',
-  ghost: 'bg-transparent text-ink ring-1 ring-inset ring-ink/55 hover:bg-ink/5 [--ring:var(--color-ink)]',
-  'outline-light': 'bg-transparent text-white ring-1 ring-inset ring-white/50 hover:bg-white/10 [--ring:#fff]',
+  lime: 'bg-marigold text-navy hover:bg-white [--ring:var(--color-marigold)]',
+  navy: 'bg-cobalt text-white hover:bg-marigold hover:text-navy [--ring:var(--color-cobalt)]',
+  white: 'bg-white text-cobalt hover:bg-marigold hover:text-navy [--ring:#fff]',
+  coral: 'bg-coral text-navy hover:bg-marigold [--ring:var(--color-coral)]',
+  ghost: 'bg-transparent text-cobalt ring-2 ring-inset ring-cobalt hover:bg-marigold hover:text-navy hover:ring-marigold [--ring:var(--color-cobalt)]',
+  'outline-light': 'bg-transparent text-white ring-2 ring-inset ring-white/70 hover:bg-marigold hover:text-navy hover:ring-marigold [--ring:#fff]',
 };
 const sizes = { lg: 'min-h-14 px-7 text-[1rem]', md: 'min-h-13 px-6 text-[0.95rem]', sm: 'min-h-11 px-5 text-sm' };
 const classes = [

@@ -43,7 +43,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   <div class="bar">
     <div class="container-kilf flex h-[var(--hh)] items-center justify-between gap-4">
       <a href={lp('/')} class="-ml-1 flex min-h-11 shrink-0 items-center px-1">
-        <Logo decorative class="[--h:2.5rem] lg:[--h:2.85rem]" />
+        <Logo tone="dark" decorative class="[--h:2.5rem] lg:[--h:2.85rem]" />
         <span class="sr-only">Kollam International Literature Festival 2027 — {t('nav.home')}</span>
       </a>
 
@@ -119,7 +119,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
             {languages[other]}
           </a>
           <a href={`mailto:${site.email}`} class="inline-flex min-h-11 items-center gap-2 text-sm text-white/80 hover:text-white">
-            <Icon name="mail" size={18} class="text-water-light" />{site.email}
+            <Icon name="mail" size={18} class="text-marigold" />{site.email}
           </a>
         </div>
       </div>
@@ -128,10 +128,11 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 </header>
 
 <style>
+  /* A solid cobalt bar, on every page (the hero's calm starts below it). */
   .site-header {
-    --fg: var(--color-ink);
-    --bg: color-mix(in oklab, var(--color-canvas) 94%, transparent);
-    --edge: var(--color-line);
+    --fg: #ffffff;
+    --bg: var(--color-cobalt);
+    --edge: rgb(255 255 255 / 0.14);
     position: sticky;
     top: 0;
     z-index: 50;
@@ -141,11 +142,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     position: fixed;
     inset-inline: 0;
   }
-  /* Over the hero: no bar, the sky shows through */
-  :global(.has-js) .site-header[data-overlay]:not([data-solid]) {
-    --bg: transparent;
-    --edge: transparent;
-  }
+
   .site-header[data-menu-open] {
     --fg: #fff;
     --bg: transparent;
@@ -165,6 +162,9 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
+  .site-header :focus-visible {
+    outline-color: var(--color-marigold);
+  }
   .nav-link {
     position: relative;
     display: inline-flex;
@@ -181,7 +181,8 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     right: 0.7rem;
     bottom: 0.5rem;
     height: 1.5px;
-    background: var(--color-red);
+    background: var(--color-marigold);
+    height: 3px;
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.4s var(--ease-calm);
@@ -199,16 +200,11 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     background: color-mix(in oklab, currentColor 8%, transparent);
   }
   .site-header[data-menu-open] :global(.hdr-cta) {
-    background: var(--color-canvas);
-    color: var(--color-ink);
-  }
-  /* The logo turns canvas over the menu's ink. */
-  .site-header[data-menu-open] :global(.kilf-logo) {
-    --ink: var(--color-canvas);
-    --sun: var(--color-red-bright);
+    background: var(--color-marigold);
+    color: var(--color-navy);
   }
 
-  /* The menu: ink, calm; it simply fades in. */
+  /* The menu: cobalt, like the bar; it simply fades in. */
   .menu {
     position: fixed;
     inset: 0;
@@ -243,7 +239,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   }
   .menu-link:hover,
   .menu-link[aria-current='page'] {
-    color: var(--color-water-light);
+    color: var(--color-marigold);
   }
 </style>
 

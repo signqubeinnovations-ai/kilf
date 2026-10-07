@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 /* ---------------------------------------------------------------------------
-   Chapter 1 — The Pause. Calm, shore, ripple, reading by Ashtamudi.
+   Chapter 1 — The Pause. A calm hero by Ashtamudi; a bold, festive site.
    Type (self-hosted, display=swap inside each @font-face): one clean sans,
    the same family as the logo's wordmark. No handwritten faces.
    - Plus Jakarta Sans: headlines at 800 with tight tracking, text at 500
@@ -11,51 +11,63 @@
 @import '@fontsource-variable/noto-sans-malayalam/wght.css';
 
 /* ---------------------------------------------------------------------------
-   Colours: canvas, ink and one deep red. Water is a muted grey-blue, used
-   softly and only for the lake (illustrations, rings, pale bands).
-   Contrast (WCAG) on canvas #E8E1D7:
-   - ink #1A1A1A 13.2:1 · muted #57524B 5.9:1 · red #A80E0E 5.8:1
-   - canvas on ink 13.2:1 · white on red 7.7:1
-   - red-bright #D42A1F on ink 3.4:1: large text and shapes only
-   The older token names (navy, cobalt, coral, lake, night…) are kept as
-   aliases so existing markup follows the new palette; there is no cobalt
-   blue or coral left in the brand.
+   Colours: a vibrant festival palette on warm off-white, with full-width
+   cobalt sections for contrast. The calm is kept for the hero only.
+   - cobalt #1E3FD8: logo arcs, headlines, header, footer, main sections
+   - red-coral #F2483A: the logo's sun, the highlight word, main buttons
+   - marigold #FFB703: badges, dates, "Proposed", hover states, icons on cobalt
+   - teal #14B8A6: water in the illustrations, music and youth accents
+   - off-white #FFF8EE background · deep navy #0B1A4A text (never pure black)
+   Contrast (WCAG) on off-white: navy 15.9:1 · cobalt 7.3:1 · muted 7.4:1 ·
+   coral 3.5:1 (large text and shapes) · coral-ink 4.9:1 (small text).
+   On cobalt: white 7.6:1 · marigold 4.4:1 (large text and shapes).
+   Buttons: navy on coral 4.6:1 · navy on marigold 9.6:1.
+   Marigold and teal are never text on off-white (too light); they are
+   fills, chips, shapes and lines there.
+   Older token names (canvas, ink, red, water, lake, night…) are aliases.
 --------------------------------------------------------------------------- */
 @theme {
-  --color-canvas: #e8e1d7;
-  --color-canvas-deep: #ddd5c9;
-  --color-paper: #f3efe8;
-  --color-ink: #1a1a1a;
-  --color-red: #a80e0e;
-  --color-red-deep: #860b0b;
-  --color-red-bright: #d42a1f;
-  --color-water: #8e9ea8;
-  --color-water-light: #b9c3c8;
-  --color-water-soft: #d9dcd8;
-  --color-muted: #57524b;
-  --color-line: #cbc1b3;
+  --color-cream: #fff8ee;
+  --color-paper: #ffffff;
+  --color-navy: #0b1a4a;
+  --color-cobalt: #1e3fd8;
+  --color-cobalt-deep: #1531b0;
+  --color-coral: #f2483a;
+  --color-coral-deep: #d63a2d;
+  --color-coral-ink: #c42e22;
+  --color-coral-soft: #fde3df;
+  --color-marigold: #ffb703;
+  --color-marigold-soft: #fff0c7;
+  --color-teal: #14b8a6;
+  --color-teal-light: #7edbcf;
+  --color-teal-soft: #ddf5f1;
+  --color-muted: #46507a;
+  --color-line: #ecdfcb;
+  --color-warm: #ffefd6;
 
   /* Aliases: older names, new values. */
-  --color-cream: #e8e1d7;
-  --color-navy: #1a1a1a;
-  --color-navy-deep: #1a1a1a;
-  --color-night: #1a1a1a;
-  --color-footer: #1a1a1a;
-  --color-cobalt: #1a1a1a;
-  --color-blue: #1a1a1a;
-  --color-blue-bright: #1a1a1a;
-  --color-coral: #d42a1f;
-  --color-coral-text: #a80e0e;
-  --color-coral-dark: #a80e0e;
-  --color-coral-ink: #a80e0e;
-  --color-coral-deep: #860b0b;
-  --color-coral-soft: #eddad3;
-  --color-lake: #b9c3c8;
-  --color-lake-soft: #d9dcd8;
-  --color-lime: #b9c3c8;
-  --color-lime-deep: #8e9ea8;
-  --color-sky: #d9dcd8;
-  --color-mist: #b9c3c8;
+  --color-canvas: #fff8ee;
+  --color-canvas-deep: #ffefd6;
+  --color-ink: #0b1a4a;
+  --color-red: #f2483a;
+  --color-red-deep: #d63a2d;
+  --color-red-bright: #ffb703;
+  --color-water: #14b8a6;
+  --color-water-light: #7edbcf;
+  --color-water-soft: #ddf5f1;
+  --color-navy-deep: #0b1a4a;
+  --color-night: #1e3fd8;
+  --color-footer: #1e3fd8;
+  --color-blue: #1e3fd8;
+  --color-blue-bright: #1e3fd8;
+  --color-coral-text: #f2483a;
+  --color-coral-dark: #c42e22;
+  --color-lake: #7edbcf;
+  --color-lake-soft: #ffefd6;
+  --color-lime: #ffb703;
+  --color-lime-deep: #e6a300;
+  --color-sky: #ffefd6;
+  --color-mist: #c8d3ff;
 
   --font-display: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
@@ -83,8 +95,8 @@
     scroll-padding-top: calc(var(--hh) + 1rem);
   }
   body {
-    background: var(--color-canvas);
-    color: var(--color-ink);
+    background: var(--color-cream);
+    color: var(--color-navy);
     font-family: var(--font-sans);
     font-weight: 500;
     font-size: 1.0625rem;
@@ -93,7 +105,9 @@
     text-rendering: optimizeLegibility;
     overflow-x: clip;
   }
+  /* Headlines in cobalt; white on cobalt sections. */
   h1, h2, h3, h4 {
+    color: var(--color-cobalt);
     font-family: var(--font-display);
     font-weight: 800;
     letter-spacing: -0.03em;
@@ -113,18 +127,22 @@
   a {
     color: inherit;
   }
-  /* Focus is always visible: a red ring, pale water on dark sections. */
+  .on-dark :is(h1, h2, h3, h4),
+  .on-dark:is(h1, h2, h3, h4) {
+    color: inherit;
+  }
+  /* Focus is always visible: a cobalt ring, marigold on cobalt sections. */
   :focus-visible {
-    outline: 3px solid var(--color-red);
+    outline: 3px solid var(--color-cobalt);
     outline-offset: 3px;
   }
   .on-dark :focus-visible,
   .on-dark:focus-visible {
-    outline-color: var(--color-water-light);
+    outline-color: var(--color-marigold);
   }
   ::selection {
-    background: var(--color-water-light);
-    color: var(--color-ink);
+    background: var(--color-marigold);
+    color: var(--color-navy);
   }
 }
 
@@ -156,14 +174,26 @@
     line-height: 1.22;
   }
 
-  /* The one highlighted word in a headline, in red. (The class keeps its
-     old name so existing headlines pick it up.) */
+  /* The one highlighted word in every headline: red-coral, and marigold on
+     cobalt sections. */
   .coral-word,
   .accent-word {
-    color: var(--color-red);
+    color: var(--color-coral);
   }
   .on-dark :is(.coral-word, .accent-word) {
-    color: var(--color-red-bright);
+    color: var(--color-marigold);
+  }
+  /* Dates: a marigold mark under the text on light surfaces, marigold text on cobalt. */
+  .date-mark {
+    text-decoration: underline;
+    text-decoration-color: var(--color-marigold);
+    text-decoration-thickness: 0.32em;
+    text-underline-offset: -0.12em;
+    text-decoration-skip-ink: none;
+  }
+  .on-dark .date-mark {
+    text-decoration: none;
+    color: var(--color-marigold);
   }
   /* A headline's closing full stop, drawn in a little (see Headline.astro). */
   .stop {
@@ -199,7 +229,8 @@
     border: 1px solid var(--color-line);
   }
 
-  /* Buttons: square; primary is red on light surfaces and canvas on dark ones */
+  /* Buttons: square. Primary is red-coral with navy text (marigold on hover);
+     on cobalt sections it is marigold with navy text (white on hover). */
   .btn {
     position: relative;
     isolation: isolate;
@@ -217,28 +248,29 @@
     animation: ring-out 1.1s var(--ease-calm) 1;
   }
   .btn-primary {
-    background: var(--color-red);
-    color: #fff;
-    --ring: var(--color-red);
+    background: var(--color-coral);
+    color: var(--color-navy);
+    --ring: var(--color-coral);
   }
   .btn-primary:hover {
-    background: var(--color-red-deep);
+    background: var(--color-marigold);
+    --ring: var(--color-marigold);
   }
   .on-dark .btn-primary {
-    background: var(--color-canvas);
-    color: var(--color-ink);
-    --ring: var(--color-canvas);
+    background: var(--color-marigold);
+    color: var(--color-navy);
+    --ring: var(--color-marigold);
   }
   .on-dark .btn-primary:hover {
-    background: var(--color-paper);
+    background: #ffffff;
   }
   .on-dark .on-light .btn-primary {
-    background: var(--color-red);
-    color: #fff;
-    --ring: var(--color-red);
+    background: var(--color-coral);
+    color: var(--color-navy);
+    --ring: var(--color-coral);
   }
   .on-dark .on-light .btn-primary:hover {
-    background: var(--color-red-deep);
+    background: var(--color-marigold);
   }
 
   /* Text links: an underline rule with a ↗ */
@@ -248,7 +280,7 @@
     transition: color 0.3s ease, border-color 0.3s ease, gap 0.4s var(--ease-calm);
   }
   .text-link:hover {
-    border-bottom-color: var(--line, currentColor);
+    border-bottom-color: var(--color-marigold);
   }
 
   /* Placeholders: visibly highlighted in dev, see TODO.md */

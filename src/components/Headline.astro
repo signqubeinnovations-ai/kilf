@@ -1,10 +1,10 @@
 ---
 import { parsePath, isTranslated } from '@/i18n/ui';
 /**
- * Headline in Plus Jakarta Sans 800 with tight tracking, in ink (canvas on
- * dark). Each headline carries one highlight in red: the word named by
- * `coral` (the prop keeps its old name), or, when no word is named, the
- * second line (`accent`). Never both.
+ * Headline in Plus Jakarta Sans 800 with tight tracking, in cobalt (white on
+ * cobalt sections). Each headline carries one highlight: red-coral, or
+ * marigold on cobalt. It is the word named by `coral`, or, when no word is
+ * named, the second line (`accent`). Never both.
  */
 interface Props {
   text?: string;
@@ -42,11 +42,11 @@ const mlSizes = {
   md: 'text-[1.5rem] sm:text-[1.85rem] lg:text-[2.1rem]',
   sm: 'text-xl sm:text-2xl',
 };
-const base = { light: 'text-navy', dark: 'text-white', blue: 'text-white', coral: 'text-navy', lime: 'text-navy' }[tone];
+const base = { light: 'text-cobalt', dark: 'text-white', blue: 'text-white', coral: 'text-cobalt', lime: 'text-cobalt' }[tone];
 const onDark = tone === 'dark' || tone === 'blue';
 // One red highlight per headline: the named word if there is one, otherwise the accent line.
-const red = onDark ? 'text-red-bright' : 'text-red';
-const plain = onDark ? 'text-white' : 'text-ink';
+const red = onDark ? 'text-marigold' : 'text-coral';
+const plain = onDark ? 'text-white' : 'text-cobalt';
 const accentClass = accentStyle === 'soft' ? 'font-medium opacity-90' : coral ? plain : accentColor === 'navy' ? plain : red;
 // Set the one red word, if it appears.
 const mark = (s: string) => {

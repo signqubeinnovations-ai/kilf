@@ -62,6 +62,8 @@ const strands = defineCollection({
     blurb_ml: z.string(),
     icon: z.string(),
     order: z.number(),
+    /** The strand's accent: Literature cobalt, Music teal, Theatre and Art coral, Youth marigold. */
+    accent: z.enum(['cobalt', 'teal', 'coral', 'marigold']),
   }),
 });
 

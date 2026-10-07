@@ -1,8 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import Icon from '../Icon.astro';
+import { accentVar } from '@/lib/strands';
 import type { Lang } from '@/i18n/ui';
-/** The nine strands: a quiet grid of hairlines, an icon, a name and a line. */
+/** The nine strands: each with its accent colour as a rule and an icon tile, a name and a line. */
 interface Props { lang?: Lang }
 const { lang = 'en' } = Astro.props;
 const strands = (await getCollection('strands')).sort((a, b) => a.data.order - b.data.order);
@@ -10,10 +11,12 @@ const ml = lang === 'ml';
 ---
 <ul class="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
   {strands.map((s) => (
-    <li class="flex gap-5 border-t border-line py-8">
-      <Icon name={s.data.icon} size={28} class="mt-1 shrink-0 text-cobalt" />
+    <li class="flex gap-5 border-t-4 py-8" style={`border-color:${accentVar[s.data.accent]}`}>
+      <span class:list={['grid size-12 shrink-0 place-items-center', s.data.accent === 'cobalt' ? 'text-white' : 'text-navy']} style={`background:${accentVar[s.data.accent]}`}>
+        <Icon name={s.data.icon} size={26} />
+      </span>
       <div>
-        <h3 class="font-display text-[1.35rem] leading-tight tracking-[-0.03em] text-navy" lang={ml ? 'ml' : undefined}>{ml ? s.data.name_ml : s.data.name}</h3>
+        <h3 class="font-display text-[1.35rem] leading-tight tracking-[-0.03em] text-cobalt" lang={ml ? 'ml' : undefined}>{ml ? s.data.name_ml : s.data.name}</h3>
         <p class="mt-2 text-[0.98rem] leading-relaxed text-muted" lang={ml ? 'ml' : undefined}>{ml ? s.data.blurb_ml : s.data.blurb}</p>
       </div>
     </li>

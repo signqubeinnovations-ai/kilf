@@ -36,7 +36,7 @@ const groups = [
     {groups.map(([id, label], gi) => (
       <section id={id} aria-labelledby={`${id}-h`} class="grid gap-6 lg:grid-cols-12 lg:gap-16">
         <div class="lg:col-span-4">
-          <h3 id={`${id}-h`} lang={h.lang} class="eyebrow flex items-center gap-3 text-navy lg:sticky lg:top-[calc(var(--hh)+2rem)]"><Rings n={1} size={26} tone="cobalt" />{label}</h3>
+          <h3 id={`${id}-h`} lang={h.lang} class="eyebrow flex items-center gap-3 text-cobalt lg:sticky lg:top-[calc(var(--hh)+2rem)]"><Rings n={1} size={26} tone="cobalt" />{label}</h3>
         </div>
         <div class="border-t border-line lg:col-span-8">
           {faqs.filter((f) => f.data.group === id).map((f, i) => (

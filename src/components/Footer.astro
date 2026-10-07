@@ -21,7 +21,7 @@ const siteUrl = new URL(lp('/'), Astro.site).href;
 const qr = await QRCode.toString(siteUrl, {
   type: 'svg',
   margin: 1,
-  color: { dark: '#1A1A1A', light: '#FFFFFF' },
+  color: { dark: '#0B1A4A', light: '#FFFFFF' },
   errorCorrectionLevel: 'M',
 });
 
@@ -57,7 +57,7 @@ const cols = [
         <div>
           <p class="eyebrow flex items-center gap-3 text-white/75"><Rings n={3} size={40} tone="water" />{t('footer.closing.kicker')}</p>
           <h2 id="closing-h" class:list={['display mt-6', lang === 'ml' ? 'text-[1.7rem] min-[380px]:text-[2.1rem] sm:text-[2.8rem] lg:text-[3.4rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4.2rem]']}>
-            <Stopped text={t('footer.closing.h')} /><br /><span class="text-red-bright"><Stopped text={t('footer.closing.accent')} /></span>
+            <Stopped text={t('footer.closing.h')} /><br /><span class="text-marigold"><Stopped text={t('footer.closing.accent')} /></span>
           </h2>
         </div>
         <div class="flex flex-wrap items-center gap-3 lg:pb-3">
@@ -83,7 +83,7 @@ const cols = [
           <h2 class="eyebrow text-white/65">{col.title}</h2>
           <ul class="mt-4">
             {col.links.map(([href, label]) => (
-              <li><a href={lp(href)} class="inline-flex min-h-10 items-center text-[0.97rem] text-white/90 transition-colors hover:text-water-light">{label}</a></li>
+              <li><a href={lp(href)} class="inline-flex min-h-10 items-center text-[0.97rem] text-white/90 transition-colors hover:text-marigold">{label}</a></li>
             ))}
           </ul>
         </nav>
@@ -93,11 +93,11 @@ const cols = [
         <h2 class="eyebrow text-white/65">{t('footer.contact')}</h2>
         <ul class="mt-4 text-[0.97rem]">
           <li>
-            <a href={`mailto:${site.email}`} class="inline-flex min-h-10 items-center break-all text-white hover:text-water-light">{site.email}</a>
+            <a href={`mailto:${site.email}`} class="inline-flex min-h-10 items-center break-all text-white hover:text-marigold">{site.email}</a>
           </li>
           <li>
             {site.socialUrl && !isPlaceholder(site.socialHandle) ? (
-              <a href={site.socialUrl} class="inline-flex min-h-10 items-center text-white hover:text-water-light" rel="noopener" target="_blank">{site.socialHandle}</a>
+              <a href={site.socialUrl} class="inline-flex min-h-10 items-center text-white hover:text-marigold" rel="noopener" target="_blank">{site.socialHandle}</a>
             ) : (
               <span class="inline-flex min-h-10 items-center text-white"><Placeholder value={site.socialHandle} /></span>
             )}
@@ -115,14 +115,14 @@ const cols = [
         <Rings n={3} size={34} tone="water" />
         <span>{t('site.organisedBy')} {site.organiser}</span>
         <span aria-hidden="true">·</span>
-        <a href={site.url} class="hover:text-water-light">{site.domain}</a>
+        <a href={site.url} class="hover:text-marigold">{site.domain}</a>
         <span aria-hidden="true">·</span>
-        <a href={`mailto:${site.email}`} class="hover:text-water-light">{site.email}</a>
+        <a href={`mailto:${site.email}`} class="hover:text-marigold">{site.email}</a>
       </p>
       <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
         <p>{t('footer.tagline')}</p>
         <p>© 2027 {site.shortName}. {t('footer.rights')}</p>
-        <a href={lp('/privacy')} class="inline-flex min-h-11 items-center hover:text-water-light">{t('nav.privacy')}</a>
+        <a href={lp('/privacy')} class="inline-flex min-h-11 items-center hover:text-marigold">{t('nav.privacy')}</a>
         <MotionToggle lang={lang} />
       </div>
     </div>

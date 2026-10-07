@@ -81,7 +81,7 @@ export function ripplePaths(weight = 1) {
  * The mark as a standalone SVG string.
  * @param {{ ink?: string, sun?: string, pad?: number, square?: boolean, bg?: string, radius?: number, weight?: number }} o
  */
-export function markSvg({ ink = '#1A1A1A', sun = '#A80E0E', pad = 0, square = false, bg, radius = 0, weight = 1 } = {}) {
+export function markSvg({ ink = '#1E3FD8', sun = '#F2483A', pad = 0, square = false, bg, radius = 0, weight = 1 } = {}) {
   const w = MARK.width + pad * 2;
   const h = square ? w : MARK.height + pad * 2;
   const dy = (h - MARK.height) / 2;

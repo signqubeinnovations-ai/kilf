@@ -2,7 +2,7 @@
 // 1. Rasterises the stand-in illustrations in src/placeholders/*.svg, so the
 //    image pipeline (AVIF/WebP via <Picture>) works before the real artwork
 //    lands in kilf-assets/. Real files in kilf-assets/ always win.
-// 2. Makes a grey-blue duotone initials placeholder for any speaker whose photo
+// 2. Makes a teal-and-cobalt initials placeholder for any speaker whose photo
 //    is missing from kilf-assets/speakers/.
 // 3. Builds the 1200×630 Open Graph share image: the title panel beside the
 //    cover illustration.
@@ -62,11 +62,11 @@ for (const file of await fs.readdir(speakersDir)) {
     .map((w) => w[0].toUpperCase())
     .join('');
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
-    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8E9EA8"/><stop offset="1" stop-color="#3C4850"/></linearGradient></defs>
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14B8A6"/><stop offset="1" stop-color="#1E3FD8"/></linearGradient></defs>
     <rect width="600" height="600" fill="url(#g)"/>
-    <circle cx="300" cy="300" r="210" fill="none" stroke="#D9DCD8" stroke-opacity=".3" stroke-width="2"/>
-    <path d="M60 470c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0" fill="none" stroke="#A80E0E" stroke-width="6" stroke-linecap="round" opacity=".9"/>
-    <text x="300" y="345" text-anchor="middle" font-family="sans-serif" font-weight="800" font-size="150" fill="#F3EFE8" letter-spacing="-4">${initials}</text>
+    <circle cx="300" cy="300" r="210" fill="none" stroke="#FFFFFF" stroke-opacity=".35" stroke-width="2"/>
+    <path d="M60 470c40-14 80-14 120 0s80 14 120 0 80-14 120 0 80 14 120 0" fill="none" stroke="#FFB703" stroke-width="6" stroke-linecap="round" opacity=".9"/>
+    <text x="300" y="345" text-anchor="middle" font-family="sans-serif" font-weight="800" font-size="150" fill="#FFF8EE" letter-spacing="-4">${initials}</text>
   </svg>`;
   await sharp(Buffer.from(svg)).jpeg({ quality: 85 }).toFile(target);
 }
@@ -77,7 +77,7 @@ for (const file of await fs.readdir(speakersDir)) {
 //    `node scripts/draw-brand.mjs`; redraw it if the title or dates change.
 const cover = (await findReal('illustrations', 'cover')) ?? path.join(root, 'src/assets/art/lake-hero.jpg');
 const art = await sharp(cover).resize(640, 630, { fit: 'cover', position: 'right' }).toBuffer();
-await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#E8E1D7' } })
+await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#FFF8EE' } })
   .composite([
     { input: art, left: 560, top: 0 },
     // The panel is drawn at 2× for sharpness; it fills the left 700 × 630.

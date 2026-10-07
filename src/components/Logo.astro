@@ -2,9 +2,11 @@
 import { logoUrl } from '@/lib/images';
 import { ripplePaths, SUN, MARK } from '@/lib/ripple.mjs';
 /**
- * The KILF 2027 logo: the ripple mark (eight tapered strokes and a red sun),
- * a thin divider, and the wordmark "Kollam International Literature
- * Festival 2027" in tracked capitals.
+ * The KILF 2027 logo: the ripple mark (eight tapered strokes and a sun), a
+ * thin divider, and the wordmark "Kollam International Literature Festival
+ * 2027" in tracked capitals. On light backgrounds: cobalt arcs and wordmark
+ * with a red-coral sun (`tone="light"`). On cobalt: white arcs and wordmark
+ * with a marigold sun (`tone="dark"`).
  *
  * Size it with `--h` (the lockup's height), e.g. class="[--h:2.75rem]".
  * The wordmark sits in three lines; `wrap="responsive"` (the header) falls
@@ -59,8 +61,8 @@ const wideBreak = wrap === 'responsive' ? 'hidden min-[360px]:inline' : '';
 
 <style>
   .kilf-logo {
-    --ink: var(--color-ink);
-    --sun: var(--color-red);
+    --ink: var(--color-cobalt);
+    --sun: var(--color-coral);
     display: inline-flex;
     align-items: center;
     gap: calc(var(--h, 2.75rem) * 0.24);
@@ -68,8 +70,8 @@ const wideBreak = wrap === 'responsive' ? 'hidden min-[360px]:inline' : '';
     color: var(--ink);
   }
   .kilf-logo.is-dark {
-    --ink: var(--color-canvas);
-    --sun: var(--color-red-bright);
+    --ink: #ffffff;
+    --sun: var(--color-marigold);
   }
   .mark {
     display: block;

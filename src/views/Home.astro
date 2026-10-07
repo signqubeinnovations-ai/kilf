@@ -13,8 +13,8 @@ import Illustration from '@/components/Illustration.astro';
 import Placeholder from '@/components/Placeholder.astro';
 import Rings from '@/components/Rings.astro';
 import Stopped from '@/components/Stopped.astro';
-import Divider from '@/components/Divider.astro';
 import CauseArt from '@/components/CauseArt.astro';
+import EveningStage from '@/components/EveningStage.astro';
 import { site } from '@/lib/site';
 import { hasBio } from '@/lib/speakers';
 import { useTranslations, localizePath, type Lang } from '@/i18n/ui';
@@ -78,7 +78,7 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
         <span class="sr-only"> — {t('home.hero.name')} 2027</span>
       </h1>
       <p class="mt-6 max-w-xl text-[1.3rem] font-medium leading-snug text-ink sm:text-[1.5rem]">{t('home.hero.sub')}</p>
-      <p class="mt-3 text-lg text-muted">{t('site.dates')} · {t('site.city')}</p>
+      <p class="mt-3 text-lg text-navy"><span class="date-mark">{t('site.dates')}</span> · {t('site.city')}</p>
       <div class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
         <LimeButton href={lp('/passes')} label={t('cta.getPass')} size="lg" />
         <TextLink href={lp('/programme')} label={t('cta.explore')} />
@@ -95,76 +95,72 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
   </div>
 </section>
 
-<!-- 2 · The Pause -->
-<section class="bg-cream py-24 sm:py-32 lg:py-40" aria-labelledby="pause-h">
+<!-- 2 · The Pause: the first cobalt band -->
+<section class="on-dark bg-cobalt py-24 text-white sm:py-32 lg:py-36" aria-labelledby="pause-h">
   <div class="container-kilf">
     <div class="mx-auto max-w-3xl text-center">
-      <p class="eyebrow inline-flex items-center gap-3 text-ink"><Rings n={1} size={26} tone="ink" />{t('home.pause.label')}</p>
-      <h2 id="pause-h" class:list={['display mt-8', ml ? 'text-[2.1rem] sm:text-[2.8rem] lg:text-[3.3rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4rem]']}><Stopped text={t('home.pause.h')} /></h2>
-      <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-muted sm:text-[1.4rem]">{t('home.pause.body')}</p>
-      <Rings n={3} size={96} tone="water" class="mx-auto mt-16" />
-      <p class="mx-auto mt-8 max-w-xl text-[1.05rem] leading-relaxed text-navy">
-        <span class="eyebrow mb-2 block text-muted">{t('home.pause.whyLabel')}</span>
+      <p class="eyebrow inline-flex items-center gap-3 text-white"><Rings n={1} size={26} tone="water" />{t('home.pause.label')}</p>
+      <h2 id="pause-h" class:list={['display mt-8 text-white', ml ? 'text-[2.1rem] sm:text-[2.8rem] lg:text-[3.3rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4rem]']}><Stopped text={t('home.pause.h')} /></h2>
+      <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/90 sm:text-[1.4rem]">{t('home.pause.body')}</p>
+      <Rings n={3} size={96} tone="water" class="mx-auto mt-14" />
+      <p class="mx-auto mt-8 max-w-xl text-[1.05rem] leading-relaxed text-white">
+        <span class="eyebrow mb-2 block text-white">{t('home.pause.whyLabel')}</span>
         {t('home.pause.why')}
       </p>
     </div>
   </div>
 </section>
 
-<!-- 3 · New Year’s Eve: a new year by the lake -->
-<section class="on-dark relative overflow-hidden bg-night text-white" aria-labelledby="nye-h">
-  <!-- Night water along the bottom edge: a horizon line and three rings, below the text. -->
-  <svg class="pointer-events-none absolute bottom-0 left-0 hidden w-[26rem] opacity-60 lg:block" viewBox="0 0 300 70" aria-hidden="true">
-    <line x1="0" x2="300" y1="6" y2="6" stroke="var(--color-water)" stroke-opacity="0.45" />
-    <g fill="none" stroke="var(--color-water)" stroke-opacity="0.6" stroke-width="1.2">
-      <ellipse cx="120" cy="46" rx="24" ry="6" />
-      <ellipse cx="120" cy="46" rx="52" ry="12" />
-      <ellipse cx="120" cy="46" rx="84" ry="19" />
-    </g>
-  </svg>
-  <div class="container-kilf relative grid gap-14 py-24 sm:py-28 lg:grid-cols-12 lg:gap-16 lg:py-32">
-    <div class="lg:col-span-5">
-      <div class="flex flex-wrap items-center gap-3">
-        <ChapterLabel label={t('home.nye.chapter')} tone="dark" />
-        <Badge tone="dark">{t('home.khasak.proposed')}</Badge>
-      </div>
-      <Headline id="nye-h" text={t('home.nye.turn')} coral={t('home.nye.turnCoral')} tone="dark" size="xl" class="mt-6" />
-      <p class="mt-6 max-w-md text-lg leading-relaxed text-white/85">{t('home.nye.story')}</p>
-      <p class="mt-6 max-w-md text-[0.98rem] text-white/75">{t('home.nye.included')}</p>
-      <p class="mt-2 max-w-md text-[0.9rem] text-white/60">{t('home.nye.proposed')}</p>
-      <TextLink href={lp('/programme#day-2026-12-31')} label={t('home.nye.link')} tone="dark" class="mt-8" />
+<!-- 3 · New Year’s Eve: a new year by the lake, on the lit stage -->
+<section class="relative overflow-hidden bg-warm text-navy" aria-labelledby="nye-h">
+  <div class="container-kilf relative py-24 sm:py-28 lg:py-32">
+    <div class="overflow-hidden rounded-[1.25rem]">
+      <EveningStage />
     </div>
-    <div class="lg:col-span-7 lg:pt-4">
-      <p class="eyebrow text-white/70">{t('home.nye.run')} · 31.12.2026</p>
-      <ol class="mt-4 border-t border-white/15">
-        {eve.map((e) => (
-          <li class="grid grid-cols-[4.5rem_1fr] items-baseline gap-x-5 gap-y-1 border-b border-white/15 py-4 sm:grid-cols-[5rem_1fr_auto]">
-            <span class:list={['font-display text-[1.25rem] font-extrabold tabular-nums tracking-[-0.02em]', e.star ? 'text-red-bright' : 'text-white']}>{e.time}</span>
-            <span class:list={['text-[1.05rem]', e.star ? 'font-bold text-white' : 'text-white/85']}>{e.what}</span>
-            <span class="col-start-2 flex items-center gap-2 text-sm text-white/65 sm:col-start-auto" lang="en">
-              <Rings n={e.at.rings as 1 | 2 | 3} size={30} tone="water" label={`${t('home.plan.ringLabel')} ${e.at.rings}`} />{e.at.name}
-            </span>
-          </li>
-        ))}
-      </ol>
+    <div class="mt-14 grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <div class="flex flex-wrap items-center gap-3">
+          <ChapterLabel label={t('home.nye.chapter')} />
+          <Badge>{t('home.khasak.proposed')}</Badge>
+        </div>
+        <Headline id="nye-h" text={t('home.nye.turn')} coral={t('home.nye.turnCoral')} size="xl" class="mt-6" />
+        <p class="mt-6 max-w-md text-lg leading-relaxed text-navy">{t('home.nye.story')}</p>
+        <p class="mt-6 max-w-md text-[0.98rem] text-muted">{t('home.nye.included')}</p>
+        <p class="mt-2 max-w-md text-[0.9rem] text-muted">{t('home.nye.proposed')}</p>
+        <TextLink href={lp('/programme#day-2026-12-31')} label={t('home.nye.link')} class="mt-8" />
+      </div>
+      <div class="lg:col-span-7 lg:pt-4">
+        <p class="eyebrow text-navy">{t('home.nye.run')} · <span class="date-mark">31.12.2026</span></p>
+        <ol class="mt-4 border-t-2 border-cobalt">
+          {eve.map((e) => (
+            <li class="grid grid-cols-[4.5rem_1fr] items-baseline gap-x-5 gap-y-1 border-b border-navy/15 py-4 sm:grid-cols-[5rem_1fr_auto]">
+              <span class:list={['font-display text-[1.25rem] font-extrabold tabular-nums tracking-[-0.02em]', e.star ? 'text-coral' : 'text-cobalt']}>{e.time}</span>
+              <span class:list={['text-[1.05rem]', e.star ? 'font-bold text-navy' : 'text-navy']}>{e.what}</span>
+              <span class="col-start-2 flex items-center gap-2 text-sm text-muted sm:col-start-auto" lang="en">
+                <Rings n={e.at.rings as 1 | 2 | 3} size={30} tone="cobalt" label={`${t('home.plan.ringLabel')} ${e.at.rings}`} />{e.at.name}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 4 · Voices -->
-<section class="bg-cream py-24 sm:py-28 lg:py-32" aria-labelledby="voices-h">
+<!-- 4 · Voices: cobalt -->
+<section class="on-dark bg-cobalt py-24 text-white sm:py-28 lg:py-32" aria-labelledby="voices-h">
   <div class="container-kilf">
     <div class="flex flex-wrap items-end justify-between gap-6">
       <div>
-        <ChapterLabel label={t('home.voices.label')} />
-        <Headline id="voices-h" text={t('home.voices.h')} class="mt-6" />
+        <ChapterLabel label={t('home.voices.label')} tone="dark" />
+        <Headline id="voices-h" text={t('home.voices.h')} coral={t('home.voices.coral')} tone="dark" class="mt-6" />
       </div>
-      <p class="flex max-w-sm flex-wrap items-center gap-3 text-sm text-muted"><Badge>{t('home.khasak.proposed')}</Badge>{t('home.voices.proposed')}</p>
+      <p class="flex max-w-sm flex-wrap items-center gap-3 text-sm text-white/85"><Badge>{t('home.khasak.proposed')}</Badge>{t('home.voices.proposed')}</p>
     </div>
     <div class="mt-14 space-y-14 lg:space-y-16">
       {groups.map((g) => (
-        <div class="grid gap-6 border-t border-line pt-8 lg:grid-cols-12 lg:gap-10">
-          <h3 class="eyebrow flex items-center gap-3 self-start text-navy lg:col-span-3"><Rings n={1} size={24} tone="cobalt" />{g.label}</h3>
+        <div class="grid gap-6 border-t border-white/25 pt-8 lg:grid-cols-12 lg:gap-10">
+          <h3 class="eyebrow flex items-center gap-3 self-start text-white lg:col-span-3"><Rings n={1} size={24} tone="water" />{g.label}</h3>
           <ul class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:col-span-9 lg:gap-x-6">
             {g.people.map((s) => (
               <SpeakerCard
@@ -175,21 +171,22 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
                 categories={s.data.categories}
                 href={hasBio(s.body) ? lp(`/speakers/${s.id}`) : lp(`/speakers#${s.id}`)}
                 lang="en"
+                tone="dark"
               />
             ))}
           </ul>
         </div>
       ))}
     </div>
-    <TextLink href={lp('/speakers')} label={t('cta.seeSpeakers')} class="mt-14" />
+    <TextLink href={lp('/speakers')} label={t('cta.seeSpeakers')} tone="dark" class="mt-14" />
   </div>
 </section>
 
-<!-- 5 · Khasakkinte Ithihasam -->
-<section class="bg-lake-soft py-24 sm:py-28 lg:py-32" aria-labelledby="khasak-h">
+<!-- 5 · Khasakkinte Ithihasam: light -->
+<section class="bg-cream py-24 sm:py-28 lg:py-32" aria-labelledby="khasak-h">
   <div class="container-kilf grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-    <div class="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-night lg:col-span-6">
-      <Illustration src="illustrations/p4_stage.jpg" alt="A theatre stage under a single spotlight, a palm against a low red moon." sizes="(min-width: 1024px) 45vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+    <div class="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-cobalt lg:col-span-6">
+      <Illustration src="illustrations/p4_stage.jpg" alt="A theatre stage under a warm spotlight, a palm against a glowing coral moon." sizes="(min-width: 1024px) 45vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
     </div>
     <div class="lg:col-span-6">
       <div class="flex flex-wrap items-center gap-3">
@@ -199,7 +196,7 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
       <Headline id="khasak-h" text={t('home.khasak.h')} accent={t('home.khasak.accent')} class="mt-6" />
       <p class="mt-6 max-w-lg text-lg leading-relaxed text-muted">{t('home.khasak.short')}</p>
       <p class="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 font-bold text-navy">
-        <Rings n={1} size={36} tone="cobalt" label={`${t('home.plan.ringLabel')} 1`} />{t('home.khasak.where')} · {t('home.khasak.when')}
+        <Rings n={1} size={36} tone="cobalt" label={`${t('home.plan.ringLabel')} 1`} />{t('home.khasak.where')} · <span class="date-mark">{t('home.khasak.when')}</span>
       </p>
       <p class="mt-2 text-[1.02rem] text-muted">{t('home.khasak.priceLine')}</p>
       <LimeButton href={lp('/khasak#tickets')} label={t('home.khasak.tickets')} size="lg" class="mt-9" />
@@ -207,23 +204,23 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
   </div>
 </section>
 
-<!-- 6 · Our cause: Keep the waters alive -->
-<section class="bg-cream py-24 sm:py-28 lg:py-32" aria-labelledby="cause-h">
+<!-- 6 · Our cause: Keep the waters alive. Cobalt, with the teal lake card. -->
+<section class="on-dark bg-cobalt py-24 text-white sm:py-28 lg:py-32" aria-labelledby="cause-h">
   <div class="container-kilf grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="lg:col-span-7">
-      <ChapterLabel label={t('home.cause.label')} />
-      <Headline id="cause-h" text={t('home.cause.h')} coral={t('home.cause.coral')} size="xl" class="mt-6" />
-      <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">{t('home.cause.body')}</p>
-      <ul class="mt-10 max-w-xl border-t border-line">
+      <ChapterLabel label={t('home.cause.label')} tone="dark" />
+      <Headline id="cause-h" text={t('home.cause.h')} coral={t('home.cause.coral')} tone="dark" size="xl" class="mt-6" />
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/90">{t('home.cause.body')}</p>
+      <ul class="mt-10 max-w-xl border-t border-white/25">
         {commitments.map((c) => (
-          <li class="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-line py-4">
-            <Rings n={1} size={24} tone="cobalt" />
-            <span class="font-display text-[1.15rem] font-bold tracking-[-0.02em] text-navy">{c}</span>
+          <li class="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-white/25 py-4">
+            <Rings n={1} size={24} tone="water" />
+            <span class="font-display text-[1.15rem] font-bold tracking-[-0.02em] text-white">{c}</span>
             <Placeholder value="[CONFIRM]" />
           </li>
         ))}
       </ul>
-      <TextLink href={lp('/cause')} label={t('home.cause.link')} class="mt-8" />
+      <TextLink href={lp('/cause')} label={t('home.cause.link')} tone="dark" class="mt-8" />
     </div>
     <div class="lg:col-span-5">
       <CauseArt class="mx-auto max-w-md" />
@@ -233,8 +230,7 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
 
 <!-- 7 · Plan and join -->
 <section class="bg-cream pb-24 sm:pb-28 lg:pb-36" aria-labelledby="plan-h">
-  <Divider />
-  <div class="container-kilf pt-20 sm:pt-24">
+  <div class="container-kilf pt-24 sm:pt-28 lg:pt-32">
     <ChapterLabel label={t('home.plan.label')} />
     <Headline id="plan-h" text={t('home.plan.h')} accent={t('home.plan.accent')} class="mt-6" />
     <ul class="mt-12 grid border-l border-t border-line sm:grid-cols-2">
@@ -266,7 +262,7 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
       </div>
     </div>
 
-    <p class:list={['display mx-auto mt-28 max-w-4xl text-center', ml ? 'text-[1.7rem] min-[380px]:text-[2rem] sm:text-[2.8rem] lg:text-[3.3rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4.2rem]']}>
+    <p class:list={['display mx-auto mt-28 max-w-4xl text-center text-cobalt', ml ? 'text-[1.7rem] min-[380px]:text-[2rem] sm:text-[2.8rem] lg:text-[3.3rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4.2rem]']}>
       <Stopped text={t('footer.closing.h')} /><br /><span class="text-red"><Stopped text={t('footer.closing.accent')} /></span>
     </p>
   </div>
@@ -276,7 +272,7 @@ const commitments = [t('home.cause.c1'), t('home.cause.c2'), t('home.cause.c3')]
   @media (min-width: 1024px) {
     /* Morning mist over the lake, behind the words only: keeps them legible, lets the water and the sun show */
     .hero-mist {
-      background: radial-gradient(ellipse 60% 76% at 16% 54%, rgb(232 225 215 / 0.94) 0%, rgb(232 225 215 / 0.74) 44%, rgb(232 225 215 / 0) 78%);
+      background: radial-gradient(ellipse 60% 76% at 16% 54%, rgb(255 248 238 / 0.94) 0%, rgb(255 248 238 / 0.74) 44%, rgb(255 248 238 / 0) 78%);
     }
   }
 </style>
