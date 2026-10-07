@@ -1,8 +1,8 @@
 ---
 /**
  * Square button with a ↗. On hover a ring spreads from it, like a drop on
- * water. `primary` (the default) is cobalt on light surfaces and cream inside
- * `.on-dark` sections; `lime` is the older name for the pale lake-blue one.
+ * water. `primary` (the default) is red on light surfaces and canvas inside
+ * `.on-dark` sections; `lime` is the older name for the pale water one.
  * Renders <a> when href is set.
  */
 interface Props {
@@ -19,11 +19,11 @@ interface Props {
 const { href, label, type = 'button', variant = 'primary', size = 'md', arrow = true, class: cls = '', external = false, ...rest } = Astro.props;
 const variants = {
   primary: 'btn-primary',
-  lime: 'bg-lake text-navy hover:bg-[#bcd1ef] [--ring:var(--color-lake)]',
-  navy: 'bg-navy text-white hover:bg-night [--ring:var(--color-navy)]',
-  white: 'bg-cream text-navy hover:bg-white [--ring:#fff]',
-  coral: 'bg-coral text-night hover:bg-[#f48a70] [--ring:var(--color-coral)]',
-  ghost: 'bg-transparent text-navy ring-1 ring-inset ring-navy/55 hover:bg-navy/5 [--ring:var(--color-navy)]',
+  lime: 'bg-water-light text-ink hover:bg-water-soft [--ring:var(--color-water)]',
+  navy: 'bg-ink text-white hover:bg-[#333] [--ring:var(--color-ink)]',
+  white: 'bg-canvas text-ink hover:bg-paper [--ring:var(--color-canvas)]',
+  coral: 'bg-red text-white hover:bg-red-deep [--ring:var(--color-red)]',
+  ghost: 'bg-transparent text-ink ring-1 ring-inset ring-ink/55 hover:bg-ink/5 [--ring:var(--color-ink)]',
   'outline-light': 'bg-transparent text-white ring-1 ring-inset ring-white/50 hover:bg-white/10 [--ring:#fff]',
 };
 const sizes = { lg: 'min-h-14 px-7 text-[1rem]', md: 'min-h-13 px-6 text-[0.95rem]', sm: 'min-h-11 px-5 text-sm' };

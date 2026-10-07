@@ -9,7 +9,7 @@ import { localizePath, type Lang } from '@/i18n/ui';
  * The day-by-day programme (src/content/schedule.json). Without JavaScript
  * every day is listed in turn; with it, the days become tabs, and the strand
  * chips filter the sessions. Speaker chips link to their notes on /speakers.
- * Each session shows its venue code in ripple rings (1, 2 or 3).
+ * Each session shows its venue code in ripple rings (1 or 2).
  */
 interface Props { days: CollectionEntry<'schedule'>[]; lang: Lang }
 const { days, lang } = Astro.props;

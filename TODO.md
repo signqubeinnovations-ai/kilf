@@ -7,9 +7,8 @@
 | Placeholder | Where it shows | Where to fix |
 |---|---|---|
 | `[@HANDLE]` social handle | Footer, Contact page | `src/lib/site.ts` → `socialHandle` **and** `socialUrl` (the link appears once both are set) |
-| `[LAT]`, `[LNG]` for Sreenarayana Guru Cultural Centre | Plan your visit | `src/lib/site.ts` → `venues[0]` |
+| `[LAT]`, `[LNG]` for Sree Narayana Cultural Complex | Plan your visit | `src/lib/site.ts` → `venues[0]` |
 | `[LAT]`, `[LNG]` for 8 Point Art Cafe | Plan your visit | `src/lib/site.ts` → `venues[1]` |
-| `[LAT]`, `[LNG]` for Ashramam Maidan | Plan your visit | `src/lib/site.ts` → `venues[2]` |
 | `[PROPOSAL PDF]` partnership proposal | Partners page | Add `public/downloads/kilf-2027-partnership-proposal.pdf` |
 | `[CONFIRM]` beside each of the three commitments (a plastic-free festival, one climate conversation every day, an Ashtamudi clean-up) | Home "Our cause", `/cause` | Confirm with the organisers, then remove the `<Placeholder value="[CONFIRM]" />` in `src/views/Home.astro` and `src/views/Cause.astro`; the wording is `home.cause.c1`–`c3` and `cause.c1.d`–`c3.d` in `src/i18n/ui.ts` |
 | `[DATE]` for the Ashtamudi clean-up | `/cause` | `src/views/Cause.astro` ("When") |
@@ -19,7 +18,7 @@ The maps and "Get directions" links already work from the venue names. Coordinat
 
 ### Configuration (environment variables, see README §5)
 
-- [ ] `SITE_URL`: the real domain. Canonical URLs, sitemap, Open Graph and the footer QR code use it. It currently defaults to `https://kilf.vercel.app`.
+- [x] `SITE_URL`: defaults to `https://www.kilf.in`. Set it only to override (e.g. for a preview deployment).
 - [ ] `PUBLIC_FORM_ENDPOINT`: **required**, otherwise forms show an error in production.
 - [ ] `PUBLIC_GA4_ID` or `PUBLIC_PLAUSIBLE_DOMAIN`: optional analytics.
 - [ ] `PUBLIC_PARTNER_CALL_URL`: optional booking link for "Book a partnership call" (it falls back to email).
@@ -29,7 +28,6 @@ The maps and "Get directions" links already work from the venue names. Coordinat
 
 The site currently shows on-brand **stand-ins** because the assets were not in the repository.
 
-- [ ] `logos/kilf-logo.svg` and `logos/kilf-logo-white.svg`
 - [ ] `illustrations/p4_stage.jpg` for Khasakkinte Ithihasam (an abstract stage stands in until then).
 - [ ] Higher-resolution originals of the two lake illustrations in `src/assets/art/` (the current files were AI-upscaled 4× from 1241 px). Keep the same composition, or update the water outline in `src/lib/lake-art.ts`.
 - [ ] `speakers/*.jpg`: **illustrated portraits**, 4:5, at least 640 × 800 px, named after each speaker's file in `src/content/speakers/`. Until then a drawn figure by the water stands in. First the home page's eight voices: `m-mukundan`, `sara-joseph`, `s-hareesh`, `manu-s-pillai`, `sri-m`, `santhosh-george-kulangara`, `lijo-jose-pellissery` and `vairamuthu` (`.jpg`), then the rest of the 17.
@@ -46,7 +44,9 @@ This copy was written to fit the brief, but the source documents were not availa
 - [ ] **Pass descriptions and inclusions** (`src/content/passes.json`) are indicative. Confirm them before ticketing.
 - [ ] Strand one-liners (`src/content/strands.json`), youth activity one-liners (`src/views/Youth.astro`) and the Khasak description (`src/views/Khasak.astro`).
 - [ ] "Getting here", "While you’re here", "Around Kollam" and "Good to know" on Plan your visit (`src/views/Visit.astro`).
-- [ ] **Chapter 1: The Pause** copy: the home "The Pause" section (`home.pause.*`), "Why Ashtamudi", and the taglines.
+- [ ] **Chapter 1 — The Pause** copy: the home "The Pause" section (`home.pause.*`) and "Why Ashtamudi".
+- [ ] **Venues after Ashramam Maidan was dropped**: New Year's Eve, the three Khasakkinte Ithihasam evenings, the book fair and the food festival now sit at the Sree Narayana Cultural Complex (`src/content/schedule.json`, `src/views/Home.astro`, `src/views/Khasak.astro`). Confirm the halls: on 1 and 3 January some sessions there now run in parallel.
+- [ ] Malayalam for the new brand lines: the tagline (ഒന്നു നിൽക്കൂ. ഒരു താൾ മറിക്കൂ.), the hero subline, the About story line, the New Year's Eve headline, ഫെസ്റ്റിവൽ in place of ഉത്സവം, the venue name ശ്രീനാരായണ കൾച്ചറൽ കോംപ്ലക്സ് and ശങ്ക ട്രൈബ്.
 - [ ] **Our cause** (`/cause`, `cause.*` in `src/i18n/ui.ts`): the facts about Ashtamudi (a Ramsar wetland; its name, "eight braids"; the Kallada river and the opening to the sea at Neendakara; mangroves, clams, the karimeen), the commitments, the clean-up steps and the "Leave no trace" tips. Confirm with the organisers and, ideally, a local environmental group.
 - [ ] New sections written for this version, to confirm with the organisers: About ("Why KILF", "What to expect", "What we believe", `about.vision.*`, `about.e*`, `about.v*` in `src/i18n/ui.ts`); "A day at KILF", now on the Programme (`day.*`); Programme ("Formats"); Speakers ("The line-up", "Suggest a voice"); Khasak ("The novel", "The director", "Good to know"); Passes ("Which pass is for me?", "Ticketing, answered"); Get involved (volunteer roles, "What happens next"); Youth ("Campus ambassadors", "How to take part"); Partners ("How it works"); Contact ("Write to us about"); and the eight new FAQ answers in `src/content/faqs.json`.
 - [ ] **The proposed programme** (`src/content/schedule.json`): 45 sessions over five days, written to be viable with the proposed line-up. Every speaker appears once to three times with no clashes; other participants are described by role and marked "(invited)" or "(to be announced)" rather than named. Confirm titles, times, venues and pairings, and replace the invited roles with names as people confirm. Times for the three Khasakkinte Ithihasam evenings are placeholders (19:00, "to be confirmed").
@@ -56,7 +56,7 @@ This copy was written to fit the brief, but the source documents were not availa
 
 ## 4. Malayalam
 
-- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json`, especially the lines new in Chapter 1: The Pause: `home.hero.*`, `home.pause.*`, `home.nye.*`, `home.voices.*`, `home.khasak.*`, `home.cause.*`, `home.plan.*`, `cause.*` (the whole `/ml/cause` page), `day.*`, `footer.closing.*`, `footer.tagline`, `motion.*`, `nav.cause` and `fallback.notice`.
+- [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json`, especially the lines new in Chapter 1 — The Pause: `home.hero.*`, `home.pause.*`, `home.nye.*`, `home.voices.*`, `home.khasak.*`, `home.cause.*`, `home.plan.*`, `cause.*` (the whole `/ml/cause` page), `day.*`, `footer.closing.*`, `footer.tagline`, `motion.*`, `nav.cause` and `fallback.notice`.
 - [ ] Review the **Malayalam headlines** on the other `/ml/` pages: they sit beside the English in each view, as `h('English', 'മലയാളം')` (`src/views/*.astro`), plus `theme_ml` for each day in `src/content/schedule.json`.
 - [ ] Translate the rest of the remaining pages: Speakers, Programme, Khasak, Youth, Get involved, Passes, Visit, Partners, FAQ, Contact, Privacy and the 404 page. See README "Translate another page into Malayalam". Until then these `/ml/` pages show Malayalam headlines over English text, with a notice (`TODO(i18n)` comments in `src/pages/ml/*.astro`).
 - [ ] Optional: Malayalam speaker names (`name_ml` field in the speaker files).

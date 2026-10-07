@@ -32,13 +32,13 @@ const kinds: Record<Kind, { tag: string; name: string; line: string; price: numb
   },
 };
 
-/** The three performances, all at Ashramam Maidan. */
+/** The three performances, all at the Sree Narayana Cultural Complex. */
 const nights = [
   { id: '2027-01-01', day: 'Fri', date: '1 Jan', long: 'Friday 1 January 2027' },
   { id: '2027-01-02', day: 'Sat', date: '2 Jan', long: 'Saturday 2 January 2027' },
   { id: '2027-01-03', day: 'Sun', date: '3 Jan', long: 'Sunday 3 January 2027' },
 ];
-const venue = 'Ashramam Maidan, Kollam';
+const venue = 'Sree Narayana Cultural Complex, Kollam';
 const inr = (n: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n);
 
 function Card({ notifyHref }: Props) {
@@ -53,7 +53,7 @@ function Card({ notifyHref }: Props) {
   const fade = reduce ? { duration: 0 } : { duration: 0.45, ease: calm };
 
   return (
-    <div className="border border-[#c7cfeb] bg-cream p-7 text-navy shadow-[0_40px_80px_-50px_rgb(16_27_70/0.55)] sm:p-9">
+    <div className="border border-[#c7cfeb] bg-cream p-7 text-navy shadow-[0_40px_80px_-50px_rgb(26_26_26/0.5)] sm:p-9">
       <div className="flex items-center justify-between gap-4 text-[0.78rem] font-medium uppercase tracking-[0.16em]">
         <span>KILF 2027</span>
         <AnimatePresence mode="wait" initial={false}>
@@ -178,7 +178,7 @@ function Card({ notifyHref }: Props) {
         </span>
       </button>
       <p className="mt-4 text-[0.92rem] text-navy/80">
-        Booking has not opened. Preview only.{' '}
+        Sales open after confirmation. Preview only.{' '}
         <a href={notifyHref} className="font-semibold underline decoration-1 underline-offset-4 hover:text-cobalt">
           Get notified when it opens
         </a>

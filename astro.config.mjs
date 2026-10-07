@@ -4,9 +4,10 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 
-// Set SITE_URL in your hosting provider (e.g. https://kilf.in). Used for
-// canonical URLs, Open Graph tags, the sitemap and the footer QR code.
-const site = process.env.SITE_URL || 'https://kilf.vercel.app';
+// The festival's domain. SITE_URL (in your hosting provider) overrides it,
+// e.g. for a preview deployment. Used for canonical URLs, Open Graph tags,
+// the sitemap and the footer QR code.
+const site = process.env.SITE_URL || 'https://www.kilf.in';
 
 export default defineConfig({
   site,

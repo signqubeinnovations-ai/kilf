@@ -1,22 +1,117 @@
 ---
 import { logoUrl } from '@/lib/images';
+import { ripplePaths, SUN, MARK } from '@/lib/ripple.mjs';
 /**
- * KILF logo. Drop the real file at kilf-assets/logos/kilf-logo.svg (and
- * kilf-logo-white.svg for dark backgrounds) and it replaces this stand-in:
- * a lowercase "kilf" wordmark with "2027" set vertically beside it.
- * The stand-in draws in currentColor, so it follows the header's colour.
+ * The KILF 2027 logo: the ripple mark (eight tapered strokes and a red sun),
+ * a thin divider, and the wordmark "Kollam International Literature
+ * Festival 2027" in tracked capitals.
+ *
+ * Size it with `--h` (the lockup's height), e.g. class="[--h:2.75rem]".
+ * The wordmark sits in three lines; `wrap="responsive"` (the header) falls
+ * back to four short lines on screens narrower than 360px, so the header
+ * still fits. `wrap="wide"` always uses three lines. `markOnly` drops the divider and
+ * wordmark.
+ *
+ * A finished artwork file at kilf-assets/logos/kilf-logo.svg (and
+ * kilf-logo-white.svg for dark backgrounds) replaces this drawn version.
  */
-interface Props { tone?: 'light' | 'dark'; class?: string; /** Hide from AT when the parent link supplies the name. */ decorative?: boolean }
-const { tone = 'light', class: cls = '', decorative = false } = Astro.props;
+interface Props {
+  tone?: 'light' | 'dark';
+  wrap?: 'responsive' | 'wide';
+  markOnly?: boolean;
+  class?: string;
+  /** Hide from assistive tech when the parent link supplies the name. */
+  decorative?: boolean;
+}
+const { tone = 'light', wrap = 'responsive', markOnly = false, class: cls = '', decorative = false } = Astro.props;
 const file = logoUrl(tone === 'dark' ? 'kilf-logo-white' : 'kilf-logo');
+const name = 'Kollam International Literature Festival 2027';
+const d = ripplePaths().join('');
+const narrowBreak = wrap === 'responsive' ? 'min-[360px]:hidden' : 'hidden';
+const wideBreak = wrap === 'responsive' ? 'hidden min-[360px]:inline' : '';
 ---
 {
   file ? (
-    <img src={file} alt={decorative ? '' : 'KILF 2027'} class:list={['h-10 w-auto', cls]} width="96" height="44" />
+    <img src={file} alt={decorative ? '' : name} class:list={['kilf-logo-img h-[var(--h,2.75rem)] w-auto', cls]} />
   ) : (
-    <svg viewBox="0 0 92 44" class:list={['h-10 w-auto', cls]} role={decorative ? undefined : 'img'} aria-hidden={decorative ? 'true' : undefined} aria-label={decorative ? undefined : 'KILF 2027, Kollam International Literature Festival'}>
-      <text x="-1" y="36" font-family="Plus Jakarta Sans Variable, Plus Jakarta Sans, sans-serif" font-weight="800" font-size="46" letter-spacing="-2.6" textLength="70" lengthAdjust="spacingAndGlyphs" fill="currentColor">kilf</text>
-      <text transform="translate(76.5 3.5) rotate(90)" font-family="Manrope Variable, Manrope, sans-serif" font-weight="800" font-size="11.5" letter-spacing="0.9" textLength="33" lengthAdjust="spacingAndGlyphs" fill="currentColor" class="logo-year">2027</text>
-    </svg>
+    <span
+      class:list={['kilf-logo', tone === 'dark' ? 'is-dark' : 'is-light', cls]}
+      data-wrap={wrap}
+      role={decorative ? undefined : 'img'}
+      aria-label={decorative ? undefined : name}
+      aria-hidden={decorative ? 'true' : undefined}
+    >
+      <svg class="mark" viewBox={`0 0 ${MARK.width} ${MARK.height}`} style={`aspect-ratio:${MARK.width}/${MARK.height}`} aria-hidden="true" focusable="false">
+        <path d={d} class="water" />
+        <circle cx={SUN.cx} cy={SUN.cy} r={SUN.r} class="sun" />
+      </svg>
+      {!markOnly && (
+        <>
+          <span class="rule" aria-hidden="true"></span>
+          <span class="word" aria-hidden="true" lang="en">
+            KOLLAM <br class={narrowBreak} />INTERNATIONAL<br />LITERATURE <br class={narrowBreak} />FESTIVAL <br class={wideBreak} />2027
+          </span>
+        </>
+      )}
+    </span>
   )
 }
+
+<style>
+  .kilf-logo {
+    --ink: var(--color-ink);
+    --sun: var(--color-red);
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--h, 2.75rem) * 0.24);
+    height: var(--h, 2.75rem);
+    color: var(--ink);
+  }
+  .kilf-logo.is-dark {
+    --ink: var(--color-canvas);
+    --sun: var(--color-red-bright);
+  }
+  .mark {
+    display: block;
+    height: calc(var(--h, 2.75rem) * 0.6);
+    width: auto;
+    flex: none;
+  }
+  .water {
+    fill: var(--ink);
+  }
+  .sun {
+    fill: var(--sun);
+  }
+  .rule {
+    align-self: stretch;
+    width: 1px;
+    background: currentColor;
+    flex: none;
+  }
+  .word {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: calc(var(--h, 2.75rem) / 3.75);
+    line-height: 1.22;
+    letter-spacing: 0.13em;
+    white-space: nowrap;
+    /* Optical: tracked capitals carry a trailing space; pull it back. */
+    margin-inline-end: -0.13em;
+  }
+  /* Below 360px the wordmark takes four short lines at a legible size, and
+     the mark steps down so the lockup still fits beside the menu button. */
+  @media (max-width: 359px) {
+    .kilf-logo[data-wrap='responsive'] {
+      height: auto;
+      gap: 0.6rem;
+    }
+    .kilf-logo[data-wrap='responsive'] .mark {
+      height: 1.3rem;
+    }
+    .kilf-logo[data-wrap='responsive'] .word {
+      font-size: 0.62rem;
+      line-height: 1.2;
+    }
+  }
+</style>

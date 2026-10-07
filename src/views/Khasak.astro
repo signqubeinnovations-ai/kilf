@@ -28,12 +28,12 @@ const facts = [
 const plan = [
   ['Festival window', '31 Dec 2026 — 4 Jan 2027'],
   ['Performances', '1, 2 and 3 January 2027 · evenings'],
-  ['Venue', 'Ashramam Maidan, Kollam'],
-  ['Tickets', 'Theatre ticket ₹1,500 · Theatre + Festival Pass ₹1,600 · Booking opens soon'],
+  ['Venue', 'Sree Narayana Cultural Complex, Kollam'],
+  ['Tickets', 'Theatre ticket ₹1,500 · Theatre + Festival Pass ₹1,600 · Sales open after confirmation'],
 ];
 const goodToKnow = [
   ['Tickets', 'The play is ticketed separately from festival passes: a theatre ticket is ₹1,500, or ₹1,600 with a Festival Pass for all five days.'],
-  ['Dates and venue', 'Three evening performances, on 1, 2 and 3 January 2027, at Ashramam Maidan, Kollam. Start times will be confirmed with booking.'],
+  ['Dates and venue', 'Three evening performances, on 1, 2 and 3 January 2027, at the Sree Narayana Cultural Complex, Kollam. Start times will be confirmed with booking.'],
   ['Seating', 'Seating will be limited. Leave your details and we’ll write the moment booking opens.'],
   ['Language', 'The performance is in Malayalam.'],
   ['Age guidance', 'To be announced with the performance details.'],
@@ -55,23 +55,21 @@ const options = [
       {ml ? (
         <>
           <h1 id="khasak-h" class="display mt-7 text-[2.5rem] sm:text-[3.4rem] lg:text-[3.8rem]" lang="ml">
-            ഖസാക്കിന്റെ<br /><span class="text-cobalt"><Stopped text="ഇതിഹാസം." /></span>
+            ഖസാക്കിന്റെ<br /><span class="text-red"><Stopped text="ഇതിഹാസം." /></span>
           </h1>
-          <p class="mt-4 text-2xl text-muted">Khasakkinte Ithihasam</p>
         </>
       ) : (
         <>
           <h1 id="khasak-h" class="display mt-7 text-[3rem] sm:text-[4.4rem] lg:text-[4.3rem] xl:text-[5rem]">
-            Khasakkinte<br /><span class="text-cobalt"><Stopped text="Ithihasam." /></span>
+            Khasakkinte<br /><span class="text-red"><Stopped text="Ithihasam." /></span>
           </h1>
-          <p class="mt-4 text-2xl text-muted" lang="ml">ഖസാക്കിന്റെ ഇതിഹാസം</p>
         </>
       )}
       <p class="mt-7 max-w-lg text-lg leading-relaxed text-muted">
         O. V. Vijayan’s 1969 novel, staged by director Deepan Sivaraman. Not a play you watch. A world you walk into.
       </p>
       <p class="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 font-bold text-navy">
-        <Rings n={3} size={36} tone="cobalt" label="Venue code 3" />Ashramam Maidan · 1, 2 and 3 January 2027
+        <Rings n={1} size={36} tone="cobalt" label="Venue code 1" />Sree Narayana Cultural Complex · 1, 2 and 3 January 2027
       </p>
       <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
         <LimeButton href="#tickets" label="Choose your ticket" size="lg" />
@@ -126,7 +124,7 @@ const options = [
     <article class="border-t border-line pt-8">
       <p class="eyebrow text-navy">The novel</p>
       <h3 class="display mt-6 text-[2rem] text-navy sm:text-[2.4rem]" lang={h.lang}>
-        {h('A village, a teacher,', 'ഒരു ഗ്രാമം, ഒരു അധ്യാപകൻ,')}<br /><span class="text-cobalt"><Stopped text={h('a legend.', 'ഒരു ഇതിഹാസം.')} /></span>
+        {h('A village, a teacher,', 'ഒരു ഗ്രാമം, ഒരു അധ്യാപകൻ,')}<br /><span class="text-red"><Stopped text={h('a legend.', 'ഒരു ഇതിഹാസം.')} /></span>
       </h3>
       <p class="mt-6 text-[1.05rem] leading-relaxed text-muted">
         Ravi, a restless young man, arrives in Khasak, a remote village in Palakkad, to start a single-teacher school. Around
@@ -137,7 +135,7 @@ const options = [
     <article class="border-t border-line pt-8">
       <p class="eyebrow text-navy">The director</p>
       <h3 class="display mt-6 text-[2rem] text-navy sm:text-[2.4rem]" lang={h.lang}>
-        {h('Deepan', 'ദീപൻ')}<br /><span class="text-cobalt"><Stopped text={h('Sivaraman.', 'ശിവരാമൻ.')} /></span>
+        {h('Deepan', 'ദീപൻ')}<br /><span class="text-red"><Stopped text={h('Sivaraman.', 'ശിവരാമൻ.')} /></span>
       </h3>
       <p class="mt-6 text-[1.05rem] leading-relaxed text-muted">
         A theatre director and scenographer known for large, immersive productions in which the space itself becomes part of
@@ -176,7 +174,7 @@ const options = [
       <ChapterLabel label={h('Your evening at the theatre', 'നിങ്ങളുടെ നാടകസന്ധ്യ')} lang={h.lang} />
       <Headline id="tickets-h" text={h('One stage.', 'ഒരു അരങ്ങ്.')} accent={h('A world within.', 'ഉള്ളിലൊരു ലോകം.')} lang={h.lang} class="mt-6" />
       <p class="mt-6 max-w-lg text-lg leading-relaxed text-navy/85">
-        Three evenings at Ashramam Maidan, on 1, 2 and 3 January. The play is ticketed separately from the festival: a
+        Three evenings at the Sree Narayana Cultural Complex, on 1, 2 and 3 January. The play is ticketed separately from the festival: a
         theatre ticket on its own is ₹1,500, and for ₹1,600 the theatre + Festival Pass adds all five days of the festival.
         Seating is limited.
       </p>

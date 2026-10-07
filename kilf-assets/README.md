@@ -3,8 +3,8 @@
 Drop the brochure artwork here. Any file below replaces its generated stand-in on the next build. Keep the file names; the extension can be `.jpg`, `.png`, `.webp` or `.avif`.
 
 ```
-logos/kilf-logo.svg              header logo (cobalt)
-logos/kilf-logo-white.svg        footer logo (for dark backgrounds)
+logos/kilf-logo.svg              optional: finished ripple logo artwork (the site draws it in code until then)
+logos/kilf-logo-white.svg        optional: the same for dark backgrounds
 illustrations/p4_stage.jpg       Khasakkinte Ithihasam stage
 illustrations/cover.jpg          optional: art for the social share image
 speakers/<slug>.jpg              duotone speaker photos (square works best)

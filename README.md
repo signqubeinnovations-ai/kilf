@@ -2,7 +2,7 @@
 
 Official website for the **Kollam International Literature Festival (KILF) 2027**: 31 December 2026 – 4 January 2027, Kollam, Kerala.
 
-Built with [Astro](https://astro.build) and Tailwind CSS. It is a fully static site: fast, SEO-friendly and hostable anywhere. The design is **Chapter 1: The Pause**: calm, intimate and still, like Ashtamudi Lake in the morning. Its one moment of motion is pure CSS; the only React island is the theatre ticket card on the Khasak page (with [Motion](https://motion.dev)). Everything else is plain HTML with a few tiny scripts (menu, countdown, speaker filters, schedule tabs, map loader, forms).
+Built with [Astro](https://astro.build) and Tailwind CSS. It is a fully static site: fast, SEO-friendly and hostable anywhere. The design is **Chapter 1 — The Pause**: calm, intimate and still, like Ashtamudi Lake in the morning. Its one moment of motion is pure CSS; the only React island is the theatre ticket card on the Khasak page (with [Motion](https://motion.dev)). Everything else is plain HTML with a few tiny scripts (menu, countdown, speaker filters, schedule tabs, map loader, forms).
 
 - **English** at `/` (default), **Malayalam** at `/ml/`. Home, About and Our cause are fully translated; every other `/ml/` page has its headlines in Malayalam over the English text, with a notice.
 - Content (speakers, FAQs, passes, strands, programme, sponsors) lives in `src/content/` and can be edited without touching code.
@@ -34,8 +34,8 @@ Put the brochure artwork here, using these names:
 
 ```
 kilf-assets/
-  logos/kilf-logo.svg            # main logo (cobalt), used in the header
-  logos/kilf-logo-white.svg      # logo for dark backgrounds (footer)
+  logos/kilf-logo.svg            # optional: finished logo artwork (replaces the drawn ripple logo in the header)
+  logos/kilf-logo-white.svg      # optional: the same for dark backgrounds (footer)
   illustrations/p4_stage.jpg     # Khasakkinte Ithihasam stage (home, /khasak)
   illustrations/cover.jpg        # optional: replaces the art in the social share image
   speakers/<file>.jpg            # illustrated speaker portraits, e.g. m-mukundan.jpg
@@ -48,9 +48,14 @@ Until a file is present, the site uses an on-brand **stand-in**: flat SVG illust
 
 The lake illustrations (`src/assets/art/lake-hero.jpg`, the open book on the jetty, and `lake-jetty.jpg`, the wide jetty scene) are part of the design and stay still, apart from the home hero's one moment (see Motion below). Both were upscaled 4× from 1241 px originals with Real-ESRGAN; higher-resolution originals of the same scenes can replace them. The hero's ripple is clipped to the water's outline (`mask` in `src/lib/lake-art.ts`): if you change the picture's composition, update the outline.
 
-The home hero is full-bleed on desktop (the illustration covers the whole section, with a soft "mist" behind the words) and stacked on phones and tablets (words on the cream sky, the lake below). Its crop at each screen size is set with `object-[…]` classes and the matching `[--px:…]` values on `HeroLake` in `src/views/Home.astro`, so the ripple and the karimeen stay pinned to the picture.
+The home hero is full-bleed on desktop (the illustration covers the whole section, with a soft "mist" behind the words) and stacked on phones and tablets (words on the canvas sky, the lake below). Its crop at each screen size is set with `object-[…]` classes and the matching `[--px:…]` values on `HeroLake` in `src/views/Home.astro`, so the ripple and the karimeen stay pinned to the picture.
 
-The 1200×630 social share image (`public/og-image.jpg`) is built on every build: the title panel (`scripts/og-panel.png`, "Chapter 1: The Pause." with the dates, drawn once in the site's type) beside the lake-and-book art, or `kilf-assets/illustrations/cover.jpg` if present. Redraw the panel if the title or dates change.
+The 1200×630 social share image (`public/og-image.jpg`) is built on every build: the title panel (`scripts/og-panel.png`: the logo, "Pause. Turn a page.", the subline and the dates) beside the lake-and-book art, or `kilf-assets/illustrations/cover.jpg` if present. Redraw the panel with `node scripts/draw-brand.mjs` if the title or dates change.
+
+### The logo and the art
+
+- **The logo** is drawn in code, so it is always sharp: the ripple mark (eight tapered strokes for Ashtamudi's eight arms, under a red sun), a divider and the wordmark "Kollam International Literature Festival 2027". The mark's geometry lives in `src/lib/ripple.mjs`; `src/components/Logo.astro` renders the lockup (three lines; four on screens under 360px). `node scripts/draw-brand.mjs` redraws the favicon, `public/brand/` (mark SVGs and transparent logo PNGs for partners and print) and the share panel from the same geometry. Always "Festival", never "Fest".
+- **The lake illustrations** were recoloured into the palette with `node scripts/recolor-art.mjs <input> <output>`: blues to muted grey-blue water, navy to ink, the sky to canvas, the sun to deep red. Run it on any new or higher-resolution artwork of the same scenes.
 
 ## 3. Editing content
 
@@ -108,7 +113,7 @@ Each day has a `theme` ("First light.") and `theme_ml` (its Malayalam title, for
     "label": "Day 2",
     "theme": "First light.",
     "blurb": "One or two sentences about the day.",
-    "allDay": ["Book fair · Ashramam Maidan · 10:00–21:00"],
+    "allDay": ["Book fair · Sree Narayana Cultural Complex · 10:00–21:00"],
     "sessions": [
       {
         "start": "10:00",
@@ -128,7 +133,7 @@ Each day has a `theme` ("First light.") and `theme_ml` (its Malayalam title, for
 ]
 ```
 
-- `venue` is one of `sngcc` (Sreenarayana Guru Cultural Centre, venue code 1), `8point` (8 Point Art Cafe, code 2) or `ashramam` (Ashramam Maidan, code 3). Venues and their ring codes are defined in `src/lib/site.ts`.
+- `venue` is one of `sngcc` (Sree Narayana Cultural Complex, venue code 1) or `8point` (8 Point Art Cafe, code 2). Venues and their ring codes are defined in `src/lib/site.ts`.
 - `speakers` are speaker file names without `.md`.
 - `language` (optional) is one of `Malayalam`, `English`, `Tamil` or `Bilingual`.
 
@@ -202,11 +207,11 @@ kilf-assets/      Real artwork (see section 2)
 
 ### Motion
 
-One orchestrated moment on its own, and one that follows your scroll:
+One quiet moment on its own, and one that follows your scroll:
 
 | Where | What moves | Component |
 |---|---|---|
-| Home hero | The lake is still. Soon after the page opens, a karimeen (a small drawing: a navy line around the old colours, navy to cobalt to lake blue, with cream pearl spots) leaps once from the water and slips back in; every six seconds a single ripple spreads from the open book, over the water only | `src/components/HeroLake.astro` (pure CSS), `Karimeen.astro` |
+| Home hero | The lake is still under a red sun. Every seven seconds a single ripple ring spreads from the open book, over the water only | `src/components/HeroLake.astro` (pure CSS) |
 | "Keep the waters alive" artwork (home and `/cause`) | The karimeen swims with the page: as the card scrolls into view it swims in from the left, tail swishing and bubbles rising, settles in the middle, and drifts on as you keep scrolling. Scrolling back reverses it | `src/components/CauseArt.astro` (a small scroll script) |
 | Khasakkinte Ithihasam tickets | Ticket type and preview transitions, when you use the card | `motion/TicketCard.tsx` (Motion) |
 | Buttons | A ring spreads once on hover | `global.css` |
@@ -216,16 +221,17 @@ One orchestrated moment on its own, and one that follows your scroll:
 
 ### Layout and colour
 
-- Calm surfaces: cream pages, pale lake-blue bands, and night navy for the evenings (New Year's Eve, the theatre). Generous space, one idea per screen, hairlines instead of boxes.
-- **Ripple rings** are the system motif (`Rings.astro`): one ring beside every section label (`ChapterLabel`), three between sections (`Divider`), and the **venue codes**: Sreenarayana Guru Cultural Centre 1 ring, 8 Point Art Cafe 2, Ashramam Maidan 3, on the home page, the Programme and Visit.
-- Headlines (`Headline`) are Plus Jakarta Sans 800 with tight tracking; a second line in cobalt, and at most **one coral word** per headline (`coral="word"`). Coral text on light surfaces uses `coral-text` (#DB5A3B) to pass WCAG AA for large text.
+- Calm surfaces: canvas pages, pale water-grey bands, and ink for the evenings (New Year's Eve, the theatre) and the footer. Generous space, one idea per screen, hairlines instead of boxes.
+- **Ripple rings** are the system motif (`Rings.astro`): one ring beside every section label (`ChapterLabel`), three between sections (`Divider`), and the **venue codes**: Sree Narayana Cultural Complex 1 ring, 8 Point Art Cafe 2, on the home page, the Programme and Visit.
+- Headlines (`Headline`) are Plus Jakarta Sans 800 with tight tracking, in ink. Each headline has **one highlight in red**: the word named by `coral="word"` (the prop keeps its old name), or else the second line.
 - Section labels have no numbers; only real sequences (steps, times) are numbered.
-- Buttons are square. Primary buttons are cobalt on light surfaces and cream on night navy (`LimeButton`, default `primary`). Secondary actions are underlined text links with a ↗ (`TextLink`).
+- Buttons are square. Primary buttons are red on light surfaces and canvas on ink (`LimeButton`, default `primary`). Secondary actions are underlined text links with a ↗ (`TextLink`).
 - Speaker portraits are 4:5 rounded rectangles (`Portrait.astro`), lazy-loaded.
 
 ### Brand notes
 
-- **Type:** Plus Jakarta Sans (800 for headlines, 500 for text), Noto Sans Malayalam for Malayalam. Both self-hosted.
-- **Colours** (Tailwind tokens in `src/styles/global.css`): cream `#FCFAF3`, navy `#13207A`, cobalt `#1F3FD8`, coral `#F2785A`, lake `#A9C4EA`, night `#101B62`. No lime or green.
-- **Voice:** calm, short sentences; no hype, no exclamation marks, no unverified numbers. Taglines: "Chapter 1: The Pause.", "Pause. Turn a page.", and to close, "Come for a story. Stay for the connection." The cause: "Keep the waters alive."
+- **Type:** Plus Jakarta Sans (800 for headlines, 700 tracked capitals for the wordmark and labels, 500 for text), Noto Sans Malayalam for Malayalam. Both self-hosted. No handwritten faces.
+- **Colours** (Tailwind tokens in `src/styles/global.css`): canvas `#E8E1D7` (background), ink `#1A1A1A` (text and logo), red `#A80E0E` (the sun dot, highlight words, buttons; `#D42A1F` on ink), and a muted grey-blue for water only (`#8E9EA8`, `#B9C3C8`, `#D9DCD8`). No cobalt, coral, lime or green. Older token names (navy, cobalt, coral, lake, night, cream) are aliases onto this palette.
+- **Voice:** quiet, warm, inviting. Short lines, no hype, no exclamation marks, no unverified numbers. **One tagline only, site-wide: "Pause. Turn a page."** The theme is "Chapter 1 — The Pause" (a chapter title, not a tagline). The About story line: "Every ripple begins with a pause. One page, one idea, spreading outward." Retired: "Where words meet the world", "Be the flow", "Where words, stories and people connect", "Come for a story. Stay for the connection."
+- **Bilingual:** every line is in one language only; never the same words in Malayalam and English side by side. In Malayalam the festival is ഫെസ്റ്റിവൽ, never ഉത്സവം (the name: കൊല്ലം ഇന്റർനാഷണൽ ലിറ്ററേച്ചർ ഫെസ്റ്റിവൽ).
 - The previous design is kept on the branch `archive/design-2026-09-astra`.

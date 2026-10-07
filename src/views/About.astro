@@ -33,7 +33,8 @@ const matters = [
 ] as const;
 ---
 <PageHero label={t('about.chapter')} text={t('about.h')} accent={t('about.accent')}>
-  <div class="mt-12 grid gap-6 border-t border-line pt-10 text-lg leading-relaxed md:grid-cols-2 md:gap-12">
+  <p class="mt-10 max-w-2xl font-display text-[1.45rem] font-bold leading-snug tracking-[-0.02em] text-ink sm:text-[1.75rem]">{t('about.story')}</p>
+  <div class="mt-10 grid gap-6 border-t border-line pt-10 text-lg leading-relaxed md:grid-cols-2 md:gap-12">
     <p class="text-navy">{t('about.p1')}</p>
     <p class="text-muted">{t('about.p2')}</p>
   </div>
@@ -120,7 +121,7 @@ const matters = [
 <Section tone="sky" labelledby="qa-h">
   <ChapterLabel label={t('about.qa.chapter')} />
   <h2 id="qa-h" class="display mt-6 text-[2.1rem] text-navy sm:text-[2.8rem] lg:text-[3.3rem]">
-    KILF, <span class="text-cobalt" lang="ml">ചുരുക്കത്തിൽ.</span>
+    <span lang="ml">KILF <span class="text-red">ചുരുക്കത്തിൽ.</span></span>
   </h2>
   <dl class="mt-12 grid gap-x-12 border-t border-navy/15 md:grid-cols-2" lang="ml">
     {aboutQA.map((item, i) => (

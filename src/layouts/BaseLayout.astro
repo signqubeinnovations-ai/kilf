@@ -81,7 +81,7 @@ const ld = [...(event ? [eventLd] : []), ...jsonLd];
     <link rel="canonical" href={canonical} />
     {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
     {(noindex || fallback) && <meta name="robots" content={fallback ? 'noindex, follow' : 'noindex'} />}
-    <meta name="theme-color" content="#FCFAF3" />
+    <meta name="theme-color" content="#E8E1D7" />
     <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
     {lang === 'ml' && <link rel="preload" href={malayalamFont} as="font" type="font/woff2" crossorigin />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -96,7 +96,7 @@ const ld = [...(event ? [eventLd] : []), ...jsonLd];
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Chapter 1: The Pause. Kollam International Literature Festival, 31 Dec 2026 – 4 Jan 2027, by Ashtamudi Lake." />
+    <meta property="og:image:alt" content="Pause. Turn a page. Kollam International Literature Festival, 31 December 2026 – 4 January 2027, Kollam, Kerala. A red sun over still water and an open book on a jetty." />
     <meta property="og:locale" content={lang === 'ml' ? 'ml_IN' : 'en_IN'} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
@@ -115,7 +115,7 @@ const ld = [...(event ? [eventLd] : []), ...jsonLd];
     <Analytics />
   </head>
   <body class="min-h-dvh">
-    <a href="#main" class="sr-only z-[100] bg-cobalt px-5 py-3 font-bold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">{t('nav.skip')}</a>
+    <a href="#main" class="sr-only z-[100] bg-red px-5 py-3 font-bold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">{t('nav.skip')}</a>
     <Header lang={lang as Lang} path={path} overlay={overlayHeader && !fallback} />
     <main id="main" tabindex="-1" class="outline-none">
       {fallback && (

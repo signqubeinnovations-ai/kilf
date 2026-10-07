@@ -11,7 +11,7 @@ const { lang } = Astro.props;
 const h = headings(lang);
 const faqs = (await getCollection('faqs')).sort((a, b) => a.data.order - b.data.order);
 const groups = [
-  ['festival', h('The festival', 'ഉത്സവം')],
+  ['festival', h('The festival', 'ഫെസ്റ്റിവൽ')],
   ['tickets', h('Tickets and passes', 'ടിക്കറ്റുകളും പാസുകളും')],
   ['visiting', h('Visiting', 'സന്ദർശനം')],
   ['taking-part', h('Taking part', 'പങ്കാളിത്തം')],

@@ -2,19 +2,23 @@
 /**
  * Ripple rings, the system motif: a drop and one, two or three rings, as on
  * still water. Used for section dividers, wayfinding and venue codes
- * (Sreenarayana Guru Cultural Centre 1, 8 Point Art Cafe 2, Ashramam Maidan 3).
+ * (Sree Narayana Cultural Complex 1, 8 Point Art Cafe 2). Rings are drawn in
+ * ink or in soft water grey-blue; `red` is for the rare highlighted ring.
  * Decorative unless `label` is given.
  */
 interface Props {
   n?: 1 | 2 | 3;
   /** Width in px; the height follows (flat rings). */
   size?: number;
-  tone?: 'current' | 'lake' | 'cobalt' | 'coral' | 'navy';
+  /** `lake`, `cobalt`, `coral` and `navy` are older names for water, ink, red and ink. */
+  tone?: 'current' | 'water' | 'ink' | 'red' | 'lake' | 'cobalt' | 'coral' | 'navy';
   class?: string;
   label?: string;
 }
 const { n = 3, size = 40, tone = 'current', class: cls = '', label } = Astro.props;
-const color = { current: 'currentColor', lake: '#a9c4ea', cobalt: '#1f3fd8', coral: '#f2785a', navy: '#13207a' }[tone];
+const water = 'var(--color-water)';
+const ink = 'var(--color-ink)';
+const color = { current: 'currentColor', water, ink, red: 'var(--color-red)', lake: water, cobalt: ink, coral: 'var(--color-red)', navy: ink }[tone];
 const radii: [number, number][] = [
   [7.5, 4.2],
   [13, 7.3],

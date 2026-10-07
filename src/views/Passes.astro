@@ -22,7 +22,7 @@ const guide = [
   ['The play and all five days?', 'Theatre + Festival Pass · ₹1,600', 'A seat at the play and a Festival Pass, together: the festival for ₹100 more.', '/khasak#tickets'],
 ];
 const questions = [
-  ['When do passes go on sale?', 'Ticketing opens soon. Leave your details below and we’ll tell you the moment passes and theatre tickets go on sale.'],
+  ['When do passes go on sale?', 'Sales open after confirmation of the programme. Leave your details below and we’ll tell you the moment passes and theatre tickets are available.'],
   ['Is the play included in the Festival Pass?', 'No. Khasakkinte Ithihasam is ticketed separately. Choose a theatre ticket on its own, or the theatre + Festival Pass bundle.'],
   ['Are there passes for students?', 'Yes: the Young Reader Pass is ₹199 for all five days, with your college ID. Colleges can also register on the Youth page to bring a group.'],
   ['How much do passes cost?', 'A Day Pass is ₹299, the Festival Pass ₹499 for all five days, and the Young Reader Pass ₹199 for students. Khasakkinte Ithihasam is ₹1,500, or ₹1,600 with a Festival Pass. Nothing is on sale yet, and no payment is taken until ticketing opens.'],
@@ -33,7 +33,7 @@ const questions = [
   text={h('Your seat by the', 'കായലോരത്ത്')}
   accent={h('lake.', 'നിങ്ങളുടെ ഇരിപ്പിടം.')}
   lang={h.lang}
-  lead="Five days by the lake from ₹199. Ticketing opens soon: register early and we’ll tell you the moment passes go on sale."
+  lead="Five days by the lake from ₹199. Sales open after confirmation: register early and we’ll tell you the moment passes are available."
 />
 
 <Section tone="cream" class="!pt-0" labelledby="passes-h">
@@ -68,7 +68,7 @@ const questions = [
               <LimeButton href={p.data.buyUrl} label={`Buy · ${p.data.price}`} class="w-full" external />
             ) : (
               <>
-                <p class="eyebrow mb-4 text-muted">On sale soon</p>
+                <p class="eyebrow mb-4 text-muted">Sales open after confirmation</p>
                 <LimeButton href="#notify" label="Notify me" variant={hi ? 'primary' : 'ghost'} class="w-full justify-between" />
               </>
             )}
@@ -112,7 +112,7 @@ const questions = [
       <ChapterLabel label={h('Signature theatre', 'സവിശേഷ നാടകം')} lang={h.lang} tone="dark" />
       <Headline id="theatre-h" text={h('The play is', 'നാടകത്തിന്')} accent={h('ticketed separately.', 'പ്രത്യേകം ടിക്കറ്റ്.')} lang={h.lang} tone="dark" class="mt-6" />
       <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/85">
-        Khasakkinte Ithihasam needs its own ticket: three evenings at Ashramam Maidan, on 1, 2 and 3 January. Choose a theatre
+        Khasakkinte Ithihasam needs its own ticket: three evenings at the Sree Narayana Cultural Complex, on 1, 2 and 3 January. Choose a theatre
         ticket on its own, or add all five days of the festival for ₹100 more.
       </p>
       <div class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
@@ -161,11 +161,11 @@ const questions = [
 <NotifyBanner
   id="notify"
   formName="passes-notify"
-  kicker="Ticketing opens soon"
+  kicker="Sales open after confirmation"
   text={h('Be first in line', 'പാസുകൾ എത്തുമ്പോൾ')}
   accent={h('for passes.', 'ആദ്യം അറിയാം.')}
   headingLang={h.lang}
-  lead="Register early and we’ll tell you the moment passes go on sale."
+  lead="Register early and we’ll tell you the moment passes are available."
   lang={lang}
   extraField={{ name: 'pass', label: 'Pass you’re interested in', options: ['Day Pass', 'Festival Pass', 'Young Reader Pass', 'Theatre ticket', 'Theatre + Festival Pass', 'Not sure yet'] }}
 />

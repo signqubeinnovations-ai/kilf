@@ -35,22 +35,19 @@ const more = [
 ];
 const other: Lang = lang === 'en' ? 'ml' : 'en';
 const toggleHref = localizePath(path, other);
-// Malayalam labels are longer, so the bar needs more room before the links show.
+// The full logo is wide, so the links show from xl (Malayalam labels run longer: 2xl).
 const wide = lang === 'ml';
 const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href + '/'));
 ---
 <header class="site-header" data-header data-overlay={overlay ? '' : undefined}>
   <div class="bar">
     <div class="container-kilf flex h-[var(--hh)] items-center justify-between gap-4">
-      <a href={lp('/')} class="-ml-1 flex min-h-11 items-center gap-3.5 px-1">
-        <Logo decorative class="h-9 lg:h-10" />
-        <span class:list={['desc hidden whitespace-nowrap text-[0.62rem] font-bold uppercase leading-[1.45] tracking-[0.14em]', wide ? '2xl:block' : 'xl:block']} lang="en">
-          Kollam International<br />Literature Festival
-        </span>
-        <span class="sr-only">KILF 2027 — {t('nav.home')}</span>
+      <a href={lp('/')} class="-ml-1 flex min-h-11 shrink-0 items-center px-1">
+        <Logo decorative class="[--h:2.5rem] lg:[--h:2.85rem]" />
+        <span class="sr-only">Kollam International Literature Festival 2027 — {t('nav.home')}</span>
       </a>
 
-      <nav aria-label={t('nav.primary')} class:list={['hidden', wide ? 'xl:block' : 'lg:block']}>
+      <nav aria-label={t('nav.primary')} class:list={['hidden', wide ? '2xl:block' : 'xl:block']}>
         <ul class="flex items-center gap-0.5 xl:gap-1.5">
           {nav.map((item) => (
             <li>
@@ -63,7 +60,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
       </nav>
 
       <div class="flex items-center gap-2">
-        <a href={toggleHref} hreflang={other} lang={other} class="lang inline-flex min-h-11 items-center px-3.5 text-sm font-semibold ring-1 ring-inset transition-colors">
+        <a href={toggleHref} hreflang={other} lang={other} class="lang hidden min-h-11 items-center px-3.5 text-sm font-semibold ring-1 ring-inset transition-colors sm:inline-flex">
           {languages[other]}
         </a>
         <span class="hidden sm:contents"><LimeButton href={lp('/get-involved#register')} label={t('cta.register')} size="sm" class="hdr-cta" /></span>
@@ -88,7 +85,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     <div class="container-kilf flex min-h-full flex-col pb-10 pt-[calc(var(--hh)+1.5rem)]">
       <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
         <nav aria-label={t('nav.festival')} class="lg:col-span-6">
-          <p class="eyebrow flex items-center gap-3 text-white/70"><Rings n={1} size={26} tone="lake" />{t('nav.festival')}</p>
+          <p class="eyebrow flex items-center gap-3 text-white/70"><Rings n={1} size={26} tone="water" />{t('nav.festival')}</p>
           <ul class="mt-4">
             {nav.map((item) => (
               <li>
@@ -100,7 +97,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
           </ul>
         </nav>
         <nav aria-label={t('nav.more')} class="lg:col-span-6">
-          <p class="eyebrow flex items-center gap-3 text-white/70"><Rings n={2} size={26} tone="lake" />{t('nav.more')}</p>
+          <p class="eyebrow flex items-center gap-3 text-white/70"><Rings n={2} size={26} tone="water" />{t('nav.more')}</p>
           <ul class="mt-4">
             {more.map((item) => (
               <li>
@@ -117,9 +114,14 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
           <LimeButton href={lp('/get-involved#register')} label={t('cta.register')} />
           <LimeButton href={lp('/get-involved#volunteer')} label={t('cta.volunteer')} variant="outline-light" />
         </div>
-        <a href={`mailto:${site.email}`} class="inline-flex min-h-11 items-center gap-2 text-sm text-white/80 hover:text-white">
-          <Icon name="mail" size={18} class="text-lake" />{site.email}
-        </a>
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <a href={toggleHref} hreflang={other} lang={other} class="inline-flex min-h-11 items-center px-3.5 text-sm font-semibold text-white ring-1 ring-inset ring-white/40 hover:bg-white/10 sm:hidden">
+            {languages[other]}
+          </a>
+          <a href={`mailto:${site.email}`} class="inline-flex min-h-11 items-center gap-2 text-sm text-white/80 hover:text-white">
+            <Icon name="mail" size={18} class="text-water-light" />{site.email}
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -127,8 +129,8 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 
 <style>
   .site-header {
-    --fg: var(--color-navy);
-    --bg: color-mix(in oklab, var(--color-cream) 94%, transparent);
+    --fg: var(--color-ink);
+    --bg: color-mix(in oklab, var(--color-canvas) 94%, transparent);
     --edge: var(--color-line);
     position: sticky;
     top: 0;
@@ -179,7 +181,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     right: 0.7rem;
     bottom: 0.5rem;
     height: 1.5px;
-    background: var(--color-coral);
+    background: var(--color-red);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.4s var(--ease-calm);
@@ -197,11 +199,16 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     background: color-mix(in oklab, currentColor 8%, transparent);
   }
   .site-header[data-menu-open] :global(.hdr-cta) {
-    background: var(--color-cream);
-    color: var(--color-navy);
+    background: var(--color-canvas);
+    color: var(--color-ink);
+  }
+  /* The logo turns canvas over the menu's ink. */
+  .site-header[data-menu-open] :global(.kilf-logo) {
+    --ink: var(--color-canvas);
+    --sun: var(--color-red-bright);
   }
 
-  /* The menu: night water, calm; it simply fades in. */
+  /* The menu: ink, calm; it simply fades in. */
   .menu {
     position: fixed;
     inset: 0;
@@ -236,7 +243,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   }
   .menu-link:hover,
   .menu-link[aria-current='page'] {
-    color: var(--color-lake);
+    color: var(--color-water-light);
   }
 </style>
 

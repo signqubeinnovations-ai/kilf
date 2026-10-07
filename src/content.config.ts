@@ -102,7 +102,7 @@ const schedule = defineCollection({
     /** The day's title in Malayalam, for /ml/. */
     theme_ml: z.string().optional(),
     blurb: z.string(),
-    /** Things that run all day, e.g. "Book fair · Ashramam Maidan · 10:00–21:00". */
+    /** Things that run all day, e.g. "Book fair · Sree Narayana Cultural Complex · 10:00–21:00". */
     allDay: z.array(z.string()).default([]),
     sessions: z.array(
       z.object({
@@ -110,7 +110,7 @@ const schedule = defineCollection({
         end: z.string().optional(),
         title: z.string(),
         description: z.string().optional(),
-        venue: z.enum(['sngcc', '8point', 'ashramam']),
+        venue: z.enum(['sngcc', '8point']),
         strand: z.string().optional(), // strand id from strands.json, or "youth"
         format: z.enum(sessionFormats).optional(),
         speakers: z.array(z.string()).default([]), // speaker slugs

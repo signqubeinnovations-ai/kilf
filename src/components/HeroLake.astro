@@ -1,15 +1,14 @@
 ---
 import { Picture } from 'astro:assets';
-import Karimeen from './Karimeen.astro';
 import { arts } from '@/lib/lake-art';
 /**
- * The home hero's lake: still. One orchestrated moment, all CSS:
- * - a karimeen surfaces once, soon after the page opens;
- * - every six seconds a single ripple spreads from the open book, over the
- *   water only (clipped to the water's outline, so it never crosses the book).
+ * The home hero's lake: still, under a red sun. One moment of motion, all
+ * CSS: every few seconds a single ripple ring spreads from the open book,
+ * over the water only (clipped to the water's outline, so it never crosses
+ * the book or the jetty).
  * A "stage" box is cropped exactly like the picture (object-fit: cover at the
  * same object-position, via --px/--py), so both stay pinned to the artwork at
- * every screen size. "Pause the lake" and reduced motion stop them.
+ * every screen size. "Pause the lake" and reduced motion stop it.
  */
 interface Props {
   class?: string;
@@ -25,16 +24,8 @@ const W = 3600;
 const H = 1857;
 // The water outline, pulled a touch away from the jetty's edge so no ring ever touches the planks.
 const water = a.mask.map(([x, y]) => `${Math.round(x * W)},${Math.round((x > 0.74 && y > 0.4 && y < 0.6 ? y - 0.018 : y) * H)}`).join(' ');
-// Where the ripple starts: the water just behind the open book, where the karimeen surfaced.
+// Where the ripple starts: the water just behind the open book.
 const ripple = { x: 0.705 * W, y: 0.492 * H };
-// Where the karimeen breaks the surface (as fractions of the picture). Its
-// jump is drawn in picture units (1/3600 of the picture's width) around
-// that point, and scaled a little larger on small screens.
-const fish = { x: 0.7, y: 0.47 };
-const splash = [
-  { x: 34, d: 1.9 },
-  { x: 280, d: 3.1 },
-];
 ---
 <div class:list={['hero-lake relative isolate overflow-hidden bg-lake-soft', cls]}>
   <Picture
@@ -53,24 +44,10 @@ const splash = [
       <defs>
         <clipPath id="hero-water"><polygon points={water} /></clipPath>
       </defs>
-      <g clip-path="url(#hero-water)" fill="none" stroke="#fcfaf3" stroke-linecap="round">
-        {[0, 1, 2].map((i) => (
-          <ellipse class="hero-ring" cx={ripple.x} cy={ripple.y} rx="520" ry="100" style={`--i:${i}`} />
-        ))}
+      <g clip-path="url(#hero-water)" fill="none" stroke="#f3efe8" stroke-linecap="round">
+        <ellipse class="hero-ring" cx={ripple.x} cy={ripple.y} rx="560" ry="108" />
       </g>
     </svg>
-    <div class="fish-at" style={`left:${fish.x * 100}%;top:${fish.y * 100}%`}>
-      <svg class="fish-splash" viewBox="-300 -60 900 120">
-        <g fill="none" stroke="#fcfaf3" stroke-linecap="round">
-          {splash.map((s) => (
-            <ellipse class="fish-ring" cx={s.x} cy="0" rx="230" ry="46" style={`--d:${s.d}s`} />
-          ))}
-        </g>
-      </svg>
-      <div class="fish-wrap">
-        <div class="fish"><Karimeen uid="hero" class="block h-auto w-full" /></div>
-      </div>
-    </div>
   </div>
   <slot />
 </div>
@@ -84,8 +61,6 @@ const splash = [
     --a: 1.938611;
     /* One picture unit: 1/3600 of the picture's width. */
     --u: calc(max(100cqw, 100cqh * var(--a)) / 3600);
-    /* The karimeen's size: larger where the picture is small. */
-    --fs: 1.3;
     position: absolute;
     width: max(100cqw, 100cqh * var(--a));
     height: max(100cqh, 100cqw / var(--a));
@@ -94,18 +69,17 @@ const splash = [
     top: calc((100cqh - max(100cqh, 100cqw / var(--a))) * var(--py, 0.5));
     pointer-events: none;
   }
-  .hero-ring,
-  .fish-ring {
+  .hero-ring {
     transform-box: fill-box;
     transform-origin: center;
     vector-effect: non-scaling-stroke;
     stroke-width: 1.6;
     opacity: 0;
   }
-  /* One ripple every six seconds; three rings, a breath apart. */
+  /* One ring, spreading slowly, every seven seconds. */
   .hero-ring {
-    animation: hero-ripple 6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-    animation-delay: calc(3.8s + var(--i) * 0.42s);
+    animation: hero-ripple 7s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    animation-delay: 1.6s;
   }
   @keyframes hero-ripple {
     0% {
@@ -118,79 +92,6 @@ const splash = [
     60% {
       transform: scale(1);
       opacity: 0;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 0;
-    }
-  }
-  @media (max-width: 639px) {
-    .hero-stage {
-      --fs: 2;
-    }
-  }
-  /* The karimeen: out of the water, a small arc, back in. Once.
-     .fish-at is the point where it breaks the surface; everything inside is
-     measured from there, so it scales as one. */
-  .fish-at {
-    position: absolute;
-    width: 0;
-    height: 0;
-    transform: scale(var(--fs));
-    transform-origin: 0 0;
-  }
-  .fish-splash {
-    position: absolute;
-    left: calc(-300 * var(--u));
-    top: calc(-60 * var(--u));
-    width: calc(900 * var(--u));
-    height: calc(120 * var(--u));
-    overflow: visible;
-  }
-  /* The water's surface is the bottom edge of this box: below it, the fish is hidden. */
-  .fish-wrap {
-    position: absolute;
-    left: calc(-60 * var(--u));
-    top: calc(-230 * var(--u));
-    width: calc(420 * var(--u));
-    height: calc(230 * var(--u));
-    overflow: hidden;
-  }
-  .fish {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 44%;
-    transform: translate(0, 120%) rotate(-38deg);
-    animation: karimeen 2.1s cubic-bezier(0.45, 0, 0.35, 1) 1.5s 1 both;
-  }
-  @keyframes karimeen {
-    0% {
-      transform: translate(0, 120%) rotate(-38deg);
-    }
-    38% {
-      transform: translate(45%, -55%) rotate(-14deg);
-    }
-    52% {
-      transform: translate(78%, -80%) rotate(4deg);
-    }
-    72% {
-      transform: translate(108%, -40%) rotate(26deg);
-    }
-    100% {
-      transform: translate(128%, 125%) rotate(44deg);
-    }
-  }
-  .fish-ring {
-    animation: fish-ripple 2.6s cubic-bezier(0.22, 1, 0.36, 1) var(--d) 1 both;
-  }
-  @keyframes fish-ripple {
-    0% {
-      transform: scale(0.05);
-      opacity: 0;
-    }
-    8% {
-      opacity: 0.9;
     }
     100% {
       transform: scale(1);

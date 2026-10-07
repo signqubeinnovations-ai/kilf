@@ -9,6 +9,8 @@ export const site = {
   year: 2027,
   email: 'kilf2027@gmail.com',
   organiser: 'Capital Media',
+  url: 'https://www.kilf.in',
+  domain: 'www.kilf.in',
   socialHandle: '[@HANDLE]',
   socialUrl: '', // e.g. https://instagram.com/kilf2027, fill in with the handle
   city: 'Kollam, Kerala',
@@ -19,45 +21,34 @@ export const site = {
   endISO: '2027-01-04T23:59:59+05:30',
   startDate: '2026-12-31',
   endDate: '2027-01-04',
-  /** Chapter 1: The Pause. */
-  taglines: {
-    main: 'Chapter 1: The Pause.',
-    second: 'Pause. Turn a page.',
-    closing: 'Come for a story. Stay for the connection.',
-    cause: 'Keep the waters alive.',
-  },
+  /** The edition's theme (a chapter title, not a tagline). */
+  theme: 'Chapter 1 — The Pause',
+  /** The one tagline, used site-wide. Nothing else is a tagline. */
+  tagline: 'Pause. Turn a page.',
+  /** The About story line. */
+  story: 'Every ripple begins with a pause. One page, one idea, spreading outward.',
   /** Meta and share description for the whole site. */
-  description: 'Chapter 1: The Pause — the first Kollam International Literature Festival, 31 Dec 2026 – 4 Jan 2027, by Ashtamudi Lake.',
+  description: 'Pause. Turn a page. Five days by the stillness of Ashtamudi: the Kollam International Literature Festival, 31 December 2026 – 4 January 2027, Kollam, Kerala.',
   venues: [
     {
       id: 'sngcc',
       /** Venue code: 1 ripple ring. */
       rings: 1,
-      name: 'Sreenarayana Guru Cultural Centre',
+      name: 'Sree Narayana Cultural Complex',
       area: 'Kollam',
       lat: '[LAT]',
       lng: '[LNG]',
-      mapsQuery: 'Sreenarayana Guru Cultural Centre, Kollam, Kerala',
+      mapsQuery: 'Sree Narayana Cultural Complex, Kollam, Kerala',
     },
     {
       id: '8point',
       /** Venue code: 2 ripple rings. */
       rings: 2,
       name: '8 Point Art Cafe',
-      area: 'Asramam, Kollam',
+      area: 'Kollam',
       lat: '[LAT]',
       lng: '[LNG]',
       mapsQuery: '8 Point Art Cafe, Kollam, Kerala',
-    },
-    {
-      id: 'ashramam',
-      /** Venue code: 3 ripple rings. */
-      rings: 3,
-      name: 'Ashramam Maidan',
-      area: 'Asramam, Kollam',
-      lat: '[LAT]',
-      lng: '[LNG]',
-      mapsQuery: 'Ashramam Maidan, Kollam, Kerala',
     },
   ],
 } as const;

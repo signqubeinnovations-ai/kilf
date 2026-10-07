@@ -29,7 +29,7 @@ const getting = [
 ];
 const stay = [
   ['bed', 'Where to stay', 'Kollam has city hotels, family-run homestays and lakeside resorts around Ashtamudi. New Year is a busy week on the Kerala coast, so book early.'],
-  ['bus', 'Getting around', 'Autorickshaws and taxis link the three venues. App cabs and KSRTC buses run across the city.'],
+  ['bus', 'Getting around', 'Autorickshaws and taxis link the two venues. App cabs and KSRTC buses run across the city.'],
   ['bowl', 'Eating well', 'Kollam is known for its seafood and its cashews. In the evenings, the festival’s food strand brings the city’s kitchens to the water.'],
 ];
 const around = [
@@ -48,15 +48,15 @@ const tips = [
 ---
 <PageHero
   label={h('Plan your visit', 'യാത്ര ഒരുക്കാം')}
-  text={h('Three venues.', 'മൂന്നു വേദികൾ.')}
+  text={h('Two venues.', 'രണ്ടു വേദികൾ.')}
   accent={h('One shore.', 'ഒരേ തീരം.')}
   lang={h.lang}
-  lead="All three venues are in Kollam city, close to Ashtamudi Lake. Each has a code in ripple rings, used across the programme and on the ground."
+  lead="Both venues are in Kollam city, close to Ashtamudi Lake. Each has a code in ripple rings, used across the programme and on the ground."
 />
 
 <Section tone="cream" class="!pt-0" labelledby="venues-h">
   <h2 id="venues-h" class="sr-only" lang={h.lang}>{h('Venues', 'വേദികൾ')}</h2>
-  <ul class="grid gap-8 lg:grid-cols-3 lg:gap-8">
+  <ul class="grid gap-8 md:grid-cols-2 lg:gap-12">
     {venues.map((v) => (
       <li class="flex flex-col">
         <div class="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-lake-soft" data-map={v.embed} data-map-title={`Map showing ${v.name}`}>
