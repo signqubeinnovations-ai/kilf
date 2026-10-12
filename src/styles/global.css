@@ -8,6 +8,7 @@
 --------------------------------------------------------------------------- */
 @import '@fontsource-variable/plus-jakarta-sans/wght.css';
 @import '@fontsource-variable/noto-sans-malayalam/wght.css';
+@import './components.css';
 
 /* ---------------------------------------------------------------------------
    Colours. Contrast (WCAG AA) on cream #FCFAF3:
@@ -153,7 +154,7 @@
   .on-dark .coral-word {
     color: var(--color-coral);
   }
-  /* A headline's closing full stop, drawn in a little (see Headline.astro). */
+  /* A headline's closing full stop, drawn in a little (see Headline.tsx). */
   .stop {
     margin-inline-start: -0.06em;
   }

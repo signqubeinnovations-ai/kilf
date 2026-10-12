@@ -1,14 +1,13 @@
 /**
  * The festival's lake illustrations. `mask` traces the water in each picture
  * (0–1 of its width and height): the hero's ripple is clipped to it, so it
- * never crosses the jetty or the book.
+ * never crosses the jetty or the book. `img` is the picture's key in the
+ * image manifest (scripts/prepare-assets.mjs).
  */
-import lakeHero from '@/assets/art/lake-hero.jpg';
-import lakeJetty from '@/assets/art/lake-jetty.jpg';
 
 export const arts = {
   hero: {
-    img: lakeHero,
+    img: 'art/lake-hero',
     widths: [640, 960, 1280, 1920, 2560, 3200],
     alt: 'An open book on a wooden jetty by a calm lake at sunrise, palms on the far shore and a coral sun low in the sky.',
     mask: [
@@ -16,7 +15,7 @@ export const arts = {
     ],
   },
   jetty: {
-    img: lakeJetty,
+    img: 'art/lake-jetty',
     widths: [640, 960, 1280, 1920, 2560, 3200],
     alt: 'A wide, still lake at dusk with palm islands on the horizon, a wooden jetty with an open book, and leaves in the foreground.',
     mask: [

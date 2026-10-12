@@ -2,7 +2,7 @@
 
 Official website for the **Kollam International Literature Festival (KILF) 2027**: 31 December 2026 – 4 January 2027, Kollam, Kerala.
 
-Built with [Astro](https://astro.build) and Tailwind CSS. It is a fully static site: fast, SEO-friendly and hostable anywhere. The design is **Chapter 1: The Pause**: calm, intimate and still, like Ashtamudi Lake in the morning. Its one moment of motion is pure CSS; the only React island is the theatre ticket card on the Khasak page (with [Motion](https://motion.dev)). Everything else is plain HTML with a few tiny scripts (menu, countdown, speaker filters, schedule tabs, map loader, forms).
+Built with [Next.js](https://nextjs.org) 16 (App Router) and Tailwind CSS 4. It is a fully static site (`output: 'export'`): fast, SEO-friendly and hostable anywhere. The design is **Chapter 1: The Pause**: calm, intimate and still, like Ashtamudi Lake in the morning. Its one moment of motion is pure CSS. Pages are React Server Components rendered at build time; the theatre ticket card on the Khasak page is a client component (with [Motion](https://motion.dev)), and a few tiny client scripts in `src/components/behaviors/` run the menu, countdown, speaker filters, schedule tabs, map loader and forms.
 
 - **English** at `/` (default), **Malayalam** at `/ml/`. Home, About and Our cause are fully translated; every other `/ml/` page has its headlines in Malayalam over the English text, with a notice.
 - Content (speakers, FAQs, passes, strands, programme, sponsors) lives in `src/content/` and can be edited without touching code.
@@ -16,16 +16,17 @@ Requires **Node 22.12+**.
 ```bash
 npm install
 cp .env.example .env     # optional: fill in the form endpoint etc.
-npm run dev              # http://localhost:4321
+npm run dev              # http://localhost:3000
 ```
 
 | Command | What it does |
 |---|---|
 | `npm run dev` | Local dev server with hot reload. `[PLACEHOLDERS]` are highlighted in yellow. |
-| `npm run build` | Production build into `dist/` (plain static files). |
-| `npm run preview` | Serve the built `dist/` locally. |
-| `npm run check` | Type-check content and components. |
-| `npm run assets` | Regenerate stand-in images and the share image (also runs before `dev`/`build`). |
+| `npm run build` | Production build into `out/` (plain static files). |
+| `npm run preview` | Serve the built `out/` locally. |
+| `npm run check` | Type-check the code (`tsc`). Content is checked against `src/content.config.ts` on every build. |
+| `npm run format` | Format the code with Prettier. |
+| `npm run assets` | Regenerate stand-in images, the resized AVIF/WebP/JPG pictures in `public/img/` and the share image (also runs before `dev`/`build`). |
 | `npm run screenshots` | After a build: screenshots of key pages at mobile + desktop into `screenshots/`. |
 
 ## 2. Artwork and photos: `kilf-assets/`
@@ -48,13 +49,13 @@ Until a file is present, the site uses an on-brand **stand-in**: flat SVG illust
 
 The lake illustrations (`src/assets/art/lake-hero.jpg`, the open book on the jetty, and `lake-jetty.jpg`, the wide jetty scene) are part of the design and stay still, apart from the home hero's one moment (see Motion below). Both were upscaled 4× from 1241 px originals with Real-ESRGAN; higher-resolution originals of the same scenes can replace them. The hero's ripple is clipped to the water's outline (`mask` in `src/lib/lake-art.ts`): if you change the picture's composition, update the outline.
 
-The home hero is full-bleed on desktop (the illustration covers the whole section, with a soft "mist" behind the words) and stacked on phones and tablets (words on the cream sky, the lake below). Its crop at each screen size is set with `object-[…]` classes and the matching `[--px:…]` values on `HeroLake` in `src/views/Home.astro`, so the ripple and the karimeen stay pinned to the picture.
+The home hero is full-bleed on desktop (the illustration covers the whole section, with a soft "mist" behind the words) and stacked on phones and tablets (words on the cream sky, the lake below). Its crop at each screen size is set with `object-[…]` classes and the matching `[--px:…]` values on `HeroLake` in `src/views/Home.tsx`, so the ripple and the karimeen stay pinned to the picture.
 
 The 1200×630 social share image (`public/og-image.jpg`) is built on every build: the title panel (`scripts/og-panel.png`, "Chapter 1: The Pause." with the dates, drawn once in the site's type) beside the lake-and-book art, or `kilf-assets/illustrations/cover.jpg` if present. Redraw the panel if the title or dates change.
 
 ## 3. Editing content
 
-All content is validated at build time, so a typo in a field name fails the build with a clear message.
+All content is validated at build time against the schemas in `src/content.config.ts` (read by `src/lib/content.ts`), so a typo in a field name fails the build with a clear message.
 
 | What | Where |
 |---|---|
@@ -83,7 +84,7 @@ All content is validated at build time, so a typo in a field name fails the buil
    photo: k-r-meera.jpg
    categories: [literature]          # any of: literature, cinema, music, history-ideas
    order: 175                        # lower = earlier in the grid
-   featured: false                   # the home page's eight voices are chosen in src/views/Home.astro
+   featured: false                   # the home page's eight voices are chosen in src/views/Home.tsx
    status: proposed                  # change to "confirmed" once confirmed
    ---
 
@@ -136,13 +137,13 @@ Each day has a `theme` ("First light.") and `theme_ml` (its Malayalam title, for
 
 ### Open ticketing
 
-Prices are already in `src/content/passes.json` (`"price"`, with `"priceNote"` saying what it covers). When sales open, add `"buyUrl"` to each pass and the "Notify me" button becomes a "Buy" button. Theatre ticket prices and dates for Khasakkinte Ithihasam are in `src/components/motion/TicketCard.tsx` and `src/views/Khasak.astro`.
+Prices are already in `src/content/passes.json` (`"price"`, with `"priceNote"` saying what it covers). When sales open, add `"buyUrl"` to each pass and the "Notify me" button becomes a "Buy" button. Theatre ticket prices and dates for Khasakkinte Ithihasam are in `src/components/motion/TicketCard.tsx` and `src/views/Khasak.tsx`.
 
 ### Translate another page into Malayalam
 
 1. Move the page's English strings into `src/i18n/ui.ts` (the `en` block) and add the Malayalam strings to the `ml` block, as Home, About and Our cause do. Use `t('key')` in the view in `src/views/`. (Its headlines are already in Malayalam, via `headings()`.)
 2. Add the path (e.g. `'/programme'`) to `translatedPaths` in `src/i18n/ui.ts`.
-3. Add the path to the sitemap filter in `astro.config.mjs`.
+3. Nothing else: the sitemap (`src/app/sitemap.ts`) lists every path in `translatedPaths` in Malayalam too.
 
 Untranslated `/ml/` pages show a notice, are `noindex`, and point their canonical URL at the English page. Their headlines are set in Malayalam with `lang="ml"`.
 
@@ -170,11 +171,11 @@ See `.env.example`. Set them in Vercel/Netlify under *Settings → Environment v
 
 ## 6. Deploy
 
-**Vercel**: import the repo. `vercel.json` sets the build (`npm run build`, output `dist`). Add the env variables and deploy.
+**Vercel**: import the repo. `vercel.json` sets the framework (Next.js) and build (`npm run build`); Vercel serves the static export. Add the env variables and deploy.
 
 **Netlify**: import the repo. `netlify.toml` is included.
 
-**Any static host**: run `npm run build` and upload `dist/`.
+**Any static host**: run `npm run build` and upload `out/`.
 
 The partnership proposal PDF: put it at `public/downloads/kilf-2027-partnership-proposal.pdf` and the Partners page shows a download link.
 
@@ -185,16 +186,20 @@ src/
   components/     Header, Footer, ChapterLabel, Headline, Rings, Divider,
                   HeroLake, Karimeen, CauseArt, MiniCountdown, LakeArt,
                   SpeakerCard, Portrait, Section, Form/Field, MotionToggle, Icon …
-  components/motion/  The theatre ticket card (TicketCard, a React island with Motion)
+  components/motion/  The theatre ticket card (TicketCard, a client component with Motion)
+  components/behaviors/  The small client scripts: menu, Pause the lake, countdown, forms,
+                  speaker filter, programme tabs, map loader, the swimming karimeen
   components/blocks/  Larger reusable sections (strands, notify banner, schedule)
   assets/art/     The lake illustrations used across the site
   views/          Page bodies, shared by the English and /ml/ routes
-  pages/          Routes (thin wrappers around views) + robots.txt
-  layouts/        BaseLayout: SEO, Open Graph, JSON-LD, fonts, analytics
+  app/            Routes: (en)/… for English, (ml)/ml/… for Malayalam, each with its
+                  own root layout (so <html lang> is right); sitemap, robots, 404
+  components/Page.tsx  Every page's frame (header, main, footer, JSON-LD);
+                  metadata (SEO, Open Graph, hreflang) comes from lib/meta.ts
   content/        Editable content collections
   i18n/           Translations, and headings() for Malayalam headlines
   lib/            Site facts (venues and ring codes), lake-art outlines, image lookup
-  styles/         Design tokens (colours, type) in global.css
+  styles/         Design tokens (colours, type) in global.css; component styles in components.css
   placeholders/   Stand-in SVG illustrations
 scripts/          Asset preparation (and the share image's title panel), screenshots
 kilf-assets/      Real artwork (see section 2)
@@ -206,8 +211,8 @@ One orchestrated moment on its own, and one that follows your scroll:
 
 | Where | What moves | Component |
 |---|---|---|
-| Home hero | The lake is still. Soon after the page opens, a karimeen (a small drawing: a navy line around the old colours, navy to cobalt to lake blue, with cream pearl spots) leaps once from the water and slips back in; every six seconds a single ripple spreads from the open book, over the water only | `src/components/HeroLake.astro` (pure CSS), `Karimeen.astro` |
-| "Keep the waters alive" artwork (home and `/cause`) | The karimeen swims with the page: as the card scrolls into view it swims in from the left, tail swishing and bubbles rising, settles in the middle, and drifts on as you keep scrolling. Scrolling back reverses it | `src/components/CauseArt.astro` (a small scroll script) |
+| Home hero | The lake is still. Soon after the page opens, a karimeen (a small drawing: a navy line around the old colours, navy to cobalt to lake blue, with cream pearl spots) leaps once from the water and slips back in; every six seconds a single ripple spreads from the open book, over the water only | `src/components/HeroLake.tsx` (pure CSS, in `src/styles/components.css`), `Karimeen.tsx` |
+| "Keep the waters alive" artwork (home and `/cause`) | The karimeen swims with the page: as the card scrolls into view it swims in from the left, tail swishing and bubbles rising, settles in the middle, and drifts on as you keep scrolling. Scrolling back reverses it | `src/components/CauseArt.tsx` (a small scroll script, `behaviors/SwimBehavior.tsx`) |
 | Khasakkinte Ithihasam tickets | Ticket type and preview transitions, when you use the card | `motion/TicketCard.tsx` (Motion) |
 | Buttons | A ring spreads once on hover | `global.css` |
 
@@ -217,11 +222,11 @@ One orchestrated moment on its own, and one that follows your scroll:
 ### Layout and colour
 
 - Calm surfaces: cream pages, pale lake-blue bands, and night navy for the evenings (New Year's Eve, the theatre). Generous space, one idea per screen, hairlines instead of boxes.
-- **Ripple rings** are the system motif (`Rings.astro`): one ring beside every section label (`ChapterLabel`), three between sections (`Divider`), and the **venue codes**: Sreenarayana Guru Cultural Centre 1 ring, 8 Point Art Cafe 2, Ashramam Maidan 3, on the home page, the Programme and Visit.
+- **Ripple rings** are the system motif (`Rings.tsx`): one ring beside every section label (`ChapterLabel`), three between sections (`Divider`), and the **venue codes**: Sreenarayana Guru Cultural Centre 1 ring, 8 Point Art Cafe 2, Ashramam Maidan 3, on the home page, the Programme and Visit.
 - Headlines (`Headline`) are Plus Jakarta Sans 800 with tight tracking; a second line in cobalt, and at most **one coral word** per headline (`coral="word"`). Coral text on light surfaces uses `coral-text` (#DB5A3B) to pass WCAG AA for large text.
 - Section labels have no numbers; only real sequences (steps, times) are numbered.
 - Buttons are square. Primary buttons are cobalt on light surfaces and cream on night navy (`LimeButton`, default `primary`). Secondary actions are underlined text links with a ↗ (`TextLink`).
-- Speaker portraits are 4:5 rounded rectangles (`Portrait.astro`), lazy-loaded.
+- Speaker portraits are 4:5 rounded rectangles (`Portrait.tsx`), lazy-loaded.
 
 ### Brand notes
 

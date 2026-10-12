@@ -494,11 +494,17 @@ export function useTranslations(lang: Lang) {
   return (key: UIKey) => ui[lang][key] ?? en[key];
 }
 
-/** Prefix a site path with the language segment. */
+/**
+ * Prefix a site path with the language segment. Pages end in a slash
+ * (/about/, /ml/about/), as the static build writes them, so links never
+ * bounce through a redirect; a #hash or ?query is kept, and files are left alone.
+ */
 export function localizePath(path: string, lang: Lang) {
-  const clean = path.startsWith('/') ? path : `/${path}`;
-  if (lang === defaultLang) return clean;
-  return clean === '/' ? `/${lang}/` : `/${lang}${clean}`;
+  const [, base = '', rest = ''] = path.match(/^([^?#]*)(.*)$/) ?? [];
+  let clean = base.startsWith('/') ? base : `/${base}`;
+  if (!clean.endsWith('/') && !/\.[a-z0-9]+$/i.test(clean)) clean += '/';
+  if (lang !== defaultLang) clean = `/${lang}${clean}`;
+  return clean + rest;
 }
 
 /** Split a pathname into its language and the language-neutral path. */

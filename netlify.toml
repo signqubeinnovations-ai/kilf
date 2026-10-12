@@ -1,8 +1,13 @@
 [build]
   command = "npm run build"
-  publish = "dist"
+  publish = "out"
 
 [[headers]]
-  for = "/_astro/*"
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/img/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"

@@ -1,0 +1,89 @@
+/**
+ * The karimeen (pearl spot, Etroplus suratensis), Kerala's state fish and a
+ * creature of Ashtamudi's brackish water, as a small drawing: a night-navy
+ * line around the old colours (a body that runs from navy through cobalt to
+ * lake blue, with darker bands and cream pearl spots, navy and cobalt fins),
+ * a round eye and a smile. Faces right. Used sparingly.
+ */
+interface Props {
+  className?: string;
+  /** Unique suffix for the gradient and clip ids when several appear on a page. */
+  uid?: string;
+  /** Accessible name; decorative when omitted. */
+  title?: string;
+}
+
+const line = '#101b62';
+const body = 'M175 60C172 38 151 20 117 20C89 20 67 32 55 48C51 52 49 56 49 60C49 64 51 68 55 72C67 88 89 100 117 100C151 100 172 82 175 60Z';
+// Pearl spots, the fish's namesake.
+const pearls = [
+  [88, 38],
+  [102, 33],
+  [116, 31],
+  [129, 34],
+  [80, 53],
+  [95, 48],
+  [110, 45],
+  [125, 46],
+  [86, 68],
+  [101, 63],
+  [94, 82],
+];
+
+export default function Karimeen({ className, uid = 'k', title }: Props) {
+  return (
+    <svg viewBox="0 0 200 120" className={className} role={title ? 'img' : undefined} aria-label={title} aria-hidden={title ? undefined : 'true'} focusable="false">
+      <defs>
+        <linearGradient id={`kb-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#13207a" />
+          <stop offset="0.55" stopColor="#1f3fd8" />
+          <stop offset="1" stopColor="#a9c4ea" />
+        </linearGradient>
+        <clipPath id={`kc-${uid}`}>
+          <path d={body} />
+        </clipPath>
+      </defs>
+      {/* tail (a group, so it can swish: see CauseArt) */}
+      <g className="k-tail">
+        <path d="M52 54C42 46 31 40 16 37C22 50 22 70 16 83C31 80 42 74 52 66Z" fill="#1f3fd8" stroke={line} strokeWidth="2.4" strokeLinejoin="round" />
+        <path d="M47 52L30 45M47 60L25 60M47 68L30 75" fill="none" stroke="#a9c4ea" strokeWidth="1.2" strokeLinecap="round" />
+      </g>
+      <g stroke={line} strokeWidth="2.4" strokeLinejoin="round">
+        {/* dorsal fin, spiny in front, a soft lobe at the back */}
+        <path d="M142 23C122 7 88 5 68 16C57 22 50 31 47 44L62 40Z" fill="#13207a" />
+        {/* anal fin */}
+        <path d="M112 99C94 113 68 112 53 90C50 84 49 78 51 73L82 96Z" fill="#13207a" />
+        {/* body */}
+        <path d={body} fill={`url(#kb-${uid})`} />
+      </g>
+      {/* fin rays */}
+      <path
+        d="M118 20L116 14.3M106 20.6L104 12.5M94 22.9L92 12.5M82 27.1L80 14.5M71 33.1L69 18.6M100 98.5L97 103.5M88 95.3L85 105.1M77 90.5L74 103.2"
+        fill="none"
+        stroke="#a9c4ea"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+      {/* bands */}
+      <g clipPath={`url(#kc-${uid})`} fill={line} fillOpacity="0.24">
+        {[66, 86, 106, 126, 146].map((x) => (
+          <rect key={x} x={x} y="10" width="8" height="100" transform={`rotate(8 ${x} 60)`} />
+        ))}
+      </g>
+      {/* gill and side fin */}
+      <path d="M150 38C142 51 142 69 151 82" fill="none" stroke={line} strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" />
+      <path d="M137 63C128 65 121 72 119 81C128 81 135 74 137 63Z" fill="#a9c4ea" fillOpacity="0.9" stroke={line} strokeWidth="2" strokeLinejoin="round" />
+      <g fill="#fcfaf3" fillOpacity="0.9">
+        {pearls.map(([x, y]) => (
+          <circle key={`${x}-${y}`} cx={x} cy={y} r="2.3" />
+        ))}
+      </g>
+      {/* cheek, eye, smile */}
+      <ellipse cx="158" cy="63" rx="4.6" ry="2.6" fill="#f2785a" fillOpacity="0.65" />
+      <circle cx="159" cy="47" r="6.6" fill="#fcfaf3" stroke={line} strokeWidth="2.2" />
+      <circle cx="160.3" cy="47.8" r="3.4" fill={line} />
+      <circle cx="161.6" cy="46.4" r="1.2" fill="#fcfaf3" />
+      <path d="M172 66Q168.5 69 164.5 67.6" fill="none" stroke={line} strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}

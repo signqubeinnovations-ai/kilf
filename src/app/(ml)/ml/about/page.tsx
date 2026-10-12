@@ -1,0 +1,16 @@
+import Page from '@/components/Page';
+import View from '@/views/About';
+import { pageMetadata } from '@/lib/meta';
+
+export const metadata = pageMetadata('/ml/about', {
+  title: 'KILF-നെക്കുറിച്ച്',
+  description: 'എന്തുകൊണ്ട് അഷ്ടമുടി, കൊല്ലം എന്തുകൊണ്ട് പ്രധാനം — കൊല്ലം അന്താരാഷ്ട്ര സാഹിത്യോത്സവത്തെക്കുറിച്ച് ചുരുക്കത്തിൽ.',
+});
+
+export default function Route() {
+  return (
+    <Page pathname="/ml/about">
+      <View lang="ml" />
+    </Page>
+  );
+}

@@ -64,12 +64,22 @@ export const site = {
 
 export const isPlaceholder = (v: string) => /^\[.*\]$/.test(v.trim());
 
+/**
+ * Environment variables, read at build time (see .env.example). They keep the
+ * PUBLIC_ names from before; only server components read them, and pass what
+ * the browser needs down as props.
+ */
 export const env = {
-  formEndpoint: import.meta.env.PUBLIC_FORM_ENDPOINT || '',
-  formEndpointPartner: import.meta.env.PUBLIC_FORM_ENDPOINT_PARTNER || '',
-  formEndpointNewsletter: import.meta.env.PUBLIC_FORM_ENDPOINT_NEWSLETTER || '',
-  ga4: import.meta.env.PUBLIC_GA4_ID || '',
-  plausible: import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || '',
-  partnerCallUrl: import.meta.env.PUBLIC_PARTNER_CALL_URL || '',
-  whatsappUrl: import.meta.env.PUBLIC_WHATSAPP_URL || '',
+  siteUrl: (process.env.SITE_URL || 'https://kilf.vercel.app').replace(/\/$/, ''),
+  formEndpoint: process.env.PUBLIC_FORM_ENDPOINT || '',
+  formEndpointPartner: process.env.PUBLIC_FORM_ENDPOINT_PARTNER || '',
+  formEndpointNewsletter: process.env.PUBLIC_FORM_ENDPOINT_NEWSLETTER || '',
+  ga4: process.env.PUBLIC_GA4_ID || '',
+  plausible: process.env.PUBLIC_PLAUSIBLE_DOMAIN || '',
+  partnerCallUrl: process.env.PUBLIC_PARTNER_CALL_URL || '',
+  whatsappUrl: process.env.PUBLIC_WHATSAPP_URL || '',
+  dev: process.env.NODE_ENV === 'development',
 };
+
+/** An absolute URL on the public site, e.g. abs('/about/'). */
+export const abs = (p: string) => new URL(p, env.siteUrl + '/').href;

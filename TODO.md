@@ -11,9 +11,9 @@
 | `[LAT]`, `[LNG]` for 8 Point Art Cafe | Plan your visit | `src/lib/site.ts` → `venues[1]` |
 | `[LAT]`, `[LNG]` for Ashramam Maidan | Plan your visit | `src/lib/site.ts` → `venues[2]` |
 | `[PROPOSAL PDF]` partnership proposal | Partners page | Add `public/downloads/kilf-2027-partnership-proposal.pdf` |
-| `[CONFIRM]` beside each of the three commitments (a plastic-free festival, one climate conversation every day, an Ashtamudi clean-up) | Home "Our cause", `/cause` | Confirm with the organisers, then remove the `<Placeholder value="[CONFIRM]" />` in `src/views/Home.astro` and `src/views/Cause.astro`; the wording is `home.cause.c1`–`c3` and `cause.c1.d`–`c3.d` in `src/i18n/ui.ts` |
-| `[DATE]` for the Ashtamudi clean-up | `/cause` | `src/views/Cause.astro` ("When") |
-| `[CONFIRM]` for the clean-up meeting point | `/cause` | `src/views/Cause.astro` ("Where"), `cause.join.whereNote` |
+| `[CONFIRM]` beside each of the three commitments (a plastic-free festival, one climate conversation every day, an Ashtamudi clean-up) | Home "Our cause", `/cause` | Confirm with the organisers, then remove the `<Placeholder value="[CONFIRM]" />` in `src/views/Home.tsx` and `src/views/Cause.tsx`; the wording is `home.cause.c1`–`c3` and `cause.c1.d`–`c3.d` in `src/i18n/ui.ts` |
+| `[DATE]` for the Ashtamudi clean-up | `/cause` | `src/views/Cause.tsx` ("When") |
+| `[CONFIRM]` for the clean-up meeting point | `/cause` | `src/views/Cause.tsx` ("Where"), `cause.join.whereNote` |
 
 The maps and "Get directions" links already work from the venue names. Coordinates just make them exact.
 
@@ -44,21 +44,21 @@ This copy was written to fit the brief, but the source documents were not availa
 - [ ] **FAQ answers**: brief says "copy from the brochure". See `src/content/faqs.json`. The session-language answer in particular needs confirming.
 - [ ] **Partners page**: "why partner" wording, the six audience groups, tier descriptions and the whole **benefits matrix** (`src/data/partnership.json`) are drafts to check against the sponsorship proposal. No prices are shown.
 - [ ] **Pass descriptions and inclusions** (`src/content/passes.json`) are indicative. Confirm them before ticketing.
-- [ ] Strand one-liners (`src/content/strands.json`), youth activity one-liners (`src/views/Youth.astro`) and the Khasak description (`src/views/Khasak.astro`).
-- [ ] "Getting here", "While you’re here", "Around Kollam" and "Good to know" on Plan your visit (`src/views/Visit.astro`).
+- [ ] Strand one-liners (`src/content/strands.json`), youth activity one-liners (`src/views/Youth.tsx`) and the Khasak description (`src/views/Khasak.tsx`).
+- [ ] "Getting here", "While you’re here", "Around Kollam" and "Good to know" on Plan your visit (`src/views/Visit.tsx`).
 - [ ] **Chapter 1: The Pause** copy: the home "The Pause" section (`home.pause.*`), "Why Ashtamudi", and the taglines.
 - [ ] **Our cause** (`/cause`, `cause.*` in `src/i18n/ui.ts`): the facts about Ashtamudi (a Ramsar wetland; its name, "eight braids"; the Kallada river and the opening to the sea at Neendakara; mangroves, clams, the karimeen), the commitments, the clean-up steps and the "Leave no trace" tips. Confirm with the organisers and, ideally, a local environmental group.
 - [ ] New sections written for this version, to confirm with the organisers: About ("Why KILF", "What to expect", "What we believe", `about.vision.*`, `about.e*`, `about.v*` in `src/i18n/ui.ts`); "A day at KILF", now on the Programme (`day.*`); Programme ("Formats"); Speakers ("The line-up", "Suggest a voice"); Khasak ("The novel", "The director", "Good to know"); Passes ("Which pass is for me?", "Ticketing, answered"); Get involved (volunteer roles, "What happens next"); Youth ("Campus ambassadors", "How to take part"); Partners ("How it works"); Contact ("Write to us about"); and the eight new FAQ answers in `src/content/faqs.json`.
 - [ ] **The proposed programme** (`src/content/schedule.json`): 45 sessions over five days, written to be viable with the proposed line-up. Every speaker appears once to three times with no clashes; other participants are described by role and marked "(invited)" or "(to be announced)" rather than named. Confirm titles, times, venues and pairings, and replace the invited roles with names as people confirm. Times for the three Khasakkinte Ithihasam evenings are placeholders (19:00, "to be confirmed").
 - [ ] **Speaker notes** (the `note` line in each `src/content/speakers/*.md`, shown on `/speakers` only): short factual notes on each speaker's best-known work and awards. Check them, and ask each speaker's team to approve their line.
-- [ ] **New Year's Eve running order** on the home page (`home.nye.*` and the times in `src/views/Home.astro`: Shanka Tribe at 20:30, countdown at 23:45) matches 31 December in the programme; confirm both together.
-- [ ] Privacy page (`src/views/Privacy.astro`): have the organisers review it.
+- [ ] **New Year's Eve running order** on the home page (`home.nye.*` and the times in `src/views/Home.tsx`: Shanka Tribe at 20:30, countdown at 23:45) matches 31 December in the programme; confirm both together.
+- [ ] Privacy page (`src/views/Privacy.tsx`): have the organisers review it.
 
 ## 4. Malayalam
 
 - [ ] Native-speaker review of all Malayalam strings in `src/i18n/ui.ts`, `src/i18n/about-qa.ts` and `src/content/strands.json`, especially the lines new in Chapter 1: The Pause: `home.hero.*`, `home.pause.*`, `home.nye.*`, `home.voices.*`, `home.khasak.*`, `home.cause.*`, `home.plan.*`, `cause.*` (the whole `/ml/cause` page), `day.*`, `footer.closing.*`, `footer.tagline`, `motion.*`, `nav.cause` and `fallback.notice`.
-- [ ] Review the **Malayalam headlines** on the other `/ml/` pages: they sit beside the English in each view, as `h('English', 'മലയാളം')` (`src/views/*.astro`), plus `theme_ml` for each day in `src/content/schedule.json`.
-- [ ] Translate the rest of the remaining pages: Speakers, Programme, Khasak, Youth, Get involved, Passes, Visit, Partners, FAQ, Contact, Privacy and the 404 page. See README "Translate another page into Malayalam". Until then these `/ml/` pages show Malayalam headlines over English text, with a notice (`TODO(i18n)` comments in `src/pages/ml/*.astro`).
+- [ ] Review the **Malayalam headlines** on the other `/ml/` pages: they sit beside the English in each view, as `h('English', 'മലയാളം')` (`src/views/*.tsx`), plus `theme_ml` for each day in `src/content/schedule.json`.
+- [ ] Translate the rest of the remaining pages: Speakers, Programme, Khasak, Youth, Get involved, Passes, Visit, Partners, FAQ, Contact, Privacy and the 404 page. See README "Translate another page into Malayalam". Until then these `/ml/` pages show Malayalam headlines over English text, with a notice (`TODO(i18n)` comments in `src/app/(ml)/ml/*/page.tsx`).
 - [ ] Optional: Malayalam speaker names (`name_ml` field in the speaker files).
 
 ## 5. Keep these "Proposed" / "subject to confirmation" labels until confirmed
@@ -73,11 +73,11 @@ This copy was written to fit the brief, but the source documents were not availa
 | Pass inclusions | "indicative" note | `/passes` |
 | Partnership benefits | "indicative" note | `/partners` |
 
-When a speaker confirms, set `status: confirmed` in their file. When everything is confirmed, remove the notes in `src/views/Speakers.astro` and `src/i18n/ui.ts` (`home.voices.proposed`).
+When a speaker confirms, set `status: confirmed` in their file. When everything is confirmed, remove the notes in `src/views/Speakers.tsx` and `src/i18n/ui.ts` (`home.voices.proposed`).
 
 ## 6. Later
 
-- [ ] Confirmed schedule → `src/content/schedule.json` (README §3), then remove the "Proposed programme" badge in `src/views/Programme.astro`.
+- [ ] Confirmed schedule → `src/content/schedule.json` (README §3), then remove the "Proposed programme" badge in `src/views/Programme.tsx`.
 - [ ] Ticketing: add `buyUrl` to each pass in `src/content/passes.json` (and a booking link for Khasakkinte Ithihasam) when sales open; prices are already shown.
 - [ ] Ticket prices and links → `src/content/passes.json`.
 - [ ] **Khasakkinte Ithihasam tickets**: the ticket card on `/khasak` is a preview only and sells nothing. When booking opens, add the date, venue and prices, and point the button at the ticketing page (`src/components/motion/TicketCard.tsx`). Confirm that Festival Passes do not include the play, as the Passes page, FAQ and ticket card now say.

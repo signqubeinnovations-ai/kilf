@@ -1,0 +1,18 @@
+node_modules
+.next
+out
+src/assets/generated
+public
+package-lock.json
+kilf-assets
+screenshots
+*.md
+# hand-formatted: long strings and coordinate lists read better on one line
+src/i18n
+src/lib/site.ts
+src/lib/lake-art.ts
+src/lib/speakers.ts
+src/styles/global.css
+src/components/motion
+scripts/screenshots.mjs
+scripts/prepare-assets.mjs

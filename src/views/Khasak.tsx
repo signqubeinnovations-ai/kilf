@@ -1,0 +1,267 @@
+import Section from '@/components/Section';
+import ChapterLabel from '@/components/ChapterLabel';
+import Headline from '@/components/Headline';
+import Badge from '@/components/Badge';
+import Illustration from '@/components/Illustration';
+import LimeButton from '@/components/LimeButton';
+import TextLink from '@/components/TextLink';
+import Rings from '@/components/Rings';
+import Stopped from '@/components/Stopped';
+import NotifyBanner from '@/components/blocks/NotifyBanner';
+import TicketCard from '@/components/motion/TicketCard';
+import { site } from '@/lib/site';
+import { localizePath, headings, type Lang } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+export default function Khasak(props: Props) {
+  const { lang } = props;
+  const lp = (p: string) => localizePath(p, lang);
+  const h = headings(lang);
+  const ml = lang === 'ml';
+
+  const facts = [
+    ['Based on', 'O. V. Vijayan’s novel Khasakkinte Ithihasam (1969)'],
+    ['Directed by', 'Deepan Sivaraman'],
+    ['Language', 'Malayalam'],
+    ['Staging', 'Immersive: the story happens around you, not only in front of you'],
+    ['Status', 'Proposed for KILF 2027 · subject to confirmation'],
+  ];
+  const plan = [
+    ['Festival window', '31 Dec 2026 — 4 Jan 2027'],
+    ['Performances', '1, 2 and 3 January 2027 · evenings'],
+    ['Venue', 'Ashramam Maidan, Kollam'],
+    ['Tickets', 'Theatre ticket ₹1,500 · Theatre + Festival Pass ₹1,600 · Booking opens soon'],
+  ];
+  const goodToKnow = [
+    ['Tickets', 'The play is ticketed separately from festival passes: a theatre ticket is ₹1,500, or ₹1,600 with a Festival Pass for all five days.'],
+    ['Dates and venue', 'Three evening performances, on 1, 2 and 3 January 2027, at Ashramam Maidan, Kollam. Start times will be confirmed with booking.'],
+    ['Seating', 'Seating will be limited. Leave your details and we’ll write the moment booking opens.'],
+    ['Language', 'The performance is in Malayalam.'],
+    ['Age guidance', 'To be announced with the performance details.'],
+    ['Access', 'Tell us about any access needs when you book, and we’ll help plan your evening.'],
+  ];
+  const options = [
+    ['Theatre ticket', '₹1,500', 'A seat at one performance, on 1, 2 or 3 January, for visitors who are coming for the play.'],
+    [
+      'Theatre + Festival Pass',
+      '₹1,600',
+      'A seat at the performance and a Festival Pass: every session from 31 December to 4 January, New Year’s Eve by the lake, the book fair and exhibitions. All five days for ₹100 more.',
+    ],
+  ];
+  return (
+    <>
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-cream pb-16 pt-14 sm:pb-20 sm:pt-20 lg:pb-24 lg:pt-24" aria-labelledby="khasak-h">
+        <div className="container-kilf relative grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+          <div>
+            <div className="flex flex-wrap items-center gap-3">
+              <ChapterLabel label={h('Signature theatre', 'സവിശേഷ നാടകം')} lang={h.lang} />
+              <Badge>Proposed</Badge>
+            </div>
+            {ml ? (
+              <>
+                <h1 id="khasak-h" className="display mt-7 text-[2.5rem] sm:text-[3.4rem] lg:text-[3.8rem]" lang="ml">
+                  ഖസാക്കിന്റെ
+                  <br />
+                  <span className="text-cobalt">
+                    <Stopped text="ഇതിഹാസം." />
+                  </span>
+                </h1>
+                <p className="mt-4 text-2xl text-muted">Khasakkinte Ithihasam</p>
+              </>
+            ) : (
+              <>
+                <h1 id="khasak-h" className="display mt-7 text-[3rem] sm:text-[4.4rem] lg:text-[4.3rem] xl:text-[5rem]">
+                  Khasakkinte
+                  <br />
+                  <span className="text-cobalt">
+                    <Stopped text="Ithihasam." />
+                  </span>
+                </h1>
+                <p className="mt-4 text-2xl text-muted" lang="ml">
+                  ഖസാക്കിന്റെ ഇതിഹാസം
+                </p>
+              </>
+            )}
+            <p className="mt-7 max-w-lg text-lg leading-relaxed text-muted">
+              O. V. Vijayan’s 1969 novel, staged by director Deepan Sivaraman. Not a play you watch. A world you walk into.
+            </p>
+            <p className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 font-bold text-navy">
+              <Rings n={3} size={36} tone="cobalt" label="Venue code 3" />
+              Ashramam Maidan · 1, 2 and 3 January 2027
+            </p>
+            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <LimeButton href="#tickets" label="Choose your ticket" size="lg" />
+              <TextLink href="#production" label="About the production" />
+            </div>
+          </div>
+          <figure className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-night lg:aspect-[4/5]">
+            <Illustration
+              src="illustrations/p4_stage.jpg"
+              alt="An open theatre stage under a spotlight: two figures and a great tree against a coral moon."
+              priority
+              sizes="(min-width: 1024px) 45vw, 100vw"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <figcaption className="absolute inset-x-3 bottom-3 flex items-center justify-between gap-3 bg-cream px-4 py-3 text-navy sm:inset-x-6 sm:bottom-6 sm:px-5">
+              <span className="eyebrow text-[0.68rem]">Proposed for KILF 2027</span>
+              <span className="text-sm text-muted">Details to be confirmed</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      {/* The production */}
+      <Section tone="cream" id="production" labelledby="production-h" className="border-t border-line">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5">
+            <ChapterLabel label={h('The production', 'അവതരണം')} lang={h.lang} />
+            <Headline
+              id="production-h"
+              text={h('Not a play you watch.', 'കണ്ടിരിക്കാനുള്ള നാടകമല്ല.')}
+              accent={h('A world you walk into.', 'കടന്നുചെല്ലാനുള്ള ലോകം.')}
+              lang={h.lang}
+              className="mt-6"
+            />
+          </div>
+          <div className="lg:col-span-7">
+            <p className="text-lg leading-relaxed text-navy/85">
+              O. V. Vijayan’s Khasakkinte Ithihasam, first published in 1969, is one of the landmarks of modern Malayalam literature. Director Deepan Sivaraman brings the village
+              of Khasak, its legends and its restless teacher Ravi to life around the audience rather than in front of it.
+            </p>
+            <dl className="mt-10 border-t border-line">
+              {facts.map(([label, value], i) => (
+                <div key={i} className="grid gap-1 border-b border-line py-5 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                  <dt className="eyebrow pt-1 text-navy">{label}</dt>
+                  <dd className="text-[1.05rem] text-navy">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </Section>
+
+      {/* The novel and the director */}
+      <Section tone="cream" rule labelledby="story-h">
+        <h2 id="story-h" className="sr-only" lang={h.lang}>
+          {h('The novel and the director', 'നോവലും സംവിധായകനും')}
+        </h2>
+        <div className="grid gap-14 md:grid-cols-2 md:gap-16">
+          <article className="border-t border-line pt-8">
+            <p className="eyebrow text-navy">The novel</p>
+            <h3 className="display mt-6 text-[2rem] text-navy sm:text-[2.4rem]" lang={h.lang}>
+              {h('A village, a teacher,', 'ഒരു ഗ്രാമം, ഒരു അധ്യാപകൻ,')}
+              <br />
+              <span className="text-cobalt">
+                <Stopped text={h('a legend.', 'ഒരു ഇതിഹാസം.')} />
+              </span>
+            </h3>
+            <p className="mt-6 text-[1.05rem] leading-relaxed text-muted">
+              Ravi, a restless young man, arrives in Khasak, a remote village in Palakkad, to start a single-teacher school. Around him the village’s legends, faiths, quarrels and
+              dreams slowly unfold. First published in 1969, O. V. Vijayan’s novel changed Malayalam fiction for good; his own English version, The Legends of Khasak, followed in
+              1994.
+            </p>
+          </article>
+          <article className="border-t border-line pt-8">
+            <p className="eyebrow text-navy">The director</p>
+            <h3 className="display mt-6 text-[2rem] text-navy sm:text-[2.4rem]" lang={h.lang}>
+              {h('Deepan', 'ദീപൻ')}
+              <br />
+              <span className="text-cobalt">
+                <Stopped text={h('Sivaraman.', 'ശിവരാമൻ.')} />
+              </span>
+            </h3>
+            <p className="mt-6 text-[1.05rem] leading-relaxed text-muted">
+              A theatre director and scenographer known for large, immersive productions in which the space itself becomes part of the story. His staging of Khasakkinte Ithihasam
+              builds the village around its audience.
+            </p>
+          </article>
+        </div>
+      </Section>
+
+      {/* Plan your theatre evening */}
+      <section className="on-dark relative overflow-hidden bg-night text-white" aria-labelledby="plan-h">
+        <div className="container-kilf relative grid gap-12 py-24 sm:py-28 lg:grid-cols-[1.4fr_1fr] lg:gap-16 lg:py-32">
+          <div>
+            <ChapterLabel label={h('Plan your theatre evening', 'നാടകസന്ധ്യ ഒരുക്കാം')} lang={h.lang} tone="dark" />
+            <Headline id="plan-h" text={h('The stage is', 'അരങ്ങ്')} accent={h('being set.', 'ഒരുങ്ങുന്നു.')} lang={h.lang} tone="dark" inline className="mt-6" />
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/85">
+              The KILF presentation remains subject to production confirmation. The performance date, venue, duration, age guidance and ticket arrangements will be published
+              together.
+            </p>
+          </div>
+          <dl className="space-y-7 self-center border-white/25 lg:border-l lg:pl-12">
+            {plan.map(([label, value], i) => (
+              <div key={i}>
+                <dt className="text-sm text-white/75">{label}</dt>
+                <dd className="mt-1.5 text-lg font-bold">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* Tickets */}
+      <section id="tickets" className="relative overflow-hidden bg-lake-soft text-navy" aria-labelledby="tickets-h">
+        <div className="container-kilf relative grid items-center gap-12 py-24 sm:py-28 lg:grid-cols-[1fr_minmax(0,27rem)] lg:gap-20 lg:py-32">
+          <div>
+            <ChapterLabel label={h('Your evening at the theatre', 'നിങ്ങളുടെ നാടകസന്ധ്യ')} lang={h.lang} />
+            <Headline id="tickets-h" text={h('One stage.', 'ഒരു അരങ്ങ്.')} accent={h('A world within.', 'ഉള്ളിലൊരു ലോകം.')} lang={h.lang} className="mt-6" />
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-navy/85">
+              Three evenings at Ashramam Maidan, on 1, 2 and 3 January. The play is ticketed separately from the festival: a theatre ticket on its own is ₹1,500, and for ₹1,600 the
+              theatre + Festival Pass adds all five days of the festival. Seating is limited.
+            </p>
+            <ul className="mt-10 border-t border-navy/15">
+              {options.map(([name, price, text], i) => (
+                <li key={i} className="grid gap-x-6 gap-y-1 border-b border-navy/15 py-6 sm:grid-cols-[1fr_auto] sm:items-baseline">
+                  <p className="font-display text-xl font-extrabold tracking-[-0.02em]">{name}</p>
+                  <p className="numeral text-[1.8rem] leading-none text-cobalt sm:row-span-2 sm:self-start">{price}</p>
+                  <p className="text-[0.98rem] leading-relaxed text-navy/80">{text}</p>
+                </li>
+              ))}
+            </ul>
+            <TextLink href={lp('/passes')} label="Explore festival passes" className="mt-9" />
+          </div>
+          <TicketCard notifyHref="#notify" />
+        </div>
+      </section>
+
+      {/* Good to know */}
+      <Section tone="cream" labelledby="know-h">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <ChapterLabel label={h('Good to know', 'അറിഞ്ഞിരിക്കാൻ')} lang={h.lang} />
+            <Headline id="know-h" text={h('Before you', 'ബുക്ക് ചെയ്യുന്നതിനു')} accent={h('book.', 'മുമ്പ്.')} lang={h.lang} className="mt-6" />
+          </div>
+          <dl className="border-t border-line lg:col-span-8">
+            {goodToKnow.map(([label, value], i) => (
+              <div key={i} className="grid gap-1 border-b border-line py-6 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                <dt className="eyebrow pt-1 text-navy">{label}</dt>
+                <dd className="text-[1.05rem] leading-relaxed text-navy/85">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </Section>
+
+      <NotifyBanner
+        id="notify"
+        formName="khasak-tickets"
+        kicker="Booking has not opened"
+        text={h('Be first in line', 'സീറ്റുകൾ തുറക്കുമ്പോൾ')}
+        accent={h('for seats.', 'ആദ്യം അറിയാം.')}
+        headingLang={h.lang}
+        lead={`Seating for the play will be limited. Leave your details and we’ll write the moment booking opens. Questions? ${site.email}`}
+        submitLabel="Notify me"
+        lang={lang}
+        extraFields={[
+          { name: 'ticket', label: 'Ticket', options: ['Theatre ticket', 'Theatre + Festival Pass', 'Not sure yet'] },
+          { name: 'seats', label: 'Seats', options: ['1', '2', '3', '4', '5', '6'] },
+        ]}
+      />
+    </>
+  );
+}

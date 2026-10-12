@@ -1,5 +1,5 @@
 // Screenshots of key pages at mobile and desktop widths.
-// Usage: npm run build && npm run screenshots   (serves dist/ on :4399)
+// Usage: npm run build && npm run screenshots   (serves out/ on :4399)
 // Set CHROMIUM_PATH if Chromium is not at the default Playwright location.
 import { chromium } from 'playwright-core';
 import http from 'node:http';
@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
-const dist = path.join(root, 'dist');
+const dist = path.join(root, 'out');
 const outDir = process.env.OUT_DIR || path.join(root, 'screenshots');
 fs.mkdirSync(outDir, { recursive: true });
 

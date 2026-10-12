@@ -1,0 +1,140 @@
+import PageHero from '@/components/PageHero';
+import Section from '@/components/Section';
+import ChapterLabel from '@/components/ChapterLabel';
+import Headline from '@/components/Headline';
+import Badge from '@/components/Badge';
+import Icon from '@/components/Icon';
+import Form from '@/components/Form';
+import Field from '@/components/Field';
+import LimeButton from '@/components/LimeButton';
+import TextLink from '@/components/TextLink';
+import Rings from '@/components/Rings';
+import { headings, type Lang } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+export default function Youth(props: Props) {
+  const { lang } = props;
+  const h = headings(lang);
+  const activities = [
+    ['mic', 'Poetry Slam', 'Three minutes, one microphone, your words.'],
+    ['megaphone', 'Open Mic Nights', 'Stories, songs and stand-up by the lake.'],
+    ['camera', 'Reels & Short-Film Challenge', 'Tell a Kollam story in under a minute.'],
+    ['music', 'Indie & Rap Night', 'New sounds in Malayalam and beyond.'],
+    ['book', 'Meet Your Favourite Authors', 'Up close, questions welcome.'],
+    ['graduation', 'Campus Ambassadors', 'Bring KILF to your college.'],
+  ];
+  const steps = [
+    ['Register your college', 'One form, a minute long. Tell us who you are and what you’re into.'],
+    ['Pick your stage', 'Slam, open mic, reels, rap or a meet-the-author session.'],
+    ['Watch for the calls', 'Entry details for each activity will be shared with registered colleges first.'],
+    ['Take the stage', 'Five days by the lake, with your friends in the audience.'],
+  ];
+  const ambassador = [
+    'Share the programme and the calls on your campus',
+    'Gather your friends and your college’s writers, poets and filmmakers',
+    'Be the first to hear about youth activities and group passes',
+  ];
+  return (
+    <>
+      <PageHero
+        label={h('Youth and new voices', 'യുവതയും പുതിയ ശബ്ദങ്ങളും')}
+        text={h('Youth.', 'യുവത.')}
+        accent={h('This stage is yours.', 'ഈ വേദി നിങ്ങളുടേത്.')}
+        lang={h.lang}
+        lead="Slams, open mics, reels, rap, and your favourite authors up close. A stage for new voices, by the lake."
+      >
+        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <LimeButton href="#college" label="Register your college" size="lg" />
+          <TextLink href="#activities" label="See the activities" />
+          <p className="flex items-center gap-3 text-sm text-muted">
+            <Badge>Proposed</Badge> Subject to confirmation
+          </p>
+        </div>
+      </PageHero>
+
+      <Section tone="cream" rule id="activities" labelledby="activities-h">
+        <ChapterLabel label={h('Activities', 'പരിപാടികൾ')} lang={h.lang} />
+        <Headline id="activities-h" text={h('Six ways to take the', 'വേദിയിലെത്താൻ')} accent={h('stage.', 'ആറു വഴികൾ.')} lang={h.lang} className="mt-6" />
+        <ul className="mt-14 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
+          {activities.map(([icon, title, line], i) => (
+            <li key={i} className="flex gap-5 border-t border-line py-7">
+              <Icon name={icon} size={28} className="mt-1 shrink-0 text-cobalt" />
+              <div>
+                <h3 className="font-display text-[1.3rem] leading-tight tracking-[-0.03em]">{title}</h3>
+                <p className="mt-1.5 text-muted">{line}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-6 text-sm text-muted">All youth activities are proposed and subject to confirmation.</p>
+      </Section>
+
+      {/* Campus ambassadors */}
+      <section className="relative overflow-hidden bg-lake-soft text-navy" aria-labelledby="ambassadors-h">
+        <div className="container-kilf grid items-center gap-12 py-24 sm:py-28 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:py-32">
+          <div>
+            <ChapterLabel label={h('Campus ambassadors', 'ക്യാമ്പസ് അംബാസഡർമാർ')} lang={h.lang} />
+            <Headline id="ambassadors-h" text={h('Bring KILF', 'KILF-നെ നിങ്ങളുടെ')} accent={h('to your campus.', 'ക്യാമ്പസിലേക്ക്.')} lang={h.lang} className="mt-6" />
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-navy/85">
+              Every college needs someone who hears about things first. Be KILF’s voice on your campus, and bring your friends to the shore.
+            </p>
+            <LimeButton href="#college" label="Register your college" className="mt-9" />
+          </div>
+          <ul className="border-t border-navy/15">
+            {ambassador.map((line, i) => (
+              <li key={i} className="flex items-center gap-5 border-b border-navy/15 py-6">
+                <Rings n={1} size={30} tone="cobalt" />
+                <span className="text-lg leading-snug">{line}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* How to take part: four steps, in order */}
+      <Section tone="cream" labelledby="steps-h">
+        <ChapterLabel label={h('How to take part', 'പങ്കെടുക്കാൻ')} lang={h.lang} />
+        <Headline id="steps-h" text={h('Four steps', 'വേദിയിലേക്ക്')} accent={h('to the stage.', 'നാലു ചുവടുകൾ.')} lang={h.lang} className="mt-6" />
+        <ol className="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map(([title, line], i) => (
+            <li key={i} className="border-t border-line pt-6">
+              <span className="numeral text-[2.4rem] text-cobalt">{i + 1}</span>
+              <h3 className="mt-5 font-display text-[1.3rem] leading-tight tracking-[-0.03em]">{title}</h3>
+              <p className="mt-2 text-muted">{line}</p>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      <Section tone="sky" id="college" labelledby="college-h">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
+          <div>
+            <ChapterLabel label={h('Colleges', 'കോളേജുകൾ')} lang={h.lang} />
+            <Headline id="college-h" text={h('Register your', 'നിങ്ങളുടെ കോളേജ്')} accent={h('college.', 'രജിസ്റ്റർ ചെയ്യൂ.')} lang={h.lang} className="mt-6" />
+            <p className="mt-6 max-w-md text-lg leading-relaxed text-navy/85">
+              Tell us about your campus. We’ll share ambassador details, group passes for students and early access to the youth stage.
+            </p>
+          </div>
+          <Form
+            id="college-form"
+            name="college"
+            lang={lang}
+            className="border border-navy/10 bg-cream p-6 sm:p-9"
+            successText="Your college is on our list. We’ll be in touch soon."
+          >
+            <Field formId="college-form" name="name" label="Your name" autoComplete="name" required />
+            <Field formId="college-form" name="email" type="email" label="Email" autoComplete="email" required />
+            <Field formId="college-form" name="phone" type="tel" label="Phone" autoComplete="tel" inputMode="tel" required />
+            <Field formId="college-form" name="organisation" label="College / institution" autoComplete="organization" required />
+            <Field formId="college-form" name="role" type="select" label="You are" options={['Student', 'Faculty', 'Student body / club', 'Other']} />
+            <Field formId="college-form" name="interest" type="select" label="Most interested in" options={activities.map(([, a]) => a)} />
+            <Field formId="college-form" name="message" type="textarea" label="Message" full rows={3} />
+          </Form>
+        </div>
+      </Section>
+    </>
+  );
+}

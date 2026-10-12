@@ -1,46 +1,54 @@
-import type { ImageMetadata } from 'astro';
+import 'server-only';
+import fs from 'node:fs';
+import path from 'node:path';
 
-type Mod = { default: ImageMetadata };
+/**
+ * Pictures resized by scripts/prepare-assets.mjs. Keys are paths without the
+ * extension: "art/lake-hero", "illustrations/p4_stage", "speakers/blessy".
+ * Real artwork in kilf-assets/ wins over the generated stand-ins.
+ */
+export type ImageSet = {
+  width: number;
+  height: number;
+  /** A generated stand-in rather than real artwork. */
+  placeholder: boolean;
+  widths: number[];
+  formats: ('avif' | 'webp' | 'jpg')[];
+  src: Partial<Record<'avif' | 'webp' | 'jpg', string[]>>;
+};
 
-// Real artwork dropped into kilf-assets/ always wins…
-const real = import.meta.glob<Mod>('/kilf-assets/**/*.{jpg,jpeg,png,webp,avif}', { eager: true });
-// …otherwise we fall back to the generated stand-ins (scripts/prepare-assets.mjs).
-const generated = import.meta.glob<Mod>('/src/assets/generated/**/*.jpg', { eager: true });
-
-const stem = (p: string) => p.replace(/\.[a-z0-9]+$/i, '');
-
-function find(map: Record<string, Mod>, prefix: string, rel: string) {
-  const wanted = stem(`${prefix}/${rel}`).toLowerCase();
-  for (const [key, mod] of Object.entries(map)) {
-    if (stem(key).toLowerCase() === wanted) return mod.default;
+let manifest: Record<string, ImageSet> | undefined;
+function load() {
+  if (!manifest) {
+    const file = path.join(process.cwd(), 'src/assets/generated/images.json');
+    if (!fs.existsSync(file)) throw new Error('Missing src/assets/generated/images.json. Run npm run assets.');
+    manifest = JSON.parse(fs.readFileSync(file, 'utf8'));
   }
-  return undefined;
+  return manifest!;
+}
+
+const stem = (p: string) => p.replace(/\.[a-z0-9]+$/i, '').toLowerCase();
+
+/** Look up a picture by its path inside kilf-assets/, e.g. "speakers/blessy.jpg". */
+export function findImage(rel: string): ImageSet | undefined {
+  return load()[stem(rel)];
 }
 
 /**
  * Resolve an asset by its path inside kilf-assets/, e.g.
- * `asset('illustrations/cover.jpg')` or `asset('speakers/blessy.jpg')`.
+ * `asset('illustrations/cover.jpg')`, falling back to the lake band stand-in.
  */
-export function asset(rel: string): { src: ImageMetadata; placeholder: boolean } {
-  const r = find(real, '/kilf-assets', rel);
-  if (r) return { src: r, placeholder: false };
-  const g = find(generated, '/src/assets/generated', rel);
-  if (g) return { src: g, placeholder: true };
-  const fallback = find(generated, '/src/assets/generated', 'illustrations/lake-band.jpg');
-  if (!fallback) throw new Error(`Missing asset ${rel}. Run npm run assets.`);
-  return { src: fallback, placeholder: true };
+export function asset(rel: string): ImageSet {
+  const found = findImage(rel) ?? findImage('illustrations/lake-band');
+  if (!found) throw new Error(`Missing asset ${rel}. Run npm run assets.`);
+  return found;
 }
 
-/** Optional logo file (kilf-assets/logos/kilf-logo.svg|png). */
-const logos = import.meta.glob<{ default: ImageMetadata | string }>('/kilf-assets/logos/*.{svg,png}', {
-  eager: true,
-  import: 'default',
-  query: '?url',
-}) as unknown as Record<string, string>;
-
+/** Optional logo file (kilf-assets/logos/kilf-logo.svg|png), copied to public/logos/. */
 export function logoUrl(name: string): string | undefined {
-  for (const [key, url] of Object.entries(logos)) {
-    if (stem(key.split('/').pop() ?? '') === name) return url;
+  const dir = path.join(process.cwd(), 'kilf-assets/logos');
+  for (const ext of ['svg', 'png']) {
+    if (fs.existsSync(path.join(dir, `${name}.${ext}`))) return `/logos/${name}.${ext}`;
   }
   return undefined;
 }
