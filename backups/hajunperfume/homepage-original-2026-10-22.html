@@ -1,0 +1,410 @@
+<!-- wp:html -->
+<style id="hajun-wp-fix">
+.wp-site-blocks,.wp-site-blocks>main{padding:0!important;margin:0!important}
+.wp-site-blocks>*,main>*{margin-block:0!important}
+.wp-block-group:has(> .hostinger-ai-page-title){display:none!important}
+.wp-block-post-content{padding:0!important;max-width:none!important;margin:0!important}
+.wp-block-post-content>*{max-width:none!important;margin-inline:0!important;margin-block:0!important}
+.wp-block-post-content>.container{max-width:80rem!important;margin-inline:auto!important}
+</style>
+<!-- Paste this whole file into a WordPress 'Custom HTML' block -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --radius:.25rem;
+    --emerald-deep:oklch(28% .06 158);
+    --emerald-dark:oklch(21% .045 158);
+    --ink:oklch(16% .012 150);
+    --gold:oklch(79% .125 84);
+    --gold-soft:oklch(88% .07 88);
+    --cream:oklch(96% .012 85);
+    --muted-fg:oklch(74% .02 90);
+    --card:oklch(21% .045 158);
+    --border:oklch(79% .125 84 / .22);
+    --font-sans:"Jost",ui-sans-serif,system-ui,sans-serif;
+    --font-display:"Cormorant Garamond","Times New Roman",serif;
+    --track:.32em;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;border:0 solid var(--border)}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--cream);font-family:var(--font-sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3,h4{font-family:var(--font-display);font-weight:300}
+  a{color:inherit;text-decoration:none}
+  ul{list-style:none}
+  img,svg{display:block;max-width:100%}
+  button{font:inherit;color:inherit;background:none;cursor:pointer;letter-spacing:inherit}
+  ::selection{background:var(--gold);color:var(--ink)}
+
+  .container{max-width:80rem;margin-inline:auto;padding-inline:1.25rem}
+  @media(min-width:640px){.container{padding-inline:2rem}}
+
+  .eyebrow{font-size:.7rem;text-transform:uppercase;letter-spacing:var(--track);color:var(--gold)}
+  .label{font-size:.65rem;text-transform:uppercase;letter-spacing:var(--track);color:color-mix(in oklab,var(--gold) 80%,transparent)}
+  .hairline{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .gold-gradient{background:linear-gradient(100deg,var(--gold-soft),var(--gold),var(--gold-soft));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .shadow-lux{box-shadow:0 30px 80px -30px oklch(0% 0 0 / .75)}
+  .icon{width:1rem;height:1rem;flex-shrink:0}
+
+  /* ---------- Header ---------- */
+  .header{position:fixed;inset-inline:0;top:0;z-index:50;padding-block:1.25rem;transition:all .5s;border-bottom:1px solid transparent}
+  .header.scrolled{padding-block:.5rem;background:color-mix(in oklab,var(--ink) 90%,transparent);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom-color:var(--border)}
+  .header .container{display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:.75rem}
+  .brand img{width:3rem;height:3rem;border-radius:calc(var(--radius) - 4px);transition:all .5s}
+  .header.scrolled .brand img{width:2.25rem;height:2.25rem}
+  .brand-text{display:flex;flex-direction:column;line-height:1}
+  .brand-text .name{font-size:1.125rem;letter-spacing:var(--track)}
+  .brand-text .sub{margin-top:.25rem;font-size:.55rem;text-transform:uppercase;letter-spacing:var(--track);color:color-mix(in oklab,var(--gold) 80%,transparent)}
+  .nav{display:none;align-items:center;gap:2.25rem}
+  .nav a{font-size:.75rem;text-transform:uppercase;letter-spacing:var(--track);color:color-mix(in oklab,var(--cream) 75%,transparent);transition:color .15s}
+  .nav a:hover,.nav a.active{color:var(--gold)}
+  .lang-btn{display:flex;align-items:center;gap:.5rem;border:1px solid var(--border);padding:.375rem .75rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);transition:all .15s}
+  .lang-btn:hover{background:var(--gold);color:var(--ink)}
+  .lang-btn svg{width:.875rem;height:.875rem}
+  .menu-btn{color:var(--cream)}
+  .menu-btn svg{width:1.5rem;height:1.5rem}
+  .mobile-nav{display:none;flex-direction:column;gap:1.25rem;padding:1.5rem 1.25rem 2rem;background:color-mix(in oklab,var(--ink) 96%,transparent);border-bottom:1px solid var(--border)}
+  .mobile-nav.open{display:flex}
+  .mobile-nav a{font-size:.8rem;text-transform:uppercase;letter-spacing:var(--track);color:color-mix(in oklab,var(--cream) 80%,transparent)}
+  .mobile-nav a.active{color:var(--gold)}
+  @media(min-width:768px){.nav{display:flex}.menu-btn,.mobile-nav,.mobile-nav.open{display:none}}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;display:flex;align-items:center;justify-content:center;min-height:100svh;overflow:hidden;
+    background:radial-gradient(120% 100% at 50% 0%,color-mix(in oklab,var(--emerald-deep) 70%,transparent),transparent 70%),var(--ink)}
+  .hero-inner{position:relative;z-index:10;max-width:48rem;margin-inline:auto;padding-inline:1.5rem;text-align:center;will-change:transform}
+  .hero-logo{width:7rem;height:7rem;margin-inline:auto;border-radius:calc(var(--radius) - 4px)}
+  .hero .eyebrow{margin-top:2.5rem}
+  .hero h1{margin-top:1.5rem;font-size:2rem;line-height:1.25}
+  .hero p.lead{max-width:36rem;margin:1.5rem auto 0;font-size:.875rem;line-height:1.625;color:color-mix(in oklab,var(--cream) 70%,transparent)}
+  .hero-ctas{margin-top:2.25rem;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:.75rem}
+  .hero-fade{position:absolute;bottom:0;width:100%;height:10rem;background:linear-gradient(to top,var(--ink),transparent)}
+  @media(min-width:640px){
+    .hero-logo{width:9rem;height:9rem}
+    .hero h1{font-size:3rem;line-height:1.1}
+    .hero p.lead{margin-top:1.75rem;font-size:1rem}
+    .hero-ctas{margin-top:2.75rem;flex-direction:row;align-items:center;gap:1rem}
+  }
+  @media(min-width:768px){.hero h1{font-size:3.75rem}}
+  @media(min-width:1024px){.hero h1{font-size:4.5rem}}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.75rem;padding:.875rem 2rem;font-size:.75rem;text-transform:uppercase;letter-spacing:var(--track);transition:background-color .15s}
+  .btn-gold{background:var(--gold);color:var(--ink)}
+  .btn-gold:hover{background:var(--gold-soft)}
+  .btn-outline{border:1px solid color-mix(in oklab,var(--gold) 50%,transparent);color:var(--gold)}
+  .btn-outline:hover{background:color-mix(in oklab,var(--gold) 10%,transparent)}
+  .arrow{transition:transform .15s}
+  .group:hover .arrow{transform:translateX(.25rem)}
+  [dir=rtl] .arrow{rotate:180deg}
+  [dir=rtl] .group:hover .arrow{transform:translateX(-.25rem)}
+  .link-arrow{display:inline-flex;align-items:center;gap:.75rem;font-size:.75rem;text-transform:uppercase;letter-spacing:var(--track);color:var(--gold)}
+
+  /* ---------- Featured ---------- */
+  .featured{padding-block:5rem}
+  @media(min-width:640px){.featured{padding-block:6rem}}
+  @media(min-width:768px){.featured{padding-block:8rem}}
+  .section-head{max-width:42rem;margin-inline:auto;text-align:center}
+  .section-head h2,.legacy h2{margin-top:1rem;font-size:1.875rem;line-height:1.2}
+  @media(min-width:640px){.section-head h2,.legacy h2{font-size:2.25rem}}
+  @media(min-width:768px){.section-head h2,.legacy h2{font-size:3rem;line-height:1}}
+  .section-head .hairline{width:8rem;margin:1.5rem auto 0}
+  .section-head p{margin-top:1.5rem;font-size:.875rem;color:var(--muted-fg)}
+
+  .grid{margin-top:3rem;display:grid;grid-template-columns:1fr;gap:1.5rem}
+  @media(min-width:640px){.grid{margin-top:4rem;grid-template-columns:repeat(2,1fr);gap:1.75rem}}
+  @media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+  .card{display:block;overflow:hidden;border-radius:calc(var(--radius) - 4px);border:1px solid var(--border);background:color-mix(in oklab,var(--card) 50%,transparent);transition:border-color .15s}
+  .card:hover{border-color:color-mix(in oklab,var(--gold) 60%,transparent)}
+  .card-media{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--ink)}
+  .card-media img{width:100%;height:100%;object-fit:cover;transition:transform .7s}
+  .card:hover .card-media img{transform:scale(1.05)}
+  .card-overlay{position:absolute;inset:0;display:none;flex-direction:column;justify-content:flex-end;padding:1.25rem;opacity:0;transition:opacity .5s;
+    background:linear-gradient(to top,var(--ink),color-mix(in oklab,var(--ink) 40%,transparent),transparent)}
+  .card:hover .card-overlay{opacity:1}
+  .card-overlay .notes{margin-top:.5rem;font-size:.875rem;line-height:1.625;color:color-mix(in oklab,var(--cream) 85%,transparent)}
+  .card-body{padding:1rem}
+  .card-body > * + *{margin-top:.375rem}
+  .card-body h3{font-size:1.125rem;line-height:1.5}
+  .card-body .tag{font-size:.875rem;color:var(--muted-fg)}
+  .card-body .notes-m{font-size:.75rem;line-height:1.625;color:color-mix(in oklab,var(--cream) 60%,transparent)}
+  .card-body .label{padding-top:.25rem}
+  @media(min-width:640px){.card-body{padding:1.25rem}.card-body h3{font-size:1.25rem}}
+  @media(min-width:768px){.card-overlay{display:flex}.card-body .notes-m{display:none}}
+  .view-all{margin-top:3.5rem;text-align:center}
+
+  /* ---------- Legacy ---------- */
+  .legacy{border-block:1px solid var(--border);background:color-mix(in oklab,var(--emerald-dark) 40%,transparent)}
+  .legacy .container{display:grid;align-items:center;gap:2.5rem;padding-block:5rem}
+  .legacy img{width:100%;border-radius:calc(var(--radius) - 4px);object-fit:cover}
+  .legacy .hairline{width:6rem;margin-top:1.5rem}
+  .legacy p{margin-top:1.75rem;font-size:1rem;line-height:1.625;color:color-mix(in oklab,var(--cream) 70%,transparent)}
+  .legacy .link-arrow{margin-top:2.25rem}
+  @media(min-width:640px){.legacy .container{padding-block:6rem}}
+  @media(min-width:768px){.legacy .container{grid-template-columns:1fr 1fr;gap:3.5rem}}
+
+  /* ---------- Contact strip ---------- */
+  .contact{padding-block:5rem}
+  @media(min-width:640px){.contact{padding-block:6rem}}
+  .contact-grid{display:grid;gap:1.5rem}
+  @media(min-width:640px){.contact-grid{grid-template-columns:repeat(3,1fr);gap:2.5rem}}
+  .contact-box{border:1px solid var(--border);padding:1.75rem;text-align:center}
+  .contact-box svg{width:1.25rem;height:1.25rem;margin-inline:auto;color:var(--gold)}
+  .contact-box .label{margin-top:1rem}
+  .contact-box .val{display:block;margin-top:.75rem;font-size:.875rem;line-height:1.625;color:color-mix(in oklab,var(--cream) 80%,transparent)}
+  .contact-box a.val:hover{color:var(--gold)}
+
+  /* ---------- Footer ---------- */
+  .footer{border-top:1px solid var(--border);background:color-mix(in oklab,var(--emerald-dark) 40%,transparent)}
+  .footer-grid{display:grid;gap:3rem;padding-block:4rem}
+  @media(min-width:768px){.footer-grid{grid-template-columns:repeat(3,1fr)}}
+  .footer-logo{width:4rem;height:4rem;border-radius:calc(var(--radius) - 4px)}
+  .footer-about{margin-top:1.25rem;max-width:20rem;font-size:.875rem;line-height:1.625;color:var(--muted-fg)}
+  .footer h4{font-family:var(--font-sans);font-size:.65rem;text-transform:uppercase;letter-spacing:var(--track);color:var(--gold)}
+  .footer ul,.footer address{margin-top:1.25rem;font-size:.875rem;font-style:normal}
+  .footer ul > * + *,.footer address > * + *{margin-top:.75rem}
+  .footer address{color:var(--muted-fg)}
+  .footer address p{display:flex;gap:.75rem}
+  .footer address svg{margin-top:.125rem;color:color-mix(in oklab,var(--gold) 70%,transparent)}
+  .footer a:hover{color:var(--gold)}
+  .copyright{border-top:1px solid var(--border);padding-block:1.5rem;text-align:center;font-size:.75rem;color:var(--muted-fg)}
+
+  /* ---------- WhatsApp FAB ---------- */
+  .wa{position:fixed;bottom:1.5rem;inset-inline-end:1.5rem;z-index:40;display:flex;align-items:center;justify-content:center;width:3.5rem;height:3.5rem;border-radius:9999px;background:var(--gold);color:var(--ink);box-shadow:0 0 60px -10px oklch(78% .13 85 / .35);transition:transform .15s}
+  .wa:hover{transform:scale(1.1)}
+  .wa svg{width:1.75rem;height:1.75rem}
+
+  /* ---------- Reveal animation ---------- */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .fade{opacity:0;transition:opacity 1.2s ease}
+  .fade.in{opacity:1}
+  @media(prefers-reduced-motion:reduce){.reveal,.fade{opacity:1;transform:none;transition:none}}
+</style>
+<style>.admin-bar .header{top:32px}@media(max-width:782px){.admin-bar .header{top:46px}}</style>
+
+
+<!-- ================= HEADER ================= -->
+<header class="header" id="header">
+  <div class="container">
+    <a href="#" class="brand">
+      <img src="https://hajun.lovable.app/__l5e/assets-v1/b7deb29b-d5d3-4206-87d5-e51ee42a09e4/logo.jpg" alt="HAJUN logo">
+      <span class="brand-text">
+        <span class="name">HAJUN</span>
+        <span class="sub">Arabian Perfumery</span>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="#" class="active">Home</a>
+      <a href="#collection">Collection</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <button class="lang-btn" id="langBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+        <span>العربية</span>
+      </button>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#" class="active">Home</a>
+    <a href="#collection">Collection</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="hero-inner" id="heroInner">
+      <img class="hero-logo shadow-lux reveal" src="https://hajun.lovable.app/__l5e/assets-v1/b7deb29b-d5d3-4206-87d5-e51ee42a09e4/logo.jpg" alt="HAJUN calligraphic emblem">
+      <p class="eyebrow fade" style="transition-delay:.2s">Dammam · Saudi Arabia</p>
+      <h1 class="reveal" style="transition-delay:.3s"><span class="gold-gradient">The Royal Essence of Arabia</span></h1>
+      <p class="lead fade" style="transition-delay:.5s">HAJUN composes oud, amber and rose into fragrances made for those who arrive before their name does. "Welcome to HAJUN where centuries of Middle Eastern perfumery meet contemporary art. Every bottle holds a masterpiece crafted from the finest ingredients, designed to leave an unforgettable trail of sophistication."</p>
+      <div class="hero-ctas fade" style="transition-delay:.7s">
+        <a href="#collection" class="btn btn-gold group">Explore the Collection
+          <svg class="icon arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#contact" class="btn btn-outline">Make an Enquiry</a>
+      </div>
+    </div>
+    <div class="hero-fade"></div>
+  </section>
+
+  <!-- ================= FEATURED ================= -->
+  <section class="featured container" id="collection">
+    <div class="section-head reveal">
+      <span class="eyebrow">Signature</span>
+      <h2>Featured Fragrances</h2>
+      <div class="hairline"></div>
+      <p>A selection from the house, Unveiling the Timeless Mastery of Scent.</p>
+    </div>
+    <div class="grid" id="productGrid"><!-- cards rendered from data below --></div>
+    <div class="view-all reveal">
+      <a href="#collection" class="link-arrow group">View all fragrances
+        <svg class="icon arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ================= LEGACY ================= -->
+  <section class="legacy" id="about">
+    <div class="container">
+      <div class="reveal">
+        <img class="shadow-lux" loading="lazy" src="https://hajun.lovable.app/__l5e/assets-v1/5cd9af95-08f1-4a9d-b8b9-739f64653384/oud-arabia.jpg" alt="HAJUN Oud Arabia eau de parfum with its presentation box">
+      </div>
+      <div class="reveal" style="transition-delay:.15s">
+        <span class="eyebrow">The House</span>
+        <h2>The Legacy of Hajun</h2>
+        <div class="hairline"></div>
+        <p>"Rooted in the rich heritage of Arabian perfumery, HAJUN was born to celebrate the mastery of scent. Our name represents prestige, balance, and artistry. By combining rare woods, intoxicating spices, delicate florals, and precious resins, we compose fragrances that go beyond olfactory memory, they define presence."</p>
+        <a href="#about" class="link-arrow group">Read our story
+          <svg class="icon arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT STRIP ================= -->
+  <section class="contact container" id="contact">
+    <div class="contact-grid reveal">
+      <div class="contact-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+        <p class="label">Address</p>
+        <p class="val">Abu Al Ataheya, Al Nakheel Dist., Dammam, Saudi Arabia, PC: 32244</p>
+      </div>
+      <div class="contact-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+        <p class="label">Email</p>
+        <a class="val" dir="ltr" href="mailto:microcomsksa@gmail.com">microcomsksa@gmail.com</a>
+      </div>
+      <div class="contact-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+        <p class="label">Phone</p>
+        <a class="val" dir="ltr" href="tel:966575202794">+966 575202794</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <img class="footer-logo" src="https://hajun.lovable.app/__l5e/assets-v1/b7deb29b-d5d3-4206-87d5-e51ee42a09e4/logo.jpg" alt="HAJUN logo">
+      <p class="footer-about">A Saudi perfume house devoted to the long tradition of Arabian scent.&nbsp;"Experience HAJUN in Person"</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#collection">Collection</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Reach us</h4>
+      <address>
+        <p><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Abu Al Ataheya, Al Nakheel Dist., Dammam, Saudi Arabia, PC: 32244</span></p>
+        <p><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg><a href="mailto:microcomsksa@gmail.com">microcomsksa@gmail.com</a></p>
+        <p><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg><a href="tel:966575202794" dir="ltr">+966 575202794</a></p>
+      </address>
+    </div>
+  </div>
+  <div class="copyright">© <span id="year">2026</span> HAJUN. All rights reserved.</div>
+</footer>
+
+<!-- WhatsApp floating button -->
+<a class="wa" href="https://wa.me/966575202794" target="_blank" rel="noreferrer" aria-label="WhatsApp us">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.39c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.9-4.44 9.9-9.9S17.5 2 12.04 2m0 18.02c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.15.83.84-3.07-.2-.32a8.1 8.1 0 0 1-1.24-4.32c0-4.54 3.7-8.23 8.24-8.23s8.23 3.69 8.23 8.23-3.69 8.22-8.17 8.22m4.52-6.16c-.25-.12-1.47-.72-1.69-.8-.23-.09-.4-.13-.56.12s-.64.8-.79.96c-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.85.83-.85 2.02s.87 2.35.99 2.51c.12.17 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.46-.07 1.42-.58 1.62-1.15.2-.56.2-1.05.14-1.15-.06-.11-.23-.17-.48-.29"/></svg>
+</a>
+
+<script>
+  // ---------- Product data (edit here) ----------
+  const IMG = "https://hajun.lovable.app/__l5e/assets-v1/";
+  const products = [
+    { name:"Arabian Black Amber", tagline:"Depth, Power, and Regal Presence.", size:"50ml",
+      img:IMG+"85a422a0-efa6-4736-ad35-cebac6818e2d/black-amber.jpg",
+      notes:"Bergamot · Pink pepper · Labdanum · Incense · Cinnamon · Black amber · Benzoin · Vanilla" },
+    { name:"Arabian Excellence", tagline:"The Pinnacle of Modern Perfumery.", size:"50ml",
+      img:IMG+"ab2acb11-af4e-4be0-912d-5292cd51cc40/excellence.jpg",
+      notes:"Saffron · Bergamot · Taif rose · Oud · Sandalwood · White musk · Amber" },
+    { name:"Arabian Blue Moon", tagline:"A Rare Phenomenon in Scent.", size:"50ml",
+      img:IMG+"89fda0ac-4464-43f5-b7a3-2ee94917b65c/blue-moon.jpg",
+      notes:"Grapefruit · Lavender · Mint · Cardamom · Violet leaf · Cedarwood · Ambergris · Musk" },
+    { name:"Midnight Bloom", tagline:"Velvety Romance in Full Bloom.", size:"100ml",
+      img:IMG+"59761d25-4330-4818-b187-46462b1f0c1d/midnight-bloom.jpg",
+      notes:"Plum · Neroli · Jasmine · Tuberose · Orris · Patchouli · Vanilla · Amber" },
+    { name:"Eternal Nights", tagline:"An Enigmatic Romance Under the Stars.", size:"100ml",
+      img:IMG+"8a53f0b3-5d40-4f53-8883-2fe85f35bc36/eternal-nights.jpg",
+      notes:"Dates · Bergamot · Honey · Oud · Rose · Amber · Cashmere wood · Tonka" },
+    { name:"Royal Charm", tagline:"An Irresistible Magnetism.", size:"100ml",
+      img:IMG+"9f2c1c9a-0230-4bbf-8b45-51181a609b3d/royal-charm-box.jpg",
+      notes:"Bergamot · Apple · Cardamom · Jasmine · Cinnamon · Orris · Amber · Vanilla · Sandalwood" },
+    { name:"Golden Glow", tagline:"Warmth and Radiant Elegance.", size:"100ml",
+      img:IMG+"35585391-77e6-4653-89e0-2c78e77ce44b/golden-glow-box.jpg",
+      notes:"Mandarin · Neroli · Honey · Ylang-ylang · Saffron · Golden amber · Tonka bean · Musk" },
+    { name:"Imperial Oud", tagline:"Unrivaled Majesty, Timeless Strength.", size:"100ml",
+      img:IMG+"f3869301-4f71-4876-b37a-17dab3952165/imperial-oud-box.jpg",
+      notes:"Saffron · Nutmeg · Oud · Taif rose · Incense · Patchouli · Leather · Amber" }
+  ];
+
+  const grid = document.getElementById("productGrid");
+  grid.innerHTML = products.map((p, i) => `
+    <div class="reveal" style="transition-delay:${(i % 3) * 0.1}s">
+      <a class="card" href="#collection">
+        <div class="card-media">
+          <img src="${p.img}" alt="${p.name} eau de parfum by HAJUN" loading="lazy">
+          <div class="card-overlay">
+            <p class="label" style="color:var(--gold)">Scent Notes</p>
+            <p class="notes">${p.notes}</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>${p.name}</h3>
+          <p class="tag">${p.tagline}</p>
+          <p class="notes-m">${p.notes}</p>
+          <p class="label">Eau de Parfum · ${p.size}</p>
+        </div>
+      </a>
+    </div>`).join("");
+
+  // ---------- Header on scroll + hero parallax ----------
+  const header = document.getElementById("header");
+  const heroInner = document.getElementById("heroInner");
+  const onScroll = () => {
+    const y = window.scrollY;
+    header.classList.toggle("scrolled", y > 40);
+    if (y < window.innerHeight) heroInner.style.transform = `translateY(${y * 0.35}px)`;
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // ---------- Mobile menu ----------
+  const mobileNav = document.getElementById("mobileNav");
+  document.getElementById("menuBtn").addEventListener("click", () => mobileNav.classList.toggle("open"));
+  mobileNav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => mobileNav.classList.remove("open")));
+
+  // ---------- Language toggle (direction only) ----------
+  const langBtn = document.getElementById("langBtn");
+  langBtn.addEventListener("click", () => {
+    const rtl = document.documentElement.dir === "rtl";
+    document.documentElement.dir = rtl ? "ltr" : "rtl";
+    document.documentElement.lang = rtl ? "en" : "ar";
+    langBtn.querySelector("span").textContent = rtl ? "العربية" : "English";
+  });
+
+  // ---------- Scroll reveal ----------
+  const io = "IntersectionObserver" in window ? new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 }) : null;
+  document.querySelectorAll(".reveal, .fade").forEach(el => io ? io.observe(el) : el.classList.add("in"));
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+<!-- /wp:html -->
