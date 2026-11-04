@@ -61,7 +61,7 @@ Vercel also works: framework preset Astro, output `dist`. Add the `public/_redir
 
 ## 4. How it works
 
-- **WhatsApp first.** Every page has a WhatsApp CTA with a pre-filled message naming the page (`waContext`). The picker sends all three answers. The contact form opens WhatsApp with the details and also POSTs JSON to `PUBLIC_FORM_ENDPOINT` if set.
+- **WhatsApp first.** Every page has a WhatsApp CTA with a pre-filled message naming the page (`waContext`). The contact form opens WhatsApp with the details and also POSTs JSON to `PUBLIC_FORM_ENDPOINT` if set.
 - **Analytics** (GA4 + Meta Pixel) load only after cookie consent. Events: `whatsapp_click`, `call_click`, `directions_click`, `picker_complete`, `form_submit`, `project_view`. UTM and click IDs are kept for the session and sent with each event.
 - **SEO:** unique titles and descriptions, one H1 per page, canonicals, breadcrumbs, sitemap, robots.txt, per-page OG images, and JSON-LD (`HomeAndConstructionBusiness`, `Service`, `FAQPage`, `BreadcrumbList`, `CreativeWork`, `Article`). Fields still marked `[FILL]` are left out of schema automatically.
 - **Motion** is described in `DESIGN.md`. Reduced-motion users get fades only.

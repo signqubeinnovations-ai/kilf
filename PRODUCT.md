@@ -13,7 +13,7 @@ Commercial building owners · showroom and retail owners · corporate offices ·
 1. **Primary:** WhatsApp enquiries for a free facade design consultation (+91 81130 13556).
 2. **Secondary:** phone calls and site-visit requests.
 
-Every page has a WhatsApp CTA with a pre-filled message naming the page context. The picker sends all answers.
+Every page has a WhatsApp CTA with a pre-filled message naming the page context.
 
 ## Why people choose FACADO
 - One team from start to finish: design → fabricate → install. What is drawn is what is built.

@@ -15,7 +15,6 @@ const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
   <section class="s-rust page-hero" aria-labelledby="ab-h">
     <div class="wrap">
       <Crumbs items={crumbs} />
-      <p class="eyebrow ph-eb">The studio</p>
       <Headline as="h1" id="ab-h" lines={['AN EXTERIOR', '*DESIGN STUDIO.']} size="hero" />
       <p class="lead ph-lead">{site.entity}. We design facades, then we build them.</p>
     </div>
@@ -24,7 +23,6 @@ const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
   <section class="section s-paper" aria-labelledby="ph-h">
     <div class="wrap grid-12">
       <div class="ab-head">
-        <p class="eyebrow">Philosophy</p>
         <Headline id="ph-h" lines={['DESIGN FIRST.', '*THEN BUILD.']} size="3" />
       </div>
       <div class="prose ab-body">
@@ -44,7 +42,6 @@ const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
     <div class="wrap grid-12">
       <div class="cm-img crop" data-reveal><RefImage name="curved-stone-facade" sizes="(min-width: 64rem) 40vw, 100vw" /></div>
       <div class="cm-copy">
-        <p class="eyebrow">Our commitment</p>
         <Headline id="cm-h" lines={['EVERY BUILDING', '*TELLS A STORY.']} size="3" />
         <p class="body-copy">We design and build facades that reflect innovation, quality and identity. From concept to completion, they are made to stand the test of time, structurally and visually.</p>
         <blockquote class="cm-q">Our goal is not simply to clad buildings. It is to create landmarks that leave a lasting impression.</blockquote>
@@ -55,7 +52,6 @@ const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
   <section class="section s-paper" aria-labelledby="wc-h">
     <div class="wrap grid-12">
       <div class="ab-head">
-        <p class="eyebrow">Why choose FACADO</p>
         <Headline id="wc-h" lines={['TEN REASONS.', '*ONE STUDIO.']} size="3" />
       </div>
       <ol class="rule-list wc ab-body">
@@ -67,7 +63,6 @@ const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
   <section class="section s-charcoal" id="process" aria-labelledby="pr-h">
     <div class="wrap grid-12">
       <div class="ab-head sticky">
-        <p class="eyebrow">Process</p>
         <Headline id="pr-h" lines={['NINE STEPS.', '*ONE TEAM.']} size="3" />
         <p class="body-copy">Design, fabricate, install. Every step is ours, so every detail is ours to get right.</p>
       </div>
@@ -77,7 +72,6 @@ const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
 
   <section class="section s-paper" aria-labelledby="q-h">
     <div class="wrap">
-      <p class="eyebrow">Quality standards</p>
       <Headline id="q-h" lines={['WHAT WE', '*CHECK.']} size="3" />
       <ol class="rule-list q-list">
         {quality.map((q, i) => <li data-reveal style={`--i:${i}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><h3 class="t-1">{q.title}</h3><p class="body-copy">{q.text}</p></li>)}
@@ -95,7 +89,7 @@ const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
   .cm-img { grid-column: 1 / -1; aspect-ratio: 4 / 5; margin-bottom: 3rem; }
   .cm-copy { grid-column: 1 / -1; display: grid; gap: 1.5rem; align-content: center; }
   @media (min-width: 64rem) { .cm-img { grid-column: 1 / span 5; margin: 0; } .cm-copy { grid-column: 7 / span 6; } }
-  .cm-q { margin: 1rem 0 0; padding-left: 1.25rem; border-left: 2px solid var(--accent); font-size: var(--step-2); font-weight: 300; line-height: 1.15; text-transform: uppercase; letter-spacing: 0.02em; }
+  .cm-q { margin: 1rem 0 0; padding-left: 1.25rem; border-left: 1px solid var(--accent); font-size: var(--step-2); font-weight: 300; line-height: 1.25; letter-spacing: 0.01em; max-width: 30ch; }
   .wc li { display: grid; grid-template-columns: 3.5rem 1fr; padding: 1.1rem 0; align-items: baseline; }
   .wc .t-1 { font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
   .q-list { margin-top: 3rem; }

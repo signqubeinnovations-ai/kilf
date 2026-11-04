@@ -86,7 +86,6 @@ Only `transform`, `opacity`, `clip-path` and `mask` are animated.
 | Dim, Counter, Crumbs, Fill, Icon | `components/*` | Motifs and helpers. `Fill` renders a yellow `[FILL]` marker |
 | Art | `components/Art.astro` + `lib/facade.ts` | Generated SVG elevations (stand-ins until real photos) |
 | Process | `components/Process.astro` | 9 steps in 3 groups, `detailed` prop for /about |
-| Picker | `components/Picker.astro` | 3-step project picker → style board → WhatsApp with all answers |
 | FaqList | `components/FaqList.astro` | Native `<details>` accordion |
 | CtaBand | `components/CtaBand.astro` | Final rust CTA with phone, address, proof thumbnail |
 | ProofThumb | `components/ProofThumb.astro` | "Recent work" micro-proof near CTAs |

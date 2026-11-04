@@ -44,7 +44,6 @@ const url = new URL(`/${entry.id}/`, Astro.site).href;
     <div class="wrap grid-12">
       <div class="svc-copy">
         <Crumbs items={crumbs} />
-        <p class="eyebrow svc-eb">{d.keyword}</p>
         <Headline as="h1" id="svc-h" lines={d.h1} size="4" />
         <Dim label={d.dimLabel} class="svc-dim" />
         <p class="lead svc-answer">{d.answer}</p>
@@ -62,7 +61,6 @@ const url = new URL(`/${entry.id}/`, Astro.site).href;
       <article class="prose svc-prose" data-reveal><Content /></article>
       <aside class="svc-aside">
         <div class="svc-card s-charcoal">
-          <p class="eyebrow">Free site visit</p>
           <p class="t-2"><span class="thin">Send a photo.</span><br /><span class="bold">Get a direction.</span></p>
           <WaButton context={d.waContext} label="WhatsApp us" />
           <a class="link-arrow" href={telUrl} data-track="call_click">{site.phoneDisplay}</a>
@@ -79,7 +77,6 @@ const url = new URL(`/${entry.id}/`, Astro.site).href;
   <section class="section s-charcoal" aria-labelledby="dp-h">
     <div class="wrap">
       <div class="sec-head">
-        <p class="eyebrow">Design possibilities</p>
         <Headline id="dp-h" lines={['ELEVATION STYLES', '*WE BUILD.']} size="3" />
       </div>
       <ol class="dp">
@@ -98,7 +95,6 @@ const url = new URL(`/${entry.id}/`, Astro.site).href;
   <section class="section s-paper" aria-labelledby="pc-h">
     <div class="wrap grid-12">
       <div class="pc-head">
-        <p class="eyebrow">How we work</p>
         <Headline id="pc-h" lines={['ONE TEAM.', '*START TO FINISH.']} size="3" />
         <a class="link-arrow" href="/about#process">Process in detail</a>
       </div>
@@ -109,7 +105,6 @@ const url = new URL(`/${entry.id}/`, Astro.site).href;
   <section class="section s-charcoal" aria-labelledby="rp-h">
     <div class="wrap">
       <div class="sec-head">
-        <p class="eyebrow">Related projects</p>
         <Headline id="rp-h" lines={['RECENT', '*WORK.']} size="3" />
       </div>
       {projects.length ? (
@@ -134,7 +129,6 @@ const url = new URL(`/${entry.id}/`, Astro.site).href;
   <section class="section s-paper" aria-labelledby="sf-h">
     <div class="wrap grid-12">
       <div class="sf-head">
-        <p class="eyebrow">Questions</p>
         <Headline id="sf-h" lines={['ASKED', '*OFTEN.']} size="3" />
         <a class="link-arrow" href="/faq">All FAQs</a>
       </div>
@@ -152,7 +146,6 @@ const url = new URL(`/${entry.id}/`, Astro.site).href;
   .svc-art { grid-column: 1 / -1; aspect-ratio: 4 / 3; --crop-c: var(--color-sand-hi); }
   .svc-art :global(.art), .svc-art :global(svg) { width: 100%; height: 100%; }
   @media (min-width: 64rem) { .svc-copy { grid-column: 1 / span 7; } .svc-art { grid-column: 9 / span 4; margin-right: calc(var(--gutter) * -1 - 2vw); } }
-  .svc-eb { margin: clamp(2.5rem, 5vw, 4rem) 0 1.5rem; }
   :global(.svc-dim) { margin-top: 2rem; max-width: 36rem; }
   .svc-answer { margin-top: 1.5rem; max-width: 46ch; color: var(--fg); }
   .svc-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.25rem; }

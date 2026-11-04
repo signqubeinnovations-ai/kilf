@@ -37,8 +37,8 @@ const ld = {
   <section class="s-rust page-hero" aria-labelledby="ar-h">
     <div class="wrap">
       <Crumbs items={crumbs} />
-      <p class="eyebrow ph-eb">Journal · <time datetime={d.date.toISOString()}>{fmt(d.date)}</time></p>
-      <h1 id="ar-h" class="t-4 ar-h" data-hl><span class="ln"><span class="bold">{d.title}</span></span></h1>
+      <h1 id="ar-h" class="t-3 ar-h" data-hl><span class="ln"><span class="bold">{d.title}</span></span></h1>
+      <p class="ph-meta caps num">Journal · <time datetime={d.date.toISOString()}>{fmt(d.date)}</time></p>
       <Dim label={d.keyword} class="ar-dim" />
     </div>
   </section>
@@ -78,7 +78,7 @@ const ld = {
   <CtaBand context={d.waContext} />
 </Base>
 <style>
-  .ar-h { max-width: 22ch; line-height: 1; }
+  .ar-h { max-width: 24ch; line-height: 1; }
   :global(.ar-dim) { margin-top: 2rem; max-width: 36rem; }
   .ar-side { grid-column: 1 / -1; margin-bottom: 2.5rem; }
   .ar-main { grid-column: 1 / -1; }

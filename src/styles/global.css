@@ -20,7 +20,7 @@
   --color-paper-deep: #e2dbc7;
   --color-sand: #c9a27a;
   --color-sand-hi: #d6b48e; /* sand for small text on rust: 5.1:1 */
-  --color-sand-ink: #8a5a2e; /* sand for text and focus on paper: 4.7:1 */
+  --color-sand-ink: #7a4e28; /* sand for text and focus on paper: 5.8:1 flat, headroom for the grain */
   --color-wa: #25d366;
   --font-display: 'Rajdhani', 'Rajdhani Fallback', sans-serif;
   --font-body: 'Hanken Grotesk', 'Rajdhani Fallback', sans-serif;
@@ -124,6 +124,7 @@
 .prose ul { list-style: square; }
 .prose ol { list-style: decimal; }
 .prose li + li { margin-top: 0.4em; }
+.prose li { text-wrap: pretty; }
 .prose li::marker { color: var(--accent); }
 .prose a { color: var(--fg); text-decoration-color: var(--accent); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
 .prose a:hover { text-decoration-thickness: 2px; }
@@ -202,7 +203,7 @@
 /* ───────────────────────── Motion ───────────────────────── */
 /* Masked line reveal for headlines. <h2 data-hl><span class="ln"><span>LINE</span></span></h2> */
 .ln { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
-.ln > span { display: inline-block; will-change: transform; }
+.ln > span { display: inline-block; }
 .m [data-hl] .ln > span { transform: translateY(108%); transition: transform 0.9s var(--ease); transition-delay: calc(var(--i, 0) * 80ms); }
 .m [data-hl].is-in .ln > span { transform: none; }
 .rm [data-hl] .ln > span { opacity: 0; transition: opacity 0.5s linear; }
@@ -258,6 +259,7 @@
 /* Breadcrumbs */
 .crumbs ol { display: flex; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; gap: 0.5rem; list-style: none; margin: 0; padding: 0; font-weight: 600; font-size: var(--step--1); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
 .crumbs li + li::before { content: '/'; margin-right: 0.5rem; color: var(--accent); }
+.crumbs { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
 .crumbs a { text-decoration: none; display: inline-flex; min-height: 32px; align-items: center; }
 .crumbs a:hover { color: var(--fg); }
 .crumbs [aria-current] { color: var(--fg); }
@@ -289,6 +291,7 @@ details[open]::details-content { height: auto; }
 .field select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - 12px) 55%, calc(100% - 7px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
 .field select option { color: var(--color-charcoal); }
 .field textarea { min-height: 7rem; resize: vertical; }
+.field ::placeholder { color: var(--muted); opacity: 1; }
 .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline: none; border-bottom: 2px solid var(--focus); }
 .field [aria-invalid='true'] { border-bottom-color: #b3261e; }
 .s-rust .field [aria-invalid='true'], .s-charcoal .field [aria-invalid='true'] { border-bottom-color: #ffb4a8; }
@@ -311,5 +314,5 @@ html.lenis, html.lenis body { height: auto; }
 
 /* Inner page hero */
 .page-hero { padding-block: clamp(2rem, 4vw, 3rem) clamp(4rem, 8vw, 7rem); overflow: hidden; }
-.ph-eb { margin: clamp(2.5rem, 5vw, 4rem) 0 1.5rem; }
+.ph-meta { margin-top: 1.5rem; font-size: 0.85rem; }
 .ph-lead { margin-top: 2rem; color: var(--fg); max-width: 46ch; }

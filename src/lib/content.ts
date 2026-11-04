@@ -116,20 +116,14 @@ export const secondaryCategories = [
 
 export const marquee = ['Commercial', 'Showroom', 'Corporate Office', 'Villa', 'Hospital', 'Campus'];
 
-/** Project picker options. */
+/** Building types (contact form). */
 export const pickerTypes = [
   { id: 'commercial', label: 'Commercial building' },
   { id: 'showroom', label: 'Shop / showroom' },
   { id: 'office', label: 'Corporate office' },
   { id: 'villa', label: 'Villa / home' },
 ];
-export const pickerStyles = [
-  { id: 'minimal', label: 'Minimal', board: ['#2b2522', '#f1efe8', '#8d8a84'], note: 'Large flat panels. Tight joints. One strong colour, used with restraint.' },
-  { id: 'wood', label: 'Wood finish', board: ['#9a6a45', '#2b2522', '#ECE7D7'], note: 'Warm wood-finish ACP against charcoal. Calm, premium, easy to live with.' },
-  { id: 'stone', label: 'Stone finish', board: ['#b4ab9d', '#6B3022', '#2b2522'], note: 'Stone-finish panels for weight and permanence, with dark glazing.' },
-  { id: 'metallic', label: 'Metallic', board: ['#c6c3bc', '#d8c08f', '#221D1A'], note: 'Brushed and champagne tones. Built for jewellery, auto and premium retail.' },
-  { id: 'bold', label: 'Bold colour', board: ['#6B3022', '#C9A27A', '#f1efe8'], note: 'Your brand colour, at building scale. Seen from the end of the street.' },
-];
+
 
 /** From the brochure. */
 export const whyChoose = [

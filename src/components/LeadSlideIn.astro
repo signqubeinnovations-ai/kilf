@@ -6,7 +6,6 @@ const { waContext = 'building' } = Astro.props;
 ---
 <aside class="slide s-charcoal" data-slide hidden aria-labelledby="slide-h" role="dialog" aria-modal="false">
   <button class="slide-x" type="button" data-slide-close aria-label="Close"><Icon name="close" /></button>
-  <p class="eyebrow">Free for your building</p>
   <h2 id="slide-h" class="t-2"><span class="thin">Free 3D facade</span><br /><span class="bold">concept.</span></h2>
   <p class="body-copy">Send a photo of your building. We will reply with a design direction.</p>
   <WaButton text={`Hi FACADO, I'd like a free 3D facade concept for my ${waContext}. Here is a photo:`} label="Send a photo on WhatsApp" event="whatsapp_click" />

@@ -171,3 +171,31 @@ These are noted as false positives. The genuine integrity issues:
 You can ask me to run these one at a time, all at once, or in any order you prefer.
 
 Re-run `/impeccable audit` after fixes to see your score improve.
+
+---
+
+## Re-audit after fixes (same day)
+
+All recommended actions were applied, then the same scans were re-run on the same 8 pages at 1280×800 and 390×844.
+
+| # | Dimension | Before | After | What changed |
+|---|-----------|--------|-------|--------------|
+| 1 | Accessibility | 3 | **4** | `--color-sand-ink` darkened to `#7A4E28` (5.8:1 flat). Placeholders use `--muted`. Image tags 12 px. About quote in sentence case. Detector `low-contrast` / `undersized-ui-text` / `all-caps-body`: **0**. axe-core: **0 violations** |
+| 2 | Performance | 3 | **4** | Cladding tiles now animate only `transform` and `opacity`: the flight shadow is a fading pseudo-element, and brightness is one overlay instead of per-tile filters. Resting `will-change` removed. LCP 0.66–0.83 s, CLS ≤ 0.005 |
+| 3 | Theming | 3 | **3** | Cladding scene colours moved into named scene tokens (`--cs-night`, `--cs-ember`, `--cs-led` …). No dark theme, by design: the brand alternates fixed rust / charcoal / paper surfaces |
+| 4 | Responsive Design | 4 | **4** | Unchanged: no overflow at 360/768 px, targets ≥ 24 px |
+| 5 | Implementation Integrity | 3 | **4** | Eyebrows reduced from 26 to 1 (the homepage hero, part of the H1 keyword). Journal date and case-study location became plain detail lines under the title. `Picker.astro`, `claddingScene()`, `swatches` and `pickerStyles` removed |
+| **Total** | | **16/20** | **19/20** | **Excellent** |
+
+**Remaining detector output, all verified as not issues:**
+
+| Rule | Why it is not an issue |
+|---|---|
+| `buried-raster` | Cladding tiles start at opacity 0 and fly in on scroll (intentional). |
+| `cream-palette` | Brand-kit paper token. |
+| `radial-spotlight-glow` | Requested dusk-sky background. |
+| `repeating-stripes-gradient` | `[FILL]` marker, map placeholder and floor grid. |
+| `hero-eyebrow-chip` | Now matches the breadcrumb ("Home / Studio"), which is navigation, not a label. |
+| `kicker-above-heading` ×1 | The "Illustrative" image tag stacking above a heading on phones. |
+
+Also fixed: proof-thumb line-height 1.35, `text-wrap: pretty` on prose list items, and an article H1 one step smaller.
