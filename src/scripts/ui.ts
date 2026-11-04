@@ -39,6 +39,12 @@ function procUpdate() {
     const r = p.getBoundingClientRect();
     const v = Math.min(1, Math.max(0, (innerHeight * 0.6 - r.top) / r.height));
     p.querySelector<HTMLElement>('[data-proc-fill]')?.style.setProperty('--p', v.toFixed(3));
+    // Fill each step's circle once the line has reached it.
+    const lineEnd = r.top + v * r.height;
+    p.querySelectorAll<HTMLElement>('.proc-step').forEach((st) => {
+      const dot = st.querySelector('.proc-dot')!.getBoundingClientRect();
+      st.classList.toggle('is-done', dot.top + dot.height / 2 <= lineEnd + 1);
+    });
   }
 }
 procUpdate();
