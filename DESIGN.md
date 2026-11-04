@@ -60,7 +60,7 @@ Only `transform`, `opacity`, `clip-path` and `mask` are animated.
 | # | Moment | How |
 |---|---|---|
 | 1 | Hero intro | Wordmark letters clip in (CSS), headline lines slide up behind a mask, building rises and bleeds off-frame, LED and dimension lines draw |
-| 2 | Cladding scene | `components/CladdingScene.astro`. GSAP ScrollTrigger pins the section over a dusk sky. The facade image starts as bare grey concrete, aluminium rails draw, then 48 panels of the real image flip down in 3D (CSS perspective) one by one, the street takes colour, facade lights come on and an LED outline traces the building. Counter `PANEL 01 → 48`. Drop `src/assets/projects/pochayil-render.jpg` in and it is used automatically |
+| 2 | Cladding scene | `components/CladdingScene.astro`. GSAP ScrollTrigger pins the section over a dusk sky. The facade image starts as bare grey concrete, aluminium rails draw, then 12 panels of the real image flip down in 3D (CSS perspective) one by one, the street takes colour, facade lights come on and an LED outline traces the building. Counter `PANEL 01 → 12`, pinned for about one screen of scrolling. Drop `src/assets/projects/pochayil-render.jpg` in and it is used automatically |
 | 3 | Page transitions | Native cross-document View Transitions: six vertical panels wipe in with cream seams (CSS `mask` + `@property`) |
 | 4 | Headlines | IntersectionObserver adds `.is-in`; masked line slide-up |
 | 5 | Project gallery | Horizontal pinned scroll on desktop (GSAP), scroll-snap swipe on mobile; crop marks grow on hover |

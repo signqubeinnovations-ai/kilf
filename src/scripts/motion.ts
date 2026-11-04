@@ -6,7 +6,7 @@ const lenis = (window as unknown as { __lenis?: { on: (e: string, f: () => void)
 lenis?.on('scroll', ScrollTrigger.update);
 
 /* Signature: the cladding scene. Panels of the facade render flip into place as you scroll.
-   0.00–0.12 framework rails draw · 0.12–0.72 48 panels · 0.72–0.86 street and sky take colour
+   0.00–0.12 framework rails draw · 0.12–0.72 12 panels · 0.72–0.86 street and sky take colour
    0.86–1.00 lights on, LED outline traces the building */
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 const expoOut = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
@@ -23,8 +23,8 @@ document.querySelectorAll<HTMLElement>('[data-cladding]').forEach((scene) => {
     stage.style.setProperty('--rails', band(0, 0.12, p).toFixed(3));
     let done = 0;
     order.forEach((o, idx) => {
-      const t0 = 0.12 + (idx / n) * 0.52;
-      const e = expoOut(band(t0, t0 + 0.08, p));
+      const t0 = 0.12 + (idx / n) * 0.5;
+      const e = expoOut(band(t0, t0 + 0.1, p));
       o.t.style.setProperty('--t', e.toFixed(3));
       if (e > 0.98) done++;
     });
@@ -37,7 +37,7 @@ document.querySelectorAll<HTMLElement>('[data-cladding]').forEach((scene) => {
   ScrollTrigger.create({
     trigger: scene,
     start: 'top top',
-    end: () => '+=' + Math.round(innerHeight * 2.2),
+    end: () => '+=' + Math.round(innerHeight * 1.1),
     pin: scene.querySelector('[data-pin]') || scene,
     scrub: 0.5,
     anticipatePin: 1,

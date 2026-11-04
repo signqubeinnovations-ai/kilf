@@ -25,8 +25,8 @@ const alt = pochayil
 const label = pochayil ? 'Design render' : 'Illustrative';
 // Facade area of the image (percent of width/height) that gets panelled.
 const region = pochayil ? { x: 4, y: 4, w: 85.5, h: 84 } : { x: 0, y: 6, w: 100, h: 72 };
-const COLS = 8;
-const ROWS = 6;
+const COLS = 4;
+const ROWS = 3;
 const tw = region.w / COLS;
 const th = region.h / ROWS;
 const img = await getImage({ src, width: Math.min(1800, src.width), format: 'webp', quality: 82 });
@@ -47,7 +47,7 @@ for (let j = 0; j < ROWS; j++)
       <div class="cs-copy">
         <p class="eyebrow">How ACP works</p>
         <Headline id="cs-h" lines={['SAME BUILDING.', 'NEW FACE.', '*MORE CUSTOMERS.']} size="4" />
-        <p class="cs-count caps"><span class="num">Panel</span> <span class="cs-n"><span data-cs-count>48</span> → 48</span></p>
+        <p class="cs-count caps"><span class="num">Panel</span> <span class="cs-n"><span data-cs-count>12</span> → 12</span></p>
         <p class="body-copy cs-cap">A rust-free aluminium framework is anchored to the existing structure. Precision-fabricated panels are fixed and sealed on it, one by one. The building stays. The face changes.</p>
         <WaButton context="building" label="Plan your new facade" magnetic class="cs-wa" />
       </div>
