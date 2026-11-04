@@ -1,0 +1,185 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Picture } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Headline from '@/components/Headline.astro';
+import Crumbs from '@/components/Crumbs.astro';
+import Art from '@/components/Art.astro';
+import Dim from '@/components/Dim.astro';
+import WaButton from '@/components/WaButton.astro';
+import FaqList from '@/components/FaqList.astro';
+import Process from '@/components/Process.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import ProofThumb from '@/components/ProofThumb.astro';
+import { possibilities } from '@/lib/content';
+import { site, telUrl } from '@/lib/site';
+import { faqLd, serviceLd } from '@/lib/schema';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((s) => ({ params: { service: s.id }, props: { entry: s } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const all = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const others = all.filter((s) => s.id !== entry.id);
+const projects = (await getCollection('projects')).filter((p) => d.projectCategories.includes(p.data.category));
+const featured = possibilities.filter((p) => d.styles.includes(p.title));
+const rest = possibilities.filter((p) => !d.styles.includes(p.title));
+const name = d.h1.map((l) => l.replace('*', '')).join(' ').replace(/\s+/g, ' ');
+const crumbs = [{ href: '/', label: 'Home' }, { href: '/#what-we-build', label: 'Services' }, { label: d.navLabel }];
+const url = new URL(`/${entry.id}/`, Astro.site).href;
+---
+<Base
+  title={d.metaTitle}
+  description={d.description}
+  crumbs={crumbs}
+  waContext={d.waContext}
+  jsonLd={[serviceLd({ name, description: d.description, url, serviceType: d.keyword }, Astro.site!), faqLd(d.faqs)]}
+>
+  <section class="s-rust svc-hero" aria-labelledby="svc-h">
+    <div class="wrap grid-12">
+      <div class="svc-copy">
+        <Crumbs items={crumbs} />
+        <p class="eyebrow svc-eb">{d.keyword}</p>
+        <Headline as="h1" id="svc-h" lines={d.h1} size="4" />
+        <Dim label={d.dimLabel} class="svc-dim" />
+        <p class="lead svc-answer">{d.answer}</p>
+        <div class="svc-cta">
+          <WaButton context={d.waContext} size="lg" magnetic />
+          <a class="btn btn-ghost btn-lg" href={telUrl} data-track="call_click">Call {site.phoneDisplay}</a>
+        </div>
+      </div>
+      <div class="svc-art crop" data-reveal><Art kind={d.art} /></div>
+    </div>
+  </section>
+
+  <section class="section s-paper" aria-label="About this service">
+    <div class="wrap grid-12">
+      <article class="prose svc-prose" data-reveal><Content /></article>
+      <aside class="svc-aside">
+        <div class="svc-card s-charcoal">
+          <p class="eyebrow">Free site visit</p>
+          <p class="t-2"><span class="thin">Send a photo.</span><br /><span class="bold">Get a direction.</span></p>
+          <WaButton context={d.waContext} label="WhatsApp us" />
+          <a class="link-arrow" href={telUrl} data-track="call_click">{site.phoneDisplay}</a>
+          <ProofThumb />
+        </div>
+        <nav class="svc-others" aria-label="Other services">
+          <p class="caps num">Other services</p>
+          <ul>{others.map((o) => <li><a href={`/${o.id}`}>{o.data.navLabel}</a></li>)}</ul>
+        </nav>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section s-charcoal" aria-labelledby="dp-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Design possibilities</p>
+        <Headline id="dp-h" lines={['ELEVATION STYLES', '*WE BUILD.']} size="3" />
+      </div>
+      <ol class="dp">
+        {[...featured, ...rest].map((p, i) => (
+          <li class:list={{ hi: i < featured.length }} data-reveal style={`--i:${i % 6}`}>
+            <span class="num">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="t-1">{p.title}</h3>
+            <p class="body-copy">{p.text}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="body-copy dp-note">Highlighted styles suit this kind of project best. Most good facades combine two or three.</p>
+    </div>
+  </section>
+
+  <section class="section s-paper" aria-labelledby="pc-h">
+    <div class="wrap grid-12">
+      <div class="pc-head">
+        <p class="eyebrow">How we work</p>
+        <Headline id="pc-h" lines={['ONE TEAM.', '*START TO FINISH.']} size="3" />
+        <a class="link-arrow" href="/about#process">Process in detail</a>
+      </div>
+      <div class="pc-steps"><Process /></div>
+    </div>
+  </section>
+
+  <section class="section s-charcoal" aria-labelledby="rp-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Related projects</p>
+        <Headline id="rp-h" lines={['RECENT', '*WORK.']} size="3" />
+      </div>
+      {projects.length ? (
+        <ul class="rp">
+          {projects.map((p) => (
+            <li>
+              <a href={`/projects/${p.id}`} class="rp-a crop crop-hover" data-track="project_view">
+                <span class="rp-img" data-cad>{p.data.cover ? <Picture src={p.data.cover.src} alt={p.data.cover.alt} widths={[480, 800]} sizes="(min-width: 64rem) 40vw, 100vw" formats={['avif', 'webp']} /> : <Art kind="showroom" />}</span>
+                <Dim label={p.data.dimLabel} draw={false} />
+                <span class="t-1">{p.data.title}</span>
+                <span class="caps num">{p.data.location}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="body-copy">We are documenting projects in this category. <a href="/projects">See all projects</a> or ask us on WhatsApp for photos of similar work.</p>
+      )}
+    </div>
+  </section>
+
+  <section class="section s-paper" aria-labelledby="sf-h">
+    <div class="wrap grid-12">
+      <div class="sf-head">
+        <p class="eyebrow">Questions</p>
+        <Headline id="sf-h" lines={['ASKED', '*OFTEN.']} size="3" />
+        <a class="link-arrow" href="/faq">All FAQs</a>
+      </div>
+      <div class="sf-list"><FaqList items={d.faqs} /></div>
+    </div>
+  </section>
+
+  <CtaBand context={d.waContext} />
+</Base>
+
+<style>
+  .svc-hero { padding-block: clamp(2rem, 4vw, 3rem) clamp(4rem, 8vw, 7rem); overflow: hidden; }
+  .svc-hero .grid-12 { row-gap: 3rem; align-items: end; }
+  .svc-copy { grid-column: 1 / -1; }
+  .svc-art { grid-column: 1 / -1; aspect-ratio: 4 / 3; --crop-c: var(--color-sand-hi); }
+  .svc-art :global(.art), .svc-art :global(svg) { width: 100%; height: 100%; }
+  @media (min-width: 64rem) { .svc-copy { grid-column: 1 / span 7; } .svc-art { grid-column: 9 / span 4; margin-right: calc(var(--gutter) * -1 - 2vw); } }
+  .svc-eb { margin: clamp(2.5rem, 5vw, 4rem) 0 1.5rem; }
+  :global(.svc-dim) { margin-top: 2rem; max-width: 36rem; }
+  .svc-answer { margin-top: 1.5rem; max-width: 46ch; color: var(--fg); }
+  .svc-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.25rem; }
+
+  .svc-prose { grid-column: 1 / -1; }
+  .svc-aside { grid-column: 1 / -1; display: grid; gap: 2rem; align-content: start; margin-top: 3rem; }
+  @media (min-width: 64rem) { .svc-prose { grid-column: 1 / span 7; } .svc-aside { grid-column: 9 / span 4; margin-top: 0; position: sticky; top: 6.5rem; align-self: start; } }
+  .svc-prose :global(h2:first-child) { margin-top: 0; }
+  .svc-card { padding: 2rem; display: grid; gap: 1.1rem; }
+  .svc-card :global(.btn) { width: 100%; }
+  .svc-card :global(.proof) { margin-top: 0.5rem; }
+  .svc-others ul { list-style: none; margin: 0.75rem 0 0; padding: 0; border-top: 1px solid var(--rule); }
+  .svc-others li { border-bottom: 1px solid var(--rule); }
+  .svc-others a { display: flex; min-height: 48px; align-items: center; text-decoration: none; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .svc-others a:hover { color: var(--accent); }
+
+  .sec-head { display: grid; gap: 1.5rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .dp { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); border-top: 1px solid var(--rule); }
+  .dp li { display: grid; gap: 0.5rem; align-content: start; padding: 1.6rem 1.5rem 1.8rem 0; border-bottom: 1px solid var(--rule); }
+  .dp li:not(.hi) { opacity: 0.62; }
+  .dp li.hi h3 { color: var(--fg); }
+  .dp-note { margin-top: 2rem; font-size: 0.95rem; }
+
+  .pc-head, .sf-head { grid-column: 1 / -1; display: grid; gap: 1.5rem; align-content: start; margin-bottom: 3rem; }
+  .pc-steps, .sf-list { grid-column: 1 / -1; }
+  @media (min-width: 64rem) { .pc-head, .sf-head { grid-column: 1 / span 4; position: sticky; top: 6.5rem; align-self: start; margin: 0; } .pc-steps, .sf-list { grid-column: 6 / span 7; } }
+
+  .rp { list-style: none; padding: 0; margin: 0; display: grid; gap: 3rem 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); }
+  .rp-a { display: grid; gap: 0.9rem; text-decoration: none; }
+  .rp-img { display: block; aspect-ratio: 4 / 3; overflow: hidden; }
+  .rp-img :global(img), .rp-img :global(svg), .rp-img :global(.art) { width: 100%; height: 100%; object-fit: cover; }
+</style>

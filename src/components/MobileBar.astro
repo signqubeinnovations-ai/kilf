@@ -1,0 +1,22 @@
+---
+import Icon from './Icon.astro';
+import { waFor, telUrl, directionsUrl } from '@/lib/site';
+interface Props { waContext?: string; }
+const { waContext = 'building' } = Astro.props;
+---
+<nav class="mbar" aria-label="Quick actions">
+  <a href={waFor(waContext)} target="_blank" rel="noopener" data-track="whatsapp_click" class="mb-wa"><Icon name="wa" /><span>WhatsApp</span></a>
+  <a href={telUrl} data-track="call_click"><Icon name="phone" /><span>Call</span></a>
+  <a href={directionsUrl()} target="_blank" rel="noopener" data-track="directions_click"><Icon name="pin" /><span>Directions</span></a>
+</nav>
+<style>
+  .mbar { position: fixed; z-index: 60; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 1.4fr 1fr 1fr; background: var(--color-charcoal); border-top: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent); padding-bottom: env(safe-area-inset-bottom); view-transition-name: mbar; }
+  .mbar a { display: flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 56px; color: var(--color-cream); text-decoration: none; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.82rem; }
+  .mbar a + a { border-left: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent); }
+  .mbar :global(svg) { width: 20px; height: 20px; }
+  .mb-wa { background: var(--color-cream); color: var(--color-charcoal) !important; }
+  .mb-wa :global(svg) { color: var(--color-wa); }
+  @media (min-width: 48rem) { .mbar { display: none; } }
+  :global(:root) { --mbar: 56px; }
+  @media (min-width: 48rem) { :global(:root) { --mbar: 0px; } }
+</style>

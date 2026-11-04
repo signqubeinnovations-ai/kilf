@@ -1,122 +1,77 @@
 ---
-import Stopped from './Stopped.astro';
-import QRCode from 'qrcode';
-import Logo from './Logo.astro';
-import Placeholder from './Placeholder.astro';
-import LimeButton from './LimeButton.astro';
-import MotionToggle from './MotionToggle.astro';
-import Rings from './Rings.astro';
-import { site, isPlaceholder } from '@/lib/site';
-import { useTranslations, localizePath, type Lang } from '@/i18n/ui';
-
-interface Props {
-  lang: Lang;
-  /** The home page ends on its own closing line, so the footer doesn't repeat it. */
-  closing?: boolean;
-}
-const { lang, closing = true } = Astro.props;
-const t = useTranslations(lang);
-const lp = (p: string) => localizePath(p, lang);
-const siteUrl = new URL(lp('/'), Astro.site).href;
-const qr = await QRCode.toString(siteUrl, {
-  type: 'svg',
-  margin: 1,
-  color: { dark: '#101B62', light: '#FFFFFF' },
-  errorCorrectionLevel: 'M',
-});
-
-const cols = [
-  {
-    title: t('footer.festival'),
-    links: [
-      ['/about', t('nav.about')],
-      ['/programme', t('nav.programme')],
-      ['/speakers', t('nav.speakers')],
-      ['/visit', t('nav.visit')],
-      ['/passes', t('nav.passes')],
-    ],
-  },
-  {
-    title: t('footer.more'),
-    links: [
-      ['/khasak', t('nav.theatre')],
-      ['/youth', t('nav.youth')],
-      ['/cause', t('nav.cause')],
-      ['/get-involved', t('nav.involved')],
-      ['/partners', t('nav.partners')],
-      ['/faq', t('nav.faq')],
-      ['/contact', t('nav.contact')],
-    ],
-  },
-];
+import Icon from './Icon.astro';
+import Fill from './Fill.astro';
+import { site, addressLine, telUrl, waFor, directionsUrl, real } from '@/lib/site';
+import { getCollection } from 'astro:content';
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const year = new Date().getFullYear();
 ---
-<footer class="on-dark relative bg-night text-white">
-  <div class="container-kilf relative">
-    {closing && (
-      <section class="flex flex-col gap-10 pb-16 pt-20 sm:pb-20 sm:pt-24 lg:flex-row lg:items-end lg:justify-between lg:gap-16" aria-labelledby="closing-h">
-        <div>
-          <p class="eyebrow flex items-center gap-3 text-white/75"><Rings n={3} size={40} tone="lake" />{t('footer.closing.kicker')}</p>
-          <h2 id="closing-h" class:list={['display mt-6', lang === 'ml' ? 'text-[1.7rem] min-[380px]:text-[2.1rem] sm:text-[2.8rem] lg:text-[3.4rem]' : 'text-[2.4rem] sm:text-[3.4rem] lg:text-[4.2rem]']}>
-            <Stopped text={t('footer.closing.h')} /><br /><span class="text-lake"><Stopped text={t('footer.closing.accent')} /></span>
-          </h2>
-        </div>
-        <div class="flex flex-wrap items-center gap-3 lg:pb-3">
-          <LimeButton href={lp('/get-involved#register')} label={t('cta.register')} variant="white" size="lg" />
-          <LimeButton href={lp('/get-involved#volunteer')} label={t('cta.volunteer')} variant="outline-light" size="lg" />
-        </div>
-      </section>
-    )}
-
-    <div class:list={['grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.25fr] lg:gap-10', closing && 'border-t border-white/15']}>
-      <div>
-        <a href={lp('/')} class="inline-flex min-h-11 items-center text-white">
-          <Logo tone="dark" class="h-12" decorative /><span class="sr-only">KILF 2027 — {t('nav.home')}</span>
-        </a>
-        <ul class="mt-6 space-y-1.5 text-[0.95rem] text-white/85">
-          <li>{t('site.dates')}</li>
-          <li>{t('site.city')} · {t('site.organisedBy')} {site.organiser}</li>
+<footer class="site-footer s-charcoal">
+  <div class="wrap">
+    <div class="grid-12 top">
+      <div class="col-brand">
+        <img src="/brand/wordmark-cream.svg" alt="FACADO" width="2000" height="430" loading="lazy" class="f-logo" />
+        <img src="/brand/tagline-cream.svg" alt="Exterior Design Studio" width="2000" height="98" loading="lazy" class="f-tag" />
+        <p class="body-copy f-entity">{site.entity}. We design, 3D-visualise, fabricate and install ACP facades across Kerala.</p>
+      </div>
+      <div class="col">
+        <h2 class="f-h">Services</h2>
+        <ul>{services.map((s) => <li><a href={`/${s.id}`}>{s.data.navLabel}</a></li>)}</ul>
+      </div>
+      <div class="col">
+        <h2 class="f-h">Studio</h2>
+        <ul>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/about">About & process</a></li>
+          <li><a href="/journal">Journal</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li><a href="/contact">Contact</a></li>
         </ul>
       </div>
-
-      {cols.map((col) => (
-        <nav aria-label={col.title}>
-          <h2 class="eyebrow text-white/65">{col.title}</h2>
-          <ul class="mt-4">
-            {col.links.map(([href, label]) => (
-              <li><a href={lp(href)} class="inline-flex min-h-10 items-center text-[0.97rem] text-white/90 transition-colors hover:text-lake">{label}</a></li>
-            ))}
-          </ul>
-        </nav>
-      ))}
-
-      <div>
-        <h2 class="eyebrow text-white/65">{t('footer.contact')}</h2>
-        <ul class="mt-4 text-[0.97rem]">
-          <li>
-            <a href={`mailto:${site.email}`} class="inline-flex min-h-10 items-center break-all text-white hover:text-lake">{site.email}</a>
-          </li>
-          <li>
-            {site.socialUrl && !isPlaceholder(site.socialHandle) ? (
-              <a href={site.socialUrl} class="inline-flex min-h-10 items-center text-white hover:text-lake" rel="noopener" target="_blank">{site.socialHandle}</a>
-            ) : (
-              <span class="inline-flex min-h-10 items-center text-white"><Placeholder value={site.socialHandle} /></span>
-            )}
-          </li>
-        </ul>
-        <figure class="mt-5 flex items-center gap-4">
-          <div class="size-20 shrink-0 bg-white p-1.5 [&_svg]:size-full" set:html={qr} role="img" aria-label={`QR code linking to ${siteUrl}`} />
-          <figcaption class="max-w-[9rem] text-sm leading-snug text-white/75">{t('footer.scan')}</figcaption>
-        </figure>
+      <div class="col col-nap">
+        <h2 class="f-h">Visit</h2>
+        <address>
+          <strong>{site.name}</strong><br />
+          <span><Fill value={site.address.street} />, {site.address.locality}, {site.address.district}, {site.address.region} <Fill value={site.address.postalCode} /></span>
+        </address>
+        <p><a href={telUrl} data-track="call_click">{site.phoneDisplay}</a></p>
+        <p><a href={waFor('building')} target="_blank" rel="noopener" data-track="whatsapp_click">WhatsApp {site.phoneDisplay}</a></p>
+        <p>{real(site.email) ? <a href={`mailto:${site.email}`}>{site.email}</a> : <Fill value={site.email} />}</p>
+        <p class="muted"><Fill value={site.hoursDisplay} /></p>
+        <p><a href={directionsUrl()} target="_blank" rel="noopener" class="link-arrow">Directions</a></p>
+        <div class="social">
+          {real(site.social.instagram) && <a href={site.social.instagram} aria-label="FACADO on Instagram" rel="noopener" target="_blank"><Icon name="insta" /></a>}
+          {real(site.social.facebook) && <a href={site.social.facebook} aria-label="FACADO on Facebook" rel="noopener" target="_blank"><Icon name="fb" /></a>}
+        </div>
       </div>
     </div>
-
-    <div class="flex flex-col gap-4 border-t border-white/15 py-6 text-sm text-white/75 md:flex-row md:items-center md:justify-between">
-      <p class="flex items-center gap-3"><Rings n={3} size={34} tone="lake" />KILF 2027 · {t('footer.tagline')}</p>
-      <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
-        <p>© 2027 {site.shortName}. {t('footer.rights')}</p>
-        <a href={lp('/privacy')} class="inline-flex min-h-11 items-center hover:text-lake">{t('nav.privacy')}</a>
-        <MotionToggle lang={lang} />
-      </div>
+    <div class="bottom">
+      <p>© {year} {site.name}. All rights reserved.</p>
+      <p>Areas we serve: {site.areasServed.join(', ')} <Fill value={site.areasNote} /></p>
+      <p><a href="/privacy">Privacy</a> · <button type="button" class="linkish" data-consent-open>Cookie settings</button></p>
     </div>
   </div>
 </footer>
+<style>
+  .site-footer { padding: clamp(4rem, 8vw, 7rem) 0 calc(2rem + var(--mbar, 0px)); }
+  .top { row-gap: 3rem; }
+  .col-brand { grid-column: span 12; }
+  .col { grid-column: span 6; }
+  .col-nap { grid-column: span 12; }
+  @media (min-width: 64rem) { .col-brand { grid-column: 1 / span 4; } .col { grid-column: span 2; } .col:first-of-type { grid-column: 6 / span 2; } .col-nap { grid-column: 10 / span 3; } }
+  .f-logo { width: 11rem; }
+  .f-tag { width: 11rem; margin-top: 0.6rem; }
+  .f-entity { margin-top: 1.5rem; max-width: 34ch; font-size: 0.98rem; }
+  .f-h { font-size: 0.85rem; letter-spacing: 0.22em; color: var(--accent); margin-bottom: 1.1rem; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.2rem; }
+  a { text-decoration: none; }
+  ul a { display: inline-flex; min-height: 40px; align-items: center; font-weight: 600; letter-spacing: 0.06em; }
+  ul a:hover, .col-nap a:hover { color: var(--accent); }
+  address { font-style: normal; margin-bottom: 0.75rem; line-height: 1.45; }
+  .col-nap p { min-height: 32px; display: flex; align-items: center; }
+  .social { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+  .social a { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--rule); }
+  .social :global(svg) { width: 20px; }
+  .bottom { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; justify-content: space-between; font-size: 0.9rem; color: var(--muted); }
+  .linkish { background: none; border: 0; padding: 0; color: inherit; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 0.2em; min-height: 32px; }
+</style>

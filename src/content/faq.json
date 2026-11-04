@@ -1,0 +1,72 @@
+[
+  {
+    "id": "acp-kerala-climate",
+    "order": 1,
+    "preview": true,
+    "q": "What is ACP cladding, and is it good for Kerala's climate?",
+    "a": "<p>ACP (aluminium composite panel) is two thin aluminium sheets bonded to a core. It is fixed on an aluminium frame in front of your wall to form a new facade. It suits Kerala's heavy rain, humidity and strong sun when three things are right: an exterior-grade coating, stainless steel fixings and properly sealed joints.</p><p>Aluminium does not rust. Good exterior coatings resist UV fading. Most problems we see on old facades come from poor framing and open joints, not from the panel itself. That is why we detail drainage and sealing for the monsoon.</p>"
+  },
+  {
+    "id": "installation-time",
+    "order": 2,
+    "preview": true,
+    "q": "How long does ACP facade installation take?",
+    "a": "<p>It depends on the facade area, the design and site access. Because panels are prepared off-site to shop drawings, the time on site is shorter than most other facade work. After the site survey we give you a written schedule for your building. <em class=\"fill\">[FILL: typical timelines, e.g. shop front vs. full building]</em></p>"
+  },
+  {
+    "id": "acp-hpl-glass",
+    "order": 3,
+    "preview": false,
+    "q": "ACP vs HPL vs glass facade: which should I choose?",
+    "a": "<p>Choose ACP for clean modern lines, a wide range of finishes and lighter weight. Choose HPL (high-pressure laminate) when you want a very realistic wood look and accept heavier panels. Choose glass where you need daylight and display, such as a showroom ground floor.</p><p>Many good facades combine them. A common pattern is glass at street level and ACP above. We explain the trade-offs for your building and budget, and compare them in our <a href=\"/journal/acp-vs-hpl-vs-glass-facade-kerala\">ACP vs HPL vs glass guide</a>.</p>"
+  },
+  {
+    "id": "cost",
+    "order": 4,
+    "preview": true,
+    "q": "How much does ACP cladding cost per sq ft in Kerala?",
+    "a": "<p>It depends on the panel grade and finish, the facade area, the design complexity, the framework and site access. Wood, stone and metallic finishes usually cost more than solid colours. Fire-rated cores cost more than standard cores. <em class=\"fill\">[FILL: price range per sq ft by finish, or keep this answer]</em></p><p>The fastest way to get a real number is a free site visit. We measure, then quote in writing. See also <a href=\"/journal/acp-cladding-cost-kerala\">what affects ACP cladding cost</a>.</p>"
+  },
+  {
+    "id": "lifespan-maintenance",
+    "order": 5,
+    "preview": false,
+    "q": "How long does an ACP facade last, and how do I maintain it?",
+    "a": "<p>Service life depends mostly on the panel grade, the coating and the quality of installation. Ask for the manufacturer's coating warranty in writing for the exact panel used. <em class=\"fill\">[FILL: warranty FACADO offers on workmanship]</em></p><p>Maintenance is simple. Rinse with water and a mild detergent once or twice a year, more often near busy roads. Avoid abrasive pads and strong solvents. Check sealant joints after each monsoon.</p>"
+  },
+  {
+    "id": "old-building",
+    "order": 6,
+    "preview": true,
+    "q": "Can you redo the facade of an old building without demolition?",
+    "a": "<p>Yes, in most cases. ACP is fixed on a framework anchored to the existing structure, so the old wall stays in place behind it. We first check the wall and structure during the site survey. If repairs are needed, such as loose plaster or leaks, we tell you before we design. Read more on <a href=\"/acp-renovation\">facade renovation</a>.</p>"
+  },
+  {
+    "id": "3d-design",
+    "order": 7,
+    "preview": false,
+    "q": "Do you provide 3D design before work starts?",
+    "a": "<p>Yes. We show the proposed facade as 3D views on your actual building, so you can see colours, finishes and signage before anything is fabricated. Work starts only after you approve the design. See <a href=\"/3d-facade-design\">3D facade design</a>. <em class=\"fill\">[FILL: is the 3D concept free, or adjusted against the order?]</em></p>"
+  },
+  {
+    "id": "areas",
+    "order": 8,
+    "preview": false,
+    "q": "Which areas do you serve?",
+    "a": "<p>Our studio is in Karunagappally, Kollam. We work across Kollam district. <em class=\"fill\">[FILL: other districts and towns you serve]</em> Send us your location on WhatsApp and we will confirm.</p>"
+  },
+  {
+    "id": "fire-safety",
+    "order": 9,
+    "preview": false,
+    "q": "Is ACP fire-safe?",
+    "a": "<p>It depends on the core. Standard ACP has a polyethylene (PE) core, which is combustible. Fire-retardant (FR) panels use a mineral-filled core that resists burning much better. Panels with an even higher mineral content (often called A2 grade) are rated as limited-combustibility.</p><p>For high-rise buildings, hospitals, schools and other public buildings, we recommend FR or A2 cores and follow the applicable fire norms. Ask for the manufacturer's fire test certificate for the exact panel. We will always tell you which core we are quoting.</p>"
+  },
+  {
+    "id": "signage",
+    "order": 10,
+    "preview": false,
+    "q": "Do you handle signage integration on the facade?",
+    "a": "<p>Yes. We design the facade and the signage together, so letters, logo boxes and lighting sit inside the composition rather than being added on top. We plan cable routes and fixing points in the shop drawings. <em class=\"fill\">[FILL: do you fabricate signage in-house or with a partner?]</em></p>"
+  }
+]

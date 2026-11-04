@@ -2,36 +2,27 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import react from '@astrojs/react';
+import fs from 'node:fs';
 
-// Set SITE_URL in your hosting provider (e.g. https://kilf.in). Used for
-// canonical URLs, Open Graph tags, the sitemap and the footer QR code.
-const site = process.env.SITE_URL || 'https://kilf.vercel.app';
+// Case studies stay out of the sitemap (and are noindexed) until `confirmed: true`.
+const dir = './src/content/projects';
+const unconfirmed = fs.readdirSync(dir).filter((f) => f.endsWith('.md') && !/^confirmed:\s*true/m.test(fs.readFileSync(`${dir}/${f}`, 'utf8'))).map((f) => `/projects/${f.replace(/\.md$/, '')}/`);
+
+// Set SITE_URL in Netlify/Vercel once the domain is live (e.g. https://facado.in).
+// It drives canonical URLs, Open Graph tags and the sitemap.
+const site = process.env.SITE_URL || 'https://facado.netlify.app';
 
 export default defineConfig({
   site,
   trailingSlash: 'ignore',
-  // Inline the (small) stylesheet so it never blocks first paint.
   build: { format: 'directory', inlineStylesheets: 'always' },
   integrations: [
-    // React only powers the animated islands (Motion); everything else is static.
-    react(),
     sitemap({
-      // Malayalam pages that still fall back to English are noindexed, so keep
-      // them out of the sitemap too (see translatedPaths in src/i18n/ui.ts).
       filter: (page) => {
         const path = new URL(page).pathname;
-        if (path.includes('/404')) return false;
-        if (path.startsWith('/ml/')) return ['/ml/', '/ml/about/'].includes(path);
-        return true;
+        return !/\/(404|privacy)\/?$/.test(path) && !unconfirmed.includes(path);
       },
-      i18n: { defaultLocale: 'en', locales: { en: 'en-IN', ml: 'ml-IN' } },
     }),
   ],
-  image: {
-    responsiveStyles: true,
-  },
-  vite: {
-    plugins: [tailwindcss()],
-  },
+  vite: { plugins: [tailwindcss()] },
 });

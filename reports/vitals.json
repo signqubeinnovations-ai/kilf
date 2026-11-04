@@ -1,0 +1,38 @@
+[
+  {
+    "page": "/",
+    "LCP_ms": 924,
+    "CLS": 0,
+    "KB": 384
+  },
+  {
+    "page": "/acp-cladding-kollam/",
+    "LCP_ms": 700,
+    "CLS": 0,
+    "KB": 209
+  },
+  {
+    "page": "/projects/",
+    "LCP_ms": 620,
+    "CLS": 0,
+    "KB": 174
+  },
+  {
+    "page": "/contact/",
+    "LCP_ms": 740,
+    "CLS": 0,
+    "KB": 173
+  },
+  {
+    "page": "/faq/",
+    "LCP_ms": 668,
+    "CLS": 0,
+    "KB": 179
+  },
+  {
+    "page": "/journal/acp-cladding-cost-kerala/",
+    "LCP_ms": 628,
+    "CLS": 0,
+    "KB": 180
+  }
+]

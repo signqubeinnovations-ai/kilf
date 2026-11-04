@@ -1,0 +1,19 @@
+---
+/** Consent banner. Only rendered when GA4 or a Meta Pixel ID is configured. */
+import { env } from '@/lib/site';
+const enabled = !!(env.ga4 || env.pixel);
+---
+{enabled && (
+  <div class="consent s-paper" data-consent data-ga4={env.ga4} data-pixel={env.pixel} hidden role="region" aria-label="Cookie consent">
+    <p class="body-copy">We use cookies to measure visits and improve our ads. Nothing loads until you agree. <a href="/privacy">Privacy</a></p>
+    <div class="consent-b">
+      <button type="button" class="btn btn-primary" data-consent-yes>Accept</button>
+      <button type="button" class="btn btn-ghost" data-consent-no>Decline</button>
+    </div>
+  </div>
+)}
+<style>
+  .consent { position: fixed; z-index: 80; left: var(--gutter); bottom: calc(var(--mbar) + 1rem); width: min(30rem, calc(100vw - 2rem)); padding: 1.25rem 1.4rem; display: grid; gap: 1rem; border: 1px solid var(--rule); box-shadow: 0 24px 50px -20px #0006; }
+  .consent-b { display: flex; gap: 0.6rem; }
+  .consent .btn { --h: 2.9rem; }
+</style>

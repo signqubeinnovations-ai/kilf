@@ -1,0 +1,11 @@
+---
+/** Inline architectural drawing (stand-in for photography). */
+import { elevation, heroBuilding } from '@/lib/facade';
+interface Props { kind: Parameters<typeof elevation>[0] | 'hero'; class?: string; }
+const { kind, class: cls = '' } = Astro.props;
+const svg = kind === 'hero' ? heroBuilding() : elevation(kind);
+---
+<div class:list={['art', cls]} set:html={svg} />
+<style>
+  .art :global(svg) { width: 100%; height: 100%; }
+</style>

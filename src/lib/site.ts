@@ -1,75 +1,77 @@
 /**
- * Festival facts used across the site. Edit here, not in the pages.
- * Anything wrapped in [BRACKETS] is a placeholder, see TODO.md.
+ * Single source of truth for business facts (NAP) and links.
+ * Anything wrapped as "[FILL: ...]" is missing information. It is shown on the
+ * page as a highlighted marker and is left out of schema markup until it is filled.
+ * NAP must match the Google Business Profile exactly.
  */
-export const site = {
-  name: 'Kollam International Literature Festival',
-  shortName: 'KILF',
-  edition: 'The first edition',
-  year: 2027,
-  email: 'kilf2027@gmail.com',
-  organiser: 'Capital Media',
-  socialHandle: '[@HANDLE]',
-  socialUrl: '', // e.g. https://instagram.com/kilf2027, fill in with the handle
-  city: 'Kollam, Kerala',
-  datesLabel: '31 December 2026 – 4 January 2027',
-  datesShort: '31 Dec 2026 – 4 Jan 2027',
-  days: 5,
-  startISO: '2026-12-31T00:00:00+05:30',
-  endISO: '2027-01-04T23:59:59+05:30',
-  startDate: '2026-12-31',
-  endDate: '2027-01-04',
-  /** Chapter 1: The Pause. */
-  taglines: {
-    main: 'Chapter 1: The Pause.',
-    second: 'Pause. Turn a page.',
-    closing: 'Come for a story. Stay for the connection.',
-    cause: 'Keep the waters alive.',
-  },
-  /** Meta and share description for the whole site. */
-  description: 'Chapter 1: The Pause — the first Kollam International Literature Festival, 31 Dec 2026 – 4 Jan 2027, by Ashtamudi Lake.',
-  venues: [
-    {
-      id: 'sngcc',
-      /** Venue code: 1 ripple ring. */
-      rings: 1,
-      name: 'Sreenarayana Guru Cultural Centre',
-      area: 'Kollam',
-      lat: '[LAT]',
-      lng: '[LNG]',
-      mapsQuery: 'Sreenarayana Guru Cultural Centre, Kollam, Kerala',
-    },
-    {
-      id: '8point',
-      /** Venue code: 2 ripple rings. */
-      rings: 2,
-      name: '8 Point Art Cafe',
-      area: 'Asramam, Kollam',
-      lat: '[LAT]',
-      lng: '[LNG]',
-      mapsQuery: '8 Point Art Cafe, Kollam, Kerala',
-    },
-    {
-      id: 'ashramam',
-      /** Venue code: 3 ripple rings. */
-      rings: 3,
-      name: 'Ashramam Maidan',
-      area: 'Asramam, Kollam',
-      lat: '[LAT]',
-      lng: '[LNG]',
-      mapsQuery: 'Ashramam Maidan, Kollam, Kerala',
-    },
-  ],
-} as const;
+export const isFill = (v?: string | null) => !v || v.trim().startsWith('[FILL');
+/** Returns the value only when it is real (not a [FILL] marker). */
+export const real = <T extends string | undefined>(v: T) => (isFill(v) ? undefined : v);
 
-export const isPlaceholder = (v: string) => /^\[.*\]$/.test(v.trim());
+export const site = {
+  name: 'FACADO LLP',
+  brand: 'FACADO',
+  tagline: 'Exterior Design Studio',
+  /** Consistent entity line for search and AI answers. */
+  entity: 'FACADO LLP, an ACP facade and exterior design studio in Karunagappally, Kerala',
+  phoneDisplay: '+91 81130 13556',
+  phoneE164: '+918113013556',
+  waNumber: '918113013556',
+  email: '[FILL: email]',
+  address: {
+    street: '[FILL: street, e.g. Railway Station Road]',
+    locality: 'Karunagappally',
+    district: 'Kollam',
+    region: 'Kerala',
+    postalCode: '[FILL: PIN]',
+    country: 'IN',
+  },
+  /** Opening hours as shown on the page and in schema (schema needs real values). */
+  hoursDisplay: '[FILL: e.g. Mon–Sat, 9:30 am – 6:30 pm]',
+  hoursSchema: [] as { days: string[]; opens: string; closes: string }[],
+  geo: undefined as undefined | { lat: number; lng: number }, // [FILL: exact office coordinates]
+  mapsUrl: '[FILL: Google Maps link]',
+  reviewUrl: '[FILL: Google review link]',
+  social: {
+    instagram: '[FILL: Instagram URL]',
+    facebook: '[FILL: Facebook URL]',
+  },
+  /** Real towns and districts only. */
+  areasServed: ['Karunagappally', 'Kollam'],
+  areasNote: '[FILL: confirm the other districts you serve]',
+  priceRange: '[FILL: e.g. ₹₹]',
+  founded: '[FILL: year started]',
+};
+
+export const addressLine = () => {
+  const a = site.address;
+  return [a.street, a.locality, `${a.district}, ${a.region}`, a.postalCode].join(', ');
+};
+
+const mapsSearch = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('FACADO LLP Karunagappally Kollam');
+export const directionsUrl = () => real(site.mapsUrl) ?? mapsSearch;
+export const mapEmbedUrl = () =>
+  site.geo
+    ? `https://www.google.com/maps?q=${site.geo.lat},${site.geo.lng}&z=16&output=embed`
+    : `https://www.google.com/maps?q=${encodeURIComponent('FACADO LLP Karunagappally Kollam Kerala')}&z=15&output=embed`;
+
+export const telUrl = `tel:${site.phoneE164}`;
+
+/** WhatsApp link with a pre-filled message. */
+export const wa = (text: string) => `https://wa.me/${site.waNumber}?text=${encodeURIComponent(text)}`;
+export const waFor = (context: string) => wa(`Hi FACADO, I'd like a free facade design for my ${context}.`);
+
+export const nav = [
+  { href: '/#what-we-build', label: 'Services' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/about', label: 'Studio' },
+  { href: '/journal', label: 'Journal' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/contact', label: 'Contact' },
+];
 
 export const env = {
   formEndpoint: import.meta.env.PUBLIC_FORM_ENDPOINT || '',
-  formEndpointPartner: import.meta.env.PUBLIC_FORM_ENDPOINT_PARTNER || '',
-  formEndpointNewsletter: import.meta.env.PUBLIC_FORM_ENDPOINT_NEWSLETTER || '',
   ga4: import.meta.env.PUBLIC_GA4_ID || '',
-  plausible: import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || '',
-  partnerCallUrl: import.meta.env.PUBLIC_PARTNER_CALL_URL || '',
-  whatsappUrl: import.meta.env.PUBLIC_WHATSAPP_URL || '',
+  pixel: import.meta.env.PUBLIC_META_PIXEL_ID || '',
 };

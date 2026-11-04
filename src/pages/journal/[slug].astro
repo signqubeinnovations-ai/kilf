@@ -1,0 +1,96 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Crumbs from '@/components/Crumbs.astro';
+import Dim from '@/components/Dim.astro';
+import WaButton from '@/components/WaButton.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Logo from '@/components/Logo.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('journal');
+  return posts.map((p) => ({ params: { slug: p.id }, props: { entry: p } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content, headings } = await render(entry);
+const toc = headings.filter((h) => h.depth === 2);
+const services = (await getCollection('services')).filter((s) => d.relatedServices.includes(s.id));
+const crumbs = [{ href: '/', label: 'Home' }, { href: '/journal', label: 'Journal' }, { label: d.title }];
+const fmt = (x: Date) => x.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+const url = new URL(`/journal/${entry.id}/`, Astro.site).href;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.title,
+  description: d.description,
+  datePublished: d.date.toISOString(),
+  dateModified: (d.updated ?? d.date).toISOString(),
+  author: { '@type': 'Organization', name: d.author, url: new URL('/about/', Astro.site).href },
+  publisher: { '@id': new URL('/#business', Astro.site).href },
+  mainEntityOfPage: url,
+  image: new URL(`/og/journal--${entry.id}.jpg`, Astro.site).href,
+  inLanguage: 'en-IN',
+};
+---
+<Base title={d.metaTitle} description={d.description} crumbs={crumbs} jsonLd={[ld]} waContext={d.waContext} ogType="article">
+  <section class="s-rust page-hero" aria-labelledby="ar-h">
+    <div class="wrap">
+      <Crumbs items={crumbs} />
+      <p class="eyebrow ph-eb">Journal · <time datetime={d.date.toISOString()}>{fmt(d.date)}</time></p>
+      <h1 id="ar-h" class="t-4 ar-h" data-hl><span class="ln"><span class="bold">{d.title}</span></span></h1>
+      <Dim label={d.keyword} class="ar-dim" />
+    </div>
+  </section>
+  <section class="section s-paper">
+    <div class="wrap grid-12">
+      <aside class="ar-side">
+        {toc.length > 0 && (
+          <nav class="toc" aria-labelledby="toc-h">
+            <p id="toc-h" class="caps num">Contents</p>
+            <ol>{toc.map((h, i) => <li><a href={`#${h.slug}`}><span class="num">{String(i + 1).padStart(2, "0")}</span>{h.text.replace(/^\d+\.\s*/, "")}</a></li>)}</ol>
+          </nav>
+        )}
+      </aside>
+      <div class="ar-main">
+        <article class="prose"><Content /></article>
+        <div class="author s-charcoal">
+          <Logo class="author-logo" />
+          <div>
+            <p class="caps num">Written by</p>
+            <p class="t-1">{d.author}</p>
+            <p class="body-copy">The design and installation team at FACADO LLP, an ACP facade and exterior design studio in Karunagappally, Kerala. <em class="fill">[FILL: named author and role, if you want one]</em></p>
+          </div>
+        </div>
+        {services.length > 0 && (
+          <nav class="rel" aria-labelledby="rel-h">
+            <p id="rel-h" class="caps num">Related services</p>
+            <ul>{services.map((s) => <li><a href={`/${s.id}`} class="link-arrow">{s.data.navLabel}</a></li>)}</ul>
+          </nav>
+        )}
+        <div class="ar-cta">
+          <p class="t-2"><span class="thin">Have a building</span> <span class="bold">in mind?</span></p>
+          <WaButton context={d.waContext} />
+        </div>
+      </div>
+    </div>
+  </section>
+  <CtaBand context={d.waContext} />
+</Base>
+<style>
+  .ar-h { max-width: 22ch; line-height: 1; }
+  :global(.ar-dim) { margin-top: 2rem; max-width: 36rem; }
+  .ar-side { grid-column: 1 / -1; margin-bottom: 2.5rem; }
+  .ar-main { grid-column: 1 / -1; }
+  @media (min-width: 64rem) { .ar-side { grid-column: 1 / span 3; position: sticky; top: 6.5rem; align-self: start; margin: 0; } .ar-main { grid-column: 5 / span 8; } }
+  .toc ol { list-style: none; margin: 1rem 0 0; padding: 0; border-top: 1px solid var(--rule); }
+  .toc li { border-bottom: 1px solid var(--rule); }
+  .toc a { display: grid; grid-template-columns: 2.25rem 1fr; padding: 0.7rem 0; text-decoration: none; font-weight: 600; line-height: 1.25; min-height: 44px; align-items: center; }
+  .toc a:hover { color: var(--accent); }
+  .author { display: grid; grid-template-columns: 5rem 1fr; gap: 1.5rem; padding: 2rem; margin-top: 4rem; align-items: start; }
+  :global(.author-logo) { width: 5rem; margin-top: 0.4rem; }
+  .author .t-1 { margin: 0.25rem 0 0.6rem; font-weight: 700; text-transform: uppercase; }
+  .rel { margin-top: 3rem; }
+  .rel ul { list-style: none; margin: 0.75rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; }
+  .ar-cta { margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; justify-content: space-between; }
+</style>

@@ -1,0 +1,37 @@
+---
+import WaButton from './WaButton.astro';
+import Headline from './Headline.astro';
+import Counter from './Counter.astro';
+import Fill from './Fill.astro';
+import ProofThumb from './ProofThumb.astro';
+import { site, telUrl, directionsUrl } from '@/lib/site';
+interface Props { context?: string; text?: string; n?: number; of?: number; }
+const { context = 'building', text, n, of } = Astro.props;
+---
+<section class="section s-rust cta" aria-labelledby="cta-h">
+  {n && of && <Counter n={n} of={of} />}
+  <div class="wrap grid-12">
+    <div class="cta-main">
+      <p class="eyebrow">Free facade design consultation</p>
+      <Headline id="cta-h" lines={["WHAT'S YOUR", '*NEXT PROJECT?']} size="hero" class="cta-h" />
+      <div class="cta-actions">
+        <WaButton context={context} text={text} size="lg" magnetic pulse label="WhatsApp for a free facade design" />
+        <a class="btn btn-ghost btn-lg" href={telUrl} data-track="call_click">Call {site.phoneDisplay}</a>
+      </div>
+      <ProofThumb />
+    </div>
+    <div class="cta-side">
+      <p class="caps num">Studio</p>
+      <p>{site.name}<br /><Fill value={site.address.street} />, {site.address.locality},<br />{site.address.district}, {site.address.region} <Fill value={site.address.postalCode} /></p>
+      <p class="muted"><Fill value={site.hoursDisplay} /></p>
+      <a class="link-arrow" href={directionsUrl()} target="_blank" rel="noopener" data-track="directions_click">Get directions</a>
+    </div>
+  </div>
+</section>
+<style>
+  .cta-main { grid-column: 1 / -1; }
+  .cta-side { grid-column: 1 / -1; margin-top: 3rem; display: grid; gap: 0.9rem; align-content: end; font-size: var(--step-0); }
+  @media (min-width: 64rem) { .cta-main { grid-column: 1 / span 9; } .cta-side { grid-column: 10 / span 3; margin-top: 0; } }
+  :global(.cta-h) { margin-top: 1.75rem; }
+  .cta-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: clamp(2rem, 4vw, 3.5rem); }
+</style>

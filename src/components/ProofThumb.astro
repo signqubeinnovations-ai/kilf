@@ -1,0 +1,25 @@
+---
+/** Micro-proof shown near CTAs: the most recent real project. */
+import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const p = projects[0];
+const img = p?.data.cover;
+---
+{p && (
+  <a class="proof" href={`/projects/${p.id}`} data-track="project_view">
+    <span class="proof-img crop">
+      {img ? <Picture src={img.src} alt="" widths={[96, 192]} sizes="96px" formats={['avif', 'webp']} /> : <span class="proof-ph" aria-hidden="true" />}
+    </span>
+    <span class="proof-txt"><span class="caps num">Recent work</span><span>{p.data.client}, {p.data.location}</span></span>
+  </a>
+)}
+<style>
+  .proof { display: inline-flex; align-items: center; gap: 1.1rem; margin-top: 2rem; text-decoration: none; min-height: 44px; }
+  .proof-img { width: 64px; height: 64px; flex: none; --crop-gap: 5px; --crop-l: 9px; }
+  .proof-img :global(img), .proof-ph { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .proof-ph { background: repeating-linear-gradient(90deg, var(--color-charcoal) 0 14px, #9a6a45 14px 16px); }
+  .proof-txt { display: grid; gap: 0.1rem; font-weight: 600; line-height: 1.25; }
+  .proof-txt .num { font-size: 0.78rem; }
+  .proof:hover .proof-txt > span:last-child { text-decoration: underline; text-underline-offset: 0.2em; }
+</style>

@@ -1,10 +1,129 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import View from '@/views/Contact.astro';
+import Base from '@/layouts/Base.astro';
+import Headline from '@/components/Headline.astro';
+import Crumbs from '@/components/Crumbs.astro';
+import WaButton from '@/components/WaButton.astro';
+import Icon from '@/components/Icon.astro';
+import Fill from '@/components/Fill.astro';
+import ProofThumb from '@/components/ProofThumb.astro';
+import { site, telUrl, directionsUrl, mapEmbedUrl, env, real } from '@/lib/site';
+import { pickerTypes } from '@/lib/content';
+const crumbs = [{ href: '/', label: 'Home' }, { label: 'Contact' }];
 ---
-<BaseLayout
-  title="Contact"
-  description="Contact the Kollam International Literature Festival team: kilf2027@gmail.com. Organised by Capital Media."
->
-  <View lang="en" />
-</BaseLayout>
+<Base title="Contact FACADO | ACP Facade Design, Karunagappally" description="WhatsApp, call or visit FACADO LLP in Karunagappally, Kollam for a free facade design consultation and site visit. +91 81130 13556." crumbs={crumbs} waContext="building">
+  <section class="s-rust page-hero" aria-labelledby="ct-h">
+    <div class="wrap grid-12">
+      <div class="ct-top">
+        <Crumbs items={crumbs} />
+        <p class="eyebrow ph-eb">Contact</p>
+        <Headline as="h1" id="ct-h" lines={['CONTACT FACADO.', "*LET'S TALK FACADES."]} size="4" />
+        <p class="lead ph-lead">The fastest way is WhatsApp. Send a photo of your building and your location.</p>
+        <div class="ct-cta">
+          <WaButton context="building" size="lg" magnetic pulse />
+          <a class="btn btn-ghost btn-lg" href={telUrl} data-track="call_click"><Icon name="phone" class="arrow" /> {site.phoneDisplay}</a>
+        </div>
+        <ProofThumb />
+      </div>
+    </div>
+  </section>
+
+  <section class="section s-paper" aria-label="Contact form and studio details">
+    <div class="wrap grid-12">
+      <form class="ct-form" data-contact data-endpoint={env.formEndpoint} novalidate>
+        <h2 class="t-2"><span class="thin">Or send</span> <span class="bold">the details.</span></h2>
+        <p class="body-copy">We reply within working hours. <Fill value="[FILL: reply time you can promise]" /></p>
+        <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required maxlength="80" /><p class="err" id="e-name" hidden>Please enter your name.</p></div>
+        <div class="field"><label for="f-phone">Phone / WhatsApp</label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required pattern="[0-9 +()-]{8,20}" maxlength="20" /><p class="err" id="e-phone" hidden>Please enter a valid phone number.</p></div>
+        <div class="field"><label for="f-type">Building type</label>
+          <select id="f-type" name="type" required>
+            <option value="">Choose one</option>
+            {pickerTypes.map((t) => <option>{t.label}</option>)}
+            <option>Hospital</option><option>Educational campus</option><option>Other</option>
+          </select><p class="err" id="e-type" hidden>Please choose a building type.</p></div>
+        <div class="field"><label for="f-loc">Location</label><input id="f-loc" name="location" autocomplete="address-level2" required maxlength="80" placeholder="e.g. Karunagappally" /><p class="err" id="e-location" hidden>Please tell us where the building is.</p></div>
+        <div class="field"><label for="f-msg">Message</label><textarea id="f-msg" name="message" maxlength="1500" placeholder="Size, timeline, anything else"></textarea></div>
+        <p class="hp" aria-hidden="true"><label>Leave empty <input name="company" tabindex="-1" autocomplete="off" /></label></p>
+        <button class="btn btn-primary btn-lg" type="submit"><Icon name="wa" class="wa-ic" /><span>Send on WhatsApp</span></button>
+        <p class="status body-copy" data-status role="status" aria-live="polite"></p>
+        <noscript><p class="body-copy">This form needs JavaScript. Please <a href={`https://wa.me/${site.waNumber}`}>message us on WhatsApp</a> or call {site.phoneDisplay}.</p></noscript>
+      </form>
+
+      <aside class="ct-info">
+        <div class="ct-block">
+          <p class="caps num">Studio</p>
+          <address>{site.name}<br /><Fill value={site.address.street} /><br />{site.address.locality}, {site.address.district}<br />{site.address.region} <Fill value={site.address.postalCode} /></address>
+        </div>
+        <div class="ct-block"><p class="caps num">Hours</p><p><Fill value={site.hoursDisplay} /></p></div>
+        <div class="ct-block"><p class="caps num">Phone & WhatsApp</p><p><a href={telUrl} data-track="call_click">{site.phoneDisplay}</a></p></div>
+        <div class="ct-block"><p class="caps num">Email</p><p>{real(site.email) ? <a href={`mailto:${site.email}`}>{site.email}</a> : <Fill value={site.email} />}</p></div>
+        <div class="map crop" data-map data-src={mapEmbedUrl()}>
+          <button type="button" class="map-btn" data-map-load>
+            <Icon name="pin" class="map-pin" />
+            <span class="caps">Show map</span>
+            <span class="body-copy">Loads Google Maps</span>
+          </button>
+        </div>
+        <a class="link-arrow" href={directionsUrl()} target="_blank" rel="noopener" data-track="directions_click">Open directions in Google Maps</a>
+      </aside>
+    </div>
+  </section>
+</Base>
+<style>
+  .ct-top { grid-column: 1 / -1; }
+  .ct-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.25rem; }
+  .ct-form { grid-column: 1 / -1; display: grid; gap: 1.6rem; align-content: start; }
+  .ct-info { grid-column: 1 / -1; margin-top: 4rem; display: grid; gap: 1.75rem; align-content: start; }
+  @media (min-width: 64rem) { .ct-form { grid-column: 1 / span 6; } .ct-info { grid-column: 8 / span 5; margin: 0; } }
+  .ct-form .btn { justify-self: start; }
+  .hp { position: absolute; left: -9999px; }
+  .status:empty { display: none; }
+  .ct-block { display: grid; gap: 0.4rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--rule); }
+  .ct-block .num { font-size: 0.82rem; }
+  address { font-style: normal; line-height: 1.5; }
+  .ct-info a { text-underline-offset: 0.2em; }
+  .map { position: relative; aspect-ratio: 4 / 3; background: repeating-linear-gradient(0deg, transparent 0 39px, var(--rule) 39px 40px), repeating-linear-gradient(90deg, transparent 0 39px, var(--rule) 39px 40px), var(--color-paper-deep); }
+  .map :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .map-btn { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.5rem; background: none; border: 0; cursor: pointer; color: var(--fg); font: inherit; font-weight: 700; letter-spacing: 0.14em; }
+  :global(.map-pin) { width: 2.2rem; height: 2.2rem; color: var(--color-rust); }
+</style>
+<script>
+  import { track } from '@/scripts/analytics';
+  const map = document.querySelector<HTMLElement>('[data-map]');
+  map?.querySelector('[data-map-load]')?.addEventListener('click', () => {
+    const f = document.createElement('iframe');
+    f.src = map.dataset.src!; f.title = 'FACADO studio location on Google Maps'; f.loading = 'lazy'; f.referrerPolicy = 'no-referrer-when-downgrade';
+    map.querySelector('button')!.remove(); map.appendChild(f);
+  });
+
+  const form = document.querySelector<HTMLFormElement>('[data-contact]');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const check = (el: HTMLInputElement | HTMLSelectElement) => {
+      const ok = el.checkValidity() && el.value.trim() !== '' ;
+      const err = form.querySelector<HTMLElement>(`#e-${el.name}`);
+      el.setAttribute('aria-invalid', String(!ok));
+      if (err) { err.hidden = ok; el.setAttribute('aria-describedby', `e-${el.name}`); }
+      return ok;
+    };
+    const required = [...form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[required]')];
+    required.forEach((el) => el.addEventListener('blur', () => el.value && check(el)));
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if ((form.elements.namedItem('company') as HTMLInputElement).value) return; // spam trap
+      const bad = required.filter((el) => !check(el));
+      if (bad.length) { status.textContent = `Please fix ${bad.length} field${bad.length > 1 ? 's' : ''}.`; bad[0].focus(); return; }
+      const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+      delete data.company;
+      const msg = `Hi FACADO, I'd like a free facade design.\nName: ${data.name}\nPhone: ${data.phone}\nBuilding: ${data.type}\nLocation: ${data.location}${data.message ? `\nMessage: ${data.message}` : ''}`;
+      const endpoint = form.dataset.endpoint;
+      if (endpoint) {
+        try {
+          await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...data, page: location.href, source: 'website' }) });
+        } catch { /* WhatsApp below still delivers the enquiry */ }
+      }
+      track('form_submit', { building: data.type });
+      status.textContent = 'Opening WhatsApp with your details. If it does not open, call us on +91 81130 13556.';
+      window.open(`https://wa.me/918113013556?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+    });
+  }
+</script>

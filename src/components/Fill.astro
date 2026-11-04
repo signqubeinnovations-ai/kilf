@@ -1,0 +1,7 @@
+---
+/** Renders a value, or a highlighted [FILL] marker when the value is missing. */
+import { isFill } from '@/lib/site';
+interface Props { value?: string; }
+const { value } = Astro.props;
+---
+{isFill(value) ? <em class="fill">{value || '[FILL]'}</em> : <Fragment set:text={value} />}

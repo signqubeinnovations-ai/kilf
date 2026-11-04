@@ -1,0 +1,10 @@
+# 301 redirect map. Add old URLs here when the domain moves (old -> new).
+/services                 /#what-we-build            301
+/acp-cladding             /acp-cladding-kollam       301
+/blog                     /journal                   301
+/blog/*                   /journal/:splat            301
+/portfolio                /projects                  301
+/contact-us               /contact                   301
+/about-us                 /about                     301
+# Google review link. Replace the target with your Google Business Profile review URL [FILL].
+/review                   https://www.google.com/maps/search/?api=1&query=FACADO+LLP+Karunagappally   302

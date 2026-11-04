@@ -1,0 +1,127 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Picture } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Headline from '@/components/Headline.astro';
+import Crumbs from '@/components/Crumbs.astro';
+import Art from '@/components/Art.astro';
+import Dim from '@/components/Dim.astro';
+import Fill from '@/components/Fill.astro';
+import WaButton from '@/components/WaButton.astro';
+import BeforeAfter from '@/components/BeforeAfter.astro';
+import CtaBand from '@/components/CtaBand.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((p) => ({ params: { slug: p.id }, props: { entry: p } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const crumbs = [{ href: '/', label: 'Home' }, { href: '/projects', label: 'Projects' }, { label: d.title }];
+const images = [...(d.cover ? [d.cover] : []), ...d.gallery];
+const url = new URL(`/projects/${entry.id}/`, Astro.site).href;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: `${d.title}, ${d.location}`,
+  description: d.description,
+  url,
+  creator: { '@id': new URL('/#business', Astro.site).href },
+  locationCreated: { '@type': 'Place', name: `${d.location}, Kerala` },
+  ...(images.length && { image: images.map((im) => ({ '@type': 'ImageObject', contentUrl: new URL(im.src.src, Astro.site).href, caption: `${im.alt} (${im.label})` })) }),
+};
+const titleParts = d.title.split('+').map((t) => t.trim());
+---
+<Base title={d.metaTitle} description={d.description} crumbs={crumbs} jsonLd={[ld]} waContext={`building (similar to your ${d.title} project)`} noindex={!d.confirmed}>
+  <section class="s-rust page-hero" aria-labelledby="cs-h">
+    <div class="wrap">
+      <Crumbs items={crumbs} />
+      <p class="eyebrow ph-eb">Case study · {d.location}</p>
+      <Headline as="h1" id="cs-h" lines={[titleParts[0].toUpperCase(), ...(titleParts[1] ? ['*+ ' + titleParts[1].toUpperCase()] : [])]} size="4" />
+      <p class="lead ph-lead">{d.summary}</p>
+    </div>
+  </section>
+
+  <section class="s-charcoal gal" aria-label="Project images">
+    {images.length ? (
+      <div class="gal-wrap" data-hscroll data-gsap={images.length > 2 ? '' : undefined}>
+        <ul class="gal-track" data-htrack>
+          {images.map((im, i) => (
+            <li class="gal-item" data-reveal style={`--i:${i % 4}`}>
+              <figure class="crop crop-hover" data-cad>
+                <Picture src={im.src} alt={im.alt} widths={[640, 1000, 1600]} sizes="(min-width: 64rem) 60vw, 88vw" formats={['avif', 'webp']} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+                <span class="tag gal-tag">{im.label}</span>
+                <figcaption><Dim label={d.dimLabel} draw={false} /></figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : (
+      <div class="wrap">
+        <figure class="gal-ph crop" data-cad>
+          <Art kind={d.category === 'renovation' ? 'commercial' : d.category} />
+          <figcaption><span class="fill">[FILL: add photos to src/assets/projects/ and list them in this project's Markdown file. Label each "Design render" or "Completed".]</span></figcaption>
+        </figure>
+        <Dim label={d.dimLabel} class="gal-dim" />
+      </div>
+    )}
+  </section>
+
+  <section class="section s-paper" aria-label="Project details">
+    <div class="wrap grid-12">
+      <dl class="facts">
+        <div><dt>Client</dt><dd>{d.client}</dd></div>
+        <div><dt>Location</dt><dd>{d.location}, Kerala</dd></div>
+        <div><dt>Scope</dt><dd><ul>{d.scope.map((s) => <li><Fill value={s} /></li>)}</ul></dd></div>
+        <div><dt>Materials & finishes</dt><dd><ul>{d.materials.map((s) => <li><Fill value={s} /></li>)}</ul></dd></div>
+        {d.timeline && <div><dt>Timeline</dt><dd>{d.timeline}</dd></div>}
+      </dl>
+      <article class="prose story"><Content /></article>
+    </div>
+  </section>
+
+  {d.beforeAfter && (
+    <section class="section s-charcoal" aria-labelledby="ba-h">
+      <div class="wrap">
+        <p class="eyebrow">Before / after</p>
+        <Headline id="ba-h" lines={['SAME BUILDING.', '*NEW FACE.']} size="3" />
+        <BeforeAfter before={d.beforeAfter.before} after={d.beforeAfter.after} alt={d.beforeAfter.alt} />
+      </div>
+    </section>
+  )}
+
+  <section class="section-tight s-paper next">
+    <div class="wrap next-in">
+      <p class="t-2"><span class="thin">Want something like this</span> <span class="bold">for your building?</span></p>
+      <WaButton context={`building (similar to your ${d.title} project)`} />
+    </div>
+  </section>
+  <CtaBand context={`building (similar to your ${d.title} project)`} />
+</Base>
+<style>
+  .gal { padding-block: clamp(3rem, 6vw, 5rem); overflow: hidden; }
+  .gal-wrap { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-inline: var(--gutter); }
+  .gal-wrap::-webkit-scrollbar { display: none; }
+  @media (min-width: 64rem) { .gal-wrap { overflow: visible; } }
+  .gal-track { list-style: none; margin: 0; padding: 1rem 0; display: flex; gap: clamp(1.25rem, 3vw, 3rem); width: max-content; }
+  .gal-item { width: min(88vw, 60rem); scroll-snap-align: center; }
+  .gal-item figure { margin: 0; position: relative; display: grid; gap: 1rem; }
+  .gal-item :global(img) { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  .gal-tag { position: absolute; left: 1rem; top: 1rem; background: var(--color-charcoal); }
+  .gal-ph { margin: 0; aspect-ratio: 16 / 9; position: relative; overflow: hidden; }
+  .gal-ph :global(.art), .gal-ph :global(svg) { width: 100%; height: 100%; }
+  .gal-ph figcaption { position: absolute; left: 1rem; bottom: 1rem; right: 1rem; }
+  .gal-ph .fill { font-family: var(--font-body); font-size: 0.9rem; color: var(--color-charcoal); background-color: #f6e7a8; }
+  :global(.gal-dim) { margin-top: 1.5rem; }
+  .facts { grid-column: 1 / -1; margin: 0 0 3rem; display: grid; gap: 0; border-top: 1px solid var(--rule); align-self: start; }
+  .facts > div { padding: 1.1rem 0; border-bottom: 1px solid var(--rule); display: grid; gap: 0.35rem; }
+  .facts dt { font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; font-size: 0.82rem; color: var(--accent); }
+  .facts dd { margin: 0; font-weight: 600; }
+  .facts ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+  .story { grid-column: 1 / -1; }
+  @media (min-width: 64rem) { .facts { grid-column: 1 / span 4; position: sticky; top: 6.5rem; } .story { grid-column: 6 / span 7; } }
+  .story :global(h2:first-child) { margin-top: 0; }
+  .next-in { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; align-items: center; justify-content: space-between; border-top: 1px solid var(--rule); padding-top: 3rem; }
+</style>

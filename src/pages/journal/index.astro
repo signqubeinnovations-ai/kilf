@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Headline from '@/components/Headline.astro';
+import Crumbs from '@/components/Crumbs.astro';
+import CtaBand from '@/components/CtaBand.astro';
+const posts = (await getCollection('journal')).sort((a, b) => +b.data.date - +a.data.date);
+const crumbs = [{ href: '/', label: 'Home' }, { label: 'Journal' }];
+const fmt = (d: Date) => d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+<Base title="Facade Journal: ACP Cost, Ideas & Guides | FACADO" description="Guides on ACP cladding cost in Kerala, choosing between ACP, HPL and glass, and shop front elevation ideas, from FACADO Exterior Design Studio." crumbs={crumbs}>
+  <section class="s-rust page-hero" aria-labelledby="jn-h">
+    <div class="wrap">
+      <Crumbs items={crumbs} />
+      <p class="eyebrow ph-eb">Journal</p>
+      <Headline as="h1" id="jn-h" lines={['FACADE', '*JOURNAL.']} size="hero" />
+      <p class="lead ph-lead">Plain guides on ACP facades in Kerala: cost, materials, ideas and care.</p>
+    </div>
+  </section>
+  <section class="section s-paper" aria-label="Articles">
+    <div class="wrap">
+      {posts.length === 0 ? <p class="body-copy">New articles are on the way.</p> : (
+        <ol class="rule-list jn">
+          {posts.map((p, i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <a href={`/journal/${p.id}`} class="jn-a">
+                <span class="num">{String(i + 1).padStart(2, '0')}</span>
+                <span class="jn-t"><span class="t-2">{p.data.title}</span><span class="body-copy">{p.data.description}</span></span>
+                <time class="caps num" datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+              </a>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+<style>
+  .jn-a { display: grid; grid-template-columns: 3.5rem 1fr auto; gap: 1rem 2rem; padding: 2.25rem 0; text-decoration: none; align-items: baseline; }
+  .jn-t { display: grid; gap: 0.8rem; }
+  .jn-a:hover .t-2 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+  .jn-a time { font-size: 0.82rem; white-space: nowrap; }
+  @media (max-width: 48rem) { .jn-a { grid-template-columns: 2.5rem 1fr; } .jn-a time { grid-column: 2; } }
+</style>

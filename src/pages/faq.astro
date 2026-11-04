@@ -1,10 +1,38 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import View from '@/views/Faq.astro';
+import { getCollection } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Headline from '@/components/Headline.astro';
+import Crumbs from '@/components/Crumbs.astro';
+import FaqList from '@/components/FaqList.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import WaButton from '@/components/WaButton.astro';
+import { faqLd } from '@/lib/schema';
+const faqs = (await getCollection('faqs')).sort((a, b) => a.data.order - b.data.order).map((f) => f.data);
+const crumbs = [{ href: '/', label: 'Home' }, { label: 'FAQ' }];
 ---
-<BaseLayout
-  title="FAQ"
-  description="When and where is KILF? Languages, passes, volunteering and more: answers to common questions about KILF 2027."
->
-  <View lang="en" />
-</BaseLayout>
+<Base title="ACP Cladding FAQ: Cost, Kerala Weather, Fire Safety | FACADO" description="Straight answers on ACP cladding in Kerala: climate, cost per sq ft, installation time, lifespan, fire safety, ACP vs HPL vs glass, and renovation." crumbs={crumbs} jsonLd={[faqLd(faqs)]} waContext="building (I have a question about ACP)">
+  <section class="s-rust page-hero" aria-labelledby="fq-h">
+    <div class="wrap">
+      <Crumbs items={crumbs} />
+      <p class="eyebrow ph-eb">FAQ</p>
+      <Headline as="h1" id="fq-h" lines={['ACP CLADDING', '*QUESTIONS.']} size="hero" />
+      <p class="lead ph-lead">Clear answers about ACP facades in Kerala. If yours is not here, ask us on WhatsApp.</p>
+    </div>
+  </section>
+  <section class="section s-paper" aria-label="Questions and answers">
+    <div class="wrap grid-12">
+      <div class="fq"><FaqList items={faqs} /></div>
+      <aside class="fq-aside">
+        <p class="t-2"><span class="thin">Still</span> <span class="bold">unsure?</span></p>
+        <p class="body-copy">Send a photo of your building. We will answer for your building, not in general.</p>
+        <WaButton text="Hi FACADO, I have a question about ACP for my building:" label="Ask on WhatsApp" />
+      </aside>
+    </div>
+  </section>
+  <CtaBand context="building (I have a question about ACP)" />
+</Base>
+<style>
+  .fq { grid-column: 1 / -1; }
+  .fq-aside { grid-column: 1 / -1; margin-top: 3rem; display: grid; gap: 1rem; align-content: start; }
+  @media (min-width: 64rem) { .fq { grid-column: 1 / span 8; } .fq-aside { grid-column: 10 / span 3; margin: 0; position: sticky; top: 6.5rem; align-self: start; } }
+</style>

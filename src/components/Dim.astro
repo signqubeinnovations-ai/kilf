@@ -1,0 +1,5 @@
+---
+interface Props { label: string; start?: boolean; class?: string; draw?: boolean; }
+const { label, start = false, class: cls = '', draw = true } = Astro.props;
+---
+<div class:list={['dim', { 'dim-start': start }, cls]} data-draw={draw ? '' : undefined} aria-hidden="true"><span>{label}</span></div>

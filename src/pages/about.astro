@@ -1,10 +1,72 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import View from '@/views/About.astro';
+import Base from '@/layouts/Base.astro';
+import Headline from '@/components/Headline.astro';
+import Crumbs from '@/components/Crumbs.astro';
+import Process from '@/components/Process.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Fill from '@/components/Fill.astro';
+import Dim from '@/components/Dim.astro';
+import { quality } from '@/lib/content';
+import { site } from '@/lib/site';
+const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
 ---
-<BaseLayout
-  title="About"
-  description="About KILF: why Ashtamudi, why Kollam matters, and the first Kollam International Literature Festival in brief, in English and Malayalam."
->
-  <View lang="en" />
-</BaseLayout>
+<Base title="About FACADO | ACP Facade Studio in Karunagappally" description="FACADO LLP is an exterior design studio in Karunagappally, Kollam. One team designs, fabricates and installs ACP facades across Kerala." crumbs={crumbs} waContext="building">
+  <section class="s-rust page-hero" aria-labelledby="ab-h">
+    <div class="wrap">
+      <Crumbs items={crumbs} />
+      <p class="eyebrow ph-eb">The studio</p>
+      <Headline as="h1" id="ab-h" lines={['AN EXTERIOR', '*DESIGN STUDIO.']} size="hero" />
+      <p class="lead ph-lead">{site.entity}. We design facades, then we build them.</p>
+    </div>
+  </section>
+
+  <section class="section s-paper" aria-labelledby="ph-h">
+    <div class="wrap grid-12">
+      <div class="ab-head">
+        <p class="eyebrow">Philosophy</p>
+        <Headline id="ph-h" lines={['DESIGN FIRST.', '*THEN BUILD.']} size="3" />
+      </div>
+      <div class="prose ab-body">
+        <p>Most facade work in Kerala starts with a fixing crew and a catalogue. We start with the building.</p>
+        <p>We call ourselves an exterior design studio because the design comes first. We study how a building is seen: from the road, from a moving bus, at night. We look at what the owner needs it to say. Only then do we choose panels, finishes and fixings.</p>
+        <p>And because the same team fabricates and installs, what we draw is what gets built. No hand-offs. No lost details. One team, start to finish.</p>
+        <h2>Our story</h2>
+        <p><Fill value="[FILL: founders, the year FACADO started, and why. Two or three short paragraphs in your own words.]" /></p>
+        <h2>The team</h2>
+        <p><Fill value="[FILL: team size and roles, e.g. design, fabrication, installation. Add real photos of the team and workshop if you can.]" /></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section s-charcoal" id="process" aria-labelledby="pr-h">
+    <div class="wrap grid-12">
+      <div class="ab-head sticky">
+        <p class="eyebrow">Process</p>
+        <Headline id="pr-h" lines={['NINE STEPS.', '*ONE TEAM.']} size="3" />
+        <p class="body-copy">Design, fabricate, install. Every step is ours, so every detail is ours to get right.</p>
+      </div>
+      <div class="ab-body"><Process detailed /></div>
+    </div>
+  </section>
+
+  <section class="section s-paper" aria-labelledby="q-h">
+    <div class="wrap">
+      <p class="eyebrow">Quality standards</p>
+      <Headline id="q-h" lines={['WHAT WE', '*CHECK.']} size="3" />
+      <ol class="rule-list q-list">
+        {quality.map((q, i) => <li data-reveal style={`--i:${i}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><h3 class="t-1">{q.title}</h3><p class="body-copy">{q.text}</p></li>)}
+      </ol>
+      <Dim label="ACCURATE · CLEAN · SECURE · WEATHERPROOF · LASTING" class="q-dim" />
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+<style>
+  .ab-head { grid-column: 1 / -1; display: grid; gap: 1.5rem; align-content: start; margin-bottom: 3rem; }
+  .ab-body { grid-column: 1 / -1; }
+  @media (min-width: 64rem) { .ab-head { grid-column: 1 / span 4; margin: 0; } .ab-head.sticky { position: sticky; top: 6.5rem; align-self: start; } .ab-body { grid-column: 6 / span 7; } }
+  .q-list { margin-top: 3rem; }
+  .q-list li { display: grid; grid-template-columns: 3.5rem 1fr 1.2fr; gap: 0.5rem 1.5rem; padding: 1.6rem 0; align-items: baseline; }
+  @media (max-width: 48rem) { .q-list li { grid-template-columns: 3rem 1fr; } .q-list li .body-copy { grid-column: 2; } }
+  :global(.q-dim) { margin-top: 3rem; }
+</style>

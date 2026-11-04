@@ -1,278 +1,67 @@
 ---
 import Logo from './Logo.astro';
-import LimeButton from './LimeButton.astro';
 import Icon from './Icon.astro';
-import Rings from './Rings.astro';
-import { site } from '@/lib/site';
-import { useTranslations, localizePath, languages, type Lang } from '@/i18n/ui';
-
-interface Props {
-  lang: Lang;
-  path: string;
-  /** Float over the illustrated hero, turning solid once the page scrolls. */
-  overlay?: boolean;
-}
-const { lang, path, overlay = false } = Astro.props;
-const t = useTranslations(lang);
-const lp = (p: string) => localizePath(p, lang);
-
-// Five in the bar; everything else lives in the menu (and the footer).
-const nav = [
-  { href: '/about', label: t('nav.about') },
-  { href: '/programme', label: t('nav.programme') },
-  { href: '/speakers', label: t('nav.speakers') },
-  { href: '/visit', label: t('nav.visit') },
-  { href: '/passes', label: t('nav.passes') },
-];
-const more = [
-  { href: '/khasak', label: t('nav.theatre') },
-  { href: '/youth', label: t('nav.youth') },
-  { href: '/cause', label: t('nav.cause') },
-  { href: '/get-involved', label: t('nav.involved') },
-  { href: '/partners', label: t('nav.partners') },
-  { href: '/faq', label: t('nav.faq') },
-  { href: '/contact', label: t('nav.contact') },
-];
-const other: Lang = lang === 'en' ? 'ml' : 'en';
-const toggleHref = localizePath(path, other);
-// Malayalam labels are longer, so the bar needs more room before the links show.
-const wide = lang === 'ml';
-const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href + '/'));
+import { nav, waFor, telUrl, site } from '@/lib/site';
+interface Props { animateLogo?: boolean; waContext?: string; }
+const { animateLogo = false, waContext = 'building' } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => href !== '/#what-we-build' && (path === href || path.startsWith(href + '/'));
 ---
-<header class="site-header" data-header data-overlay={overlay ? '' : undefined}>
-  <div class="bar">
-    <div class="container-kilf flex h-[var(--hh)] items-center justify-between gap-4">
-      <a href={lp('/')} class="-ml-1 flex min-h-11 items-center gap-3.5 px-1">
-        <Logo decorative class="h-9 lg:h-10" />
-        <span class:list={['desc hidden whitespace-nowrap text-[0.62rem] font-bold uppercase leading-[1.45] tracking-[0.14em]', wide ? '2xl:block' : 'xl:block']} lang="en">
-          Kollam International<br />Literature Festival
-        </span>
-        <span class="sr-only">KILF 2027 — {t('nav.home')}</span>
-      </a>
-
-      <nav aria-label={t('nav.primary')} class:list={['hidden', wide ? 'xl:block' : 'lg:block']}>
-        <ul class="flex items-center gap-0.5 xl:gap-1.5">
-          {nav.map((item) => (
-            <li>
-              <a href={lp(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined} class="nav-link">
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <div class="flex items-center gap-2">
-        <a href={toggleHref} hreflang={other} lang={other} class="lang inline-flex min-h-11 items-center px-3.5 text-sm font-semibold ring-1 ring-inset transition-colors">
-          {languages[other]}
-        </a>
-        <span class="hidden sm:contents"><LimeButton href={lp('/get-involved#register')} label={t('cta.register')} size="sm" class="hdr-cta" /></span>
-        <button
-          type="button"
-          class="menu-btn inline-flex min-h-11 min-w-11 items-center justify-center gap-2 px-3 text-sm font-semibold ring-1 ring-inset"
-          aria-controls="site-menu"
-          aria-expanded="false"
-          data-menu-toggle
-        >
-          <span class="hidden lg:inline" aria-hidden="true" data-open-text>{t('nav.menu')}</span>
-          <span class="sr-only" data-open-label>{t('nav.menu')}</span>
-          <span class="sr-only hidden" data-close-label>{t('nav.close')}</span>
-          <Icon name="menu" size={20} class="menu-icon" />
-          <Icon name="close" size={20} class="close-icon hidden" />
-        </button>
-      </div>
-    </div>
+<header class="site-header s-rust" data-header>
+  <div class="wrap bar">
+    <a href="/" class="brand" aria-label="FACADO LLP home"><Logo animate={animateLogo} class="brand-logo" /></a>
+    <nav class="nav-desk" aria-label="Main">
+      <ul>{nav.map((n) => <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>)}</ul>
+    </nav>
+    <a class="btn btn-primary head-wa" href={waFor(waContext)} target="_blank" rel="noopener" data-track="whatsapp_click"><Icon name="wa" class="wa-ic" /><span>WhatsApp</span></a>
+    <button class="menu-btn" popovertarget="menu" aria-label="Open menu"><Icon name="menu" /></button>
   </div>
-
-  <div id="site-menu" class="menu on-dark" data-menu>
-    <div class="container-kilf flex min-h-full flex-col pb-10 pt-[calc(var(--hh)+1.5rem)]">
-      <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
-        <nav aria-label={t('nav.festival')} class="lg:col-span-6">
-          <p class="eyebrow flex items-center gap-3 text-white/70"><Rings n={1} size={26} tone="lake" />{t('nav.festival')}</p>
-          <ul class="mt-4">
-            {nav.map((item) => (
-              <li>
-                <a href={lp(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined} class="menu-link big">
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <nav aria-label={t('nav.more')} class="lg:col-span-6">
-          <p class="eyebrow flex items-center gap-3 text-white/70"><Rings n={2} size={26} tone="lake" />{t('nav.more')}</p>
-          <ul class="mt-4">
-            {more.map((item) => (
-              <li>
-                <a href={lp(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined} class="menu-link">
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-      <div class="mt-auto flex flex-col gap-5 pt-12 sm:flex-row sm:items-center sm:justify-between">
-        <div class="grid grid-cols-2 gap-3 sm:flex">
-          <LimeButton href={lp('/get-involved#register')} label={t('cta.register')} />
-          <LimeButton href={lp('/get-involved#volunteer')} label={t('cta.volunteer')} variant="outline-light" />
-        </div>
-        <a href={`mailto:${site.email}`} class="inline-flex min-h-11 items-center gap-2 text-sm text-white/80 hover:text-white">
-          <Icon name="mail" size={18} class="text-lake" />{site.email}
-        </a>
-      </div>
+  <div id="menu" popover class="menu s-charcoal">
+    <div class="menu-top wrap">
+      <Logo class="brand-logo" />
+      <button class="menu-btn" popovertarget="menu" popovertargetaction="hide" aria-label="Close menu"><Icon name="close" /></button>
     </div>
+    <nav class="wrap" aria-label="Mobile">
+      <ol class="menu-list">
+        {nav.map((n, i) => <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}><span class="num">{String(i + 1).padStart(2, '0')}</span>{n.label}</a></li>)}
+      </ol>
+      <div class="menu-cta">
+        <a class="btn btn-primary" href={waFor(waContext)} target="_blank" rel="noopener" data-track="whatsapp_click"><Icon name="wa" class="wa-ic" /><span>WhatsApp us</span></a>
+        <a class="btn btn-ghost" href={telUrl} data-track="call_click"><Icon name="phone" class="arrow" /><span>{site.phoneDisplay}</span></a>
+      </div>
+    </nav>
   </div>
 </header>
 
 <style>
-  .site-header {
-    --fg: var(--color-navy);
-    --bg: color-mix(in oklab, var(--color-cream) 94%, transparent);
-    --edge: var(--color-line);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    color: var(--fg);
+  .site-header { position: sticky; top: 0; z-index: 50; transition: transform 0.5s var(--ease); view-transition-name: site-header; }
+  .site-header[data-hidden] { transform: translateY(-100%); }
+  .site-header[data-scrolled]::after { content: ''; position: absolute; inset: auto 0 0; height: 1px; background: var(--rule); }
+  .bar { display: flex; align-items: center; gap: 2rem; height: 4.5rem; }
+  .brand { display: inline-flex; align-items: center; min-height: 44px; margin-right: auto; }
+  :global(.brand-logo) { width: clamp(7.5rem, 10vw, 9.5rem); }
+  .nav-desk ul { display: flex; gap: clamp(1rem, 2vw, 2.25rem); list-style: none; margin: 0; padding: 0; }
+  .nav-desk a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; font-size: 0.9rem; position: relative; }
+  .nav-desk a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 8px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease); }
+  .nav-desk a:hover::after, .nav-desk a[aria-current]::after { transform: none; }
+  .head-wa { --h: 2.75rem; padding: 0 1.1rem; font-size: 0.9rem; }
+  .menu-btn { display: none; width: 48px; height: 48px; place-items: center; background: none; border: 1px solid var(--rule); color: var(--fg); cursor: pointer; }
+  .menu-btn :global(svg) { width: 22px; height: 22px; }
+  @media (max-width: 64rem) {
+    .nav-desk, .head-wa { display: none; }
+    .menu-btn { display: grid; }
   }
-  .site-header[data-overlay] {
-    position: fixed;
-    inset-inline: 0;
-  }
-  /* Over the hero: no bar, the sky shows through */
-  :global(.has-js) .site-header[data-overlay]:not([data-solid]) {
-    --bg: transparent;
-    --edge: transparent;
-  }
-  .site-header[data-menu-open] {
-    --fg: #fff;
-    --bg: transparent;
-    --edge: rgb(255 255 255 / 0.14);
-  }
-  .bar {
-    position: relative;
-    z-index: 2;
-    background: var(--bg);
-    border-bottom: 1px solid var(--edge);
-    backdrop-filter: blur(14px) saturate(1.2);
-    -webkit-backdrop-filter: blur(14px) saturate(1.2);
-    transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
-  }
-  :global(.has-js) .site-header[data-overlay]:not([data-solid]) .bar,
-  .site-header[data-menu-open] .bar {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .nav-link {
-    position: relative;
-    display: inline-flex;
-    min-height: 2.75rem;
-    align-items: center;
-    padding-inline: 0.7rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-  }
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    left: 0.7rem;
-    right: 0.7rem;
-    bottom: 0.5rem;
-    height: 1.5px;
-    background: var(--color-coral);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s var(--ease-calm);
-  }
-  .nav-link:hover::after,
-  .nav-link[aria-current='page']::after {
-    transform: scaleX(1);
-  }
-  .lang,
-  .menu-btn {
-    --tw-ring-color: color-mix(in oklab, currentColor 32%, transparent);
-  }
-  .lang:hover,
-  .menu-btn:hover {
-    background: color-mix(in oklab, currentColor 8%, transparent);
-  }
-  .site-header[data-menu-open] :global(.hdr-cta) {
-    background: var(--color-cream);
-    color: var(--color-navy);
-  }
-
-  /* The menu: night water, calm; it simply fades in. */
-  .menu {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    overflow-y: auto;
-    background: var(--color-night);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.35s ease, visibility 0s linear 0.35s;
-  }
-  .menu[data-open] {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.35s ease;
-  }
-  .menu-link {
-    display: flex;
-    min-height: 3rem;
-    align-items: center;
-    border-bottom: 1px solid rgb(255 255 255 / 0.12);
-    padding-block: 0.6rem;
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #fff;
-  }
-  .menu-link.big {
-    font-size: clamp(1.6rem, 4vw, 2.2rem);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-  }
-  .menu-link:hover,
-  .menu-link[aria-current='page'] {
-    color: var(--color-lake);
+  .menu { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0 0 2rem; border: 0; overflow-y: auto; }
+  .menu:popover-open { display: flex; flex-direction: column; gap: 2rem; }
+  .menu-top { display: flex; align-items: center; justify-content: space-between; height: 4.5rem; }
+  .menu-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  .menu-list li { border-bottom: 1px solid var(--rule); }
+  .menu-list a { display: flex; align-items: baseline; gap: 1.25rem; padding: 1rem 0; font-size: var(--step-2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; text-decoration: none; }
+  .menu-list .num { font-size: 0.9rem; }
+  .menu-cta { display: grid; gap: 0.75rem; margin-top: 2rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    .menu { opacity: 0; transform: translateY(-12px); transition: opacity 0.4s var(--ease), transform 0.5s var(--ease), display 0.5s allow-discrete, overlay 0.5s allow-discrete; }
+    .menu:popover-open { opacity: 1; transform: none; }
+    @starting-style { .menu:popover-open { opacity: 0; transform: translateY(-12px); } }
   }
 </style>
-
-<script>
-  const header = document.querySelector<HTMLElement>('[data-header]');
-  const btn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
-  const menu = document.querySelector<HTMLElement>('[data-menu]');
-
-  if (header?.hasAttribute('data-overlay')) {
-    const solid = () => header.toggleAttribute('data-solid', window.scrollY > 24);
-    solid();
-    window.addEventListener('scroll', solid, { passive: true });
-  }
-
-  if (header && btn && menu) {
-    const set = (open: boolean) => {
-      btn.setAttribute('aria-expanded', String(open));
-      menu.toggleAttribute('data-open', open);
-      header.toggleAttribute('data-menu-open', open);
-      btn.querySelector('.menu-icon')?.classList.toggle('hidden', open);
-      btn.querySelector('.close-icon')?.classList.toggle('hidden', !open);
-      btn.querySelector('[data-open-text]')?.classList.toggle('lg:inline', !open);
-      btn.querySelector('[data-open-label]')?.classList.toggle('hidden', open);
-      btn.querySelector('[data-close-label]')?.classList.toggle('hidden', !open);
-      document.documentElement.classList.toggle('overflow-hidden', open);
-      if (open) setTimeout(() => menu.querySelector<HTMLAnchorElement>('a')?.focus({ preventScroll: true }), 150);
-    };
-    btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
-        set(false);
-        btn.focus();
-      }
-    });
-    menu.addEventListener('click', (e) => {
-      if ((e.target as HTMLElement).closest('a')) set(false);
-    });
-  }
-</script>

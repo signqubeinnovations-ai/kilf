@@ -1,0 +1,41 @@
+---
+/** Nine-step process on a vertical line that draws as you scroll. */
+import { process } from '@/lib/content';
+interface Props { detailed?: boolean; }
+const { detailed = false } = Astro.props;
+---
+<div class="proc" data-proc>
+  <div class="proc-line" aria-hidden="true"><span data-proc-fill /></div>
+  {process.map((g) => (
+    <div class="proc-group">
+      <p class="proc-g caps num">{g.group}</p>
+      <ol class="proc-steps" start={g.steps[0].n}>
+        {g.steps.map((s) => (
+          <li class="proc-step" data-stamp>
+            <span class="proc-dot" aria-hidden="true">{String(s.n).padStart(2, '0')}</span>
+            <div>
+              <h3 class="t-1">{s.title}</h3>
+              <p class="body-copy">{detailed ? s.detail : s.short}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  ))}
+</div>
+<style>
+  .proc { position: relative; padding-left: 0; }
+  .proc-line { position: absolute; left: 1.75rem; top: 0.5rem; bottom: 0.5rem; width: 1px; background: var(--rule); }
+  .proc-line span { position: absolute; inset: 0; background: var(--accent); transform-origin: top; transform: scaleY(var(--p, 1)); }
+  .proc-group + .proc-group { margin-top: 3.5rem; }
+  .proc-g { padding-left: 5rem; margin-bottom: 1.5rem; font-size: 0.95rem; }
+  .proc-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.25rem; }
+  .proc-step { display: grid; grid-template-columns: 3.5rem 1fr; gap: 1.5rem; align-items: start; }
+  .proc-dot { position: relative; z-index: 1; width: 3.5rem; height: 3.5rem; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--accent); background: var(--bg); font-weight: 700; letter-spacing: 0.08em; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .proc-step h3 { margin-top: 0.85rem; letter-spacing: 0.05em; }
+  .proc-step .body-copy { margin-top: 0.6rem; }
+  :global(.m) .proc-dot { transform: scale(1.6); opacity: 0; transition: transform 0.55s var(--ease), opacity 0.3s linear, background-color 0.4s; }
+  :global(.m) .proc-step.is-in .proc-dot { transform: none; opacity: 1; background: color-mix(in oklab, var(--accent) 14%, var(--bg)); }
+  :global(.rm) .proc-dot { opacity: 0; transition: opacity 0.4s; }
+  :global(.rm) .proc-step.is-in .proc-dot { opacity: 1; }
+</style>

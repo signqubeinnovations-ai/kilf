@@ -1,22 +1,27 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Headline from '@/components/Headline.astro';
-import LimeButton from '@/components/LimeButton.astro';
-import TextLink from '@/components/TextLink.astro';
-import Rings from '@/components/Rings.astro';
+import Base from '@/layouts/Base.astro';
+import WaButton from '@/components/WaButton.astro';
+import Dim from '@/components/Dim.astro';
 ---
-<BaseLayout title="Page not found" description="This page seems to have drifted out onto the lake." noindex>
-  <section class="bg-cream pb-24 pt-16 sm:pb-32 sm:pt-24">
-    <div class="container-kilf text-center">
-      <Rings n={3} size={120} tone="lake" class="mx-auto" />
-      <p class="numeral mt-6 text-7xl text-cobalt sm:text-8xl">404</p>
-      <Headline as="h1" text="This page drifted out onto the" accent="lake." class="mx-auto mt-6 max-w-3xl" />
-      <p class="mx-auto mt-5 max-w-lg text-lg text-muted">Some stories go missing. Let’s get you back to the shore.</p>
-      <p class="mt-3 text-lg text-muted" lang="ml">ഈ പേജ് കണ്ടെത്താനായില്ല.</p>
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-        <LimeButton href="/" label="Back to the home page" />
-        <TextLink href="/programme" label="Explore the programme" />
+<Base title="Page not found | FACADO" description="This page does not exist. Find ACP facade services, projects, or message FACADO on WhatsApp." noindex>
+  <section class="s-rust nf" aria-labelledby="nf-h">
+    <div class="wrap">
+      <p class="eyebrow">Error 404</p>
+      <h1 id="nf-h" class="t-hero"><span class="thin">THIS PAGE</span><br /><span class="bold">ISN'T BUILT.</span></h1>
+      <Dim label="404 / PAGE NOT FOUND" class="nf-dim" />
+      <p class="lead">The link may be old, or the page may have moved. Your next facade is still one message away.</p>
+      <div class="nf-cta">
+        <WaButton context="building" size="lg" />
+        <a class="btn btn-ghost btn-lg" href="/">Home</a>
+        <a class="btn btn-ghost btn-lg" href="/projects">Projects</a>
       </div>
     </div>
   </section>
-</BaseLayout>
+</Base>
+<style>
+  .nf { min-height: 80svh; display: flex; align-items: center; padding-block: 5rem; }
+  .nf h1 { margin-top: 2rem; }
+  :global(.nf-dim) { margin: 2rem 0 1.5rem; max-width: 36rem; }
+  .nf .lead { color: var(--fg); }
+  .nf-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.5rem; }
+</style>

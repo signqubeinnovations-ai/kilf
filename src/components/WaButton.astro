@@ -1,0 +1,11 @@
+---
+import Icon from './Icon.astro';
+import { waFor, wa } from '@/lib/site';
+interface Props { context?: string; text?: string; label?: string; size?: 'md' | 'lg'; magnetic?: boolean; pulse?: boolean; variant?: 'primary' | 'ghost'; class?: string; event?: string; }
+const { context = 'building', text, label = 'WhatsApp for a free facade design', size = 'md', magnetic = false, pulse = false, variant = 'primary', class: cls = '', event = 'whatsapp_click' } = Astro.props;
+const href = text ? wa(text) : waFor(context);
+---
+<a href={href} target="_blank" rel="noopener" class:list={['btn', `btn-${variant}`, { 'btn-lg': size === 'lg' }, cls]} data-track={event} data-magnetic={magnetic ? '' : undefined} data-pulse={pulse ? '' : undefined}>
+  <Icon name="wa" class="wa-ic" />
+  <span>{label}</span>
+</a>

@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Headline from '@/components/Headline.astro';
+import Crumbs from '@/components/Crumbs.astro';
+import Art from '@/components/Art.astro';
+import Dim from '@/components/Dim.astro';
+import CtaBand from '@/components/CtaBand.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const labels: Record<string, string> = { commercial: 'Commercial', showroom: 'Showrooms & Retail', office: 'Corporate Offices', villa: 'Villas', hospital: 'Hospitals', campus: 'Campuses', renovation: 'Renovation' };
+const present = [...new Set(projects.map((p) => p.data.category))];
+const crumbs = [{ href: '/', label: 'Home' }, { label: 'Projects' }];
+---
+<Base title="ACP Facade Projects in Kollam & Kerala | FACADO" description="ACP facade and elevation projects by FACADO in Karunagappally, Kollam and Kerala: showrooms, commercial buildings, offices and villas." crumbs={crumbs} waContext="building (I saw your projects)">
+  <section class="s-rust page-hero" aria-labelledby="pj-h">
+    <div class="wrap">
+      <Crumbs items={crumbs} />
+      <p class="eyebrow ph-eb">Projects</p>
+      <Headline as="h1" id="pj-h" lines={['ACP FACADE', '*PROJECTS.']} size="hero" />
+      <p class="lead ph-lead">Real buildings in Kollam and Kerala. Images are labelled "Design render" or "Completed", so you know which is which.</p>
+    </div>
+  </section>
+
+  <section class="section s-paper" aria-label="Project list">
+    <div class="wrap">
+      {present.length > 1 && (
+        <div class="filters" role="group" aria-label="Filter by category" data-filters>
+          <button type="button" class="chip" aria-pressed="true" data-f="all">All</button>
+          {present.map((c) => <button type="button" class="chip" aria-pressed="false" data-f={c}>{labels[c]}</button>)}
+        </div>
+      )}
+      <ul class="pj-grid" data-grid>
+        {projects.map((p, i) => (
+          <li data-cat={p.data.category} data-reveal style={`--i:${i % 4}`}>
+            <a class="pj crop crop-hover" href={`/projects/${p.id}`} data-track="project_view">
+              <span class="pj-img" data-cad>
+                {p.data.cover ? <Picture src={p.data.cover.src} alt={p.data.cover.alt} widths={[480, 800, 1200]} sizes="(min-width: 64rem) 45vw, 100vw" formats={['avif', 'webp']} /> : <Art kind={p.data.category === 'renovation' ? 'commercial' : p.data.category} />}
+                {p.data.cover ? <span class="tag pj-tag">{p.data.cover.label}</span> : <span class="pj-tag fill">[FILL: photo]</span>}
+              </span>
+              <Dim label={p.data.dimLabel} draw={false} />
+              <span class="pj-row"><span class="t-2">{p.data.title}</span></span>
+              <span class="caps num">{labels[p.data.category]} · {p.data.location}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="body-copy pj-more">More case studies are being documented. Want to see similar work near you? Ask us on WhatsApp.</p>
+    </div>
+  </section>
+  <CtaBand context="building (I saw your projects)" />
+</Base>
+<style>
+  .pj-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 4rem 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr)); }
+  .pj { display: grid; gap: 1rem; text-decoration: none; }
+  .pj-img { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; background: var(--color-paper-deep); }
+  .pj-img :global(img), .pj-img :global(.art), .pj-img :global(svg) { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .pj:hover .pj-img :global(img), .pj:hover .pj-img :global(svg) { transform: scale(1.03); }
+  .pj-tag { position: absolute; left: 1rem; top: 1rem; font-size: 0.78rem; background: var(--color-charcoal); color: var(--color-cream); }
+  .pj-tag.fill { background-color: #f6e7a8; color: var(--color-charcoal); font-family: var(--font-body); }
+  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 3rem; }
+  .filters .chip { background: none; color: var(--fg); cursor: pointer; font-family: var(--font-display); }
+  .filters .chip[aria-pressed='true'] { background: var(--color-charcoal); color: var(--color-cream); border-color: var(--color-charcoal); }
+  .pj-more { margin-top: 4rem; }
+</style>
+<script>
+  const f = document.querySelector('[data-filters]');
+  f?.addEventListener('click', (e) => {
+    const b = (e.target as Element).closest<HTMLButtonElement>('button[data-f]');
+    if (!b) return;
+    f.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    document.querySelectorAll<HTMLElement>('[data-grid] > li').forEach((li) => (li.hidden = b.dataset.f !== 'all' && li.dataset.cat !== b.dataset.f));
+  });
+</script>

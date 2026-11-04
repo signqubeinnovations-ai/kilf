@@ -1,10 +1,25 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import View from '@/views/Privacy.astro';
+import Base from '@/layouts/Base.astro';
+import Crumbs from '@/components/Crumbs.astro';
+import Fill from '@/components/Fill.astro';
+import { site } from '@/lib/site';
+const crumbs = [{ href: '/', label: 'Home' }, { label: 'Privacy' }];
 ---
-<BaseLayout
-  title="Privacy"
-  description="How the KILF 2027 website handles your personal details."
->
-  <View lang="en" />
-</BaseLayout>
+<Base title="Privacy Policy | FACADO" description="How FACADO LLP handles contact details, WhatsApp messages, cookies and analytics on this website." crumbs={crumbs} noindex>
+  <section class="s-rust page-hero" aria-labelledby="pv-h">
+    <div class="wrap"><Crumbs items={crumbs} /><p class="eyebrow ph-eb">Privacy</p><h1 id="pv-h" class="t-4"><span class="thin">PRIVACY</span> <span class="bold">POLICY.</span></h1></div>
+  </section>
+  <section class="section s-paper">
+    <div class="wrap prose">
+      <p><Fill value="[FILL: review this policy with your adviser before launch.]" /></p>
+      <h2>What we collect</h2>
+      <p>When you use our contact form, we receive your name, phone number, building type, location and message. When you message us on WhatsApp, WhatsApp's own terms apply.</p>
+      <h2>Why</h2>
+      <p>Only to reply to your enquiry, arrange a site visit and prepare a quote. We do not sell your details.</p>
+      <h2>Cookies and analytics</h2>
+      <p>If you accept cookies, we use Google Analytics and the Meta Pixel to understand visits and measure our ads. Nothing loads until you accept. You can change your choice using "Cookie settings" in the footer.</p>
+      <h2>Contact</h2>
+      <p>{site.name}, {site.address.locality}, {site.address.district}, {site.address.region}. Phone {site.phoneDisplay}. Email <Fill value={site.email} />.</p>
+    </div>
+  </section>
+</Base>

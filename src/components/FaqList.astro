@@ -1,0 +1,16 @@
+---
+interface Props { items: { q: string; a: string }[]; start?: number; }
+const { items, start = 1 } = Astro.props;
+---
+<div class="faq">
+  {items.map((f, i) => (
+    <details>
+      <summary><span class="num">{String(i + start).padStart(2, '0')}</span><span>{f.q}</span><span class="plus" aria-hidden="true" /></summary>
+      <div class="answer body-copy" set:html={f.a} />
+    </details>
+  ))}
+</div>
+<style>
+  .answer :global(p + p) { margin-top: 0.8em; }
+  .answer :global(a) { color: var(--fg); text-underline-offset: 0.2em; }
+</style>

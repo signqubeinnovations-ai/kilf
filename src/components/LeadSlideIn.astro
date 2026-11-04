@@ -1,0 +1,22 @@
+---
+import WaButton from './WaButton.astro';
+import Icon from './Icon.astro';
+interface Props { waContext?: string; }
+const { waContext = 'building' } = Astro.props;
+---
+<aside class="slide s-charcoal" data-slide hidden aria-labelledby="slide-h" role="dialog" aria-modal="false">
+  <button class="slide-x" type="button" data-slide-close aria-label="Close"><Icon name="close" /></button>
+  <p class="eyebrow">Free for your building</p>
+  <h2 id="slide-h" class="t-2"><span class="thin">Free 3D facade</span><br /><span class="bold">concept.</span></h2>
+  <p class="body-copy">Send a photo of your building. We will reply with a design direction.</p>
+  <WaButton text={`Hi FACADO, I'd like a free 3D facade concept for my ${waContext}. Here is a photo:`} label="Send a photo on WhatsApp" event="whatsapp_click" />
+</aside>
+<style>
+  .slide { position: fixed; z-index: 70; right: var(--gutter); bottom: calc(var(--mbar) + 1rem); width: min(24rem, calc(100vw - 2rem)); padding: 2rem 1.75rem 1.75rem; display: grid; gap: 1rem; border: 1px solid var(--rule); box-shadow: 0 30px 60px -20px #0008; }
+  .slide:not([hidden]) { animation: slide-in 0.7s var(--ease) both; }
+  @keyframes slide-in { from { transform: translateY(24px); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .slide:not([hidden]) { animation: none; } }
+  .slide-x { position: absolute; top: 0.5rem; right: 0.5rem; width: 44px; height: 44px; display: grid; place-items: center; background: none; border: 0; color: var(--fg); cursor: pointer; }
+  .slide-x :global(svg) { width: 18px; }
+  .slide :global(.btn) { width: 100%; }
+</style>
