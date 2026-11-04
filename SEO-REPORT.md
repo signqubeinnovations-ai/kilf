@@ -82,6 +82,6 @@ Targets: LCP < 2.0 s ✅ · CLS < 0.05 ✅. Measured locally; confirm on the liv
 | Consistent entity line "FACADO LLP, an ACP facade and exterior design studio in Karunagappally, Kerala" | ✅ footer, about, schema |
 
 ## Not done from the brief
-- `npx impeccable detect` and the `/impeccable` workflow: the Impeccable skill was not installed in the build environment. The design rules from the brief (no Inter, no glassmorphism, no bounce, square corners, etc.) were followed by hand.
+- Impeccable was installed later (v4.8.0, `.claude/skills/impeccable`) and `/impeccable audit` was run: **16/20 (Good)**. See `reports/impeccable-audit.md`. The earlier build steps (`teach`, `shape`, `craft`, `polish`) were done by hand before it was installed.
 - Lighthouse report and Rich Results screenshots: see above.
 - Real textures (`bg_rust.jpg`, `bg_cream.jpg`) were not in the kit; the grain is generated in CSS. Brochure images are used as illustrative images (tagged "Illustrative"); real project photos are still needed.

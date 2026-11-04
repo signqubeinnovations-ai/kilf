@@ -7,3 +7,6 @@ dist/
 .env.*
 !.env.example
 .DS_Store
+
+# Impeccable engine binary (downloaded on first run by the launcher)
+.claude/skills/impeccable/scripts/bin/
