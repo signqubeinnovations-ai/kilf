@@ -12,12 +12,15 @@ import Process from '@/components/Process.astro';
 import Picker from '@/components/Picker.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import ProofThumb from '@/components/ProofThumb.astro';
+import RefImage from '@/components/RefImage.astro';
 import { claddingScene, swatches } from '@/lib/facade';
-import { categories, secondaryCategories, whyAcp, materials, quality, marquee } from '@/lib/content';
+import { whyAcp, materials, quality, marquee, homeServices, sectors, capabilities, possibilities, whyChoose } from '@/lib/content';
+import { site } from '@/lib/site';
 
-const N = 11;
+const N = 13;
+const pad = (n: number) => String(n).padStart(2, '0');
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const [featured, ...more] = projects;
+const [featured] = projects;
 const faqs = (await getCollection('faqs')).filter((f) => f.data.preview).sort((a, b) => a.data.order - b.data.order).slice(0, 4).map((f) => f.data);
 ---
 <Base
@@ -29,74 +32,219 @@ const faqs = (await getCollection('faqs')).filter((f) => f.data.preview).sort((a
   <!-- 01 HERO -->
   <section class="hero s-rust" aria-labelledby="hero-h">
     <Counter n={1} of={N} />
-    <div class="wrap hero-in">
+    <div class="wrap hero-grid">
       <div class="hero-copy">
         <h1 id="hero-h" data-hl>
           <span class="eyebrow hero-eb">ACP facade design · Kollam, Kerala</span>
           <span class="t-hero hero-lines">
-            <span class="ln" style="--i:1"><span class="thin">FACADES THAT</span></span>
-            <span class="ln" style="--i:2"><span class="thin">MAKE YOUR</span></span>
-            <span class="ln" style="--i:3"><span class="bold">BUILDING SELL.</span></span>
+            <span class="ln" style="--i:1"><span class="thin">TRANSFORMING</span></span>
+            <span class="ln" style="--i:2"><span class="thin">BUILDING EXTERIORS</span></span>
+            <span class="ln" style="--i:3"><span class="bold">WITH PRECISION.</span></span>
           </span>
         </h1>
-        <Dim label="ACP FACADE / DESIGN · FABRICATE · INSTALL" class="hero-dim" />
-        <p class="lead hero-lead">Your shop is judged in 3 seconds. FACADO designs, fabricates and installs premium ACP facades across Kerala.</p>
+        <Dim label="MODERN · DURABLE · ENGINEERED" class="hero-dim" />
+        <p class="lead hero-lead">FACADO LLP designs, engineers, fabricates and installs premium ACP facade systems for commercial buildings, showrooms, institutions and villas across Kerala.</p>
         <div class="hero-cta">
-          <WaButton context="building" size="lg" magnetic pulse />
-          <a class="btn btn-ghost btn-lg" href="#recent-work">See our work</a>
+          <WaButton context="building" size="lg" magnetic pulse label="Book a free facade consultation" />
+          <a class="btn btn-ghost btn-lg" href="#services">Explore services</a>
         </div>
       </div>
+      <figure class="hero-img crop" data-cad>
+        <RefImage name="commercial-complex" eager sizes="(min-width: 64rem) 50vw, 100vw" />
+        <figcaption><Dim label="ACP FACADE / COMMERCIAL COMPLEX" draw={false} /></figcaption>
+      </figure>
     </div>
-    <div class="hero-art" aria-hidden="true"><Art kind="hero" /></div>
   </section>
 
-  <!-- 02 CLADDING SCENE -->
+  <!-- Capability strip -->
+  <section class="caps-strip s-charcoal" aria-label="What we do">
+    <ol class="wrap caps-list">
+      {capabilities.map((c, i) => (
+        <li data-reveal style={`--i:${i}`}><span class="num">{pad(i + 1)}</span><h2 class="t-1">{c.title}</h2><p class="body-copy">{c.text}</p></li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- 02 INTRO -->
+  <section class="section s-paper" aria-labelledby="in-h">
+    <Counter n={2} of={N} />
+    <div class="wrap grid-12 intro">
+      <div class="in-copy">
+        <p class="eyebrow">About FACADO</p>
+        <Headline id="in-h" lines={['ELEVATING', '*MODERN ARCHITECTURE.']} size="4" />
+        <p class="lead in-lead">A dedicated ACP facade company. One team from first survey to final handover.</p>
+        <div class="body-copy in-body">
+          <p>We partner with architects, builders, developers, institutions and business owners to create exteriors that combine aesthetics, durability and precise engineering.</p>
+          <p>Every facade is designed to strengthen the identity of the building, and to perform for years in Kerala's sun, rain and humidity.</p>
+        </div>
+        <ul class="in-who" aria-label="Who we work with">
+          {['Architects', 'Builders', 'Developers', 'Institutions', 'Business owners'].map((w) => <li class="chip">{w}</li>)}
+        </ul>
+        <a class="link-arrow" href="/about">About the studio</a>
+      </div>
+      <div class="in-img crop" data-reveal data-cad><RefImage name="glass-office" sizes="(min-width: 64rem) 40vw, 100vw" /></div>
+    </div>
+  </section>
+
+  <!-- 03 SERVICES -->
+  <section class="section s-paper svc" id="services" aria-labelledby="sv-h">
+    <Counter n={3} of={N} />
+    <div class="wrap">
+      <div class="sec-head row">
+        <div>
+          <p class="eyebrow">Services</p>
+          <Headline id="sv-h" lines={['WHAT WE', '*DELIVER.']} size="4" />
+        </div>
+        <p class="body-copy">Whether you are building new or revitalising an existing building, we deliver facade solutions that combine design, durability and engineering.</p>
+      </div>
+      <ol class="svc-list">
+        {homeServices.map((s, i) => (
+          <li data-reveal style={`--i:${i % 3}`}>
+            <a href={s.href} class="svc-row">
+              <span class="num">{pad(i + 1)}</span>
+              <span class="svc-txt"><h3 class="t-2">{s.title}</h3><span class="body-copy">{s.text}</span></span>
+              <span class="svc-thumb crop" data-cad><RefImage name={s.img} tag={false} sizes="(min-width: 64rem) 22vw, 40vw" /></span>
+              <span class="link-arrow svc-go" aria-hidden="true">View</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+      <p class="svc-note body-copy">Images are illustrative. Project photos are on <a href="/projects">Projects</a>.</p>
+    </div>
+  </section>
+
+  <!-- 04 CLADDING SCENE -->
   <section class="cs s-charcoal" data-cladding data-gsap aria-labelledby="cs-h">
     <div class="cs-pin" data-pin>
-      <Counter n={2} of={N} />
+      <Counter n={4} of={N} />
       <div class="wrap grid-12 cs-grid">
         <div class="cs-copy">
-          <p class="eyebrow">What ACP does</p>
+          <p class="eyebrow">How ACP works</p>
           <Headline id="cs-h" lines={['SAME BUILDING.', 'NEW FACE.', '*MORE CUSTOMERS.']} size="4" />
           <p class="cs-count caps"><span class="num">Panel</span> <span class="cs-n"><span data-cs-count>48</span> → 48</span></p>
-          <p class="body-copy cs-cap" data-cs-cap>We fix a new aluminium skin in front of the old wall. The structure stays. The face changes, panel by panel, joint by joint.</p>
+          <p class="body-copy cs-cap" data-cs-cap>A rust-free aluminium framework is anchored to the existing structure. Precision-fabricated panels are fixed and sealed on it, panel by panel. The building stays. The face changes.</p>
         </div>
         <div class="cs-art" set:html={claddingScene()} />
       </div>
     </div>
   </section>
 
-  <!-- 03 WHAT WE BUILD -->
-  <section class="section s-paper" id="what-we-build" aria-labelledby="wwb-h">
-    <Counter n={3} of={N} />
+  <!-- 05 SECTORS -->
+  <section class="section s-paper" aria-labelledby="sc-h">
+    <Counter n={5} of={N} />
     <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">What we build</p>
-        <Headline id="wwb-h" lines={['FACADES FOR', '*EVERY KIND OF BUILDING.']} size="4" />
+      <div class="sec-head row">
+        <div>
+          <p class="eyebrow">Sectors</p>
+          <Headline id="sc-h" lines={['BUILT FOR', '*EVERY SECTOR.']} size="4" />
+        </div>
+        <p class="body-copy">Each sector has its own priorities. We design for how your building is used and seen.</p>
       </div>
-      <div class="tiles">
-        {categories.map((c, i) => (
-          <a class={`tile tile-${i + 1} crop crop-hover`} href={c.href} data-reveal style={`--i:${i}`}>
-            <span class="tile-img" data-cad><Art kind={c.kind} /></span>
-            <Dim label={c.label} draw={false} class="tile-dim" />
-            <span class="tile-row"><span class="num">{String(i + 1).padStart(2, '0')}</span><h3 class="t-2">{c.title}</h3><span class="link-arrow" aria-hidden="true">View</span></span>
-          </a>
+      <ol class="sectors">
+        {sectors.map((s, i) => (
+          <li data-reveal style={`--i:${i % 3}`}><span class="num">{pad(i + 1)}</span><h3 class="t-2">{s.title}</h3><p class="body-copy">{s.text}</p></li>
         ))}
-      </div>
-      <div class="chips">
-        <span class="caps num">Also</span>
-        {secondaryCategories.map((c) => <a class="chip" href={c.href}>{c.title}</a>)}
+      </ol>
+    </div>
+    <div class="marquee mq" aria-hidden="true">
+      <div class="marquee-track">
+        {[...marquee, ...marquee, ...marquee, ...marquee].map((m, i) => <span class={i % 2 ? 'thin' : 'bold'}>{m}<i>·</i></span>)}
       </div>
     </div>
   </section>
 
-  <!-- 04 RECENT WORK -->
-  <section class="section s-charcoal" id="recent-work" aria-labelledby="rw-h">
-    <Counter n={4} of={N} />
+  <!-- 06 WHY ACP -->
+  <section class="section s-rust" aria-labelledby="why-h">
+    <Counter n={6} of={N} />
+    <div class="wrap grid-12">
+      <div class="why-head">
+        <p class="eyebrow">Why ACP facades</p>
+        <Headline id="why-h" lines={['THE SMART CHOICE', '*FOR MODERN BUILDINGS.']} size="3" />
+        <p class="body-copy why-sub">ACP has become the preferred exterior for contemporary architecture. It balances appearance, performance and cost.</p>
+        <div class="why-img crop" data-reveal data-cad><RefImage name="grey-box-projection" sizes="(min-width: 64rem) 36vw, 100vw" /></div>
+      </div>
+      <ol class="rule-list why-list">
+        {whyAcp.map((w, i) => (
+          <li data-reveal style={`--i:${i % 5}`}><span class="num">{pad(i + 1)}</span><h3 class="t-1">{w.title}</h3><p class="body-copy">{w.text}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 07 PROCESS -->
+  <section class="section s-charcoal" aria-labelledby="pr-h">
+    <Counter n={7} of={N} />
+    <div class="wrap grid-12">
+      <div class="pr-head">
+        <p class="eyebrow">Our process</p>
+        <Headline id="pr-h" lines={['PRECISION AT', '*EVERY STAGE.']} size="4" />
+        <p class="pr-groups"><span class="thin">Design</span> <span class="arr">→</span> <span>Fabricate</span> <span class="arr">→</span> <span class="bold">Install</span></p>
+        <p class="body-copy">Nine steps, one accountable team. No hand-offs between a designer, a fabricator and a fixing crew.</p>
+        <a class="link-arrow" href="/about#process">The full process</a>
+      </div>
+      <div class="pr-steps"><Process /></div>
+    </div>
+  </section>
+
+  <!-- 08 MATERIALS & QUALITY -->
+  <section class="section s-paper" aria-labelledby="mt-h">
+    <Counter n={8} of={N} />
+    <div class="wrap">
+      <div class="mt-head">
+        <div class="sec-head">
+          <p class="eyebrow">Built to perform</p>
+          <Headline id="mt-h" lines={['EXCEPTIONAL FACADES.', '*EXCEPTIONAL MATERIALS.']} size="3" />
+          <p class="body-copy">Great facades begin with the right materials, and last because of how they are fixed.</p>
+        </div>
+        <div class="mt-img crop" data-reveal><RefImage name="acp-sheets" contain sizes="(min-width: 64rem) 40vw, 100vw" /></div>
+      </div>
+      <div class="mq-grid">
+        <div>
+          <p class="caps num mq-h">We use</p>
+          <ol class="rule-list mq-list">{materials.map((m, i) => <li><span class="num">{pad(i + 1)}</span><span><strong>{m.title}</strong><span class="body-copy">{m.text}</span></span></li>)}</ol>
+        </div>
+        <div>
+          <p class="caps num mq-h">Quality standards</p>
+          <ol class="rule-list mq-list">{quality.map((q, i) => <li><span class="num">{pad(i + 1)}</span><span><strong>{q.title}</strong><span class="body-copy">{q.text}</span></span></li>)}</ol>
+        </div>
+      </div>
+      <div class="sw-wrap">
+        <Dim label="FINISHES / WOOD · STONE · METALLIC · SOLID" start />
+        <ul class="swatches" aria-label="Finish samples">
+          {swatches.map((s) => <li class="sw"><span class="sw-chip" style={`background:${s.css}`} /><span class="sw-name">{s.name}</span></li>)}
+        </ul>
+        <p class="body-copy sw-note">Screen colours are a guide. We bring physical samples to your site.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 DESIGN POSSIBILITIES + WHY FACADO -->
+  <section class="section s-charcoal" aria-labelledby="dp-h">
+    <Counter n={9} of={N} />
+    <div class="wrap grid-12">
+      <div class="dp-col">
+        <p class="eyebrow">Design possibilities</p>
+        <Headline id="dp-h" lines={['A UNIQUE', '*ARCHITECTURAL IDENTITY.']} size="3" />
+        <p class="body-copy">ACP offers unmatched flexibility. These are the styles we design and build most.</p>
+        <ul class="dp-tags">{possibilities.map((p) => <li class="chip" title={p.text}>{p.title}</li>)}</ul>
+        <div class="dp-img crop" data-reveal data-cad><RefImage name="wood-finish-house" sizes="(min-width: 64rem) 40vw, 100vw" /></div>
+      </div>
+      <div class="wc-col">
+        <p class="eyebrow">Why choose FACADO</p>
+        <ol class="rule-list wc">
+          {whyChoose.map((w, i) => <li data-reveal style={`--i:${i % 5}`}><span class="num">{pad(i + 1)}</span><span class="t-1">{w}</span></li>)}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 RECENT WORK -->
+  <section class="section s-paper" id="recent-work" aria-labelledby="rw-h">
+    <Counter n={10} of={N} />
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Recent work</p>
-        <Headline id="rw-h" lines={['BUILT TO', '*PERFORM.']} size="4" />
+        <Headline id="rw-h" lines={['CREATING', '*ARCHITECTURAL LANDMARKS.']} size="4" />
       </div>
       {featured && (
         <article class="feat grid-12">
@@ -117,99 +265,16 @@ const faqs = (await getCollection('faqs')).filter((f) => f.data.preview).sort((a
           </div>
         </article>
       )}
-      {more.length > 0 && (
-        <ul class="more">
-          {more.slice(0, 3).map((p) => (
-            <li><a href={`/projects/${p.id}`} class="crop crop-hover more-a" data-track="project_view">{p.data.cover && <Picture src={p.data.cover.src} alt={p.data.cover.alt} widths={[480, 800]} sizes="(min-width: 64rem) 30vw, 100vw" formats={['avif', 'webp']} />}<span class="t-1">{p.data.title}</span><span class="caps num">{p.data.location}</span></a></li>
-          ))}
-        </ul>
-      )}
       <p class="more-link"><a class="link-arrow" href="/projects">All projects</a></p>
     </div>
   </section>
 
-  <!-- 05 WHY ACP -->
-  <section class="section s-rust" aria-labelledby="why-h">
-    <Counter n={5} of={N} />
-    <div class="wrap grid-12">
-      <div class="why-head">
-        <p class="eyebrow">Why ACP</p>
-        <Headline id="why-h" lines={['WHY', '*ACP.']} size="hero" />
-        <p class="body-copy why-sub">A light aluminium skin with a hard-wearing finish. Shaped to your design. Fixed on a rust-free frame.</p>
-      </div>
-      <ol class="rule-list why-list">
-        {whyAcp.map((w, i) => (
-          <li data-reveal style={`--i:${i}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><h3 class="t-1">{w.title}</h3><p class="body-copy">{w.text}</p></li>
-        ))}
-      </ol>
-    </div>
-    <div class="marquee mq" aria-hidden="true">
-      <div class="marquee-track">
-        {[...marquee, ...marquee, ...marquee, ...marquee].map((m, i) => <span class={i % 2 ? 'thin' : 'bold'}>{m}<i>·</i></span>)}
-      </div>
-    </div>
-  </section>
+  <!-- 11 PICKER -->
+  <Picker n={11} of={N} />
 
-  <!-- 06 PROCESS -->
-  <section class="section s-charcoal" aria-labelledby="pr-h">
-    <Counter n={6} of={N} />
-    <div class="wrap grid-12">
-      <div class="pr-head">
-        <p class="eyebrow">Process</p>
-        <Headline id="pr-h" lines={['ONE TEAM.', '*START TO FINISH.']} size="4" />
-        <p class="pr-groups"><span class="thin">Design</span> <span class="arr">→</span> <span>Fabricate</span> <span class="arr">→</span> <span class="bold">Install</span></p>
-        <p class="body-copy">No hand-offs between a designer, a fabricator and a fixing crew. The team that draws your facade builds it.</p>
-        <a class="link-arrow" href="/about#process">The full process</a>
-      </div>
-      <div class="pr-steps"><Process /></div>
-    </div>
-  </section>
-
-  <!-- 07 MATERIALS -->
-  <section class="section s-paper" aria-labelledby="mt-h">
-    <Counter n={7} of={N} />
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Materials we use</p>
-        <Headline id="mt-h" lines={['WHAT IT IS', '*MADE OF.']} size="4" />
-      </div>
-      <ol class="mats">
-        {materials.map((m, i) => (
-          <li data-reveal style={`--i:${i}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><h3 class="t-1">{m.title}</h3><p class="body-copy">{m.text}</p></li>
-        ))}
-      </ol>
-      <div class="sw-wrap">
-        <Dim label="FINISHES / WOOD · STONE · METALLIC · SOLID" start />
-        <ul class="swatches" aria-label="Finish samples">
-          {swatches.map((s) => <li class="sw"><span class="sw-chip" style={`background:${s.css}`} /><span class="sw-name">{s.name}</span></li>)}
-        </ul>
-        <p class="body-copy sw-note">Screen colours are a guide. We bring physical samples to your site.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 08 PICKER -->
-  <Picker n={8} of={N} />
-
-  <!-- 09 QUALITY -->
-  <section class="section s-charcoal" aria-labelledby="q-h">
-    <Counter n={9} of={N} />
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Quality standards</p>
-        <Headline id="q-h" lines={['CHECKED AT', '*EVERY JOINT.']} size="4" />
-      </div>
-      <ol class="qual">
-        {quality.map((q, i) => (
-          <li data-reveal style={`--i:${i}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><h3 class="t-1">{q.title}</h3><p class="body-copy">{q.text}</p></li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- 10 FAQ -->
+  <!-- 12 FAQ -->
   <section class="section s-paper" aria-labelledby="fq-h">
-    <Counter n={10} of={N} />
+    <Counter n={12} of={N} />
     <div class="wrap grid-12">
       <div class="fq-head">
         <p class="eyebrow">FAQ</p>
@@ -221,30 +286,69 @@ const faqs = (await getCollection('faqs')).filter((f) => f.data.preview).sort((a
     </div>
   </section>
 
-  <!-- 11 CTA -->
-  <CtaBand n={11} of={N} context="building" />
+  <!-- 13 CTA -->
+  <section class="section-tight s-charcoal pre-cta" aria-label="Let's redefine your building exterior">
+    <div class="wrap pre-in">
+      <p class="t-2 pre-h"><span class="thin">Let's redefine</span> <span class="bold">your building exterior.</span></p>
+      <p class="body-copy">New commercial space or an existing building: send us a photo and your location. Studio: {site.address.street}, {site.address.locality}.</p>
+    </div>
+  </section>
+  <CtaBand n={13} of={N} context="building" />
 </Base>
 
 <style>
   /* Hero */
-  .hero { position: relative; overflow: hidden; min-height: min(100svh - 4.5rem, 62rem); display: flex; align-items: center; padding-block: clamp(4rem, 8vw, 7rem) clamp(5rem, 9vw, 8rem); }
-  .hero-in { position: relative; z-index: 2; }
-  .hero-copy { max-width: 64rem; }
-  .hero-eb { display: flex; margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
-  .hero-lines { display: block; }
-  :global(.hero-dim) { margin-top: clamp(1.5rem, 3vw, 2.5rem); max-width: 40rem; }
-  .hero-lead { margin-top: 1.5rem; color: var(--fg); max-width: 34ch; }
-  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: clamp(2rem, 4vw, 3rem); }
-  .hero-art { position: absolute; z-index: 1; right: -6vw; bottom: -2px; width: clamp(16rem, 42vw, 44rem); height: 88%; pointer-events: none; }
-  .hero-art :global(.art) { height: 100%; }
-  .hero-art :global(svg) { width: 100%; height: 100%; }
-  @media (max-width: 64rem) { .hero-art { opacity: 0.32; width: 75vw; right: -24vw; } }
-  :global(.m) .hero-art { animation: rise 1.2s var(--ease) 0.25s both; }
-  :global(.m) .hero-art :global(.led) { stroke-dasharray: 800; animation: led 1.6s var(--ease) 1.1s both; }
-  @keyframes rise { from { transform: translateY(40%); } }
-  @keyframes led { from { stroke-dashoffset: 800; } to { stroke-dashoffset: 0; } }
-  :global(.rm) .hero-art { animation: fade 0.6s linear both; }
-  @keyframes fade { from { opacity: 0; } }
+  .hero { position: relative; overflow: hidden; padding-block: clamp(3rem, 6vw, 5.5rem) clamp(4rem, 7vw, 6.5rem); }
+  .hero-grid { display: grid; gap: 3rem; align-items: center; }
+  @media (min-width: 64rem) { .hero-grid { grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: clamp(2rem, 4vw, 4rem); } }
+  .hero-eb { display: flex; margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+  .hero-lines { display: block; font-size: clamp(2.6rem, 0.9rem + 5.4vw, 6.2rem); }
+  :global(.hero-dim) { margin-top: clamp(1.5rem, 3vw, 2.25rem); max-width: 36rem; }
+  .hero-lead { margin-top: 1.5rem; color: var(--fg); max-width: 40ch; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: clamp(2rem, 4vw, 2.75rem); }
+  .hero-img { margin: 0; position: relative; display: grid; gap: 0.9rem; --crop-c: var(--color-sand-hi); }
+  .hero-img :global(.ref) { aspect-ratio: 4 / 3; }
+  @media (min-width: 64rem) { .hero-img { margin-right: calc(var(--gutter) * -1 - 1vw); } .hero-img :global(.ref) { aspect-ratio: 5 / 6; } }
+  :global(.m) .hero-img :global(.ref) { animation: rise 1.2s var(--ease) 0.2s both; }
+  @keyframes rise { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+  /* Capability strip */
+  .caps-strip { padding-block: clamp(2.5rem, 5vw, 3.5rem); }
+  .caps-list { list-style: none; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 2rem 2.5rem; }
+  .caps-list li { display: grid; gap: 0.5rem; align-content: start; border-top: 1px solid var(--rule); padding-top: 1.25rem; }
+  .caps-list h2 { letter-spacing: 0.06em; }
+
+  /* Section heads */
+  .sec-head { display: grid; gap: 1.5rem; margin-bottom: clamp(3rem, 6vw, 4.5rem); max-width: 62rem; }
+  .sec-head.row { max-width: none; align-items: end; }
+  @media (min-width: 64rem) { .sec-head.row { grid-template-columns: 1.3fr 1fr; gap: 4rem; } .sec-head.row > .body-copy { padding-bottom: 0.5rem; } }
+
+  /* Intro */
+  .intro { row-gap: 3rem; align-items: center; }
+  .in-copy { grid-column: 1 / -1; display: grid; gap: 1.5rem; }
+  .in-img { grid-column: 1 / -1; aspect-ratio: 4 / 5; }
+  @media (min-width: 64rem) { .in-copy { grid-column: 1 / span 6; } .in-img { grid-column: 8 / span 5; } }
+  .in-lead { color: var(--fg); max-width: 32ch; }
+  .in-body { display: grid; gap: 1rem; }
+  .in-who { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  /* Services */
+  .svc::before { content: ''; position: absolute; top: 0; left: var(--gutter); right: var(--gutter); height: 1px; background: var(--rule); }
+  .svc-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  .svc-list li { border-bottom: 1px solid var(--rule); }
+  .svc-row { display: grid; grid-template-columns: 2.75rem 1fr; gap: 1rem 1.5rem; padding: 1.75rem 0; text-decoration: none; align-items: center; }
+  .svc-txt { display: grid; gap: 0.6rem; }
+  .svc-thumb { grid-column: 2; aspect-ratio: 16 / 10; overflow: hidden; --crop-gap: 6px; --crop-l: 10px; }
+  .svc-go { display: none; }
+  @media (min-width: 48rem) {
+    .svc-row { grid-template-columns: 3.5rem 1fr 14rem auto; gap: 2rem; }
+    .svc-thumb { grid-column: auto; }
+    .svc-go { display: inline-flex; }
+  }
+  @media (min-width: 64rem) { .svc-row { grid-template-columns: 4rem 1fr 18rem 6rem; } }
+  .svc-row:hover h3 { color: var(--color-rust); }
+  .svc-row:hover .svc-thumb :global(img) { transform: scale(1.05); }
+  .svc-note { margin-top: 1.5rem; font-size: 0.9rem; }
 
   /* Cladding scene */
   .cs { position: relative; }
@@ -258,25 +362,59 @@ const faqs = (await getCollection('faqs')).filter((f) => f.data.preview).sort((a
   .cs-n { font-size: var(--step-3); letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
   .cs-cap { margin-top: 1rem; }
 
-  /* Section heads */
-  .sec-head { display: grid; gap: 1.5rem; margin-bottom: clamp(3rem, 6vw, 5rem); max-width: 60rem; }
+  /* Sectors */
+  .sectors { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+  .sectors li { display: grid; gap: 0.75rem; align-content: start; padding: 2rem 1.75rem 2.25rem; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); transition: background-color 0.4s var(--ease); }
+  .sectors li:hover { background: var(--color-paper-deep); }
+  @media (min-width: 48rem) { .sectors li { min-height: 13rem; } }
+  .mq { margin-top: clamp(4rem, 7vw, 6rem); border-block: 1px solid var(--rule); padding-block: 1.2rem; font-size: var(--step-3); text-transform: uppercase; letter-spacing: 0.04em; line-height: 1; }
+  .mq i { font-style: normal; color: var(--accent); margin-left: 2.5rem; }
 
-  /* Tiles */
-  .tiles { display: grid; gap: clamp(2.5rem, 5vw, 4.5rem) clamp(1rem, 2vw, 2rem); grid-template-columns: repeat(12, minmax(0, 1fr)); }
-  .tile { grid-column: 1 / -1; display: grid; gap: 1.1rem; text-decoration: none; }
-  @media (min-width: 48rem) {
-    .tile-1 { grid-column: 1 / span 7; }
-    .tile-2 { grid-column: 8 / span 5; margin-top: 8rem; }
-    .tile-3 { grid-column: 1 / span 5; }
-    .tile-4 { grid-column: 6 / span 7; margin-top: 5rem; }
-  }
-  .tile-img { display: block; overflow: hidden; aspect-ratio: 4 / 3; background: var(--color-paper-deep); }
-  .tile-img :global(.art), .tile-img :global(svg) { width: 100%; height: 100%; transition: transform 1.2s var(--ease); }
-  .tile:hover .tile-img :global(svg) { transform: scale(1.04); }
-  :global(.tile-dim) > span { font-size: 0.72rem; }
-  .tile-row { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: baseline; }
-  .chips { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-top: clamp(3rem, 6vw, 5rem); }
-  .chips .caps { margin-right: 0.75rem; font-size: 0.85rem; }
+  /* Why ACP */
+  .why-head { grid-column: 1 / -1; display: grid; gap: 1.5rem; margin-bottom: 3rem; align-content: start; }
+  .why-list { grid-column: 1 / -1; }
+  .why-img { aspect-ratio: 5 / 4; margin-top: 1rem; --crop-c: var(--color-sand-hi); }
+  @media (min-width: 64rem) { .why-head { grid-column: 1 / span 5; margin: 0; position: sticky; top: 6.5rem; align-self: start; } .why-list { grid-column: 7 / span 6; } }
+  .why-sub { max-width: 40ch; }
+  .why-list li { display: grid; grid-template-columns: 3.5rem 1fr; gap: 0.25rem 1rem; padding: 1.4rem 0; align-items: baseline; }
+  .why-list li .body-copy { grid-column: 2; }
+
+  /* Process */
+  .pr-head { grid-column: 1 / -1; display: grid; gap: 1.5rem; align-content: start; margin-bottom: 3.5rem; }
+  .pr-steps { grid-column: 1 / -1; }
+  @media (min-width: 64rem) { .pr-head { grid-column: 1 / span 5; position: sticky; top: 7rem; align-self: start; margin: 0; } .pr-steps { grid-column: 7 / span 6; } }
+  .pr-groups { font-size: var(--step-1); text-transform: uppercase; letter-spacing: 0.04em; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .pr-groups .arr { color: var(--accent); }
+
+  /* Materials & quality */
+  .mt-head { display: grid; gap: 2rem; align-items: end; margin-bottom: clamp(3rem, 6vw, 4.5rem); }
+  .mt-head .sec-head { margin: 0; }
+  .mt-img { aspect-ratio: 16 / 10; }
+  @media (min-width: 64rem) { .mt-head { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+  .mq-grid { display: grid; gap: 3rem; }
+  @media (min-width: 64rem) { .mq-grid { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+  .mq-h { margin-bottom: 1rem; font-size: 0.9rem; }
+  .mq-list li { display: grid; grid-template-columns: 3rem 1fr; padding: 1.1rem 0; align-items: baseline; }
+  .mq-list li > span:last-child { display: grid; gap: 0.25rem; }
+  .mq-list strong { font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: var(--step-1); line-height: 1.1; }
+  .sw-wrap { margin-top: clamp(4rem, 7vw, 5.5rem); display: grid; gap: 1.5rem; }
+  .swatches { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr)); gap: 0.6rem; }
+  @media (min-width: 48rem) { .sw-chip { aspect-ratio: 3 / 4; } .swatches { grid-template-columns: repeat(9, minmax(0, 1fr)); } }
+  .sw { display: grid; gap: 0.6rem; }
+  .sw-chip { display: block; aspect-ratio: 1; border: 1px solid var(--rule); transition: transform 0.7s var(--ease); transform-origin: bottom; }
+  .sw:hover .sw-chip { transform: scale(1.06); }
+  .sw-name { font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.78rem; }
+  .sw-note { font-size: 0.95rem; }
+
+  /* Design possibilities + why FACADO */
+  .dp-col { grid-column: 1 / -1; display: grid; gap: 1.5rem; align-content: start; }
+  .wc-col { grid-column: 1 / -1; display: grid; gap: 1.5rem; align-content: start; margin-top: 4rem; }
+  @media (min-width: 64rem) { .dp-col { grid-column: 1 / span 6; } .wc-col { grid-column: 8 / span 5; margin-top: 0; } }
+  .dp-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .dp-tags .chip { cursor: default; }
+  .dp-img { aspect-ratio: 16 / 11; margin-top: 1.5rem; }
+  .wc li { display: grid; grid-template-columns: 3.25rem 1fr; padding: 1.05rem 0; align-items: baseline; }
+  .wc .t-1 { font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
 
   /* Featured */
   .feat { row-gap: 2rem; align-items: end; }
@@ -289,42 +427,15 @@ const faqs = (await getCollection('faqs')).filter((f) => f.data.preview).sort((a
   .ph :global(.art) { height: 100%; }
   .ph-note { position: absolute; left: 1rem; bottom: 1rem; color: var(--color-charcoal); font-size: 0.85rem; font-family: var(--font-body); background-color: #f6e7a8; }
   .img-tag { position: absolute; left: 1rem; top: 1rem; background: var(--color-charcoal); }
-  .more { list-style: none; padding: 0; margin: 4rem 0 0; display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
-  .more-a { display: grid; gap: 0.6rem; text-decoration: none; }
   .more-link { margin-top: 3rem; }
-
-  /* Why */
-  .why-head { grid-column: 1 / -1; margin-bottom: 3rem; }
-  .why-sub { margin-top: 1.5rem; max-width: 34ch; }
-  .why-list { grid-column: 1 / -1; }
-  @media (min-width: 64rem) { .why-head { grid-column: 1 / span 5; margin: 0; position: sticky; top: 7rem; align-self: start; } .why-list { grid-column: 7 / span 6; } }
-  .why-list li { display: grid; grid-template-columns: 3.5rem 1fr; gap: 0.25rem 1rem; padding: 1.6rem 0; align-items: baseline; }
-  .why-list li .body-copy { grid-column: 2; }
-  .mq { margin-top: clamp(4rem, 8vw, 7rem); border-block: 1px solid var(--rule); padding-block: 1.2rem; font-size: var(--step-3); text-transform: uppercase; letter-spacing: 0.04em; line-height: 1; }
-  .mq i { font-style: normal; color: var(--accent); margin-left: 2.5rem; }
-
-  /* Process */
-  .pr-head { grid-column: 1 / -1; display: grid; gap: 1.5rem; align-content: start; margin-bottom: 3.5rem; }
-  .pr-steps { grid-column: 1 / -1; }
-  @media (min-width: 64rem) { .pr-head { grid-column: 1 / span 5; position: sticky; top: 7rem; align-self: start; margin: 0; } .pr-steps { grid-column: 7 / span 6; } }
-  .pr-groups { font-size: var(--step-1); text-transform: uppercase; letter-spacing: 0.04em; display: flex; flex-wrap: wrap; gap: 0.6rem; }
-  .pr-groups .arr { color: var(--accent); }
-
-  /* Materials */
-  .mats, .qual { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); border-top: 1px solid var(--rule); }
-  .mats li, .qual li { display: grid; gap: 0.6rem; align-content: start; padding: 1.75rem 1.5rem 2rem 0; border-bottom: 1px solid var(--rule); }
-  .qual { grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
-  .sw-wrap { margin-top: clamp(4rem, 7vw, 6rem); display: grid; gap: 1.5rem; }
-  .swatches { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr)); gap: 0.6rem; }
-  @media (min-width: 48rem) { .sw-chip { aspect-ratio: 3 / 4; } .swatches { grid-template-columns: repeat(9, minmax(0, 1fr)); } }
-  .sw { display: grid; gap: 0.6rem; }
-  .sw-chip { display: block; aspect-ratio: 1; border: 1px solid var(--rule); transition: transform 0.7s var(--ease); transform-origin: bottom; }
-  .sw:hover .sw-chip { transform: scale(1.06); }
-  .sw-name { font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.78rem; }
-  .sw-note { font-size: 0.95rem; }
 
   /* FAQ preview */
   .fq-head { grid-column: 1 / -1; display: grid; gap: 1.5rem; align-content: start; margin-bottom: 2rem; }
   .fq-list { grid-column: 1 / -1; }
   @media (min-width: 64rem) { .fq-head { grid-column: 1 / span 4; } .fq-list { grid-column: 6 / span 7; } }
+
+  /* Pre-CTA */
+  .pre-in { display: grid; gap: 1rem; }
+  .pre-h { text-transform: uppercase; letter-spacing: 0.03em; line-height: 1; }
+  @media (min-width: 64rem) { .pre-in { grid-template-columns: 1.2fr 1fr; align-items: end; gap: 4rem; } }
 </style>

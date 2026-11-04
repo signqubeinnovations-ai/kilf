@@ -29,11 +29,43 @@ export const process = [
 
 export const whyAcp = [
   { title: 'Contemporary appearance', text: 'Crisp lines and flat, even surfaces give any building a modern face.' },
-  { title: 'Lightweight construction', text: 'Thin aluminium skins over a core. Less load on old walls and structures.' },
-  { title: 'Weather- and UV-resistant finishes', text: 'Exterior-grade coatings are made for sun, rain and humid air.' },
+  { title: 'Lightweight construction', text: 'Thin aluminium skins over a core. Less load on walls and structure.' },
+  { title: 'Weather-resistant performance', text: 'Detailed for monsoon rain, humidity and coastal air.' },
+  { title: 'UV-resistant finishes', text: 'Exterior-grade coatings hold their colour in strong sun.' },
   { title: 'Low maintenance', text: 'A wash with water and mild soap keeps most finishes looking new.' },
+  { title: 'Excellent durability', text: 'Aluminium does not rust. Panels stay flat and true.' },
   { title: 'Fast installation', text: 'Panels are prepared off-site, so time on site is short.' },
-  { title: 'Wide range of colours and textures', text: 'Solid colours, metallics, wood and stone finishes, all in one system.' },
+  { title: 'Wide range of colours and textures', text: 'Solids, metallics, wood and stone finishes in one system.' },
+  { title: 'Easy replacement and future changes', text: 'Single panels can be replaced or updated without disturbing the rest.' },
+  { title: 'For new builds and renovations', text: 'Specified at design stage, or fixed over an existing wall.' },
+];
+
+/** Homepage services list (from the brochure), each linked to its page. */
+export const homeServices = [
+  { title: 'ACP Building Facades', text: 'Complete ACP facade systems, designed, engineered and installed by one team.', href: '/acp-cladding-kollam', img: 'grey-box-projection' },
+  { title: 'Commercial Elevations', text: 'Elevations for complexes, offices, hospitals and campuses, with planned signage zones.', href: '/commercial-building-elevation', img: 'commercial-complex' },
+  { title: 'Shop & Showroom Fronts', text: 'Fronts that are seen from the street, read in a glance and invite people in.', href: '/shop-front-elevation', img: 'charcoal-orange-commercial' },
+  { title: 'Villa Elevations', text: 'Modern home elevations in wood, stone and solid finishes, built for Kerala weather.', href: '/villa-elevation-design', img: 'villa-night' },
+  { title: 'Building Renovation', text: 'A new face for an existing building, fixed in front of the old wall. No demolition.', href: '/acp-renovation', img: 'curved-stone-facade' },
+  { title: '3D Facade Design & ACP Features', text: 'See the facade on your building before work starts, including folded 3D features.', href: '/3d-facade-design', img: 'wood-finish-house' },
+] as const;
+
+/** Sectors we serve (from the brochure). */
+export const sectors = [
+  { title: 'Corporate Buildings', text: 'Restrained materials and precise lines that carry your brand.' },
+  { title: 'Commercial Complexes', text: 'One clear identity and an orderly signage system for every tenant.' },
+  { title: 'Retail Showrooms', text: 'Street presence, framed displays and built-in signage.' },
+  { title: 'Hospitals', text: 'Calm, clean finishes, clear wayfinding and fire-retardant cores.' },
+  { title: 'Educational Campuses', text: 'Durable, low-maintenance surfaces and a recognisable identity.' },
+  { title: 'Villas', text: 'Warm, modern elevations that still look right in ten years.' },
+];
+
+/** Four capabilities under the hero. */
+export const capabilities = [
+  { title: 'Design', text: 'Survey, consultation and 3D design on your building.' },
+  { title: 'Engineering', text: 'Shop drawings and framework planned for load and wind.' },
+  { title: 'Fabrication', text: 'Panels routed, folded and checked before dispatch.' },
+  { title: 'Installation', text: 'Our own team fixes, seals and hands over.' },
 ];
 
 export const materials = [
@@ -55,6 +87,7 @@ export const quality = [
 
 export const possibilities = [
   { title: 'Modern Minimalist', text: 'Large flat panels, tight joints, one or two colours.' },
+  { title: 'Contemporary Commercial', text: 'Clean grids of panel and glass that read as modern business.' },
   { title: 'Geometric', text: 'Angled cuts and patterns that give a flat wall rhythm.' },
   { title: 'Box Projection', text: 'A framed box that pushes forward and frames a window or sign.' },
   { title: 'Floating Panel', text: 'Panels set off the wall with shadow gaps, so they seem to float.' },
@@ -96,4 +129,18 @@ export const pickerStyles = [
   { id: 'stone', label: 'Stone finish', board: ['#b4ab9d', '#6B3022', '#2b2522'], note: 'Stone-finish panels for weight and permanence, with dark glazing.' },
   { id: 'metallic', label: 'Metallic', board: ['#c6c3bc', '#d8c08f', '#221D1A'], note: 'Brushed and champagne tones. Built for jewellery, auto and premium retail.' },
   { id: 'bold', label: 'Bold colour', board: ['#6B3022', '#C9A27A', '#f1efe8'], note: 'Your brand colour, at building scale. Seen from the end of the street.' },
+];
+
+/** From the brochure. */
+export const whyChoose = [
+  'Excellence in every facade',
+  'Dedicated ACP specialists',
+  'Engineering-driven approach',
+  'Modern architectural designs',
+  'Precision fabrication',
+  'Skilled installation team',
+  'Timely project execution',
+  'Reliable after-sales support',
+  'Professional site management',
+  'Premium finish, every time',
 ];

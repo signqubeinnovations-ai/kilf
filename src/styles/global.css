@@ -256,11 +256,14 @@
 .tag { display: inline-block; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.35rem 0.6rem; border: 1px solid currentColor; color: var(--accent); }
 
 /* Breadcrumbs */
-.crumbs ol { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 0; padding: 0; font-weight: 600; font-size: var(--step--1); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.crumbs ol { display: flex; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; gap: 0.5rem; list-style: none; margin: 0; padding: 0; font-weight: 600; font-size: var(--step--1); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
 .crumbs li + li::before { content: '/'; margin-right: 0.5rem; color: var(--accent); }
 .crumbs a { text-decoration: none; display: inline-flex; min-height: 32px; align-items: center; }
 .crumbs a:hover { color: var(--fg); }
 .crumbs [aria-current] { color: var(--fg); }
+.crumbs li:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.crumbs li { flex: none; }
+.crumbs li:last-child { flex: 0 1 auto; }
 
 /* FAQ accordion */
 .faq details { border-bottom: 1px solid var(--rule); }

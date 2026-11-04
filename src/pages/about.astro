@@ -6,7 +6,8 @@ import Process from '@/components/Process.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Fill from '@/components/Fill.astro';
 import Dim from '@/components/Dim.astro';
-import { quality } from '@/lib/content';
+import { quality, whyChoose } from '@/lib/content';
+import RefImage from '@/components/RefImage.astro';
 import { site } from '@/lib/site';
 const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
 ---
@@ -27,14 +28,39 @@ const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
         <Headline id="ph-h" lines={['DESIGN FIRST.', '*THEN BUILD.']} size="3" />
       </div>
       <div class="prose ab-body">
-        <p>Most facade work in Kerala starts with a fixing crew and a catalogue. We start with the building.</p>
-        <p>We call ourselves an exterior design studio because the design comes first. We study how a building is seen: from the road, from a moving bus, at night. We look at what the owner needs it to say. Only then do we choose panels, finishes and fixings.</p>
-        <p>And because the same team fabricates and installs, what we draw is what gets built. No hand-offs. No lost details. One team, start to finish.</p>
+        <p class="ab-lead">FACADO LLP is a dedicated ACP facade company. We design, engineer, fabricate and install premium aluminium composite panel facade systems.</p>
+        <p>We work with architects, builders, developers, institutions and business owners. Together we create exteriors that combine looks, durability and precise engineering.</p>
+        <p>Every facade is designed to strengthen the identity of a building. And to keep performing in Kerala's sun, rain and humidity for years.</p>
+        <p>We call ourselves an exterior design studio because the design comes first. We study how a building is seen: from the road, from a moving bus, at night. Then we choose panels, finishes and fixings. Because the same team fabricates and installs, what we draw is what gets built.</p>
         <h2>Our story</h2>
         <p><Fill value="[FILL: founders, the year FACADO started, and why. Two or three short paragraphs in your own words.]" /></p>
         <h2>The team</h2>
         <p><Fill value="[FILL: team size and roles, e.g. design, fabrication, installation. Add real photos of the team and workshop if you can.]" /></p>
       </div>
+    </div>
+  </section>
+
+  <section class="section s-rust" aria-labelledby="cm-h">
+    <div class="wrap grid-12">
+      <div class="cm-img crop" data-reveal><RefImage name="curved-stone-facade" sizes="(min-width: 64rem) 40vw, 100vw" /></div>
+      <div class="cm-copy">
+        <p class="eyebrow">Our commitment</p>
+        <Headline id="cm-h" lines={['EVERY BUILDING', '*TELLS A STORY.']} size="3" />
+        <p class="body-copy">We design and build facades that reflect innovation, quality and identity. From concept to completion, they are made to stand the test of time, structurally and visually.</p>
+        <blockquote class="cm-q">Our goal is not simply to clad buildings. It is to create landmarks that leave a lasting impression.</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="section s-paper" aria-labelledby="wc-h">
+    <div class="wrap grid-12">
+      <div class="ab-head">
+        <p class="eyebrow">Why choose FACADO</p>
+        <Headline id="wc-h" lines={['TEN REASONS.', '*ONE STUDIO.']} size="3" />
+      </div>
+      <ol class="rule-list wc ab-body">
+        {whyChoose.map((w, i) => <li data-reveal style={`--i:${i % 5}`}><span class="num">{String(i + 1).padStart(2, '0')}</span><span class="t-1">{w}</span></li>)}
+      </ol>
     </div>
   </section>
 
@@ -65,6 +91,13 @@ const crumbs = [{ href: '/', label: 'Home' }, { label: 'Studio' }];
   .ab-head { grid-column: 1 / -1; display: grid; gap: 1.5rem; align-content: start; margin-bottom: 3rem; }
   .ab-body { grid-column: 1 / -1; }
   @media (min-width: 64rem) { .ab-head { grid-column: 1 / span 4; margin: 0; } .ab-head.sticky { position: sticky; top: 6.5rem; align-self: start; } .ab-body { grid-column: 6 / span 7; } }
+  .ab-lead { font-family: var(--font-display); font-size: var(--step-1); font-weight: 600; line-height: 1.3; }
+  .cm-img { grid-column: 1 / -1; aspect-ratio: 4 / 5; margin-bottom: 3rem; }
+  .cm-copy { grid-column: 1 / -1; display: grid; gap: 1.5rem; align-content: center; }
+  @media (min-width: 64rem) { .cm-img { grid-column: 1 / span 5; margin: 0; } .cm-copy { grid-column: 7 / span 6; } }
+  .cm-q { margin: 1rem 0 0; padding-left: 1.25rem; border-left: 2px solid var(--accent); font-size: var(--step-2); font-weight: 300; line-height: 1.15; text-transform: uppercase; letter-spacing: 0.02em; }
+  .wc li { display: grid; grid-template-columns: 3.5rem 1fr; padding: 1.1rem 0; align-items: baseline; }
+  .wc .t-1 { font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
   .q-list { margin-top: 3rem; }
   .q-list li { display: grid; grid-template-columns: 3.5rem 1fr 1.2fr; gap: 0.5rem 1.5rem; padding: 1.6rem 0; align-items: baseline; }
   @media (max-width: 48rem) { .q-list li { grid-template-columns: 3rem 1fr; } .q-list li .body-copy { grid-column: 2; } }

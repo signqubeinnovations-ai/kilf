@@ -36,6 +36,7 @@ const year = new Date().getFullYear();
         </address>
         <p><a href={telUrl} data-track="call_click">{site.phoneDisplay}</a></p>
         <p><a href={waFor('building')} target="_blank" rel="noopener" data-track="whatsapp_click">WhatsApp {site.phoneDisplay}</a></p>
+        {site.officePhones.map((ph) => <p><a href={`tel:${ph.e164}`} data-track="call_click">Office {ph.display}</a></p>)}
         <p>{real(site.email) ? <a href={`mailto:${site.email}`}>{site.email}</a> : <Fill value={site.email} />}</p>
         <p class="muted"><Fill value={site.hoursDisplay} /></p>
         <p><a href={directionsUrl()} target="_blank" rel="noopener" class="link-arrow">Directions</a></p>

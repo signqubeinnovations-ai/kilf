@@ -11,6 +11,8 @@ import FaqList from '@/components/FaqList.astro';
 import Process from '@/components/Process.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import ProofThumb from '@/components/ProofThumb.astro';
+import RefImage from '@/components/RefImage.astro';
+import { serviceImage } from '@/lib/images';
 import { possibilities } from '@/lib/content';
 import { site, telUrl } from '@/lib/site';
 import { faqLd, serviceLd } from '@/lib/schema';
@@ -51,7 +53,7 @@ const url = new URL(`/${entry.id}/`, Astro.site).href;
           <a class="btn btn-ghost btn-lg" href={telUrl} data-track="call_click">Call {site.phoneDisplay}</a>
         </div>
       </div>
-      <div class="svc-art crop" data-reveal><Art kind={d.art} /></div>
+      <div class="svc-art crop" data-reveal>{serviceImage[entry.id] ? <RefImage name={serviceImage[entry.id]} eager sizes="(min-width: 64rem) 36vw, 100vw" /> : <Art kind={d.art} />}</div>
     </div>
   </section>
 

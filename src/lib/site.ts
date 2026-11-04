@@ -17,9 +17,14 @@ export const site = {
   phoneDisplay: '+91 81130 13556',
   phoneE164: '+918113013556',
   waNumber: '918113013556',
+  /** Office lines from the brochure. [FILL: confirm which number is on Google Business Profile] */
+  officePhones: [
+    { display: '+91 79026 44001', e164: '+917902644001' },
+    { display: '+91 79026 44002', e164: '+917902644002' },
+  ],
   email: '[FILL: email]',
   address: {
-    street: '[FILL: street, e.g. Railway Station Road]',
+    street: 'Opposite Court Complex, Railway Station Road',
     locality: 'Karunagappally',
     district: 'Kollam',
     region: 'Kerala',

@@ -8,7 +8,8 @@ These must match your Google Business Profile **exactly**. Schema markup leaves 
 
 | Field | Where it shows |
 |---|---|
-| `address.street` (e.g. Railway Station Road) | Footer, contact, CTA band, schema |
+| ~~`address.street`~~ ✅ filled from the brochure: Opposite Court Complex, Railway Station Road | Footer, contact, CTA band, schema |
+| `officePhones` (+91 79026 44001 / 44002, from the brochure) | Footer, contact. **Confirm which number is on your Google Business Profile**; schema uses the WhatsApp number +91 81130 13556 |
 | `address.postalCode` (PIN) | Footer, contact, CTA band, schema |
 | `email` | Footer, contact, privacy, schema |
 | `hoursDisplay` + `hoursSchema` (e.g. Mon–Sat 9:30–18:30) | Footer, contact, schema `openingHours` |
@@ -19,6 +20,9 @@ These must match your Google Business Profile **exactly**. Schema markup leaves 
 | `areasServed` + `areasNote` (other districts) | Footer, schema `areaServed` |
 | `priceRange` (e.g. ₹₹) | Schema |
 | `founded` | About |
+
+## 1b. Brochure images — `src/assets/brochure/`
+Nine reference images from the brochure are used on the homepage tiles, materials, service pages and About, each tagged **Illustrative**. They are not shown as FACADO projects. If any of them **is** your own completed work, tell us and it can move into a case study labelled "Completed". Replace the rest with your own photos when you can (`src/lib/images.ts`). One brochure image (white curved building) was left out because it carries another company's watermark.
 
 ## 2. Studio — `src/pages/about.astro`
 - Founders, year started and why (2–3 short paragraphs)

@@ -55,6 +55,7 @@ const crumbs = [{ href: '/', label: 'Home' }, { label: 'Contact' }];
         </div>
         <div class="ct-block"><p class="caps num">Hours</p><p><Fill value={site.hoursDisplay} /></p></div>
         <div class="ct-block"><p class="caps num">Phone & WhatsApp</p><p><a href={telUrl} data-track="call_click">{site.phoneDisplay}</a></p></div>
+        <div class="ct-block"><p class="caps num">Office</p>{site.officePhones.map((ph) => <p><a href={`tel:${ph.e164}`} data-track="call_click">{ph.display}</a></p>)}</div>
         <div class="ct-block"><p class="caps num">Email</p><p>{real(site.email) ? <a href={`mailto:${site.email}`}>{site.email}</a> : <Fill value={site.email} />}</p></div>
         <div class="map crop" data-map data-src={mapEmbedUrl()}>
           <button type="button" class="map-btn" data-map-load>

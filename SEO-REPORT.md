@@ -13,12 +13,12 @@ Re-run the checks any time: `npm run build && npm run seo && npm run a11y && npm
 
 | Page | LCP | CLS | Transfer |
 |---|---|---|---|
-| `/` | 924 ms | 0 | 384 KB |
-| `/acp-cladding-kollam/` | 700 ms | 0 | 209 KB |
-| `/projects/` | 620 ms | 0 | 174 KB |
-| `/contact/` | 740 ms | 0 | 173 KB |
-| `/faq/` | 668 ms | 0 | 179 KB |
-| `/journal/acp-cladding-cost-kerala/` | 628 ms | 0 | 180 KB |
+| `/` | 788 ms | 0.005 | 421 KB |
+| `/acp-cladding-kollam/` | 716 ms | 0.001 | 231 KB |
+| `/projects/` | 592 ms | 0 | 175 KB |
+| `/contact/` | 600 ms | 0 | 174 KB |
+| `/faq/` | 660 ms | 0 | 180 KB |
+| `/journal/acp-cladding-cost-kerala/` | 616 ms | 0 | 180 KB |
 
 Targets: LCP < 2.0 s ✅ · CLS < 0.05 ✅. Measured locally; confirm on the live domain with PageSpeed Insights.
 
@@ -31,7 +31,7 @@ Targets: LCP < 2.0 s ✅ · CLS < 0.05 ✅. Measured locally; confirm on the liv
 | Core Web Vitals targets (see above) | ✅ local · ⚠️ confirm live |
 | Lighthouse 95+ on all four scores | ❌ Lighthouse would not finish in the build sandbox. The axe and vitals checks above cover most of it. Run PageSpeed Insights after deploy. |
 | Images: AVIF/WebP `<picture>`, width/height, lazy loading, `srcset` | ✅ wired for project photos (`astro:assets`). ⚠️ no real photos supplied yet |
-| `fetchpriority="high"` on the hero image only | ✅ case-study cover. The home hero is SVG + text, so there is no hero image to prioritise |
+| `fetchpriority="high"` on the hero image only | ✅ home hero photo, service-page hero photos and case-study cover |
 | Self-hosted fonts, preload 300/700, `font-display: swap` | ✅ |
 | Critical CSS inlined (`inlineStylesheets: 'always'`) | ✅ |
 | `sitemap-index.xml` (excludes 404, privacy, unconfirmed case studies) | ✅ |
@@ -84,4 +84,4 @@ Targets: LCP < 2.0 s ✅ · CLS < 0.05 ✅. Measured locally; confirm on the liv
 ## Not done from the brief
 - `npx impeccable detect` and the `/impeccable` workflow: the Impeccable skill was not installed in the build environment. The design rules from the brief (no Inter, no glassmorphism, no bounce, square corners, etc.) were followed by hand.
 - Lighthouse report and Rich Results screenshots: see above.
-- Real textures (`bg_rust.jpg`, `bg_cream.jpg`) and project photos were not in the uploaded kit. The grain is generated in CSS; buildings are SVG drawings.
+- Real textures (`bg_rust.jpg`, `bg_cream.jpg`) were not in the kit; the grain is generated in CSS. Brochure images are used as illustrative images (tagged "Illustrative"); real project photos are still needed.
