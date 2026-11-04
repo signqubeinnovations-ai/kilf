@@ -93,6 +93,9 @@ const start = Date.now();
 function showSlide() {
   if (!slide || seen() || Date.now() - start < 6000) return;
   if (d.querySelector('[data-consent]:not([hidden])')) return;
+  // Never cover the cladding scene while it is on screen.
+  const cs = d.querySelector('[data-cladding]')?.getBoundingClientRect();
+  if (cs && cs.top < innerHeight && cs.bottom > 0) return;
   try { sessionStorage.setItem('facado-slide', '1'); } catch {}
   slide.hidden = false;
 }

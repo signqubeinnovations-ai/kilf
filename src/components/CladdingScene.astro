@@ -1,0 +1,132 @@
+---
+/**
+ * Signature scroll scene: a facade image is "clad" panel by panel.
+ * Uses src/assets/projects/pochayil-render.(jpg|png|webp) when present (a design render),
+ * otherwise a brochure image tagged "Illustrative".
+ * Without JS or with reduced motion, the finished image is shown.
+ */
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Headline from './Headline.astro';
+import Counter from './Counter.astro';
+import Dim from './Dim.astro';
+import WaButton from './WaButton.astro';
+import { ref } from '@/lib/images';
+
+interface Props { n?: number; of?: number; }
+const { n, of } = Astro.props;
+
+const found = import.meta.glob<{ default: ImageMetadata }>('/src/assets/projects/pochayil-render.{jpg,jpeg,png,webp}', { eager: true });
+const pochayil = Object.values(found)[0]?.default;
+const src = pochayil ?? ref['commercial-complex'].src;
+const alt = pochayil
+  ? 'Design render of the ACP facade for Pochayil Gold & Diamonds and Pochayil Home Shoppy, Karunagappally, at dusk'
+  : ref['commercial-complex'].alt;
+const label = pochayil ? 'Design render' : 'Illustrative';
+// Facade area of the image (percent of width/height) that gets panelled.
+const region = pochayil ? { x: 4, y: 4, w: 85.5, h: 84 } : { x: 0, y: 6, w: 100, h: 72 };
+const COLS = 8;
+const ROWS = 6;
+const tw = region.w / COLS;
+const th = region.h / ROWS;
+const img = await getImage({ src, width: Math.min(1800, src.width), format: 'webp', quality: 82 });
+const small = await getImage({ src, width: Math.min(900, src.width), format: 'webp', quality: 78 });
+const tiles = [];
+for (let j = 0; j < ROWS; j++)
+  for (let i = 0; i < COLS; i++) {
+    const left = region.x + i * tw;
+    const top = region.y + j * th;
+    tiles.push({ i, j, left, top, px: (left / (100 - tw)) * 100, py: (top / (100 - th)) * 100 });
+  }
+---
+<section class="cs" data-cladding data-gsap aria-labelledby="cs-h">
+  <div class="cs-pin" data-pin>
+    <div class="cs-sky" aria-hidden="true"><span class="cs-sun"></span></div>
+    {n && of && <Counter n={n} of={of} />}
+    <div class="wrap grid-12 cs-grid">
+      <div class="cs-copy">
+        <p class="eyebrow">How ACP works</p>
+        <Headline id="cs-h" lines={['SAME BUILDING.', 'NEW FACE.', '*MORE CUSTOMERS.']} size="4" />
+        <p class="cs-count caps"><span class="num">Panel</span> <span class="cs-n"><span data-cs-count>48</span> → 48</span></p>
+        <p class="body-copy cs-cap">A rust-free aluminium framework is anchored to the existing structure. Precision-fabricated panels are fixed and sealed on it, one by one. The building stays. The face changes.</p>
+        <WaButton context="building" label="Plan your new facade" magnetic class="cs-wa" />
+      </div>
+      <figure class="cs-stage crop" data-cs-stage style={`aspect-ratio:${src.width}/${src.height};--img:url(${img.src});--img-s:url(${small.src});--rx:${region.x}%;--ry:${region.y}%;--rw:${region.w}%;--rh:${region.h}%`}>
+        <img class="cs-after" src={img.src} srcset={`${small.src} 900w, ${img.src} ${img.attributes.width ?? 1800}w`} sizes="(min-width: 64rem) 56vw, 100vw" width={src.width} height={src.height} alt={alt} loading="lazy" decoding="async" />
+        <span class="cs-before" aria-hidden="true"></span>
+        <span class="cs-tiles" aria-hidden="true">
+          {tiles.map((t) => <i class="cs-tile" data-i={t.i} data-j={t.j} style={`left:${t.left}%;top:${t.top}%;width:${tw}%;height:${th}%;background-size:${(100 / tw) * 100}% ${(100 / th) * 100}%;background-position:${t.px}% ${t.py}%`} />)}
+        </span>
+        <span class="cs-rails" aria-hidden="true">{Array.from({ length: COLS + 1 }, (_, i) => <i style={`left:${region.x + i * tw}%`} />)}</span>
+        <svg class="cs-led" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x={region.x} y={region.y} width={region.w} height={region.h} pathLength="1" /></svg>
+        <span class="cs-glow" aria-hidden="true"></span>
+        <span class="cs-tag">{label}</span>
+        <figcaption><Dim label={pochayil ? 'ACP FACADE / POCHAYIL, KARUNAGAPPALLY' : 'ACP FACADE / COMMERCIAL COMPLEX'} draw={false} /></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Dusk sky: deep charcoal overhead, warm rust glow on the horizon, a low sand sun. */
+  .cs { position: relative; color: var(--color-cream); background: #120d0c; --fg: var(--color-cream); --muted: color-mix(in oklab, var(--color-cream) 74%, #120d0c); --accent: var(--color-sand); --rule: color-mix(in oklab, var(--color-cream) 16%, transparent); --focus: var(--color-sand); --btn-bg: var(--color-cream); --btn-fg: var(--color-charcoal); --crop-c: var(--color-sand); }
+  .cs-pin { position: relative; min-height: 100svh; display: flex; align-items: center; padding-block: clamp(4rem, 7vw, 6rem); overflow: hidden; isolation: isolate; }
+  .cs-sky { position: absolute; inset: 0; z-index: -1; background:
+      var(--grain),
+      radial-gradient(70% 38% at 68% 86%, rgb(201 122 72 / 0.42), transparent 70%),
+      radial-gradient(40% 30% at 18% 92%, rgb(107 48 34 / 0.5), transparent 70%),
+      linear-gradient(180deg, #0f0b0a 0%, #191210 30%, #2b1a14 58%, #4a2619 80%, #23150f 100%); }
+  .cs-sky::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 26%;
+      background: repeating-linear-gradient(90deg, rgb(201 162 122 / 0.07) 0 1px, transparent 1px 6.25%), linear-gradient(180deg, transparent, rgb(10 7 6 / 0.55));
+      transform: perspective(600px) rotateX(58deg); transform-origin: bottom; mask-image: linear-gradient(180deg, transparent, #000 60%); }
+  .cs-sun { position: absolute; width: min(46vw, 40rem); aspect-ratio: 1; right: 6%; top: 18%; border-radius: 50%; background: radial-gradient(circle, rgb(214 180 142 / 0.2), rgb(214 180 142 / 0.06) 55%, transparent 70%); }
+
+  .cs-grid { align-items: center; row-gap: 2.5rem; }
+  .cs-copy { grid-column: 1 / -1; }
+  .cs-stage { grid-column: 1 / -1; margin: 0; position: relative; display: block; box-shadow: 0 40px 80px -30px #000c; }
+  @media (min-width: 64rem) { .cs-copy { grid-column: 1 / span 4; } .cs-stage { grid-column: 5 / span 8; } }
+  .cs-count { margin-top: 2rem; font-weight: 700; letter-spacing: 0.2em; display: flex; gap: 1rem; align-items: baseline; }
+  .cs-n { font-size: var(--step-3); letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+  .cs-cap { margin-top: 1rem; }
+  :global(.cs-wa) { margin-top: 2rem; }
+
+  .cs-after { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .cs-before, .cs-tiles, .cs-rails, .cs-led, .cs-glow { position: absolute; inset: 0; pointer-events: none; }
+  .cs-before, .cs-rails, .cs-led, .cs-glow, .cs-tiles { display: none; }
+  .cs-tag { position: absolute; left: 0.75rem; top: 0.75rem; z-index: 5; font: 700 0.68rem/1 var(--font-display); letter-spacing: 0.18em; text-transform: uppercase; padding: 0.4rem 0.55rem; background: rgb(18 13 12 / 0.8); color: var(--color-cream); }
+  .cs-stage figcaption { position: absolute; left: 0; right: 0; top: calc(100% + 0.9rem); }
+
+  /* Animated state (only when JS + motion are on) */
+  .is-anim .cs-before, .is-anim .cs-tiles, .is-anim .cs-rails, .is-anim .cs-led, .is-anim .cs-glow { display: block; }
+  /* Before: the same building as bare grey concrete; colour returns at the end. */
+  .is-anim .cs-before { background: var(--img) center / cover; filter: grayscale(1) contrast(0.7) brightness(0.62) blur(0.6px); opacity: calc(1 - var(--color, 0)); }
+  .is-anim .cs-after { filter: brightness(calc(0.78 + var(--glow, 0) * 0.28)) saturate(calc(0.8 + var(--glow, 0) * 0.3)); }
+  /* Panels flip down from the scaffold and lock in, with fine joints. */
+  .cs-tiles { perspective: 1400px; perspective-origin: 50% 0%; }
+  .cs-tile { position: absolute; background-image: var(--img); background-repeat: no-repeat; transform-origin: 50% 0%; backface-visibility: hidden;
+    opacity: calc(var(--t, 1) * 2.5);
+    transform: translate3d(0, calc((1 - var(--t, 1)) * -48px), calc((1 - var(--t, 1)) * 160px)) rotateX(calc((1 - var(--t, 1)) * -78deg));
+    box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.38), inset 0 1px 0 rgb(255 255 255 / 0.06), 0 calc((1 - var(--t, 1)) * 30px) calc((1 - var(--t, 1)) * 40px) rgb(0 0 0 / 0.5);
+    filter: brightness(calc(0.78 + var(--glow, 0) * 0.28)); }
+  .cs-tiles { opacity: calc(1 - var(--color, 0) * 0.92); }
+  /* Aluminium sub-frame rails grow from the bottom first. */
+  .cs-rails i { position: absolute; top: var(--ry); height: var(--rh); width: 1px; background: linear-gradient(180deg, #e4e1da, #9d9a94); opacity: calc(0.75 * (1 - var(--color, 0))); transform-origin: bottom; transform: scaleY(var(--rails, 1)); }
+  /* LED outline and facade lights. */
+  .cs-led { overflow: visible; width: 100%; height: 100%; }
+  .cs-led rect { fill: none; stroke: #ffc98e; stroke-width: 0.35; stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--glow, 0)); filter: drop-shadow(0 0 6px rgb(255 190 120 / 0.9)); }
+  .cs-glow { mix-blend-mode: screen; opacity: var(--glow, 0); background:
+      radial-gradient(22% 16% at 66% 22%, rgb(255 205 140 / 0.35), transparent 70%),
+      radial-gradient(18% 22% at 25% 35%, rgb(255 205 140 / 0.3), transparent 70%),
+      radial-gradient(40% 14% at 62% 64%, rgb(255 215 160 / 0.22), transparent 70%); }
+  @media (prefers-reduced-motion: reduce) { .cs-tile { transition: none; } }
+  /* Phones and tablets: image first so the panelling stays in view while pinned. */
+  @media (max-width: 63.99rem) {
+    .cs-pin { align-items: flex-start; padding-block: 4.5rem 2rem; }
+    .cs-stage { order: -1; }
+    .cs-grid { row-gap: 3rem; }
+    .cs-copy :global(h2) { font-size: clamp(1.9rem, 8vw, 3rem); }
+    .cs-count { margin-top: 1rem; }
+    .cs-cap { display: none; }
+    :global(.cs-wa) { margin-top: 1.25rem; }
+  }
+</style>
