@@ -18,6 +18,8 @@ const { n, of } = Astro.props;
 
 const found = import.meta.glob<{ default: ImageMetadata }>('/src/assets/projects/pochayil-render.{jpg,jpeg,png,webp}', { eager: true });
 const pochayil = Object.values(found)[0]?.default;
+const skelFound = import.meta.glob<{ default: ImageMetadata }>('/src/assets/projects/pochayil-skeleton.{jpg,jpeg,png,webp}', { eager: true });
+const skeleton = pochayil ? Object.values(skelFound)[0]?.default : undefined;
 const src = pochayil ?? ref['commercial-complex'].src;
 const alt = pochayil
   ? 'Design render of the ACP facade for Pochayil Gold & Diamonds and Pochayil Home Shoppy, Karunagappally, at dusk'
@@ -31,6 +33,11 @@ const tw = region.w / COLS;
 const th = region.h / ROWS;
 const img = await getImage({ src, width: Math.min(1800, src.width), format: 'webp', quality: 82 });
 const small = await getImage({ src, width: Math.min(900, src.width), format: 'webp', quality: 78 });
+const skel = skeleton ? await getImage({ src: skeleton, width: Math.min(1600, skeleton.width), format: 'webp', quality: 80 }) : undefined;
+// Structural skeleton lines (percent of the image): columns and floor slabs of the building.
+const structure = pochayil
+  ? { cols: [4, 36.5, 62.5, 89.5], slabs: [4, 41.5, 59, 69, 88] }
+  : { cols: [0, 33, 66, 100], slabs: [6, 42, 78] };
 const tiles = [];
 for (let j = 0; j < ROWS; j++)
   for (let i = 0; i < COLS; i++) {
@@ -51,12 +58,16 @@ for (let j = 0; j < ROWS; j++)
         <p class="body-copy cs-cap">A rust-free aluminium framework is anchored to the existing structure. Precision-fabricated panels are fixed and sealed on it, one by one. The building stays. The face changes.</p>
         <WaButton context="building" label="Plan your new facade" magnetic class="cs-wa" />
       </div>
-      <figure class="cs-stage crop" data-cs-stage style={`aspect-ratio:${src.width}/${src.height};--img:url(${img.src});--img-s:url(${small.src});--rx:${region.x}%;--ry:${region.y}%;--rw:${region.w}%;--rh:${region.h}%`}>
+      <figure class="cs-stage crop" data-cs-stage style={`aspect-ratio:${src.width}/${src.height};--img:url(${img.src});--img-s:url(${small.src});--skel:url(${skel?.src ?? img.src});--rx:${region.x}%;--ry:${region.y}%;--rw:${region.w}%;--rh:${region.h}%`}>
         <img class="cs-after" src={img.src} srcset={`${small.src} 900w, ${img.src} ${img.attributes.width ?? 1800}w`} sizes="(min-width: 64rem) 56vw, 100vw" width={src.width} height={src.height} alt={alt} loading="lazy" decoding="async" />
         <span class="cs-before" aria-hidden="true"></span>
         <span class="cs-tiles" aria-hidden="true">
           {tiles.map((t) => <i class="cs-tile" data-i={t.i} data-j={t.j} style={`left:${t.left}%;top:${t.top}%;width:${tw}%;height:${th}%;background-size:${(100 / tw) * 100}% ${(100 / th) * 100}%;background-position:${t.px}% ${t.py}%`} />)}
         </span>
+        <svg class="cs-frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          {structure.cols.map((x) => <line x1={x} y1={region.y} x2={x} y2={region.y + region.h} pathLength="1" />)}
+          {structure.slabs.map((y) => <line x1={region.x} y1={y} x2={region.x + region.w} y2={y} pathLength="1" />)}
+        </svg>
         <span class="cs-rails" aria-hidden="true">{Array.from({ length: COLS + 1 }, (_, i) => <i style={`left:${region.x + i * tw}%`} />)}</span>
         <svg class="cs-led" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x={region.x} y={region.y} width={region.w} height={region.h} pathLength="1" /></svg>
         <span class="cs-glow" aria-hidden="true"></span>
@@ -91,16 +102,20 @@ for (let j = 0; j < ROWS; j++)
   :global(.cs-wa) { margin-top: 2rem; }
 
   .cs-after { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .cs-before, .cs-tiles, .cs-rails, .cs-led, .cs-glow { position: absolute; inset: 0; pointer-events: none; }
-  .cs-before, .cs-rails, .cs-led, .cs-glow, .cs-tiles { display: none; }
+  .cs-before, .cs-tiles, .cs-rails, .cs-led, .cs-glow, .cs-frame { position: absolute; inset: 0; pointer-events: none; }
+  .cs-before, .cs-rails, .cs-led, .cs-glow, .cs-tiles, .cs-frame { display: none; }
+  .cs-frame { width: 100%; height: 100%; overflow: visible; }
   .cs-tag { position: absolute; left: 0.75rem; top: 0.75rem; z-index: 5; font: 700 0.68rem/1 var(--font-display); letter-spacing: 0.18em; text-transform: uppercase; padding: 0.4rem 0.55rem; background: rgb(18 13 12 / 0.8); color: var(--color-cream); }
   .cs-stage figcaption { position: absolute; left: 0; right: 0; top: calc(100% + 0.9rem); }
 
   /* Animated state (only when JS + motion are on) */
-  .is-anim .cs-before, .is-anim .cs-tiles, .is-anim .cs-rails, .is-anim .cs-led, .is-anim .cs-glow { display: block; }
-  /* Before: the same building as bare grey concrete; colour returns at the end. */
-  .is-anim .cs-before { background: var(--img) center / cover; filter: grayscale(1) contrast(0.7) brightness(0.62) blur(0.6px); opacity: calc(1 - var(--color, 0)); }
-  .is-anim .cs-after { filter: brightness(calc(0.78 + var(--glow, 0) * 0.28)) saturate(calc(0.8 + var(--glow, 0) * 0.3)); }
+  .is-anim .cs-before, .is-anim .cs-tiles, .is-anim .cs-rails, .is-anim .cs-led, .is-anim .cs-glow, .is-anim .cs-frame { display: block; }
+  .is-anim { background: #100c0b; }
+  /* Before: the building's skeleton, a line drawing that rises from the ground. Colour returns at the end. */
+  .is-anim .cs-before { background: var(--skel) center / cover; opacity: calc(1 - var(--color, 0)); clip-path: inset(calc((1 - var(--sk, 1)) * 100%) 0 0 0); }
+  .is-anim .cs-after { opacity: var(--color, 1); filter: brightness(calc(0.82 + var(--glow, 0) * 0.24)) saturate(calc(0.85 + var(--glow, 0) * 0.25)); }
+  /* Structural columns and slabs draw on top of the skeleton. */
+  .cs-frame line { stroke: #f2d9b4; stroke-width: 0.28; stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--frame, 1)); opacity: calc(0.9 * (1 - var(--color, 0))); filter: drop-shadow(0 0 2px rgb(255 200 140 / 0.6)); }
   /* Panels flip down from the scaffold and lock in, with fine joints. */
   .cs-tiles { perspective: 1400px; perspective-origin: 50% 0%; }
   .cs-tile { position: absolute; background-image: var(--img); background-repeat: no-repeat; transform-origin: 50% 0%; backface-visibility: hidden;
@@ -108,7 +123,7 @@ for (let j = 0; j < ROWS; j++)
     transform: translate3d(0, calc((1 - var(--t, 1)) * -48px), calc((1 - var(--t, 1)) * 160px)) rotateX(calc((1 - var(--t, 1)) * -78deg));
     box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.38), inset 0 1px 0 rgb(255 255 255 / 0.06), 0 calc((1 - var(--t, 1)) * 30px) calc((1 - var(--t, 1)) * 40px) rgb(0 0 0 / 0.5);
     filter: brightness(calc(0.78 + var(--glow, 0) * 0.28)); }
-  .cs-tiles { opacity: calc(1 - var(--color, 0) * 0.92); }
+  .cs-tiles { opacity: calc(1 - var(--color, 0)); }
   /* Aluminium sub-frame rails grow from the bottom first. */
   .cs-rails i { position: absolute; top: var(--ry); height: var(--rh); width: 1px; background: linear-gradient(180deg, #e4e1da, #9d9a94); opacity: calc(0.75 * (1 - var(--color, 0))); transform-origin: bottom; transform: scaleY(var(--rails, 1)); }
   /* LED outline and facade lights. */

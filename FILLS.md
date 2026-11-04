@@ -32,7 +32,8 @@ Nine reference images from the brochure are used on the homepage tiles, material
 - Confirm client name and location
 - Scope, materials/finishes, framework and fixings
 - Brief, challenge, solution, result (no invented numbers)
-- **Photos**: put them in `src/assets/projects/` and add `cover:` / `gallery:` entries. Label each `Design render` or `Completed`.
+- ✅ Design render added (`src/assets/projects/pochayil-render.jpg`), used as the case-study cover and in the homepage cladding animation. The skeleton drawing (`pochayil-skeleton.jpg`) is generated from it.
+- **Completed site photos**: put them in `src/assets/projects/` and add `cover:` / `gallery:` entries. Label each `Design render` or `Completed`.
 - Before/after photos only if real (`beforeAfter:`)
 - Then set `confirmed: true`. Until then the page is `noindex` and left out of the sitemap.
 - More real projects: copy the file, one Markdown file per project.

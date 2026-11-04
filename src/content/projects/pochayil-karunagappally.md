@@ -11,6 +11,7 @@ dimLabel: 'ACP FACADE / COMMERCIAL SHOWROOM'
 scope: ['[FILL: e.g. site survey, 3D design, shop drawings, fabrication, installation]']
 materials: ['[FILL: panel grade and finishes used]', '[FILL: framework and fixings]']
 confirmed: false
+cover: { src: '../../assets/projects/pochayil-render.jpg', alt: 'Design render of the ACP facade for Pochayil Gold & Diamonds and Pochayil Home Shoppy, Karunagappally, at dusk', label: 'Design render' }
 # Add photos to src/assets/projects/ and reference them like this:
 # cover: { src: '../../assets/projects/pochayil-01.jpg', alt: 'ACP facade with ... on Pochayil Gold & Diamonds, Karunagappally', label: 'Completed' }
 # gallery:

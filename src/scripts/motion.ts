@@ -6,7 +6,7 @@ const lenis = (window as unknown as { __lenis?: { on: (e: string, f: () => void)
 lenis?.on('scroll', ScrollTrigger.update);
 
 /* Signature: the cladding scene. Panels of the facade render flip into place as you scroll.
-   0.00–0.12 framework rails draw · 0.12–0.72 12 panels · 0.72–0.86 street and sky take colour
+   0.00–0.20 skeleton rises, columns and slabs draw, aluminium rails · 0.20–0.72 12 panels · 0.72–0.86 street and sky take colour
    0.86–1.00 lights on, LED outline traces the building */
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 const expoOut = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
@@ -20,10 +20,12 @@ document.querySelectorAll<HTMLElement>('[data-cladding]').forEach((scene) => {
   const order = tiles.map((t, k) => ({ t, k, i: +t.dataset.i!, j: +t.dataset.j! })).sort((a, b) => a.j - b.j || a.i - b.i);
   const n = order.length;
   const set = (p: number) => {
-    stage.style.setProperty('--rails', band(0, 0.12, p).toFixed(3));
+    stage.style.setProperty('--sk', expoOut(band(0, 0.1, p)).toFixed(3));
+    stage.style.setProperty('--frame', band(0.04, 0.16, p).toFixed(3));
+    stage.style.setProperty('--rails', band(0.12, 0.2, p).toFixed(3));
     let done = 0;
     order.forEach((o, idx) => {
-      const t0 = 0.12 + (idx / n) * 0.5;
+      const t0 = 0.2 + (idx / n) * 0.46;
       const e = expoOut(band(t0, t0 + 0.1, p));
       o.t.style.setProperty('--t', e.toFixed(3));
       if (e > 0.98) done++;

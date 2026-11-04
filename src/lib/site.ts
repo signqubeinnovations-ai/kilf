@@ -68,7 +68,6 @@ export const waFor = (context: string) => wa(`Hi FACADO, I'd like a free facade 
 
 export const nav = [
   { href: '/#what-we-build', label: 'Services' },
-  { href: '/projects', label: 'Projects' },
   { href: '/about', label: 'Studio' },
   { href: '/journal', label: 'Journal' },
   { href: '/faq', label: 'FAQ' },

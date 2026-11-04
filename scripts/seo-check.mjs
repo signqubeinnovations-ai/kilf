@@ -19,7 +19,7 @@ for (const f of files) {
   if (!f.endsWith('404.html') && !/rel="canonical"/.test(h)) bad(f, 'no canonical');
   const og = (h.match(/property="og:image" content="[^"]*\/og\/([^"]+)"/) || [])[1];
   if (!og || !fs.existsSync(path.join(dist, 'og', og))) bad(f, `missing OG image ${og}`);
-  for (const m of h.matchAll(/<img\b[^>]*>/g)) if (!/\balt="/.test(m[0])) bad(f, 'img without alt');
+  for (const m of h.matchAll(/<img\b[^>]*>/g)) if (!/\salt(="|[\s>])/.test(m[0])) bad(f, 'img without alt');
   for (const m of h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
     try { const o = JSON.parse(m[1]); types.add(o['@type']); if (/\[FILL/.test(m[1])) bad(f, `[FILL] inside ${o['@type']} schema`); } catch (e) { bad(f, 'invalid JSON-LD'); }
   }
